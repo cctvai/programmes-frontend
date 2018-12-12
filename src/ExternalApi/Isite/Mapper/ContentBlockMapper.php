@@ -260,7 +260,7 @@ class ContentBlockMapper extends Mapper
             case 'promotions':
                 $contentBlockData = $form->content;
                 $title = $this->getString($contentBlockData->title);
-                $layout = $this->getString($contentBlockData->layout);
+                $layout = $this->getString($contentBlockData->layout) ?: 'list'; // Default to list if unset
                 $promotions = [];
                 foreach ($contentBlockData->promotions as $promotion) {
                     // @codingStandardsIgnoreStart
