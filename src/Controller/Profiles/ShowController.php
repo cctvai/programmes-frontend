@@ -118,7 +118,7 @@ class ShowController extends BaseController
             'projectSpace' => $projectSpace,
             'profile' => $profile,
             'paginatorPresenter' => $paginator,
-            'programme' => $context,
+            'programme' => $parentProgramme,
             'maxSiblings' => self::MAX_LIST_DISPLAYED_ITEMS,
         ]);
     }
