@@ -3,8 +3,10 @@ declare(strict_types = 1);
 
 namespace App\ExternalApi\Isite\Mapper;
 
+use App\Controller\Helpers\IsiteKeyHelper;
 use App\ExternalApi\Isite\Domain\Profile;
 use InvalidArgumentException;
+use Psr\Log\LoggerInterface;
 use SimpleXMLElement;
 
 class ProfileMapper extends Mapper
@@ -70,36 +72,7 @@ class ProfileMapper extends Mapper
             }
         }
 
-        $contentBlocks = [];
-        //check if module is in the data
-        if (!empty($form->profile->content_blocks)) {
-            $blocks = $form->profile->content_blocks;
-            if (isset($blocks[0]->content_block) && (string) $blocks[0]->content_block && strlen((string) $blocks[0]->content_block)) {
-                /**
-                 * Content blocks that have not been fetched look like:
-                 * <content_block>urn:isite:progs-drama:programmes-content-1539623978</content_block>
-                 * and the API needs to know the difference between "Not Fetched" and "Not existent"
-                 */
-                $contentBlocks = null; // Content blocks have not been fetched
-            } elseif (empty($blocks[0]->content_block->result)) {
-                /**
-                 * Content blocks that don't exist _can_ look like
-                 * <content_block/>
-                 * and the API needs to know the difference between "Not Fetched" and "Not existent"
-                 */
-                $contentBlocks = []; // No content blocks
-            } else {
-                $contentBlocksList = [];
-                foreach ($blocks as $block) {
-                    if ($this->isPublished($block->content_block)) { // Must be published
-                        $contentBlocksList[] = $block->content_block;
-                    }
-                }
-                $contentBlocks = $this->getDomainModels(
-                    $contentBlocksList
-                );
-            }
-        }
+        $contentBlocks = $this->getContentBlocks($form);
 
         $onwardJourneyBlock = null;
         if (!empty($form->profile->onward_journeys)) {
@@ -112,6 +85,7 @@ class ProfileMapper extends Mapper
         // @codingStandardsIgnoreEnd
 
         return new Profile(
+            $this->logger,
             $title,
             $key,
             $fileId,
@@ -147,5 +121,49 @@ class ProfileMapper extends Mapper
     private function isProfile(SimpleXMLElement $resultMetaData)
     {
         return (isset($resultMetaData->type) && ((string) $resultMetaData->type === 'programmes-profile'));
+    }
+
+    private function getContentBlocks(SimpleXMLElement $form): ?array
+    {
+        //check if module is in the data
+        // @codingStandardsIgnoreStart
+        if (!empty($form->profile->content_blocks)) {
+            $blocks = $form->profile->content_blocks;
+            $countBlocks = count($blocks);
+            $countBlocksUnfetchedOrDeleted = 0;
+            foreach ($blocks as $block) {
+                if (isset($block->content_block) && (string) $block->content_block && strlen((string) $block->content_block)) {
+                    /**
+                     * Content blocks that have not been fetched look like:
+                     * <content_block>urn:isite:progs-drama:programmes-content-1539623978</content_block>
+                     * As do content blocks that have been deleted, annoyingly
+                     */
+                    $countBlocksUnfetchedOrDeleted++;
+                }
+            }
+            if ($countBlocksUnfetchedOrDeleted === $countBlocks) {
+                return null; // Content blocks have not been fetched
+            }
+
+            if (empty($blocks[0]->content_block->result)) {
+                /**
+                 * Content blocks that don't exist _can_ look like
+                 * <content_block/>
+                 * and the API needs to know the difference between "Not Fetched" and "Not existent"
+                 */
+                return []; // No content blocks
+            }
+            $contentBlocksList = [];
+            foreach ($blocks as $block) {
+                if ($this->isPublished($block->content_block)) { // Must be published
+                    $contentBlocksList[] = $block->content_block;
+                }
+            }
+            return $this->getDomainModels(
+                $contentBlocksList
+            );
+        }
+        // @codingStandardsIgnoreEnd
+        return [];
     }
 }

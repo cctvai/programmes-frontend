@@ -45,9 +45,6 @@ class ContentBlockMapper extends Mapper
     /** @var VersionsService */
     private $versionsService;
 
-    /** @var LoggerInterface */
-    private $logger;
-
     /**
      * All available clip will be set here at once so we don't need to query the DB or Redis multiple times
      *
@@ -74,12 +71,11 @@ class ContentBlockMapper extends Mapper
         VersionsService $versionsService,
         LoggerInterface $logger
     ) {
-        parent::__construct($mapperFactory, $isiteKeyHelper);
+        parent::__construct($mapperFactory, $isiteKeyHelper, $logger);
         $this->coreEntitiesService = $coreEntitiesService;
         $this->idtQuizService = $idtQuizService;
         $this->programmesService = $programmesService;
         $this->versionsService = $versionsService;
-        $this->logger = $logger;
     }
 
     /**

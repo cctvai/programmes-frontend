@@ -5,6 +5,7 @@ namespace App\ExternalApi\Isite\Domain;
 
 use App\ExternalApi\Isite\DataNotFetchedException;
 use App\ExternalApi\Isite\Domain\ContentBlock\AbstractContentBlock;
+use Psr\Log\LoggerInterface;
 
 class Profile extends BaseIsiteObject
 {
@@ -32,7 +33,11 @@ class Profile extends BaseIsiteObject
     /** @var int  */
     private $groupSize;
 
+    /** @var LoggerInterface  */
+    private $logger;
+
     public function __construct(
+        LoggerInterface $logger,
         string $title,
         string $key,
         string $fileId,
@@ -53,7 +58,7 @@ class Profile extends BaseIsiteObject
         ?int $groupSize = null
     ) {
         parent::__construct($title, $fileId, $projectSpace, $parentPid, $brandingId, $image, $parents, $key, $shortSynopsis, $bbcSite);
-
+        $this->logger = $logger;
         $this->type = $type;
         $this->longSynopsis = $longSynopsis;
         $this->contentBlocks = $contentBlocks;
@@ -72,7 +77,10 @@ class Profile extends BaseIsiteObject
     public function getContentBlocks(): array
     {
         if ($this->contentBlocks === null) {
-            throw new DataNotFetchedException('Profile content blocks have not been queried for yet.');
+            // @TODO find a way to make this explode in the dev environment maybe, or do something
+            // better than logging in a domain object
+            $this->logger->warning('Profile content blocks have not been queried for yet, or a deleted content block has been included in a profile page.');
+            return [];
         }
 
         return $this->contentBlocks;
