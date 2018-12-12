@@ -58,15 +58,14 @@ class ShowController extends BaseController
             $this->setIstatsExtraLabels(['bbc_site' => $profile->getBbcSite()]);
         }
         $context = null;
+        $parentProgramme = null;
         $projectSpace = $profile->getProjectSpace();
-        $parentPid = $profile->getParentPid();
-        if ($parentPid instanceof Pid) {
-            $context = $coreEntitiesService->findByPidFull($parentPid);
+        if (!empty($profile->getParentPid())) {
+            $context = $coreEntitiesService->findByPidFull($profile->getParentPid());
             if ($context instanceof Group) {
-                if ($context->getOption('branding_id')) {
-                    $this->setBrandingId($context->getOption('branding_id'));
-                }
-                $context = $context->getParent();
+                $parentProgramme = $context->getParent();
+            } else {
+                $parentProgramme = $context;
             }
             if ($context && ($profile->getProjectSpace() !== $context->getOption('project_space'))) {
                 throw $this->createNotFoundException('Project space Profile-Programme not matching');
@@ -92,7 +91,7 @@ class ShowController extends BaseController
                 'guid' => $guid,
                 'projectSpace' => $projectSpace,
                 'profile' => $profile,
-                'programme' => $context,
+                'programme' => $parentProgramme,
                 'maxSiblings' => self::MAX_LIST_DISPLAYED_ITEMS,
             ]);
         }

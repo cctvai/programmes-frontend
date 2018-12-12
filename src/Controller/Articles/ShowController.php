@@ -10,6 +10,7 @@ use App\ExternalApi\Isite\Domain\Article;
 use App\ExternalApi\Isite\IsiteResult;
 use App\ExternalApi\Isite\Service\ArticleService;
 use BBC\ProgrammesPagesService\Domain\Entity\Group;
+use BBC\ProgrammesPagesService\Domain\Entity\Programme;
 use BBC\ProgrammesPagesService\Service\CoreEntitiesService;
 use App\Exception\HasContactFormException;
 use Symfony\Component\HttpFoundation\Request;
@@ -56,20 +57,19 @@ class ShowController extends BaseController
             $this->setIstatsExtraLabels(['bbc_site' => $article->getBbcSite()]);
         }
         $context = null;
+        $parentProgramme = null;
         $projectSpace = $article->getProjectSpace();
         if (!empty($article->getParentPid())) {
             $context = $coreEntitiesService->findByPidFull($article->getParentPid());
             if ($context instanceof Group) {
-                if ($context->getOption('branding_id')) {
-                    $this->setBrandingId($context->getOption('branding_id'));
-                }
-                $context = $context->getParent();
+                $parentProgramme = $context->getParent();
+            } else {
+                $parentProgramme = $context;
             }
             if ($context && ($article->getProjectSpace() !== $context->getOption('project_space'))) {
                 throw $this->createNotFoundException('Project space Article-Programme not matching');
             }
         }
-
         $this->setContext($context);
 
         if ('' !== $article->getBrandingId()) {
@@ -90,7 +90,7 @@ class ShowController extends BaseController
                 'projectSpace' => $projectSpace,
                 'article' => $article,
                 'paginatorPresenter' => $paginator,
-                'programme' => $context,
+                'programme' => $parentProgramme,
             ]
         );
     }
