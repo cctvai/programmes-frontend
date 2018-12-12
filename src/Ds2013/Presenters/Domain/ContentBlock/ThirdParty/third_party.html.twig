@@ -9,7 +9,7 @@
     {% set third_party_block = content_block.getBlock() %}
 
     <div class="third-party" id="{{ content_block_box_id }}">
-        <div class="icon-box br-box-page">
+        <div class="icon-box icon-box--flush br-box-{{ content_block.getBrandingContext() }}">
             <a
                 class="icon-box__link br-box-page__link br-page-link-onbg015 br-page-linkhover-onbg015--hover"
                 href="{{ third_party_block.getUrl() }}"

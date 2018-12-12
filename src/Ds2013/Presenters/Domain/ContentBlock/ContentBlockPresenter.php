@@ -42,4 +42,12 @@ abstract class ContentBlockPresenter extends Presenter
     {
         return $this->isPrimaryColumnFullWith;
     }
+
+    public function getBrandingContext(): string
+    {
+        if ($this->isInPrimaryColumn()) {
+            return 'page';
+        }
+        return 'subtle';
+    }
 }
