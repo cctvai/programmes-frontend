@@ -9,6 +9,7 @@ use App\Ds2013\Presenters\Utilities\Paginator\PaginatorPresenter;
 use App\ExternalApi\Isite\Domain\Profile;
 use App\ExternalApi\Isite\IsiteResult;
 use App\ExternalApi\Isite\Service\ProfileService;
+use BBC\ProgrammesPagesService\Domain\Entity\Group;
 use BBC\ProgrammesPagesService\Domain\ValueObject\Pid;
 use BBC\ProgrammesPagesService\Service\CoreEntitiesService;
 use GuzzleHttp\Promise\FulfilledPromise;
@@ -61,7 +62,12 @@ class ShowController extends BaseController
         $parentPid = $profile->getParentPid();
         if ($parentPid instanceof Pid) {
             $context = $coreEntitiesService->findByPidFull($parentPid);
-
+            if ($context instanceof Group) {
+                if ($context->getOption('branding_id')) {
+                    $this->setBrandingId($context->getOption('branding_id'));
+                }
+                $context = $context->getParent();
+            }
             if ($context && ($profile->getProjectSpace() !== $context->getOption('project_space'))) {
                 throw $this->createNotFoundException('Project space Profile-Programme not matching');
             }
