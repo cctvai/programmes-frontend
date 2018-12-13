@@ -23,6 +23,8 @@ class UpcomingController extends BaseProgrammeEpisodesController
         $this->setContextAndPreloadBranding($programme);
         $this->setIstatsProgsPageType('broadcast_slice');
         $this->setInternationalStatusAndTimezoneFromContext($programme);
+        $this->addAtiStatsExtraLabels(['contentType' => 'next_on']);
+
 
         $subNavPresenter = $this->getSubNavPresenter($collapsedBroadcastsService, $programme, $presenterFactory);
         $upcomingBroadcasts = $collapsedBroadcastsService->findUpcomingByProgrammeWithFullServicesOfNetworksList($programme, 100);

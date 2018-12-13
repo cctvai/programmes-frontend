@@ -14,11 +14,15 @@ class AtiAnalyticsLabels
     /** @var string */
     private $appEnvironment;
 
-    public function __construct($context, string $progsPageType, string $environment)
+    /** @var array  */
+    private $extraLabels;
+
+    public function __construct($context, string $progsPageType, array $extraLabels, string $environment)
     {
         $this->context = $context;
         $this->pageType = $progsPageType;
         $this->appEnvironment = $environment;
+        $this->extraLabels = $extraLabels;
     }
 
     public function orbLabels()
@@ -38,6 +42,7 @@ class AtiAnalyticsLabels
             'contentType' => $this->pageType,
         ];
 
+        $labels = array_merge($labels, $this->extraLabels);
         return $labels;
     }
 

@@ -23,6 +23,8 @@ class PlayerController extends BaseProgrammeEpisodesController
         $this->setContextAndPreloadBranding($programme);
         $this->setInternationalStatusAndTimezoneFromContext($programme);
         $this->setIstatsProgsPageType('episodes_player');
+        $this->addAtiStatsExtraLabels(['contentType' => 'episodes_available']);
+
         $page = $this->getPage();
         $limit = 10;
 

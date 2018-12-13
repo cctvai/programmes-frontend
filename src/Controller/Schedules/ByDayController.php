@@ -56,6 +56,7 @@ class ByDayController extends SchedulesBaseController
         $this->setIstatsProgsPageType('schedules_day');
         $this->setContextAndPreloadBranding($service);
         $this->setInternationalStatusAndTimezoneFromContext($service);
+        $this->addAtiStatsExtraLabels(['contentType' => 'schedule']);
 
         $dateTimeToShow = $this->dateTimeToShow($date, $service);
         if (!$dateTimeToShow) {

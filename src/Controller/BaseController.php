@@ -53,6 +53,8 @@ abstract class BaseController extends AbstractController
 
     private $istatsExtraLabels = [];
 
+    private $atistatsExtraLabels = [];
+
     private $istatsProgsPageType;
 
     private $isInternational = false;
@@ -220,7 +222,7 @@ abstract class BaseController extends AbstractController
         $cosmosInfo = $this->container->get(CosmosInfo::class);
         $atiAnalyticsLabelsValues = null;
         if ($this->container->get(Dials::class)->get('ati-stats') === 'true') {
-            $atiAnalyticsLabelsValues = new AtiAnalyticsLabels($this->context, $this->istatsProgsPageType, $cosmosInfo->getAppEnvironment());
+            $atiAnalyticsLabelsValues = new AtiAnalyticsLabels($this->context, $this->istatsProgsPageType, $this->atistatsExtraLabels, $cosmosInfo->getAppEnvironment());
             $atiAnalyticsLabelsValues = $atiAnalyticsLabelsValues->orbLabels();
         }
         $istatsAnalyticsLabelsInstance = $this->createIstatsAnalyticsLabelsFromContext();
@@ -321,6 +323,11 @@ abstract class BaseController extends AbstractController
     protected function setIstatsExtraLabels(array $labels): void
     {
         $this->istatsExtraLabels = array_replace($this->istatsExtraLabels, $labels);
+    }
+
+    protected function addAtiStatsExtraLabels(array $labels): void
+    {
+        $this->atistatsExtraLabels =  array_replace($this->atistatsExtraLabels, $labels);
     }
 
     protected function setIstatsProgsPageType(string $label): void
