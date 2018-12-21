@@ -31,10 +31,12 @@
                             'data_link_track': programme_overlay.getOption('cta_link_location_track')
                         }
                     ) }}
-                {% elseif programme_overlay.hasFutureAvailability() %}
-                    {{ self.renderUnavailableMessage('clip_availability_future') }}
-                {% else %}
-                    {{ self.renderUnavailableMessage('clip_availability_none') }}
+                {% elseif programme_overlay.getOption('show_unavailable') %}
+                    {% if programme_overlay.hasFutureAvailability() %}
+                        {{ self.renderUnavailableMessage('clip_availability_future') }}
+                    {% else %}
+                        {{ self.renderUnavailableMessage('clip_availability_none') }}
+                    {% endif %}
                 {% endif %}
             {% endif %}
         {% endblock %}
