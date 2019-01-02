@@ -1,5 +1,9 @@
 {% extends "@Ds2013/Presenters/Domain/ContentBlock/content_block.html.twig" %}
 
+{%- block extraClasses -%}
+    {% if not content_block.isInPrimaryColumn() %}component--box-flushbody{% endif %}
+{%- endblock -%}
+
 {% block blockContent %}
     {{- ds_shared(
         'image',
