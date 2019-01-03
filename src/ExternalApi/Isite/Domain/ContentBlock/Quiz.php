@@ -42,7 +42,7 @@ class Quiz extends AbstractContentBlock
 
     public function getHtmlContent(): string
     {
-        return $this->htmlContent;
+        return trim($this->htmlContent);
     }
 
     public function getType(): string
