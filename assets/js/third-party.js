@@ -1,4 +1,4 @@
-define(['jquery-1.9', 'cookieStore'], function($, DataStore) {
+define(['jquery-1.9', 'policy-service'], function($, policyService) {
     var Provider, Embed;
 
     /*
@@ -71,10 +71,8 @@ define(['jquery-1.9', 'cookieStore'], function($, DataStore) {
             return url;
         },
         generateCode : function (embedProvider, externalUrl) {
-            var dataStore = new DataStore();
-            var policy = dataStore.readPolicy('personalisation'); //functional cookie
-
-            if (!policy) {
+            var policy = policyService.readPolicy('personalisation'); //functional cookie
+            if (policy === false) {
                 return;
             }
 
