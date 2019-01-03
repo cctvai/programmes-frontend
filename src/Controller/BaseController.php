@@ -222,7 +222,12 @@ abstract class BaseController extends AbstractController
         $cosmosInfo = $this->container->get(CosmosInfo::class);
         $atiAnalyticsLabelsValues = null;
         if ($this->container->get(Dials::class)->get('ati-stats') === 'true') {
-            $atiAnalyticsLabelsValues = new AtiAnalyticsLabels($this->context, $this->istatsProgsPageType, $this->atistatsExtraLabels, $cosmosInfo->getAppEnvironment());
+            $atiAnalyticsLabelsValues = new AtiAnalyticsLabels(
+                $this->context,
+                $this->istatsProgsPageType,
+                $this->atistatsExtraLabels,
+                $cosmosInfo->getAppEnvironment()
+            );
             $atiAnalyticsLabelsValues = $atiAnalyticsLabelsValues->orbLabels();
         }
         $istatsAnalyticsLabelsInstance = $this->createIstatsAnalyticsLabelsFromContext();
