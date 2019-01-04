@@ -26,7 +26,7 @@ gulp.task('js:clean', function () {
     return del([staticPathDist + '/js']);
 });
 
-gulp.task('js', ['js:clean'], function () {
+gulp.task('js', gulp.series('js:clean', function () {
 
     const modulesToOptimize = [
         staticPathSrc + '/js/**/rv-bootstrap.js',
@@ -87,7 +87,7 @@ gulp.task('js', ['js:clean'], function () {
         .pipe(requirejsOptimize(config))
         .pipe(gulpif(isSandbox, sourcemaps.write('.')))
         .pipe(gulp.dest(staticPathDist + '/js'));
-});
+}));
 
 // ------
 
@@ -95,7 +95,7 @@ gulp.task('sass:clean', function() {
     return del([staticPathDist + '/css']);
 });
 
-gulp.task('sass', ['sass:clean'], function() {
+gulp.task('sass', gulp.series('sass:clean', function() {
     return gulp.src(staticPathSrc + sassMatch)
         .pipe(gulpif(isSandbox, sourcemaps.init()))
         .pipe(sass({
@@ -108,7 +108,7 @@ gulp.task('sass', ['sass:clean'], function() {
         }))
         .pipe(gulpif(isSandbox, sourcemaps.write('.')))
         .pipe(gulp.dest(staticPathDist + '/css/'));
-});
+}));
 
 // ------
 
@@ -116,14 +116,14 @@ gulp.task('images:clean', function() {
     return del([staticPathDist + '/images']);
 });
 
-gulp.task('images', ['images:clean'], function() {
+gulp.task('images', gulp.series('images:clean', function() {
     return gulp.src(staticPathSrc + '/images/**/*')
         .pipe(gulp.dest(staticPathDist + '/images/'));
-});
+}));
 
 // ------
 
-gulp.task('rev', ['sass', 'images', 'js'], function() {
+gulp.task('rev', gulp.series('sass', 'images', 'js', function() {
     return gulp.src([staticPathDist + '/**/*', '!' + staticPathDist + '/**/rev-manifest.json'])
         .pipe(rev())
         .pipe(override())
@@ -131,7 +131,7 @@ gulp.task('rev', ['sass', 'images', 'js'], function() {
         .pipe(revdelOriginal()) // delete no-revised file
         .pipe(rev.manifest('rev-manifest.json'))
         .pipe(gulp.dest(staticPathDist));
-});
+}));
 
 /*
  * Entry tasks
@@ -143,16 +143,27 @@ gulp.task('watch',function() {
     throwError = false;
 
     gulp.watch(
-        [staticPathSrc + sassMatch, 'src/**/*.scss'],
-        ['sass']
-    );
+        [staticPathSrc + sassMatch, 'src/**/*.scss']
+    ).on('change', function() {
+        let series = gulp.series('watch');
+        series();
+    });
 
-    gulp.watch([staticPathSrc + imageMatch], ['images']);
-    gulp.watch([staticPathSrc + jsMatch], ['js']);
+    gulp.watch([staticPathSrc + imageMatch]).on('change', function() {
+        let series = gulp.series('images');
+        series();
+    });
+
+    gulp.watch(staticPathSrc + jsMatch).on('change', function() {
+        let series = gulp.series('js');
+        series();
+    });
 });
 
 gulp.task('default', function(cb){
     isSandbox = true;
-    runSequence(['sass', 'images', 'js']);
+    let series = gulp.series('sass', 'images', 'js');
+    series();
+    cb(); // This tells gulp the taks is finished
 });
-gulp.task('distribution', ['rev']);
+gulp.task('distribution', gulp.series('rev'));
