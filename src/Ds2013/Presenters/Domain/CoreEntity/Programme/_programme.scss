@@ -43,6 +43,18 @@ $programme-icon-bpw-box-size: gel-typography('bpw', 'delta', 'line-height') + 18
     }
 }
 
+.programme__img--container {
+    padding-bottom: 56.25%;
+
+    img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+
+    }
+}
+
 .programme__img--standalone-cta:not(.programme__img--available) {
     height: $programme-icon-basic-box-size;
     width: $programme-icon-basic-box-size;
@@ -207,6 +219,8 @@ $programme-icon-bpw-box-size: gel-typography('bpw', 'delta', 'line-height') + 18
     }
 
     .programme__img-box {
+        background: #cccccc;
+        background: rgba(204, 204, 204, 0.5);
         display: block;
         visibility: visible;
     }
