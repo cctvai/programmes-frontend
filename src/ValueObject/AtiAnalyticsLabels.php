@@ -3,7 +3,10 @@ declare (strict_types = 1);
 
 namespace App\ValueObject;
 
+use BBC\ProgrammesPagesService\Domain\Entity\Service;
+use BBC\ProgrammesPagesService\Domain\Entity\Network;
 use BBC\ProgrammesPagesService\Domain\Enumeration\NetworkMediumEnum;
+use BBC\ProgrammesPagesService\Domain\Entity\CoreEntity;
 
 class AtiAnalyticsLabels
 {
@@ -135,17 +138,25 @@ class AtiAnalyticsLabels
             'cbeebies_radio' => 'CBEEBIES',
         ];
 
-        $masterbrand = $this->context->getMasterbrand();
-
-        if (array_key_exists((string) $masterbrand->getMid(), $producersMap)) {
-            return $producersMap[(string) $masterbrand->getMid()];
+        $network = null;
+        $id = null;
+        if ($this->context instanceof Service) {
+            $network = $this->context->getNetwork();
+            $id = $this->context->getNetwork() ? (string) $this->context->getNetwork()->getNid() : null;
+        } elseif ($this->context instanceof CoreEntity) {
+            $network = $this->context->getNetwork();
+            $id = $this->context->getMasterBrand() ? (string) $this->context->getMasterBrand()->getMid() : null;
         }
 
-        if ($masterbrand->getNetwork()->getMedium() === NetworkMediumEnum::RADIO) {
+        if (array_key_exists($id, $producersMap)) {
+            return $producersMap[$id];
+        }
+
+        if ($network && $network->getMedium() === NetworkMediumEnum::RADIO) {
             return 'SOUNDS';
         }
 
-        if ($masterbrand->getNetwork()->getMedium() === NetworkMediumEnum::TV) {
+        if ($network && $network->getMedium() === NetworkMediumEnum::TV) {
             return 'IPLAYER';
         }
 
