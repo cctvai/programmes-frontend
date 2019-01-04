@@ -12,9 +12,9 @@
     </div>
 {% endif %}
 {% if programme_body.hasDisplayDate() %}
-    <div class="programme__service micro ">
-        <p>{{ programme_body.getDisplayDate() }}</p>
-    </div>
+    <p class="programme__service micro ">
+        {{ programme_body.getDisplayDate() }}
+    </p>
 {% endif %}
 
 {% if programme_body.getOption('show_synopsis') %}
