@@ -32,23 +32,12 @@
 
     <div id="clips-p{{ id }}-detail">
         <div class="island br-box-subtle">
-            {% if content_block.isInPrimaryColumn() %}
-                <h3 class="no-margin">
-                    <a href="{{ path('find_by_pid', {'pid': content_block.getClip().getPid()}) }}">
-                        {{ content_block.getClip().getTitle() }}
-                    </a>
-                </h3>
-
-                <p>{{ content_block.getClip().getShortSynopsis() }}</p>
-            {% else %}
-                <h3 class="programme__titles text-base delta">
-                    <span class="programme__title">
-                        <a href="{{ path('find_by_pid', {'pid': content_block.getClip().getPid()}) }}">
-                            {{ content_block.getClip().getTitle() }}
-                        </a>
-                    </span>
-                </h3>
-            {% endif %}
+            <h3 class="no-margin">
+                <a href="{{ path('find_by_pid', {'pid': content_block.getClip().getPid()}) }}">
+                    {{ content_block.getClip().getTitle() }}
+                </a>
+            </h3>
+            <p>{{ content_block.getClip().getShortSynopsis() }}</p>
         </div>
     </div>
 {% endblock %}
