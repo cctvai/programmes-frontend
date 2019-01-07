@@ -23,24 +23,21 @@ class GalleryController extends BaseController
         $siblingLimit = 4;
         $images = $imagesService->findByGroup($gallery);
         $image = $this->getFirstImage($imagePid, $images);
-        $showFirstImage = false;
-        if ($imagePid) {
-            $showFirstImage = true;
-        }
         $programme = $gallery->getParent();
         $brand = $programme->getTleo();
         $network = $programme->getMasterBrand()->getNetwork()->getName();
         $galleries = $programmesAggregationService->findDescendantGalleries($brand, $siblingLimit);
+        $hasImageHighlighted = !empty($imagePid);
 
         return $this->renderWithChrome('find_by_pid/gallery.html.twig', [
             'gallery' => $gallery,
             'programme' => $programme,
             'image' => $image,
             'images' => $images,
-            'showFirstImage' => $showFirstImage,
             'network' => $network,
             'galleries' => $galleries,
             'brand' => $brand,
+            'hasImageHighlighted' => $hasImageHighlighted,
         ]);
     }
 

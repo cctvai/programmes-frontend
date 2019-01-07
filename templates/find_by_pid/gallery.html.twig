@@ -2,6 +2,27 @@
 
 {% block title %}{{ meta_context.titlePrefix() }}{% endblock %}
 
+{% block twitter_tags %}
+    {% if hasImageHighlighted %}
+        <meta name="twitter:card" content="photo" />
+        <meta name="twitter:description" content="{{ image.getShortSynopsis() }}" />
+        <meta name="twitter:image" content="{{ image.getUrl(560) }}">
+        <meta name="twitter:image:alt" content="{{ image.getShortSynopsis() }}" />
+    {% else %}
+        <meta name="twitter:card" content="gallery" />
+        <meta name="twitter:description" content="{{ gallery.getSynopses().getLongestSynopsis() }}" />
+        {% for index, image in images|slice(0, 4) %}
+            <meta name="twitter:image{{ index }}" content="{{ image.getUrl(560) }}" />
+        {% endfor %}
+    {% endif %}
+
+    {% if meta_context.canonicalUrl() %}
+        <meta name="twitter:url" content="{{ meta_context.canonicalUrl() }}">
+    {% endif %}
+
+    <meta name="twitter:title" content="{{ meta_context.titlePrefix() }}" />
+{% endblock %}
+
 {% block page_classes %}programmes-page text-base programmes-page--flush prog-layout{% endblock %}
 
 {%- block body -%}
@@ -12,9 +33,9 @@
                 }) }} </span>{{ gallery.getTitle() }}</h1>
         <p class="delta">{{ gallery.getShortSynopsis() }}</p>
 
-        {{ ds2013('galleryDisplay', gallery, image, images, showFirstImage ,[]) }}
+        {{ ds2013('galleryDisplay', gallery, image, images, hasImageHighlighted ,[]) }}
     </div>
-    
+
     <div class="grid-wrapper grid-wrapper--center">
         <div class="grid 13/24@bpw2 13/24@bpe">          
             <div class="component component--box component--box-flushbody component--box--primary">
