@@ -77,6 +77,8 @@ $programme-icon-bpw-box-size: gel-typography('bpw', 'delta', 'line-height') + 18
 
 .programme__img-box {
     // Hidden by default
+    background: #cccccc;
+    background: rgba(204, 204, 204, 0.5);
     display: none;
     visibility: hidden;
 }
@@ -270,6 +272,7 @@ $programme-icon-bpw-box-size: gel-typography('bpw', 'delta', 'line-height') + 18
     .programme__time-remaining {
         margin: 4px 8px 0;
     }
+
 
 }
 
