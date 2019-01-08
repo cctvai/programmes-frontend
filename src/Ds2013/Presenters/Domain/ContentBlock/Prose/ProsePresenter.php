@@ -4,6 +4,7 @@ declare(strict_types = 1);
 namespace App\Ds2013\Presenters\Domain\ContentBlock\Prose;
 
 use App\Ds2013\Presenters\Domain\ContentBlock\ContentBlockPresenter;
+use App\DsShared\Helpers\FixIsiteMarkupHelper;
 use App\ExternalApi\Isite\Domain\ContentBlock\Prose;
 
 class ProsePresenter extends ContentBlockPresenter
@@ -11,8 +12,20 @@ class ProsePresenter extends ContentBlockPresenter
     /** @var Prose */
     protected $block;
 
-    public function __construct(Prose $proseBlock, bool $inPrimaryColumn, bool $isPrimaryColumnFullWith, array $options = [])
-    {
+    /** @var FixIsiteMarkupHelper */
+    private $fixIsiteMarkupHelper;
+
+    /** @var string[]|null */
+    private $paragraphs;
+
+    public function __construct(
+        Prose $proseBlock,
+        bool $inPrimaryColumn,
+        bool $isPrimaryColumnFullWith,
+        FixIsiteMarkupHelper $fixMarkupHelper,
+        array $options = []
+    ) {
+        $this->fixIsiteMarkupHelper = $fixMarkupHelper;
         parent::__construct($proseBlock, $inPrimaryColumn, $isPrimaryColumnFullWith, $options);
     }
 
@@ -22,16 +35,10 @@ class ProsePresenter extends ContentBlockPresenter
      */
     public function getParagraphs(): array
     {
-        $paragraphs = [];
-        $rawParagraphs = explode('</p>', $this->block->getProse());
-        foreach ($rawParagraphs as $paragraph) {
-            $paragraph = $this->cleanupText($paragraph);
-            if (!empty($paragraph) && strlen($paragraph) > 5) { // paragraphs shorter than 5 characters are spacing characters
-                $paragraph = $this->fixMarkup($paragraph);
-                $paragraphs[] = $paragraph;
-            }
+        if (is_null($this->paragraphs)) {
+            $this->paragraphs = $this->fixIsiteMarkupHelper->getParagraphs($this->block->getProse());
         }
-        return $paragraphs;
+        return $this->paragraphs;
     }
 
     /**
@@ -64,35 +71,5 @@ class ProsePresenter extends ContentBlockPresenter
         // of there is more than 1 paragraphs, remove the header paragraphs
         array_shift($paragraphs);
         return $paragraphs;
-    }
-
-    /**
-     * Fix the markup so it's valid and semantic (Same as v2)
-     *
-     * @param string $paragraph
-     * @return string
-     */
-    private function fixMarkup(string $paragraph): string
-    {
-        $paragraph = str_replace('shape="rect"', '', $paragraph); // for some reason iSite does this on links
-        $paragraph = str_replace('<ul>', '</p><ul>', $paragraph);
-        $paragraph = str_replace('<ol>', '</p><ol>', $paragraph);
-        $paragraph = str_replace('</ul>', '</ul><p>', $paragraph);
-        $paragraph = str_replace('</ol>', '</ol><p>', $paragraph);
-        $paragraph = preg_replace("/^<\/p>/", '', $paragraph);
-        $paragraph = preg_replace("/<p>$/", '', $paragraph);
-        $paragraph = '<p>' . $paragraph . '</p>';
-        $paragraph = preg_replace("/^<p><(ul|ol|h2|h3|h4|h5|h6|p)>/", "<$1>", $paragraph);
-        $paragraph = preg_replace("/<(\/ul|\/ol|\/h2|\/h3|\/h4|\/h5|\/h6|\/p)><\/p>$/", '<$1>', $paragraph);
-        $paragraph = trim($paragraph);
-        return $paragraph;
-    }
-
-    private function cleanupText($content): string
-    {
-        $content = strip_tags($content, '<a><ul><ol><li><strong><em><h2><h3><h4><h5><h6><p><br>');
-        $content = str_replace('&nbsp;', ' ', $content); // spaces shouldn't be none-breaking spaces
-        $content = trim($content);
-        return $content;
     }
 }

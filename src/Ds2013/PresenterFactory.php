@@ -286,7 +286,7 @@ class PresenterFactory
         array $options = []
     ): Presenter {
         if ($contentBlock instanceof Faq) {
-            return new FaqPresenter($contentBlock, $inPrimaryColumn, $isPrimaryColumnFullWith, $options);
+            return new FaqPresenter($contentBlock, $inPrimaryColumn, $isPrimaryColumnFullWith, $this->helperFactory->getFixIsiteMarkupHelper(), $options);
         }
         if ($contentBlock instanceof Galleries) {
             return new GalleriesPresenter($contentBlock, $inPrimaryColumn, $isPrimaryColumnFullWith, $options);
@@ -304,7 +304,7 @@ class PresenterFactory
             return new PromotionsPresenter($contentBlock, $inPrimaryColumn, $isPrimaryColumnFullWith, $options);
         }
         if ($contentBlock instanceof Prose) {
-            return new ProsePresenter($contentBlock, $inPrimaryColumn, $isPrimaryColumnFullWith, $options);
+            return new ProsePresenter($contentBlock, $inPrimaryColumn, $isPrimaryColumnFullWith, $this->helperFactory->getFixIsiteMarkupHelper(), $options);
         }
         if ($contentBlock instanceof Quiz) {
             return new QuizPresenter($contentBlock, $inPrimaryColumn, $isPrimaryColumnFullWith, $options);

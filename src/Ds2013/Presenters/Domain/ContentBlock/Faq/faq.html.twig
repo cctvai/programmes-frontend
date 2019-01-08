@@ -4,7 +4,7 @@
     {% if content_block.getBlock().getIntro() %}
         <p>{{ content_block.getBlock().getIntro() }}</p>
     {% endif %}
-    {% for key, question in content_block.getBlock().getQuestions() %}
+    {% for key, question in content_block.getQuestions() %}
         {% set id = 'faq-' ~ random() ~ '-' ~ key %}
         <div class="component ml">
             <input class="ml__status" type="checkbox" id="{{ id }}" checked>

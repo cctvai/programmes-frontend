@@ -33,6 +33,11 @@ class HelperFactory
         return $this->getHelper(BroadcastNetworksHelper::class, $this->translateProvider);
     }
 
+    public function getFixIsiteMarkupHelper()
+    {
+        return $this->getHelper(FixIsiteMarkupHelper::class);
+    }
+
     public function getGuidanceWarningHelper(): GuidanceWarningHelper
     {
         return $this->getHelper(GuidanceWarningHelper::class);
