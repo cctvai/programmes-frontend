@@ -6,6 +6,7 @@ use App\ValueObject\AnalyticsCounterName;
 use BBC\ProgrammesPagesService\Domain\ApplicationTime;
 use BBC\ProgrammesPagesService\Domain\Entity\Brand;
 use BBC\ProgrammesPagesService\Domain\Entity\Episode;
+use BBC\ProgrammesPagesService\Domain\Entity\Gallery;
 use BBC\ProgrammesPagesService\Domain\Entity\Network;
 use BBC\ProgrammesPagesService\Domain\Entity\Series;
 use BBC\ProgrammesPagesService\Domain\Entity\Service;
@@ -228,6 +229,25 @@ class AnalyticsCounterNameTest extends TestCase
         $analyticsCounterName = new AnalyticsCounterName($programmeContext, '/programmes/b00744pm');
 
         $this->assertEquals('programmes.the_planets.destiny.episode.b00744pm.page', (string) $analyticsCounterName);
+    }
+
+    public function testCounterNameValueIsBuiltProperlyWhenContextTypeIsGroupAndHasParents()
+    {
+        $programmeContext = $this->createConfiguredMock(Gallery::class, [
+            'getType' => 'gallery',
+            'getPid' => new Pid('m0000002'),
+            'getTitle' => 'Some Gallery',
+            'getParent' => $this->createConfiguredMock(Series::class, [
+                'getType' => 'series',
+                'getPid' => new Pid('b00xyv72'), // the planets
+                'getTitle' => 'the_planets',
+                'getParent' => null,
+            ]),
+        ]);
+
+        $analyticsCounterName = new AnalyticsCounterName($programmeContext, '/programmes/m0000002');
+
+        $this->assertEquals('programmes.some_gallery.gallery.m0000002.page', (string) $analyticsCounterName);
     }
 
     public function testCounterNameValueIsBuiltProperlyForArticle()

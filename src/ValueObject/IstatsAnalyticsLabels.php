@@ -5,6 +5,7 @@ namespace App\ValueObject;
 
 use BBC\ProgrammesPagesService\Domain\Entity\CoreEntity;
 use BBC\ProgrammesPagesService\Domain\Entity\Episode;
+use BBC\ProgrammesPagesService\Domain\Entity\Group;
 use BBC\ProgrammesPagesService\Domain\Entity\Programme;
 use BBC\ProgrammesPagesService\Domain\Entity\ProgrammeContainer;
 use BBC\ProgrammesPagesService\Domain\Entity\ProgrammeItem;
@@ -72,6 +73,10 @@ class IstatsAnalyticsLabels
 
     private function setProgrammeLabels($context): void
     {
+        if ($context instanceof Group && $context->getParent()) {
+            // For groups we use the parent programme to set these values
+            $context = $context->getParent();
+        }
         if ($context instanceof Programme) {
             $this->labels['programme_title'] = $this->getConcatenatedAncestryTitles($context);
             $this->labels['brand_title'] = $context->getTleo()->getTitle();

@@ -2,16 +2,21 @@
 declare(strict_types = 1);
 namespace Tests\App\ValueObject;
 
+use App\Builders\GalleryBuilder;
+use App\Builders\MasterBrandBuilder;
 use App\ValueObject\IstatsAnalyticsLabels;
 use BBC\ProgrammesPagesService\Domain\Entity\Brand;
+use BBC\ProgrammesPagesService\Domain\Entity\Gallery;
 use BBC\ProgrammesPagesService\Domain\Entity\Genre;
 use BBC\ProgrammesPagesService\Domain\Entity\MasterBrand;
 use BBC\ProgrammesPagesService\Domain\Entity\Network;
 use BBC\ProgrammesPagesService\Domain\Entity\Options;
 use BBC\ProgrammesPagesService\Domain\Entity\Service;
+use BBC\ProgrammesPagesService\Domain\Enumeration\NetworkMediumEnum;
 use BBC\ProgrammesPagesService\Domain\ValueObject\Mid;
 use BBC\ProgrammesPagesService\Domain\ValueObject\Nid;
 use BBC\ProgrammesPagesService\Domain\ValueObject\Pid;
+use BBC\ProgrammesPagesService\Domain\ValueObject\Synopses;
 use PHPUnit\Framework\TestCase;
 
 class IstatsAnalyticsLabelsTest extends TestCase
@@ -47,6 +52,32 @@ class IstatsAnalyticsLabelsTest extends TestCase
             'prod_name' => 'programmes',
             'rec_app_id' => 'programmes',
             'progs_page_type' => 'App\Controller\FindByPid\TlecController',
+            'app_version' => '123',
+            'rec_v' => '2',
+            'bbc_site' => 'tvandiplayer',
+            'event_master_brand' => 'bbc_one',
+            'programme_title' => 'Doctor Who',
+            'brand_title' => 'Doctor Who',
+            'pips_genre_group_ids' => 'C00035',
+            'brand_id' => 'b006q2x0',
+            'rec_p' => 'null_null_2',
+            'container_is' => 'brand',
+            'is_tleo' => 'true',
+            'accept_language' => '',
+        ];
+        $this->assertEquals($expectedLabels, $labels);
+    }
+
+    public function testGallery()
+    {
+        $brand = $this->brandFactory('b006q2x0', 'Doctor Who', 'bbc_one', 'bbc_one', 'tv', 'C00035');
+        $context = $this->galleryFactory('b0000001', 'Some Gallery', 'bbc_one', 'bbc_one', NetworkMediumEnum::TV, $brand);
+        $labels = $this->getAnalyticsLabels($context, 'App\Controller\FindByPid\GalleryController', '123');
+        $expectedLabels = [
+            'app_name' => 'programmes',
+            'prod_name' => 'programmes',
+            'rec_app_id' => 'programmes',
+            'progs_page_type' => 'App\Controller\FindByPid\GalleryController',
             'app_version' => '123',
             'rec_v' => '2',
             'bbc_site' => 'tvandiplayer',
@@ -156,6 +187,21 @@ class IstatsAnalyticsLabelsTest extends TestCase
         );
 
         return $brand;
+    }
+
+    private function galleryFactory($pid, $title, $mid, $nid, $medium, $parent)
+    {
+        $masterBrand = MasterBrandBuilder::any()->with([
+            'mid' => new Mid($mid),
+            'network' => $this->networkFactory($nid, $medium),
+        ])->build();
+        $gallery = GalleryBuilder::any()->with([
+            'pid' => new Pid($pid),
+            'title' => $title,
+            'parent' => $parent,
+            'masterBrand' => $masterBrand,
+        ])->build();
+        return $gallery;
     }
 
     private function networkFactory(string $nid, string $medium = '')

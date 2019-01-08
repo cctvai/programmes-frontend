@@ -3,6 +3,7 @@ declare(strict_types = 1);
 
 namespace App\ValueObject;
 
+use BBC\ProgrammesPagesService\Domain\Entity\CoreEntity;
 use BBC\ProgrammesPagesService\Domain\Entity\Programme;
 use BBC\ProgrammesPagesService\Domain\Entity\Service;
 use InvalidArgumentException;
@@ -24,8 +25,8 @@ class AnalyticsCounterName
 
         if ($context instanceof Service) {
             $this->counterName .= $this->getServiceCounterNamePart($context, $relativePath);
-        } elseif ($context instanceof Programme) {
-            $this->counterName .= $this->getProgrammeCounterNamePart($context, $relativePath);
+        } elseif ($context instanceof CoreEntity) {
+            $this->counterName .= $this->getCoreEntityCounterNamePart($context, $relativePath);
         } else {
             $this->counterName .= $this->getDefaultCounterNamePart($relativePath);
         }
@@ -88,9 +89,15 @@ class AnalyticsCounterName
      * @see \Tests\App\ValueObject\AnalyticsCounterNameTest::testCounterNameValueIsBuiltProperlyWhenContextTypeIsProgramme
      * @see \Tests\App\ValueObject\AnalyticsCounterNameTest::testCounterNameValueIsBuiltProperlyWhenContextTypeIsProgrammeAndHasParents
      */
-    private function getProgrammeCounterNamePart(Programme $context, string $relativePath): string
+    private function getCoreEntityCounterNamePart(CoreEntity $context, string $relativePath): string
     {
-        $partialString = $this->getParentTitlesRecursively($context);
+        $partialString = '';
+        if ($context instanceof Programme) {
+            $partialString = $this->getParentTitlesRecursively($context);
+        } else {
+            $partialString = '.' . $this->replaceDisallowedCharacters($context->getTitle());
+        }
+
         $partialString .= '.' . $context->getType();
         $partialString .= '.' . $context->getPid();
 
@@ -105,7 +112,7 @@ class AnalyticsCounterName
     /**
      * This function uses recursion to climb up the parents tree and return a concatenation of the titles
      */
-    private function getParentTitlesRecursively($context): string
+    private function getParentTitlesRecursively(?CoreEntity $context): string
     {
         if (isset($context)) {
             // concatenate title with the parents titles
