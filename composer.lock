@@ -465,12 +465,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/bbc/programmes-pages-service.git",
-                "reference": "ab59921cdfd90103b81c224672c378bba95d3bba"
+                "reference": "69a03749bce8a07f3f6f2e8b2052351d424ddaec"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bbc/programmes-pages-service/zipball/ab59921cdfd90103b81c224672c378bba95d3bba",
-                "reference": "ab59921cdfd90103b81c224672c378bba95d3bba",
+                "url": "https://api.github.com/repos/bbc/programmes-pages-service/zipball/69a03749bce8a07f3f6f2e8b2052351d424ddaec",
+                "reference": "69a03749bce8a07f3f6f2e8b2052351d424ddaec",
                 "shasum": ""
             },
             "require": {
@@ -513,7 +513,7 @@
                 "source": "https://github.com/bbc/programmes-pages-service/tree/master",
                 "issues": "https://github.com/bbc/programmes-pages-service/issues"
             },
-            "time": "2018-11-22T15:55:47+00:00"
+            "time": "2019-01-08T13:55:21+00:00"
         },
         {
             "name": "behat/transliterator",
@@ -1593,12 +1593,12 @@
             "version": "v2.6.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/doctrine/doctrine2.git",
+                "url": "https://github.com/doctrine/orm.git",
                 "reference": "87ee409783a4a322b5597ebaae558661404055a7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/doctrine2/zipball/87ee409783a4a322b5597ebaae558661404055a7",
+                "url": "https://api.github.com/repos/doctrine/orm/zipball/87ee409783a4a322b5597ebaae558661404055a7",
                 "reference": "87ee409783a4a322b5597ebaae558661404055a7",
                 "shasum": ""
             },

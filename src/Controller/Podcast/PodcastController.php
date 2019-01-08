@@ -51,7 +51,7 @@ class PodcastController extends BaseController
         if ($coreEntity instanceof Collection) {
             $programme = $coreEntity->getParent();
             $downloadableVersions = $versionsService->findDownloadableForGroupsDescendantEpisodes($coreEntity, $limit, $page);
-            $downloadableEpisodesCount = $versionsService->countDownloadableForProgrammesDescendantEpisodes($coreEntity);
+            $downloadableEpisodesCount = $versionsService->countDownloadableForGroupsDescendantEpisodes($coreEntity);
         } else {
             $programme = $coreEntity;
             $downloadableVersions = $versionsService->findDownloadableForProgrammesDescendantEpisodes($coreEntity, $limit, $page);
