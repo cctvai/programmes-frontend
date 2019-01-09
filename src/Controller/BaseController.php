@@ -19,6 +19,7 @@ use BBC\BrandingClient\BrandingException;
 use BBC\BrandingClient\OrbitClient;
 use BBC\ProgrammesPagesService\Domain\ApplicationTime;
 use BBC\ProgrammesPagesService\Domain\Entity\CoreEntity;
+use BBC\ProgrammesPagesService\Domain\Entity\Image;
 use BBC\ProgrammesPagesService\Domain\Entity\Network;
 use BBC\ProgrammesPagesService\Domain\Entity\Service;
 use Exception;
@@ -67,7 +68,11 @@ abstract class BaseController extends AbstractController
     /** @var bool */
     protected $metaNoIndex;
 
+    /** @var ?string */
     protected $overridenDescription;
+
+    /** @var ?Image */
+    protected $overridenImage;
 
     public static function getSubscribedServices()
     {
@@ -267,7 +272,13 @@ abstract class BaseController extends AbstractController
 
     protected function createMetaContextFromContext(): MetaContext
     {
-        return new MetaContext($this->context, $this->getCanonicalUrl(), $this->getMetaNoIndex(), $this->overridenDescription);
+        return new MetaContext(
+            $this->context,
+            $this->getCanonicalUrl(),
+            $this->getMetaNoIndex(),
+            $this->overridenDescription,
+            $this->overridenImage
+        );
     }
 
     protected function createAnalyticsCounterNameFromContext(): AnalyticsCounterName

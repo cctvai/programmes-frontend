@@ -38,8 +38,13 @@ class MetaContext
     /** @var  bool */
     private $metaNoIndex;
 
-    public function __construct($context = null, string $canonicalUrl = '', bool $metaNoIndex = false, $overriddenDescription = null)
-    {
+    public function __construct(
+        $context = null,
+        string $canonicalUrl = '',
+        bool $metaNoIndex = false,
+        ?string $overriddenDescription = null,
+        ?Image $overridenImage = null
+    ) {
         $this->canonicalUrl = $canonicalUrl;
         $this->context = $context;
         $this->metaNoIndex = $metaNoIndex;
@@ -62,6 +67,9 @@ class MetaContext
             }
         }
 
+        if ($overridenImage) {
+            $this->image = $overridenImage;
+        }
         if ($this->image === null) {
             $this->image = new Image(
                 new Pid('p01tqv8z'),
@@ -72,6 +80,7 @@ class MetaContext
                 'png'
             );
         }
+
         if ($overriddenDescription) {
             $this->description = $overriddenDescription;
         }

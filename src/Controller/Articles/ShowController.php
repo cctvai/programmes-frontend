@@ -3,7 +3,7 @@ declare(strict_types = 1);
 
 namespace App\Controller\Articles;
 
-use App\Controller\BaseController;
+use App\Controller\BaseIsiteController;
 use App\Controller\Helpers\IsiteKeyHelper;
 use App\Ds2013\Presenters\Utilities\Paginator\PaginatorPresenter;
 use App\ExternalApi\Isite\Domain\Article;
@@ -14,10 +14,16 @@ use BBC\ProgrammesPagesService\Service\CoreEntitiesService;
 use App\Exception\HasContactFormException;
 use Symfony\Component\HttpFoundation\Request;
 
-class ShowController extends BaseController
+class ShowController extends BaseIsiteController
 {
-    public function __invoke(string $key, string $slug, Request $request, ArticleService $isiteService, IsiteKeyHelper $isiteKeyHelper, CoreEntitiesService $coreEntitiesService)
-    {
+    public function __invoke(
+        string $key,
+        string $slug,
+        Request $request,
+        ArticleService $isiteService,
+        IsiteKeyHelper $isiteKeyHelper,
+        CoreEntitiesService $coreEntitiesService
+    ) {
         $this->setIstatsProgsPageType('article_show');
         $preview = false;
         if ($request->query->has('preview') && $request->query->get('preview')) {
@@ -69,6 +75,7 @@ class ShowController extends BaseController
                 throw $this->createNotFoundException('Project space Article-Programme not matching');
             }
         }
+        $this->overrideMetaTagsValues($article);
         $this->setContext($context);
 
         if ('' !== $article->getBrandingId()) {
