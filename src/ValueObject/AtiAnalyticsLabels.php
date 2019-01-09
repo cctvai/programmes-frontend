@@ -19,33 +19,33 @@ class AtiAnalyticsLabels
     /** @var string */
     private $appEnvironment;
 
-    /** @var array  */
+    /** @var array */
     private $extraLabels;
 
-    public function __construct($context, string $progsPageType, array $extraLabels, string $environment)
+    /** @var string */
+    private $contentId;
+
+    public function __construct($context, string $progsPageType, CosmosInfo $cosmosInfo, array $extraLabels, string $contentId = null)
     {
         $this->context = $context;
         $this->pageType = $progsPageType;
-        $this->appEnvironment = $environment;
+        $this->appEnvironment = $cosmosInfo->getAppEnvironment();
         $this->extraLabels = $extraLabels;
+        $this->contentId = $contentId;
     }
 
     public function orbLabels()
     {
 
-        // TODO: This contentID needs to not be based on pips if it's an article or profile - that should be iSite and use GUID
-        // If it's on pips, it should have the pips authority and the pid as the identifier
-        // Seperate ticket incoming for that.
-        $contentId = 'urn:bbc:<authority>:<identifier>';
-
         $labels = [
             'destination' => $this->getDestination(),
             'producer' => $this->calculateProducerVariable(),
-            'contentId' => $contentId,
             'contentType' => $this->pageType,
+            'contentId' => $this->contentId,
         ];
 
         $labels = array_merge($labels, $this->extraLabels);
+
         return $labels;
     }
 

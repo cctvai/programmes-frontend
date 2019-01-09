@@ -55,6 +55,8 @@ abstract class BaseController extends AbstractController
 
     private $atistatsExtraLabels = [];
 
+    private $atiContentId = "bbc:urn:pips";
+
     private $istatsProgsPageType;
 
     private $isInternational = false;
@@ -225,8 +227,9 @@ abstract class BaseController extends AbstractController
             $atiAnalyticsLabelsValues = new AtiAnalyticsLabels(
                 $this->context,
                 $this->istatsProgsPageType,
+                $cosmosInfo,
                 $this->atistatsExtraLabels,
-                $cosmosInfo->getAppEnvironment()
+                $this->atiContentId
             );
             $atiAnalyticsLabelsValues = $atiAnalyticsLabelsValues->orbLabels();
         }
@@ -332,7 +335,15 @@ abstract class BaseController extends AbstractController
 
     protected function addAtiStatsExtraLabels(array $labels): void
     {
-        $this->atistatsExtraLabels =  array_replace($this->atistatsExtraLabels, $labels);
+        $this->atistatsExtraLabels = array_replace($this->atistatsExtraLabels, $labels);
+    }
+
+    protected function setAtiContentId(?string $identifier, string $authority = 'pips'): void
+    {
+        if ($identifier) {
+            $identifier = ':' . $identifier;
+        }
+        $this->atiContentId = 'urn:bbc:' . $authority . $identifier;
     }
 
     protected function setIstatsProgsPageType(string $label): void

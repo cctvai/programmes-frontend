@@ -16,6 +16,7 @@ class IndexController extends BaseController
     {
         $this->setIstatsProgsPageType('profiles_list');
         $this->setContextAndPreloadBranding($coreEntity);
+        $this->setAtiContentId((string) $coreEntity->getPid(), 'pips');
 
         /** @var Profile[] $profiles */
         $profiles = [];

@@ -17,6 +17,7 @@ class IndexController extends BaseController
     {
         $this->setIstatsProgsPageType('article_listpid');
         $this->setContextAndPreloadBranding($coreEntity);
+        $this->setAtiContentId((string) $coreEntity->getPid(), 'pips');
 
         $articles = [];
         $parameters = ['coreEntity' => $coreEntity, 'articles' => $articles, 'paginatorPresenter' => null];
