@@ -149,17 +149,17 @@ class TranslateAndTimeExtensionTest extends TestCase
         return [
             'year' => [
                 new PartialDate(2018),
-                ['dd MMMM Y', 'MMMM Y', 'Y'],
+                ['dd MMMM y', 'MMMM y', 'y'],
                 '<time datetime="2018">2018</time>',
             ],
             'year_and_month' => [
                 new PartialDate(2018, 11),
-                ['dd MMMM Y', 'MMMM Y', 'Y'],
+                ['dd MMMM y', 'MMMM y', 'y'],
                 '<time datetime="2018-11">November 2018</time>',
             ],
             'full_date' => [
                 new PartialDate(2018, 11, 16),
-                ['dd MMMM Y', 'MMMM Y', 'Y'],
+                ['dd MMMM y', 'MMMM y', 'y'],
                 '<time datetime="2018-11-16">16 November 2018</time>',
             ],
         ];
