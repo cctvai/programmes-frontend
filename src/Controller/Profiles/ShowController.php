@@ -3,20 +3,18 @@ declare(strict_types = 1);
 
 namespace App\Controller\Profiles;
 
-use App\Controller\BaseController;
+use App\Controller\BaseIsiteController;
 use App\Controller\Helpers\IsiteKeyHelper;
 use App\Ds2013\Presenters\Utilities\Paginator\PaginatorPresenter;
 use App\ExternalApi\Isite\Domain\Profile;
 use App\ExternalApi\Isite\IsiteResult;
 use App\ExternalApi\Isite\Service\ProfileService;
 use BBC\ProgrammesPagesService\Domain\Entity\Group;
-use BBC\ProgrammesPagesService\Domain\ValueObject\Pid;
 use BBC\ProgrammesPagesService\Service\CoreEntitiesService;
 use GuzzleHttp\Promise\FulfilledPromise;
 use Symfony\Component\HttpFoundation\Request;
-use InvalidArgumentException;
 
-class ShowController extends BaseController
+class ShowController extends BaseIsiteController
 {
     private const MAX_LIST_DISPLAYED_ITEMS = 48;
 
@@ -71,6 +69,7 @@ class ShowController extends BaseController
                 throw $this->createNotFoundException('Project space Profile-Programme not matching');
             }
         }
+        $this->overrideMetaTagsValues($profile);
         $this->setContext($context);
         $this->setAtiContentId($guid, 'isite2');
 
