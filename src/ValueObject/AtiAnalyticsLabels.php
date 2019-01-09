@@ -55,7 +55,7 @@ class AtiAnalyticsLabels
 
         if (method_exists($this->context, 'getNetwork') && $this->context->getNetwork()
             && (
-                in_array((string) $this->context->getNetwork()->getNid(), ['bbc_world_service', 'bbc_world_service_tv', 'bbc_learning_english', 'bbc_world_news'])
+                in_array((string) $this->context->getNetwork()->getNid(), ['bbc_world_service', 'bbc_world_service_tv', 'bbc_learning_english'])
                 || $this->context->getNetwork()->isWorldServiceInternational()
             )
         ) {
@@ -65,7 +65,7 @@ class AtiAnalyticsLabels
 //        if (in_array($this->appEnvironment, ['int', 'stage', 'sandbox', 'test'])) {
             $destination .= '_test';
 //        }
-
+        
         return $destination;
     }
 
