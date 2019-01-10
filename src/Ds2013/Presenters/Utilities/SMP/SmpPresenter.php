@@ -119,7 +119,7 @@ class SmpPresenter extends Presenter
                     ],
                 ],
                 'playlistObject' => $smpPlaylist,
-                'externalEmbedUrl' => $this->router->generate('programme_player', ['pid' => (string) $this->programmeItem->getPid()]),
+                'externalEmbedUrl' => $this->router->generate('programme_player', ['pid' => (string) $this->programmeItem->getPid()], UrlGeneratorInterface::ABSOLUTE_URL),
             ],
             'markers' => $this->smpPlaylistHelper->getMarkers($this->segmentEvents, $this->programmeItem),
         ];
