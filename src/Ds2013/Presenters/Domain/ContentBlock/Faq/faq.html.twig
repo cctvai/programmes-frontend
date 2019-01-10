@@ -12,7 +12,7 @@
                 <label class="ml__button ml__button--faq br-pseudolink" for="{{ id }}"><span class="dropdown-symbol">{{ gelicon('core', 'next', 'gelicon--delta dropdown-icon') }}</span> {{ question['question'] }}</label>
             </h3>
             <div class="ml__hidden" id="{{ id }}-answer">
-                <div class="text--prose ml__button--faq__answer">{{ question['answer']|raw }}</div>
+                <div class="text--prose ml__button--faq__answer text-break">{{ question['answer']|raw }}</div>
             </div>
         </div>
     {% endfor %}
