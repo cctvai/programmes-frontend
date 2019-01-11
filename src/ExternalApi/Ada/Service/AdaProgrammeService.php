@@ -130,8 +130,13 @@ class AdaProgrammeService
         // Collect all the Programmes objects from the Programmes service using the pids array
         $programmeItems = $this->programmesService->findByPids($pids);
         $relatedProgrammes = [];
-        foreach ($uniqueProgrammes as $key => $item) {
-            $relatedProgrammes[] = $this->mapper->mapItem($programmeItems[$key], $item);
+        // in some cases $uniqueProgrammes may contain programmes non existing in $programmeItems so we have to filter them
+        foreach ($uniqueProgrammes as $item) {
+            foreach ($programmeItems as $programmeItem) {
+                if ((string) $programmeItem->getPid() === $item['pid']) {
+                    $relatedProgrammes[] = $this->mapper->mapItem($programmeItem, $item);
+                }
+            }
         }
         return $relatedProgrammes;
     }

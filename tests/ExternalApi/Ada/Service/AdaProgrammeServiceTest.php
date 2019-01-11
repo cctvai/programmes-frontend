@@ -88,7 +88,7 @@ class AdaProgrammeServiceTest extends BaseServiceTestCase
         $programmesService->expects($this->once())
             ->method('findByPids')
             ->with([new Pid('b007rlb6'), new Pid('b007rlb4')])
-            ->willReturn([$this->createMock(Programme::class), $this->createMock(Programme::class)]);
+            ->willReturn([$this->mockProgramme('b007rlb6'), $this->mockProgramme('b007rlb6')]);
 
         $service = $this->service($this->client([$firstResponse, $secondResponse, $thirdResponse]), $programmesService, $mapper);
 
@@ -133,7 +133,7 @@ class AdaProgrammeServiceTest extends BaseServiceTestCase
         $programmesService->expects($this->once())
             ->method('findByPids')
             ->with([new Pid('b007rlb6'), new Pid('b007rlb5'), new Pid('b007rlb4')])
-            ->willReturn([$this->createMock(Programme::class), $this->createMock(Programme::class), $this->createMock(Programme::class)]);
+            ->willReturn([$this->mockProgramme('b007rlb6'), $this->mockProgramme('b007rlb5'), $this->mockProgramme('b007rlb4')]);
 
         $service = $this->service($this->client([$firstResponse, $secondResponse, $thirdResponse]), $programmesService, $mapper);
 
@@ -256,7 +256,7 @@ class AdaProgrammeServiceTest extends BaseServiceTestCase
         $programmesService->expects($this->once())
             ->method('findByPids')
             ->with([new Pid('b007rlb6'), new Pid('b007rlb5'), new Pid('b007rlb7')])
-            ->willReturn([$this->createMock(Programme::class), $this->createMock(Programme::class), $this->createMock(Programme::class)]);
+            ->willReturn([$this->mockProgramme('b007rlb6'), $this->mockProgramme('b007rlb5'), $this->mockProgramme('b007rlb7')]);
 
         $service = $this->service($this->client([$firstResponse, $secondResponse, $thirdResponse]), $programmesService, $mapper);
 
@@ -295,11 +295,11 @@ class AdaProgrammeServiceTest extends BaseServiceTestCase
         );
     }
 
-    private function mockProgramme(): Programme
+    private function mockProgramme($pid = 'b0000001'): Programme
     {
         $mockProgramme = $this->createMock(Programme::class);
         $mockProgramme->method('getTleo')->will($this->returnSelf());
-        $mockProgramme->method('getPid')->willReturn(new Pid('b0000001'));
+        $mockProgramme->method('getPid')->willReturn(new Pid($pid));
 
         return $mockProgramme;
     }
