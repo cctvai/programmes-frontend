@@ -48,7 +48,9 @@ abstract class IsiteService
             ->setContentId($guid)
             ->setDepth(1);
 
+        $cacheLifetime = CacheInterface::NORMAL;
         if ($preview) {
+            $cacheLifetime = CacheInterface::NONE;
             $guidQuery
                 ->setPreview(true)
                 ->setAllowNonLive(true);
@@ -62,7 +64,7 @@ abstract class IsiteService
             Closure::fromCallable([$this, 'parseResponse']),
             [],
             new IsiteResult(1, 1, 0, []),
-            CacheInterface::NORMAL,
+            $cacheLifetime,
             CacheInterface::NONE,
             [
                 'connect_timeout' => 10, // Raised from 5s default to ward against PROGRAMMES-6816, re-examine after that
