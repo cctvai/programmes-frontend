@@ -28,6 +28,8 @@ class ShowController extends BaseIsiteController
         $preview = false;
         if ($request->query->has('preview') && $request->query->get('preview')) {
             $preview = true;
+            $this->metaNoIndex = true;
+            $this->response()->headers->remove('X-Frame-Options');
         }
 
         if ($isiteKeyHelper->isKeyAGuid($key)) {
