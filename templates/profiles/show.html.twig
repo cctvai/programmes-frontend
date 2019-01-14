@@ -12,6 +12,7 @@
     </div>
     {% if profile.getParents() %}
         {% for parent in profile.getParents() %}
+            {% if parent.getChildren()|length > 1 %}
                 {% if maxSiblings > parent.getGroupSize() and parent.getGroupSize() is not null %}
                     {% set maxSiblings = parent.getGroupSize()%}
                 {% endif %}
@@ -45,6 +46,7 @@
                         </div>
                     </div>
                 </div>
+            {% endif %}
         {% endfor %}
     {% endif %}
 {% endblock %}
