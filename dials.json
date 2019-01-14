@@ -1,4 +1,5 @@
 {
     "//": "Keep this file updated with the defaults from cosmos/dials.json",
-    "ati-stats": "false"
+    "ati-stats": "false",
+    "ati-bucket": "test"
 }

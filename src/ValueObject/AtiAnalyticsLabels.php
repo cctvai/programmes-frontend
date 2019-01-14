@@ -3,6 +3,7 @@ declare (strict_types = 1);
 
 namespace App\ValueObject;
 
+use App\Cosmos\Dials;
 use BBC\ProgrammesPagesService\Domain\Entity\Service;
 use BBC\ProgrammesPagesService\Domain\Entity\Network;
 use BBC\ProgrammesPagesService\Domain\Enumeration\NetworkMediumEnum;
@@ -22,15 +23,19 @@ class AtiAnalyticsLabels
     /** @var array */
     private $extraLabels;
 
+    /** @var mixed */
+    private $dials;
+
     /** @var string */
     private $contentId;
 
-    public function __construct($context, string $progsPageType, CosmosInfo $cosmosInfo, array $extraLabels, string $contentId = null)
+    public function __construct($context, string $progsPageType, CosmosInfo $cosmosInfo, array $extraLabels, Dials $dials, string $contentId = null)
     {
         $this->context = $context;
         $this->pageType = $progsPageType;
         $this->appEnvironment = $cosmosInfo->getAppEnvironment();
         $this->extraLabels = $extraLabels;
+        $this->dials = $dials;
         $this->contentId = $contentId;
     }
 
@@ -63,9 +68,11 @@ class AtiAnalyticsLabels
         }
 
 //        if (in_array($this->appEnvironment, ['int', 'stage', 'sandbox', 'test'])) {
+        if ($this->dials->get('ati-bucket') === 'test') {
             $destination .= '_test';
+        }
 //        }
-        
+
         return $destination;
     }
 

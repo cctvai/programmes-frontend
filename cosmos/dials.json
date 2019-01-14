@@ -13,5 +13,20 @@
             }
         ],
         "description": "Choose whether to use ATI/Vulkan Stats"
+    },
+    {
+        "name": "ati-bucket",
+        "default-value": "test",
+        "values": [
+            {
+                "value": "test",
+                "description": "Programmes-Frontend will write stats to the ATI TEST bucket (Assuming ATI-Stats dial is true)"
+            },
+            {
+                "value": "live",
+                "description": "Programmes-Frontend will write stats to the ATI LIVE bucket (Assuming ATI-Stats dial is true) - DO NOT ENABLE BEFORE FEB"
+            }
+        ],
+        "description": "Choose whether to use the TEST or LIVE buckets for ATI Stats"
     }
 ]

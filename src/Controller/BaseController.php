@@ -234,6 +234,7 @@ abstract class BaseController extends AbstractController
                 $this->istatsProgsPageType,
                 $cosmosInfo,
                 $this->atistatsExtraLabels,
+                $this->container->get(Dials::class),
                 $this->atiContentId
             );
             $atiAnalyticsLabelsValues = $atiAnalyticsLabelsValues->orbLabels();
