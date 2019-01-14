@@ -121,7 +121,7 @@ class SchemaHelperTest extends TestCase
         $this->assertEquals([
             '@type' => 'BroadcastService',
             'broadcaster' => $this->broadcaster(),
-            'url' => 'https://www.bbc.co.uk/radio',
+            'url' => 'https://www.bbc.co.uk/sounds',
             'name' => 'BBC Sounds',
         ], $schema['publishedOn']);
     }

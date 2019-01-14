@@ -74,7 +74,7 @@ class CoreEntityTitlePresenterTest extends BaseTemplateTestCase
         );
 
         // Asserts
-        $this->assertEquals('http://localhost/radio/play/b09z67gw', $programmeBodyPresenter->getTitleLinkUrl());
+        $this->assertEquals('http://localhost/sounds/play/b09z67gw', $programmeBodyPresenter->getTitleLinkUrl());
     }
 
     public function testSubtitleIsNosDisplayedForAudioProgrammes()

@@ -95,7 +95,7 @@ class SchemaHelper
 
         if ($this->streamableHelper->shouldStreamViaPlayspace($episode)) {
             $name = 'BBC Sounds';
-            $urlBroadcastService = 'https://www.bbc.co.uk/radio';
+            $urlBroadcastService = 'https://www.bbc.co.uk/sounds';
         } elseif ($this->streamableHelper->shouldStreamViaIplayer($episode)) {
             $name = 'BBC iPlayer';
             $urlBroadcastService = 'https://www.bbc.co.uk/iplayer';

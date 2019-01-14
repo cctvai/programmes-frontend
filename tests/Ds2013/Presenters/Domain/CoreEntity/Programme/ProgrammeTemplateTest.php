@@ -112,7 +112,7 @@ class ProgrammeTemplateTest extends BaseTemplateTestCase
         $this->assertHasClasses('cta__overlay', $overlayDiv, 'Overlay container classes');
 
         $overlayLink = $overlayDiv->filterXPath('//a')->first();
-        $this->assertEquals('http://localhost/radio/play/b0849ccf', $overlayLink->attr('href'));
+        $this->assertEquals('http://localhost/sounds/play/b0849ccf', $overlayLink->attr('href'));
         $this->assertStringStartsWith('Listen now', $overlayLink->attr('title'));
         $this->assertEquals('programmeobjectlink=cta', $overlayLink->attr('data-linktrack'));
         // overlay link icon

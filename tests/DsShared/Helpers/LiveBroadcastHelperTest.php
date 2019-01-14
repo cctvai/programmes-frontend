@@ -30,7 +30,7 @@ class LiveBroadcastHelperTest extends TestCase
     {
         $routeCollectionBuilder = new RouteCollectionBuilder();
         $routeCollectionBuilder->add('/iplayer/live/{sid}', '', 'iplayer_live');
-        $routeCollectionBuilder->add('/radio/play/live:{sid}', '', 'playspace_live');
+        $routeCollectionBuilder->add('/sounds/play/live:{sid}', '', 'playspace_live');
         $routeCollectionBuilder->add('/news/av/world-africa-29144792/bbc-world-service-africa', '', 'worldservice_news_west_africa');
 
         $router = new UrlGenerator(
@@ -151,7 +151,7 @@ class LiveBroadcastHelperTest extends TestCase
         );
 
         $this->assertEquals(
-            'http://localhost/radio/play/live:bbc_radio_cornwall',
+            'http://localhost/sounds/play/live:bbc_radio_cornwall',
             $this->helper->simulcastUrl($collapsedBroadcast)
         );
     }
