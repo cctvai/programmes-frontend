@@ -42,6 +42,7 @@ class LiveBroadcastHelper
         'bbc_news24'                            => ['iplayer_live', ['sid' => 'bbcnews']],
         'bbc_parliament'                        => ['iplayer_live', ['sid' => 'bbcparliament']],
         'bbc_alba'                              => ['iplayer_live', ['sid' => 'bbcalba']],
+        'bbc_scotland'                          => ['iplayer_live', ['sid' => 'bbc_scotland']],
 
         'bbc_radio_one'                         => ['playspace_live', ['sid' => 'bbc_radio_one']],
         'bbc_radio_one_vintage'                 => ['playspace_live', ['sid' => 'bbc_radio_one_vintage']],

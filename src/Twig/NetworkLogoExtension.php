@@ -14,7 +14,7 @@ class NetworkLogoExtension extends Twig_Extension
             'bbc_parliament', 'bbc_radio_berkshire', 'bbc_radio_bristol',
             'bbc_radio_cambridge', 'bbc_radio_cornwall',
             'bbc_radio_coventry_warwickshire', 'bbc_radio_cumbria',
-            'bbc_radio_cymru', 'bbc_radio_cymru_2', 'bbc_radio_cymru_mwy', 'bbc_radio_derby', 'bbc_radio_devon',
+            'bbc_radio_cymru', 'bbc_radio_cymru_2', 'bbc_radio_cymru_mwy', 'bbc_scotland', 'bbc_radio_derby', 'bbc_radio_devon',
             'bbc_radio_essex', 'bbc_radio_five_live',
             'bbc_radio_five_live_olympics_extra',
             'bbc_radio_five_live_sports_extra', 'bbc_radio_four',
