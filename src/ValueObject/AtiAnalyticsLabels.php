@@ -47,6 +47,9 @@ class AtiAnalyticsLabels
             'producer' => $this->calculateProducerVariable(),
             'contentType' => $this->pageType,
             'contentId' => $this->contentId,
+            'additionalProperties' => [
+                ['name' => 'app_name', 'value' => 'programmes'],
+            ],
         ];
 
         $labels = array_merge($labels, $this->extraLabels);
