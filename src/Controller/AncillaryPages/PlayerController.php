@@ -66,7 +66,8 @@ class PlayerController extends BaseController
                 'streamable_version' => $linkedVersions['streamableVersion'],
                 'subtitle' => $subtitle,
                 'twitter_title' => $twitterTitle,
-            ]
+            ],
+            $this->response()
         );
     }
 }
