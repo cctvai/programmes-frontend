@@ -14,9 +14,13 @@ class ImagePresenter extends ContentBlockPresenter
     }
 
     /**
-     * @return string Return the right slot size for big screens (desktop)
+     * Get the image slot used for responsive images
+     * https://developer.mozilla.org/en-US/docs/Learn/HTML/Multimedia_and_embedding/Responsive_images
+     * Gel breakpoints defined under _variables.scss
+     *
+     * @return string Return the right slot size for Gel4
      */
-    public function getFullSizeImageSlot()
+    public function getGel4ImageSlot():string
     {
         if ($this->isPrimaryColumnFullWith()) {
             return '944px';
@@ -26,5 +30,20 @@ class ImagePresenter extends ContentBlockPresenter
         }
         // secondary column
         return '397px'; // max size it can reach
+    }
+
+    /**
+     * Get the image slot used for responsive images
+     * https://developer.mozilla.org/en-US/docs/Learn/HTML/Multimedia_and_embedding/Responsive_images
+     * Gel breakpoints defined under _variables.scss
+     *
+     * @return float Return the right slot size for Gel3b
+     */
+    public function getGel3bImageSlot():float
+    {
+        if ($this->isPrimaryColumnFullWith()) {
+            return 1;
+        }
+        return 1/2;
     }
 }
