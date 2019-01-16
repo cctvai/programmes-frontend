@@ -3,7 +3,7 @@
     <li>
         <div class="promotion block-link highlight-box--list-borderless br-keyline br-{{ content_block.getPositionType() }}-linkhover-onbg015--hover">
             <div class="promotion__img 1/4@bpb1  1/3@bpb2 1/3@bpw">
-                {{ ds_shared('image', promotion.promotedItemId, 320, '') }}
+                {{ ds_shared('image', promotion.promotedItemId, 320, '', {'ratio': 'auto'}) }}
             </div>
             <div class="promotion__body br-box-{{ content_block.getPositionType() }}">
                 <div class="promotion__body__inner br-{{ content_block.getPositionType() }}-linkhover-onbg015--childhover">
