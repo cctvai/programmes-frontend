@@ -5,31 +5,35 @@
 {% block page_classes %}text-base programmes-page programmes-page--flush{% endblock %}
 
 {%- block body -%}
-    {% if entity.isPodcastable %}
+    {% if entity.isPodcastable() %}
         <div class="b-g-p no-margin-vertical">
             <div class="grid-wrapper grid-wrapper--flush map map--episode map--count-2">
                 <div class="grid 2/3@bpw2 3/4@bpe map__column map__column--first">
                     <div class="map__inner  br-box-secondary">
                         <div class="island">
                             {% set classes = build_css_classes({
-                               'visually-hidden' : (entity.getType != 'collection' and entity.isTleo())
+                               'visually-hidden' : (entity.getType() != 'collection' and entity.isTleo())
                             }) %}
-                            <h1><span class="{{ classes }}">{{ entity.title }} </span><span class="cf deemphasize block-link">{{ tr('podcasts',1) }}</span></h1>
+                            <h1><span class="{{ classes }}">{{ entity.getTitle() }} </span><span class="cf deemphasize block-link">{{ tr('podcasts',1) }}</span></h1>
                             <div class="map__intro__synopsis centi">
-                                {{ ds_shared('synopsis', entity.synopses, 300) }}
+                                {{ ds_shared('synopsis', entity.getSynopses(), 300) }}
                             </div>
-                            {% if podcast.isUkOnly %}  <p>{{ tr('uk_only') }}</p> {% endif %}
+                            {% if podcast.isUkOnly() %}  <p>{{ tr('uk_only') }}</p> {% endif %}
                             <div class="grid-wrapper micro">
-                                <div class="grid 1/2">
-                                    <div class=""> <strong>{{ tr('updated') }} </strong> <span class="nowrap">{{ tr('updated_'~podcast.FREQUENCY)}}</span> </div>
-                                </div>
+                                {% if podcast.getFrequency() != 'oneoff'%}
+                                    <div class="grid 1/2">
+                                        <div class=""> <strong>{{ tr('updated') }} </strong> <span class="nowrap">
+                                                {{ tr('updated_'~podcast.getFrequency())}}</span>
+                                        </div>
+                                    </div>
+                                {% endif %}
                                 <div class="grid 1/2">
                                     <div> <strong>{{ tr('episodes_available') }} </strong><span class="nowrap">
-                                            {% if podcast.availability == -1 %} {{ tr('iplayer_time_indefinitely') }} {% endif %}
-                                            {% if podcast.availability == 7 %} {{ tr('iplayer_time_weeks', 1) }} {% endif %}
-                                            {% if podcast.availability == 14 %} {{ tr('iplayer_time_weeks', 2) }} {% endif %}
-                                            {% if podcast.availability == 30 %} {{ tr('iplayer_time_months', 1) }} {% endif %}
-                                            {% if podcast.availability == 60 %} {{ tr('iplayer_time_months', 2) }} {% endif %}
+                                            {% if podcast.getAvailability() == -1 %}
+                                                {{ tr('iplayer_time_indefinitely') }}
+                                            {% else %}
+                                                {{ tr('iplayer_time_days', podcast.getAvailability() ) }}
+                                            {% endif %}
                                         </span>
                                     </div>
                                 </div>
