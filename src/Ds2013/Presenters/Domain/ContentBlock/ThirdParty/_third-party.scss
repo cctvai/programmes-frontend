@@ -9,7 +9,6 @@
 
 // make responsive
 .third-party--youtube,
-.third-party--instagram,
 .third-party--touchcast,
 .third-party--vimeo,
 .third-party--vine {
@@ -26,15 +25,6 @@
         left: 0;
         width: 100%;
         height: 100%;
-    }
-}
-
-// set aspect ratios
-.third-party--instagram {
-    max-width: 618px; // instagram doesn't support wider
-
-    .third-party__embed {
-        padding-bottom: 122%;
     }
 }
 
