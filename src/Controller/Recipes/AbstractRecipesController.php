@@ -20,7 +20,7 @@ abstract class AbstractRecipesController extends BaseController
         $apiResponse = $recipesService->fetchRecipesByPid($pid)->wait(true);
         // if there are no recipes, don't display anything
         if ($apiResponse->getTotal() === 0 || !$apiResponse->getRecipes()) {
-            throw new NotFoundHttpException(sprintf('No Recipes found for PID "%s"', $pid));
+            return $this->noRecipesError($pid);
         }
 
         $showImage = true;
@@ -43,6 +43,8 @@ abstract class AbstractRecipesController extends BaseController
             'programme' => $programme,
         ]);
     }
+
+    abstract protected function noRecipesError($pid);
 
     abstract protected function renderRecipes(array $dataForTemplate);
 }

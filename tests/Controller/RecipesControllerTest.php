@@ -115,7 +115,7 @@ class RecipesControllerTest extends BaseWebTestCase
 
         $client->request('GET', 'programmes/b013pqnm/recipes.ameninc');
 
-        $this->assertResponseStatusCode($client, 404);
+        $this->assertResponseStatusCode($client, 204);
     }
 
     public function edgeResponseProvider()

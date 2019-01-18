@@ -15,4 +15,9 @@ class RecipesDs2013Controller extends AbstractRecipesController
 
         return $this->render('recipes/show.2013inc.html.twig', $dataForTemplate, $this->response());
     }
+
+    protected function noRecipesError($pid)
+    {
+        return $this->response()->setStatusCode(204)->setMaxAge(60);
+    }
 }

@@ -7,4 +7,9 @@ class RecipesAmenController extends AbstractRecipesController
     {
         return $this->render('recipes/show.ameninc.html.twig', $dataForTemplate, $this->response());
     }
+
+    protected function noRecipesError($pid)
+    {
+        return $this->response()->setStatusCode(204)->setMaxAge(60);
+    }
 }
