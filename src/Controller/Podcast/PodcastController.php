@@ -9,6 +9,7 @@ use App\Ds2013\Presenters\Utilities\Paginator\PaginatorPresenter;
 use BBC\ProgrammesPagesService\Domain\Entity\Collection;
 use BBC\ProgrammesPagesService\Domain\Entity\CoreEntity;
 use BBC\ProgrammesPagesService\Domain\Entity\Programme;
+use BBC\ProgrammesPagesService\Domain\Entity\ProgrammeContainer;
 use BBC\ProgrammesPagesService\Domain\ValueObject\Pid;
 use BBC\ProgrammesPagesService\Service\PodcastsService;
 use BBC\ProgrammesPagesService\Service\ProgrammesAggregationService;
@@ -31,12 +32,12 @@ class PodcastController extends BaseController
         PromotionsService $promotionsService,
         VersionsService $versionsService
     ) {
-        if (!$coreEntity instanceof CoreEntity && !$coreEntity instanceof Collection) {
-            throw new NotFoundHttpException(sprintf('Core Entity with PID "%s" is not a programme or collection', $coreEntity->getPid()));
-        }
-
         if ((!$coreEntity instanceof Collection) && !$coreEntity->isTleo()) {
             return $this->cachedRedirectToRoute('programme_podcast_episodes_download', ['pid' => $coreEntity->getTleo()->getPid()], 301);
+        }
+
+        if (!$coreEntity instanceof ProgrammeContainer && !$coreEntity instanceof Collection) {
+            throw new NotFoundHttpException(sprintf('Core Entity with PID "%s" is not a programme or collection', $coreEntity->getPid()));
         }
 
         $this->setContextAndPreloadBranding($coreEntity);
@@ -44,7 +45,6 @@ class PodcastController extends BaseController
 
         $this->overridenDescription = 'Podcast downloads for ' . $coreEntity->getTitle();
         $podcast = $podcastsService->findByCoreEntity($coreEntity);
-
         $page = $this->getPage();
         $limit = 30;
 
@@ -57,6 +57,10 @@ class PodcastController extends BaseController
             $programme = $coreEntity;
             $downloadableVersions = $versionsService->findDownloadableForProgrammesDescendantEpisodes($coreEntity, $limit, $page);
             $downloadableEpisodesCount = $versionsService->countDownloadableForProgrammesDescendantEpisodes($coreEntity);
+        }
+
+        if (!$coreEntity->isPodcastable() && $downloadableEpisodesCount == 0) {
+            throw new NotFoundHttpException('No downloadable episodes for this programme');
         }
 
         $paginator = null;
