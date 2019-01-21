@@ -31,6 +31,7 @@ parameters:
     app.isite.baseurl: 'https://api.live.bbc.co.uk/isite2-content-reader'
     app.isite.article_service.class: App\ExternalApi\Isite\Service\ArticleService
     app.isite.profile_service.class: App\ExternalApi\Isite\Service\ProfileService
+    app.isite.contact_page_service.class: App\ExternalApi\Isite\Service\ContactPageService
     app.receng.baseurl: 'https://open.live.bbc.co.uk/recommend/items'
     app.receng.service.class: App\ExternalApi\RecEng\Service\RecEngService
     app.recipes.baseurl: 'https://api.live.bbc.co.uk/food/recipes'
@@ -133,6 +134,10 @@ services:
         arguments:
             $mapper: '@App\ExternalApi\Isite\Mapper\ProfileMapper'
 
+    isite.feed_response_handler.contact_page:
+        class: App\ExternalApi\Isite\IsiteFeedResponseHandler
+        arguments:
+            $mapper: '@App\ExternalApi\Isite\Mapper\ContactPageMapper'
 
     ### Http Clients
 
@@ -315,6 +320,12 @@ services:
         arguments:
             $baseUrl: '%app.isite.baseurl%'
             $responseHandler: '@isite.feed_response_handler.profile'
+
+    App\ExternalApi\Isite\Service\ContactPageService:
+        class: '%app.isite.contact_page_service.class%'
+        arguments:
+            $baseUrl: '%app.isite.baseurl%'
+            $responseHandler: '@isite.feed_response_handler.contact_page'
 
     App\ExternalApi\RecEng\Service\RecEngService:
         class: '%app.receng.service.class%'
