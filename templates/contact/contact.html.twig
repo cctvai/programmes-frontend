@@ -1,0 +1,28 @@
+{% extends 'base_ds2013.html.twig' %}
+
+{% block title %}{{ meta_context.titlePrefix() }} - {{ tr('contact_us') }}{% endblock %}
+
+{% block page_classes %}programmes-page text-base prog-layout{% endblock %}
+
+{% block body %}
+    <div class="grid-wrapper">
+        {% if form %}
+            <div class="grid {% if details %}1/2@bpw2 7/12@bpe{% endif %}">
+                <div class="component component--box component--box--primary">
+                    <div class="component__body br-box-page">
+                        Form
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+        {% if details %}
+            <div class="grid {% if form %}1/2@bpw2 5/12@bpe{% endif %}">
+                <div class="component component--box component--box--secondary">
+                    <div class="component__body br-box-subtle">
+                        Details
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}
