@@ -122,14 +122,12 @@
                 </div>
             </div>
             <div class="grid 1/3@bpw2 1/3@bpe">
-                <div class="component component--box component--box--striped component--box-flushbody component--box--secondary">
-                    {% for promo in promotions.super %}
+                {% for promo in promotions.super %}
                         {{ ds2013('superpromo', promo, {
                             'img_default_width': 320,
                             'img_sizes': {0: 1/1, 768: 1/2, 1008: '438px'},
                         }) }}
-                    {% endfor %}
-                </div>
+                {% endfor %}
                 <div class="component component--box component--box--striped component--box-flushbody component--box--secondary">
                     <div class="component__header br-box-highlight">
                         <h2>{{ tr('podcast_belongs') }}</h2>
