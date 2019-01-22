@@ -72,7 +72,6 @@ class PodcastController extends BaseController
             $genre = $genre->getTopLevel();
         }
 
-
         return $this->renderWithChrome('podcast/podcast.html.twig', [
             'programme' => $programme,
             'entity' => $coreEntity,
