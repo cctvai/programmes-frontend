@@ -63,7 +63,7 @@
                                             </label>
                                         </h3>
                                         <ul class="list-unstyled popup__list">
-                                            {{ self.subscribeLink( 'pcast', entity, 'itunes', 'iTunes / iOS', 'progs-icons', 'apple')  }}
+                                            {{ self.subscribeLink('pcast', entity, 'itunes', 'iTunes / iOS', 'progs-icons', 'apple')  }}
                                             {{ self.subscribeLink('https', entity, 'android', 'Android / Google Play', 'progs-icons', 'android')  }}
                                             {{ self.subscribeLink('pcast', entity, 'windows', 'Windows Phone', 'progs-icons', 'windows') }}
                                             {{ self.subscribeLink('https', entity, 'rss', 'RSS', 'basics', 'rss')  }}
@@ -87,9 +87,8 @@
                         </div>
                         <ul class="list-unstyled">
                             {% for downloadableVersion in downloadableVersions %}
-                                {% if loop.first %}
+                                {% if loop.first and (paginatorPresenter.currentPage is not defined or paginatorPresenter.currentPage == 1)  %}
                                     {% set imageClasses ='programme__img--nomax 1/4@bpb1 1/4@bpb2 1/2@bpw' %}
-
                                 {% else %}
                                     {% set imageClasses='1/4@bpb1 1/4@bpb2-one-quarter 1/3@bpw' %}
                                 {% endif %}
