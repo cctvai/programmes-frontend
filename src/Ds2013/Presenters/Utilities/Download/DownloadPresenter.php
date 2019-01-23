@@ -22,12 +22,22 @@ class DownloadPresenter extends Presenter
     /** @var Podcast|null */
     private $podcast;
 
-    public function __construct(UrlGeneratorInterface $router, ProgrammeItem $programme, Version $version, ?Podcast $podcast, array $options = [])
-    {
+    /** @var bool */
+    private $secondary;
+
+    public function __construct(
+        UrlGeneratorInterface $router,
+        ProgrammeItem $programme,
+        Version $version,
+        ?Podcast $podcast,
+        bool $secondary = true,
+        array $options = []
+    ) {
         $this->programme = $programme;
         $this->router = $router;
         $this->version = $version;
         $this->podcast = $podcast;
+        $this->secondary = $secondary;
         parent::__construct($options);
     }
 
@@ -71,5 +81,10 @@ class DownloadPresenter extends Presenter
         }
 
         return false;
+    }
+
+    public function getPositionType()
+    {
+        return ($this->secondary === true) ? 'secondary' : 'subtle';
     }
 }

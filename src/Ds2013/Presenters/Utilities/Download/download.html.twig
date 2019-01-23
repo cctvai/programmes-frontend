@@ -23,16 +23,16 @@
             </div>
 
             <div class="popup__holder" id="download-popup-holder">
-                <div class="popup__content popup__content--download br-box-secondary br-secondary-link-onbg br-secondary-link-onborder">
-                    <h3 class="popup__header br-secondary-link-onborder--beforeafter br-secondary-linkhover-onborder--hover-beforeafter gamma no-margin deemphasize">
-                        <label class="popup__close island--squashed br-secondary-bg-onborder br-linkinvert" for="download-popup-holder">
+                <div class="popup__content popup__content--download br-box-{{ download.getPositionType }} br-{{ download.getPositionType }}-link-onbg br-{{ download.getPositionType }}-link-onborder popup__content--js">
+                    <h3 class="popup__header br-{{ download.getPositionType }}-link-onborder--beforeafter br-{{ download.getPositionType }}-linkhover-onborder--hover-beforeafter gamma no-margin deemphasize">
+                        <label class="popup__close island--squashed br-{{ download.getPositionType }}-bg-onborder br-linkinvert" for="download-popup-holder">
                             <span class="pull--right-spaced">{{ gelicon('basics', 'no', 'gelicon--centi popup__close--button') }} </span>{{ tr('choose_your_file') }}
                         </label>
                     </h3>
                     <ul class="list-unstyled popup__list">
                         {% for translationKey,url in download.getPodcastUrls() %}
                             <li>
-                                <a class="link-complex popup__list__item island--squashed br-secondary-bg-ontext br-secondary-bg-onbg--hover br-secondary-link-ontext--hover" href="{{ url }}"
+                                <a class="link-complex popup__list__item island--squashed br-{{ download.getPositionType }}-bg-ontext br-{{ download.getPositionType }}-bg-onbg--hover br-{{ download.getPositionType }}-link-ontext--hover" href="{{ url }}"
                                    download="{{ download.getPodcastFileName() }}" aria-label="{{ tr('downloads', 1) }} {{ tr(translationKey)}} ">
                                     {{ tr(translationKey) }}
                                 </a>

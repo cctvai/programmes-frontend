@@ -535,9 +535,10 @@ class PresenterFactory
         ProgrammeItem $programmeItem,
         Version $version,
         ?Podcast $podcast,
+        bool $secondary = true,
         array $options = []
     ): DownloadPresenter {
-        return new DownloadPresenter($this->router, $programmeItem, $version, $podcast, $options);
+        return new DownloadPresenter($this->router, $programmeItem, $version, $podcast, $secondary, $options);
     }
 
     public function superpromoPresenter(Promotion $promotion, array $options = []): SuperpromoPresenter

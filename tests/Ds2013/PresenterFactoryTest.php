@@ -180,7 +180,7 @@ class PresenterFactoryTest extends TestCase
         $version = VersionBuilder::any()->build();
         $podcast = new Podcast($clip, 'weekly', -1, true, false);
 
-        $presenter = $this->factory->downloadPresenter($clip, $version, $podcast, []);
+        $presenter = $this->factory->downloadPresenter($clip, $version, $podcast, true, []);
 
         $this->assertInstanceOf(DownloadPresenter::class, $presenter);
     }

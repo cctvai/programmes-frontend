@@ -78,7 +78,7 @@
             <div id="episode-map-favourites-button" class="favourites-module-wrapper map__buttons favourites-button buttons--favourites-small"></div>
         {% endif %}
         {%- if presenter.canBeDownloaded() -%}
-            {{ ds2013('download', presenter.getEpisode(), presenter.getDownloadableVersion(), presenter.getPodcast(), {}) }}
+            {{ ds2013('download', presenter.getEpisode(), presenter.getDownloadableVersion(), presenter.getPodcast(), true, {}) }}
         {% endif %}
     </div>
 {% endmacro %}

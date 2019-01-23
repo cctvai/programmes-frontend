@@ -105,6 +105,6 @@ class DownloadPresenterTest extends TestCase
 
         $version = VersionBuilder::any()->with(['isDownloadable' => true])->build();
 
-        return new DownloadPresenter($stubRouter, $programmeItem, $version, $podcast, []);
+        return new DownloadPresenter($stubRouter, $programmeItem, $version, $podcast, true, []);
     }
 }
