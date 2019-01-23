@@ -5,11 +5,7 @@ namespace App\Controller\Articles;
 
 use App\Controller\BaseIsiteController;
 use App\Controller\Helpers\IsiteKeyHelper;
-use App\Ds2013\Presenters\Utilities\Paginator\PaginatorPresenter;
-use App\ExternalApi\Isite\Domain\Article;
-use App\ExternalApi\Isite\IsiteResult;
 use App\ExternalApi\Isite\Service\ArticleService;
-use BBC\ProgrammesPagesService\Domain\Entity\Group;
 use BBC\ProgrammesPagesService\Service\CoreEntitiesService;
 use App\Exception\HasContactFormException;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,100 +21,63 @@ class ShowController extends BaseIsiteController
         CoreEntitiesService $coreEntitiesService
     ) {
         $this->setIstatsProgsPageType('article_show');
-        $preview = false;
-        if ($request->query->has('preview') && $request->query->get('preview')) {
-            $preview = true;
-            $this->metaNoIndex = true;
-            $this->response()->headers->remove('X-Frame-Options');
+
+        $this->key = $key;
+        $this->slug = $slug;
+        $this->isiteKeyHelper = $isiteKeyHelper;
+        $this->coreEntitiesService = $coreEntitiesService;
+        $this->isiteService = $isiteService;
+
+        $preview = $this->getPreview();
+        if ($redirect = $this->getRedirectFromGuidToKeyIfNeeded($preview)) {
+            return $redirect;
         }
 
-        if ($isiteKeyHelper->isKeyAGuid($key)) {
-            return $this->redirectWith($isiteKeyHelper->convertGuidToKey($key), $slug, $preview);
-        }
-
-        $guid = $isiteKeyHelper->convertKeyToGuid($key);
-
-        $isiteResult = null;
+        $guid = $this->isiteKeyHelper->convertKeyToGuid($this->key);
         try {
-            /** @var IsiteResult $isiteResult */
-            $isiteResult = $isiteService->getByContentId($guid, $preview)->wait(true);
+            $isiteObject = $this->getBaseIsiteObject($guid, $preview);
         } catch (HasContactFormException $e) {
-            if (!$slug) {
-                return $this->cachedRedirectToRoute('article_with_contact_form_noslug', ['key' => $key], 302, 3600);
-            }
-            return $this->cachedRedirectToRoute('article_with_contact_form', ['key' => $key, 'slug' => $slug], 302, 3600);
-        }
-
-        $articles = $isiteResult->getDomainModels();
-        if (!$articles) {
-            throw $this->createNotFoundException('No articles found for guid');
-        }
-
-        /** @var Article $article */
-        $article = reset($articles);
-
-        if ($slug !== $article->getSlug()) {
-            return $this->redirectWith($article->getKey(), $article->getSlug(), $preview);
-        }
-        if ($article->getBbcSite()) {
-            $this->setIstatsExtraLabels(['bbc_site' => $article->getBbcSite()]);
-        }
-        $context = null;
-        $parentProgramme = null;
-        $projectSpace = $article->getProjectSpace();
-        if (!empty($article->getParentPid())) {
-            $context = $coreEntitiesService->findByPidFull($article->getParentPid());
-            if ($context instanceof Group) {
-                $parentProgramme = $context->getParent();
+            if (!$this->slug) {
+                $route = 'article_with_contact_form_noslug';
+                $params = ['key' => $this->key];
             } else {
-                $parentProgramme = $context;
+                $route = 'article_with_contact_form';
+                $params = ['key' => $this->key, 'slug' => $this->slug];
             }
-            if ($context && ($article->getProjectSpace() !== $context->getOption('project_space'))) {
-                throw $this->createNotFoundException('Project space Article-Programme not matching');
-            }
-        }
-        $this->overrideMetaTagsValues($article);
-        $this->setContext($context);
-        $this->setAtiContentId($guid, 'isite2');
 
-        if ('' !== $article->getBrandingId()) {
-            $this->setBrandingId($article->getBrandingId());
+            return $this->cachedRedirectToRoute($route, $params, 302, 3600);
         }
 
-        $parents = $article->getParents();
-        $siblingPromise = $isiteService->setChildrenOn($parents, $article->getProjectSpace()); //if more than 48, extras are removed
-        $childPromise = $isiteService->setChildrenOn([$article], $article->getProjectSpace(), $this->getPage());
+        if ($redirect = $this->getRedirectToSlugIfNeeded($isiteObject, $preview)) {
+            return $redirect;
+        }
+
+        $this->removeHeadersForPreview($preview);
+        $this->initContextAndBranding($isiteObject, $guid);
+        $parents = $isiteObject->getParents();
+        $siblingPromise = $isiteService->setChildrenOn($parents, $isiteObject->getProjectSpace()); //if more than 48, extras are removed
+        $childPromise = $isiteService->setChildrenOn([$isiteObject], $isiteObject->getProjectSpace(), $this->getPage());
         $response = $this->resolvePromises(['children' => $childPromise, 'siblings' => $siblingPromise]);
+        $children = reset($response['children']);
+        $paginatorPresenter = null;
+        if ($children) {
+            $paginatorPresenter = $this->getPaginator($children->getTotal());
+        }
 
         return $this->renderWithChrome(
             'articles/show.html.twig',
             [
                 'guid' => $guid,
-                'projectSpace' => $projectSpace,
-                'article' => $article,
-                'paginatorPresenter' => reset($response['children']) ? $this->getPaginator(reset($response['children'])) : null,
-                'programme' => $parentProgramme,
+                'projectSpace' => $isiteObject->getProjectSpace(),
+                'programme' => $this->getParentProgramme($this->context),
+                'article' => $isiteObject,
+                'paginatorPresenter' => $paginatorPresenter,
             ]
         );
     }
 
-    private function redirectWith(string $key, string $slug, bool $preview)
+    protected function getRouteName()
     {
-        $params = ['key' => $key, 'slug' => $slug];
-
-        if ($preview) {
-            $params['preview'] = 'true';
-        }
-
-        return $this->cachedRedirectToRoute('programme_article', $params, 301);
-    }
-
-    private function getPaginator(IsiteResult $iSiteResult): ?PaginatorPresenter
-    {
-        if ($iSiteResult->getTotal() <= 48) {
-            return null;
-        }
-
-        return new PaginatorPresenter($this->getPage(), 48, $iSiteResult->getTotal());
+        return 'programme_article';
     }
 }
