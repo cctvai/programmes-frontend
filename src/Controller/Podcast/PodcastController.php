@@ -36,6 +36,7 @@ class PodcastController extends BaseController
             throw new NotFoundHttpException(sprintf('Core Entity with PID "%s" is not a programme or collection', $coreEntity->getPid()));
         }
 
+        $this->setIstatsProgsPageType('episode_downloads');
         $this->setContextAndPreloadBranding($coreEntity);
         $this->setAtiContentId((string) $coreEntity->getPid(), 'pips');
 
