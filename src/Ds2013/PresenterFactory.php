@@ -529,7 +529,9 @@ class PresenterFactory
      * @param ProgrammeItem $programmeItem
      * @param Version $version
      * @param Podcast|null $podcast
+     * @param bool $secondary
      * @param array $options
+     * @return DownloadPresenter
      */
     public function downloadPresenter(
         ProgrammeItem $programmeItem,
