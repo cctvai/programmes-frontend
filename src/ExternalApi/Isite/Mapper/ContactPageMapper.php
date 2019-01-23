@@ -5,6 +5,7 @@ namespace App\ExternalApi\Isite\Mapper;
 
 use App\ExternalApi\Isite\Domain\ContactPage;
 use App\ExternalApi\Isite\WrongEntityTypeException;
+use BBC\ProgrammesPagesService\Domain\ValueObject\ContactDetails;
 use SimpleXMLElement;
 
 class ContactPageMapper extends Mapper
@@ -20,6 +21,17 @@ class ContactPageMapper extends Mapper
         if (isset($form->content->{'ugc_campaign_id'}) && (string) $form->content->{'ugc_campaign_id'}) {
             $ugcCampaignId = (string) $form->content->{'ugc_campaign_id'};
         }
+        $contactDetails = null;
+        if (isset($form->details)) {
+            $contactDetails = [];
+            foreach ($form->details->detail as $detail) {
+                array_push($contactDetails, new ContactDetails(
+                    (string) $detail->{'detail_type'},
+                    (string) $detail->{'detail_value_long'} ?: (string) $detail->{'detail_value'},
+                    (string) $detail->{'detail_freetext'}
+                ));
+            }
+        }
         if (!$this->isContact($resultMetaData)) {
             throw new WrongEntityTypeException(
                 sprintf(
@@ -29,7 +41,7 @@ class ContactPageMapper extends Mapper
                 )
             );
         }
-        return new ContactPage($ugcCampaignId);
+        return new ContactPage($ugcCampaignId, $contactDetails);
     }
 
     private function isContact(SimpleXMLElement $resultMetaData)
