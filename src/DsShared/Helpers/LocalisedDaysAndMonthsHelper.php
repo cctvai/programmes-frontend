@@ -6,6 +6,7 @@ namespace App\DsShared\Helpers;
 use App\Translate\TranslatableTrait;
 use App\Translate\TranslateProvider;
 use BBC\ProgrammesPagesService\Domain\ApplicationTime;
+use BBC\ProgrammesPagesService\Domain\ValueObject\PartialDate;
 use Cake\Chronos\Chronos;
 use DateTime;
 use IntlDateFormatter;
@@ -67,6 +68,20 @@ class LocalisedDaysAndMonthsHelper
 
         return json_encode($localisedDaysAndMonths);
     }
+
+    public function getFormatedPartialDate(PartialDate $partialDate)
+    {
+        $date = $partialDate->asDateTime();
+        $hasMonth = $partialDate->hasMonth();
+        if ($partialDate->hasDay() && $hasMonth) {
+            return $this->getFormatedDay(new Chronos($partialDate));
+        }
+        if ($hasMonth) {
+            return $this->localDateIntl($date, 'MMM yyyy');
+        }
+        return $this->localDateIntl($date, 'Y');
+    }
+
 
     public function getFormatedDay(Chronos $date): string
     {

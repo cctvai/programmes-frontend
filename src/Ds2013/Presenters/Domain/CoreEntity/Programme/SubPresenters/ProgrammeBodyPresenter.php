@@ -121,7 +121,7 @@ class ProgrammeBodyPresenter extends ProgrammePresenterBase
     {
         if ($this->getOption('show_release_date') && $this->programme instanceof ProgrammeItem) {
             if ($this->programme->getReleaseDate()) {
-                return $this->localisedDaysAndMonthsHelper->getFormatedDay(new Chronos($this->programme->getReleaseDate()));
+                return $this->localisedDaysAndMonthsHelper->getFormatedPartialDate($this->programme->getReleaseDate());
             }
             if ($this->programme->getFirstBroadcastDate()) {
                 return $this->localisedDaysAndMonthsHelper->getFormatedDay($this->programme->getFirstBroadcastDate());
