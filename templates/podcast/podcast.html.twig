@@ -91,7 +91,11 @@
                     <div class="br-box-page prog-box">
                         <div class="component component--box component--box-flushbody component--box--primary">
                             <div class="component__header br-box-page">
-                                <h2>{{ tr('podcasts_desc') }}</h2>
+                                {%- if downloadableVersions|length  > 0 -%}
+                                    <h2>{{ tr('podcasts_desc') }}</h2>
+                                {%- else -%}
+                                    <p>{{ tr('available_count_short', 0) }}</p>
+                                {%- endif  -%}
                             </div>
                             <ul class="list-unstyled">
                                 {% for downloadableVersion in downloadableVersions %}
