@@ -25,6 +25,10 @@ class DownloadPresenter extends Presenter
     /** @var bool */
     private $secondary;
 
+    protected $options = [
+        'showUkOnly' => true,
+    ];
+
     public function __construct(
         UrlGeneratorInterface $router,
         ProgrammeItem $programme,
@@ -86,5 +90,10 @@ class DownloadPresenter extends Presenter
     public function getPositionType()
     {
         return ($this->secondary === true) ? 'secondary' : 'subtle';
+    }
+
+    public function showUkOnly(): bool
+    {
+        return $this->options['showUkOnly'];
     }
 }
