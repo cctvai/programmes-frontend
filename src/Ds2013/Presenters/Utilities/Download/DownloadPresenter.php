@@ -26,7 +26,7 @@ class DownloadPresenter extends Presenter
     private $secondary;
 
     protected $options = [
-        'showUkOnly' => true,
+        'show_uk_only' => true,
     ];
 
     public function __construct(
@@ -78,22 +78,13 @@ class DownloadPresenter extends Presenter
         return implode(', ', $titles) . ' - ' . $this->programme->getPid() . '.mp3';
     }
 
-    public function isUkOnlyPodcast(): bool
+    public function showUkOnly(): bool
     {
-        if ($this->podcast) {
-            return $this->podcast->getIsUkOnly();
-        }
-
-        return false;
+        return ($this->podcast && $this->podcast->getIsUkOnly() && $this->options['show_uk_only']);
     }
 
     public function getPositionType()
     {
         return ($this->secondary === true) ? 'secondary' : 'subtle';
-    }
-
-    public function showUkOnly(): bool
-    {
-        return $this->options['showUkOnly'];
     }
 }

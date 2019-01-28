@@ -59,16 +59,23 @@ class DownloadPresenterTest extends TestCase
     }
 
     /**
-     * Podcast is only uk?
+     * @dataProvider isUkOnlyDataProvider
      */
-    public function testIsNotUkOnlyByDefault()
+    public function testIsUkOnly($podcast, $showIsUkOnly, $expectedResult)
     {
         $givenClip = ClipBuilder::any()->build();
-        $podcast = null;
 
-        $thenClipDetailsPresenter = $this->presenter($givenClip, $podcast);
+        $downloadPresenter = $this->presenter($givenClip, $podcast, ['show_uk_only' => $showIsUkOnly]);
+        $this->assertEquals($expectedResult, $downloadPresenter->showUkOnly());
+    }
 
-        $this->assertFalse($thenClipDetailsPresenter->isUkOnlyPodcast());
+    public function isUkOnlyDataProvider()
+    {
+        return [
+            'UK Only with show UK only' => [$this->mockPodcast(true), true, true],
+            'UK Only without show UK only' => [$this->mockPodcast(true), false, false],
+            'no podacst with show UK only' => [null, true, false],
+        ];
     }
 
     /**
@@ -97,7 +104,7 @@ class DownloadPresenterTest extends TestCase
     /**
      * helpers
      */
-    private function presenter(ProgrammeItem $programmeItem, ?Podcast $podcast): DownloadPresenter
+    private function presenter(ProgrammeItem $programmeItem, ?Podcast $podcast, array $options = []): DownloadPresenter
     {
         $stubRouter = $this->createConfiguredMock(UrlGeneratorInterface::class, [
             'generate' => 'stubbed/url/from/router',
@@ -105,6 +112,13 @@ class DownloadPresenterTest extends TestCase
 
         $version = VersionBuilder::any()->with(['isDownloadable' => true])->build();
 
-        return new DownloadPresenter($stubRouter, $programmeItem, $version, $podcast, true, []);
+        return new DownloadPresenter($stubRouter, $programmeItem, $version, $podcast, true, $options);
+    }
+
+    private function mockPodcast(bool $isUkOnly)
+    {
+        return $this->createConfiguredMock(Podcast::class, [
+            'getIsUkOnly' => $isUkOnly,
+        ]);
     }
 }
