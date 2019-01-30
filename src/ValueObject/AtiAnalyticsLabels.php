@@ -145,6 +145,7 @@ class AtiAnalyticsLabels
             'bbc_weather' => 'WEATHER',
             'bbc_world_news' => 'BBC_WORLD_NEWS',
             'bbc_world_service' => 'WORLD_SERVICE_ENGLISH',
+            'bbc_world_service_tv' => 'IPLAYER',
             'bbc_yoruba_radio' => 'YORUBA',
             'bbc_yoruba_tv' => 'YORUBA',
             'cbbc' => 'CBBC',
