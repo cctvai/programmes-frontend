@@ -56,7 +56,7 @@ abstract class BaseController extends AbstractController
 
     private $atistatsExtraLabels = [];
 
-    private $atiContentId = "bbc:urn:pips";
+    private $atiContentId = "urn:bbc:pips";
 
     private $istatsProgsPageType;
 

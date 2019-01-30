@@ -29,6 +29,7 @@ class GalleryController extends BaseController
         $network = $programme->getMasterBrand()->getNetwork()->getName();
         $galleries = $programmesAggregationService->findDescendantGalleries($brand, $siblingLimit);
         $hasImageHighlighted = !empty($imagePid);
+        $this->setAtiContentId((string) $gallery->getPid(), 'pips');
 
         return $this->renderWithChrome('find_by_pid/gallery.html.twig', [
             'gallery' => $gallery,
