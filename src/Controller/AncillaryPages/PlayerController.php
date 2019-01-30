@@ -43,6 +43,7 @@ class PlayerController extends BaseController
 
         $this->setContext($clip);
         $this->setIstatsProgsPageType('programme_player');
+        $this->setAtiContentType('player-ondemand');
         $context = $this->createMetaContextFromContext();
         // These two functions set the stats context in the PresenterFactory for the SMP to use later
         $this->createAnalyticsCounterNameFromContext();

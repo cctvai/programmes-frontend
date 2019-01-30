@@ -8,6 +8,7 @@ class RecipesController extends AbstractRecipesController
     protected function renderRecipes(array $dataForTemplate)
     {
         $this->setContextAndPreloadBranding($dataForTemplate['programme']);
+        $this->setAtiContentType('recipes');
 
         $dataForTemplate['options'] = [
             'srcset' => [

@@ -21,6 +21,7 @@ class ShowController extends BaseIsiteController
         CoreEntitiesService $coreEntitiesService
     ) {
         $this->setIstatsProgsPageType('article_show');
+        $this->setAtiContentType('article-show-related');
 
         $this->key = $key;
         $this->slug = $slug;

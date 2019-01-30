@@ -60,6 +60,9 @@ abstract class BaseController extends AbstractController
 
     private $istatsProgsPageType;
 
+    /** @var string */
+    private $atiContentType;
+
     private $isInternational = false;
 
     protected $canonicalUrl;
@@ -235,6 +238,7 @@ abstract class BaseController extends AbstractController
                 $cosmosInfo,
                 $this->atistatsExtraLabels,
                 $this->container->get(Dials::class),
+                $this->atiContentType,
                 $this->atiContentId
             );
             $atiAnalyticsLabelsValues = $atiAnalyticsLabelsValues->orbLabels();
@@ -361,6 +365,11 @@ abstract class BaseController extends AbstractController
     protected function setIstatsProgsPageType(string $label): void
     {
         $this->istatsProgsPageType = $label;
+    }
+
+    protected function setAtiContentType(string $label): void
+    {
+        $this->atiContentType = $label;
     }
 
     protected function request(): Request

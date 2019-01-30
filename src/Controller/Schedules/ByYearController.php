@@ -31,9 +31,9 @@ class ByYearController extends SchedulesBaseController
         }
 
         $this->setIstatsProgsPageType('schedules_year');
+        $this->setAtiContentType('schedule');
         $this->setContextAndPreloadBranding($service);
         $this->setAtiContentId((string) $service->getPid(), 'pips');
-        $this->addAtiStatsExtraLabels(['contentType' => 'schedules_year']);
 
 
         $startOfYear = Date::createFromFormat('Y|', $year, ApplicationTime::getLocalTimeZone())->firstOfYear();

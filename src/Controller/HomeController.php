@@ -45,9 +45,9 @@ class HomeController extends BaseController
         NetworksService $networksService
     ) {
         $this->setIstatsProgsPageType('home_index');
+        $this->setAtiContentType('index-home');
         $programmeCount = $this->countProgrammesAndGroups($em, $cache);
         $this->setAtiContentId('', 'pips');
-        $this->addAtiStatsExtraLabels(['contentType' => 'index-home']);
 
         $serviceTypes = ['TV', 'National Radio', 'Regional Radio', 'Local Radio'];
         $publishedNetworks = $networksService->findPublishedNetworksByType(

@@ -19,6 +19,7 @@ class GalleryController extends BaseController
         ProgrammesAggregationService $programmesAggregationService
     ) {
         $this->setIstatsProgsPageType('galleries_show');
+        $this->setAtiContentType('article-photo-gallery');
         $this->setContextAndPreloadBranding($gallery);
         $siblingLimit = 4;
         $images = $imagesService->findByGroup($gallery);

@@ -32,8 +32,8 @@ class GuideController extends BaseProgrammeEpisodesController
         $this->setContextAndPreloadBranding($programme);
         $this->setInternationalStatusAndTimezoneFromContext($programme);
         $this->setIstatsProgsPageType('episodes_guide');
+        $this->setAtiContentType('list-tleo');
         $this->setAtiContentId((string) $programme->getPid(), 'pips');
-        $this->addAtiStatsExtraLabels(['contentType' => 'episodes_guide']);
         $page = $this->getPage();
 
         $children = $programmesService->findEpisodeGuideChildren(

@@ -48,10 +48,10 @@ class ByWeekController extends SchedulesBaseController
         }
 
         $this->setIstatsProgsPageType('schedules_week');
+        $this->setAtiContentType('schedule');
         $this->setContextAndPreloadBranding($service);
         $this->setInternationalStatusAndTimezoneFromContext($service);
         $this->setAtiContentId((string) $service->getPid(), 'pips');
-        $this->addAtiStatsExtraLabels(['contentType' => 'schedules_week']);
 
         if ($utcOffset) {
             ApplicationTime::setLocalTimeZone($utcOffset);

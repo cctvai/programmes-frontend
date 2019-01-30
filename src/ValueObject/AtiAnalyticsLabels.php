@@ -27,15 +27,19 @@ class AtiAnalyticsLabels
     private $dials;
 
     /** @var string */
+    private $contentType;
+
+    /** @var string */
     private $contentId;
 
-    public function __construct($context, string $progsPageType, CosmosInfo $cosmosInfo, array $extraLabels, Dials $dials, string $contentId = null)
+    public function __construct($context, string $progsPageType, CosmosInfo $cosmosInfo, array $extraLabels, Dials $dials, string $contentType, string $contentId = null)
     {
         $this->context = $context;
         $this->pageType = $progsPageType;
         $this->appEnvironment = $cosmosInfo->getAppEnvironment();
         $this->extraLabels = $extraLabels;
         $this->dials = $dials;
+        $this->contentType = $contentType;
         $this->contentId = $contentId;
     }
 
@@ -45,7 +49,7 @@ class AtiAnalyticsLabels
         $labels = [
             'destination' => $this->getDestination(),
             'producer' => $this->calculateProducerVariable(),
-            'contentType' => $this->pageType,
+            'contentType' => $this->contentType,
             'contentId' => $this->contentId,
             'additionalProperties' => [
                 ['name' => 'app_name', 'value' => 'programmes'],

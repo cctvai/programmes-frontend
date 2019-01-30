@@ -22,6 +22,7 @@ class ListController extends BaseController
     private const PARAMS_CLIPS_COUNT_KEY = 'clipsCount';
     private const PARAMS_PAGINATOR_PRESENTER_KEY = 'paginatorPresenter';
     private const PARAMS_SHOW_ALL_PID_KEY = 'showAllPid';
+    private const ATI_CONTENT_TYPE = 'list-clip';
 
     public function __invoke(
         Programme $programme,
@@ -29,6 +30,7 @@ class ListController extends BaseController
         ProgrammesService $programmesService
     ) {
         $this->setIstatsProgsPageType(self::ISTATS_PAGE_ID);
+        $this->setAtiContentType(self::ATI_CONTENT_TYPE);
         $this->setContextAndPreloadBranding($programme);
         $this->setAtiContentId((string) $programme->getPid(), 'pips');
         $page = $this->getPage();
