@@ -8,9 +8,12 @@
     <div class="grid-wrapper">
         {% if ugcCampaignId is not empty %}
             <div class="grid {% if details is not null %}1/2@bpw2 7/12@bpe{% endif %}">
-                <div class="component component--box component--box--primary">
-                    <div class="component__body br-box-page">
-                        Form
+                <div class="programmes-page--topboxed br-box-page">
+                    <div class="prog-layout__primary">
+                        <h1>{{ tr('contact_us') }}</h1>
+                        <div class="component component--box">
+                            <p>Form</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -18,18 +21,11 @@
         {% if details is not null %}
             <div class="grid {% if ugcCampaignId is not empty %}1/2@bpw2 5/12@bpe{% endif %}">
                 <div class="component component--box component--box--secondary">
+                    <div class="component__header br-box-highlight">
+                        <h2>{{ tr('contact_details') }}</h2>
+                    </div>
                     <div class="component__body br-box-subtle">
-                        <ul>
-                            {% for detail in details %}
-                                <li>
-                                    <p>{{ detail.getType() }}</p>
-                                    <p>{{ detail.getValue() }}</p>
-                                    {% if detail.getFreetext() is not empty %}
-                                        <p>{{ detail.getFreetext() }}</p>
-                                    {% endif %}
-                                </li>
-                            {% endfor %}
-                        </ul>
+                        {{ ds2013('contactDetails', details) }}
                     </div>
                 </div>
             </div>

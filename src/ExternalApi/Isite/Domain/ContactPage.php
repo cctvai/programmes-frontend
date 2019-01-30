@@ -10,24 +10,14 @@ class ContactPage
     /** @var string|null */
     private $ugcCampaignId;
 
-    /** @var ContactDetails[]|null */
-    private $contactDetails;
-
     public function __construct(
-        ?string $ugcCampaignId,
-        ?array $contactDetails
+        ?string $ugcCampaignId
     ) {
         $this->ugcCampaignId = $ugcCampaignId;
-        $this->contactDetails = $contactDetails;
     }
 
     public function getUgcCampaignId(): ?string
     {
         return $this->ugcCampaignId;
-    }
-
-    public function getContactDetails(): ?array
-    {
-        return $this->contactDetails;
     }
 }

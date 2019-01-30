@@ -31,6 +31,7 @@ use App\Ds2013\Presenters\Pages\EpisodeGuideList\EpisodeGuideListPresenter;
 use App\Ds2013\Presenters\Pages\Schedules\NoSchedule\NoSchedulePresenter;
 use App\Ds2013\Presenters\Section\Clip\Details\ClipDetailsPresenter;
 use App\Ds2013\Presenters\Section\Clip\Playout\ClipPlayoutPresenter;
+use App\Ds2013\Presenters\Section\Contact\Details\ContactDetailsPresenter;
 use App\Ds2013\Presenters\Section\Episode\Map\EpisodeMapPresenter;
 use App\Ds2013\Presenters\Section\EpisodesSubNav\EpisodesSubNavPresenter;
 use App\Ds2013\Presenters\Section\Footer\FooterPresenter;
@@ -84,6 +85,7 @@ use BBC\ProgrammesPagesService\Domain\Entity\ProgrammeItem;
 use BBC\ProgrammesPagesService\Domain\Entity\Promotion;
 use BBC\ProgrammesPagesService\Domain\Entity\Service;
 use BBC\ProgrammesPagesService\Domain\Entity\Version;
+use BBC\ProgrammesPagesService\Domain\ValueObject\ContactDetails;
 use BBC\ProgrammesPagesService\Domain\ValueObject\Pid;
 use Cake\Chronos\ChronosInterface;
 use Cake\Chronos\Date;
@@ -523,6 +525,17 @@ class PresenterFactory
             $podcast,
             $options
         );
+    }
+
+    /**
+     * @param ContactDetails[] $contactDetails
+     * @param array $options
+     */
+    public function contactDetailsPresenter(
+        array $contactDetails,
+        array $options = []
+    ): ContactDetailsPresenter {
+        return new ContactDetailsPresenter($contactDetails, $options);
     }
 
     /**

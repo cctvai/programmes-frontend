@@ -1,0 +1,24 @@
+<ul class="list-unstyled">
+    {% for contactDetail in contact_details.getContactDetails() %}
+        <li class="contact-details__contact-detail">
+            <h3 class="contact-details__title">
+                {{ gelicon(
+                    contact_details.getGeliconFolderByType(contactDetail.getType()),
+                    contact_details.getGeliconNameByType(contactDetail.getType()),
+                    'gelicon contact-details__icon'
+                ) }}
+                {{ contact_details.getTitleByType(contactDetail.getType()) }}
+            </h3>
+            {% if contact_details.getUrlByContactDetail(contactDetail) is not null %}
+                <a href="{{ contact_details.getUrlByContactDetail(contactDetail) }}">
+                    {{ contactDetail.getValue() }}
+                </a>
+            {% else %}
+                <span>{{ contactDetail.getValue() }}</span>
+            {% endif %}
+            {% if contactDetail.getFreetext() is not empty %}
+                <p>{{ contactDetail.getFreetext() }}</p>
+            {% endif %}
+        </li>
+    {% endfor %}
+</ul>

@@ -42,5 +42,4 @@ class FileQuery implements QueryInterface
         $this->parameters['allowNonLive'] = $allow ? 'true' : 'false';
         return $this;
     }
-
 }

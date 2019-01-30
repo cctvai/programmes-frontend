@@ -24,7 +24,7 @@ class ContactController extends BaseController
         $contactPage = $contactPages[0];
 
         return $this->renderWithChrome('contact/contact.html.twig', [
-            'details' => $contactPage->getContactDetails(),
+            'details' => $coreEntity->getOption('contact_details'),
             'ugcCampaignId' => $contactPage->getUgcCampaignId(),
         ]);
     }
