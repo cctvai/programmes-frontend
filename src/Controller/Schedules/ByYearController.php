@@ -31,7 +31,7 @@ class ByYearController extends SchedulesBaseController
         }
 
         $this->setIstatsProgsPageType('schedules_year');
-        $this->setAtiContentType('schedule');
+        $this->setAtiContentLabels('schedule', 'schedule-year');
         $this->setContextAndPreloadBranding($service);
         $this->setAtiContentId((string) $service->getPid(), 'pips');
 

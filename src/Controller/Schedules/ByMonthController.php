@@ -24,7 +24,7 @@ class ByMonthController extends SchedulesBaseController
         }
 
         $this->setIstatsProgsPageType('schedules_month');
-        $this->setAtiContentType('schedule');
+        $this->setAtiContentLabels('schedule', 'schedule-month');
         $this->setContextAndPreloadBranding($service);
         $this->setAtiContentId((string) $service->getPid(), 'pips');
 

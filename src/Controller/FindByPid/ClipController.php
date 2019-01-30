@@ -45,7 +45,7 @@ class ClipController extends BaseController
         VersionsService $versionsService
     ) {
         $this->setIstatsProgsPageType('programmes_clip');
-        $this->setAtiContentType('player-clip');
+        $this->setAtiContentLabels('player-clip', 'clip');
         $this->setIstatsReleaseDate($clip);
         $this->setIstatsReleaseYear($clip);
         $this->setParentIstats($clip);

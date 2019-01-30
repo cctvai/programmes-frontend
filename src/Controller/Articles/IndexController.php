@@ -16,7 +16,7 @@ class IndexController extends BaseController
     public function __invoke(CoreEntity $coreEntity, ArticleService $isiteService)
     {
         $this->setIstatsProgsPageType('article_listpid');
-        $this->setAtiContentType('list-datadriven');
+        $this->setAtiContentLabels('list-datadriven', 'list-articles');
         $this->setContextAndPreloadBranding($coreEntity);
         $this->setAtiContentId((string) $coreEntity->getPid(), 'pips');
 

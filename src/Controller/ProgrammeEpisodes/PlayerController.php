@@ -23,7 +23,7 @@ class PlayerController extends BaseProgrammeEpisodesController
         $this->setContextAndPreloadBranding($programme);
         $this->setInternationalStatusAndTimezoneFromContext($programme);
         $this->setIstatsProgsPageType('episodes_player');
-        $this->setAtiContentType('list-tleo');
+        $this->setAtiContentLabels('list-tleo', 'guide-available');
         $this->setAtiContentId((string) $programme->getPid(), 'pips');
 
         $page = $this->getPage();

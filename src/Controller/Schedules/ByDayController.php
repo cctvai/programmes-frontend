@@ -54,7 +54,7 @@ class ByDayController extends SchedulesBaseController
 
         $this->helperFactory = $helperFactory;
         $this->setIstatsProgsPageType('schedules_day');
-        $this->setAtiContentType('schedule');
+        $this->setAtiContentLabels('schedule', 'schedule-day');
         $this->setContextAndPreloadBranding($service);
         $this->setInternationalStatusAndTimezoneFromContext($service);
         $this->setAtiContentId((string) $service->getPid(), 'pips');

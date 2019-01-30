@@ -22,7 +22,7 @@ class ShowController extends BaseIsiteController
         CoreEntitiesService $coreEntitiesService
     ) {
         $this->setIstatsProgsPageType('profiles_index');
-        $this->setAtiContentType('profile');
+        $this->setAtiContentLabels('profile', 'profile');
 
         $this->key = $key;
         $this->slug = $slug;

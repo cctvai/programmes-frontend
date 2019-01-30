@@ -37,7 +37,7 @@ class PodcastController extends BaseController
         }
 
         $this->setIstatsProgsPageType('episodes_downloads');
-        $this->setAtiContentType('downloads');
+        $this->setAtiContentLabels('downloads', 'guide-podcasts');
         $this->setContextAndPreloadBranding($coreEntity);
         $this->setAtiContentId((string) $coreEntity->getPid(), 'pips');
 

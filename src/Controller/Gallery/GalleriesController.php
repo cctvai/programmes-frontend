@@ -25,7 +25,7 @@ class GalleriesController extends BaseController
         }
 
         $this->setContextAndPreloadBranding($programme);
-        $this->setAtiContentType('list-photo-gallery');
+        $this->setAtiContentLabels('list-photo-gallery', 'list-galleries');
         $this->setAtiContentId((string) $programme->getPid(), 'pips');
 
         $page = $this->getPage();

@@ -64,7 +64,7 @@ class TlecController extends BaseController
         }
 
         $this->setIstatsProgsPageType('programmes_container');
-        $this->setAtiContentType('brand');
+        $this->setAtiContentLabels('brand', 'brand');
         $this->setContextAndPreloadBranding($programme);
         $this->setInternationalStatusAndTimezoneFromContext($programme);
         $this->setAtiContentId((string) $programme->getPid(), 'pips');

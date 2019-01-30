@@ -63,6 +63,9 @@ abstract class BaseController extends AbstractController
     /** @var string */
     private $atiContentType;
 
+    /** @var string */
+    private $atiChapterOne;
+
     private $isInternational = false;
 
     protected $canonicalUrl;
@@ -239,6 +242,7 @@ abstract class BaseController extends AbstractController
                 $this->atistatsExtraLabels,
                 $this->container->get(Dials::class),
                 $this->atiContentType,
+                $this->atiChapterOne,
                 $this->atiContentId
             );
             $atiAnalyticsLabelsValues = $atiAnalyticsLabelsValues->orbLabels();
@@ -367,9 +371,10 @@ abstract class BaseController extends AbstractController
         $this->istatsProgsPageType = $label;
     }
 
-    protected function setAtiContentType(string $label): void
+    protected function setAtiContentLabels(string $type, string $chapter): void
     {
-        $this->atiContentType = $label;
+        $this->atiContentType = $type;
+        $this->atiChapterOne = $chapter;
     }
 
     protected function request(): Request
