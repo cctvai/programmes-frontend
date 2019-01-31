@@ -8,7 +8,7 @@ class RecipesController extends AbstractRecipesController
     protected function renderRecipes(array $dataForTemplate)
     {
         $this->setContextAndPreloadBranding($dataForTemplate['programme']);
-        $this->setAtiContentLabels('recipes', 'recipes');
+        $this->setAtiContentLabels('list-curated', 'recipes');
 
         $dataForTemplate['options'] = [
             'srcset' => [
