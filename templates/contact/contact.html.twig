@@ -11,9 +11,7 @@
                 <div class="programmes-page--topboxed br-box-page">
                     <div class="prog-layout__primary">
                         <h1>{{ tr('contact_us') }}</h1>
-                        <div class="component component--box">
-                            <p>Form</p>
-                        </div>
+                        <div id="ugc-form" class="component component--box"></div>
                     </div>
                 </div>
             </div>
@@ -32,3 +30,27 @@
         {% endif %}
     </div>
 {% endblock %}
+
+{% if ugcCampaignId is not empty %}
+    {% block javascripts %}
+        <script>
+            require(
+                ['http://www.test.bbc.co.uk/ugcstatic/5.2.0/ugc-js-library.min.js'],
+                function(UGCUploadClient) {
+                    UGCUploadClient.default({
+                        campaignId: '{{ ugcCampaignId }}',
+                        formContainer: document.getElementById('ugc-form'),
+                        onSuccess: function(data) {
+                            console.log(data);
+                        },
+                        onError: function(error) {
+                            console.error(error);
+                        },
+                        environment: 'test',
+                        testMode: true
+                    });
+                }
+            );
+        </script>
+    {% endblock %}
+{% endif %}
