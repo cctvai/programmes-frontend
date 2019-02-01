@@ -7,6 +7,8 @@ use App\Controller\BaseController;
 use App\Ds2013\Presenters\Utilities\Paginator\PaginatorPresenter;
 use BBC\ProgrammesPagesService\Domain\Entity\Collection;
 use BBC\ProgrammesPagesService\Domain\Entity\CoreEntity;
+use BBC\ProgrammesPagesService\Domain\Entity\Programme;
+use App\Controller\Helpers\StructuredDataHelper;
 use BBC\ProgrammesPagesService\Domain\Entity\ProgrammeContainer;
 use BBC\ProgrammesPagesService\Service\PodcastsService;
 use BBC\ProgrammesPagesService\Service\ProgrammesAggregationService;
@@ -26,7 +28,8 @@ class PodcastController extends BaseController
         PodcastsService $podcastsService,
         ProgrammesAggregationService $programmesAggregationService,
         PromotionsService $promotionsService,
-        VersionsService $versionsService
+        VersionsService $versionsService,
+        StructuredDataHelper $structuredDataHelper
     ) {
         if ((!$coreEntity instanceof Collection) && !$coreEntity->isTleo()) {
             return $this->cachedRedirectToRoute('programme_podcast_episodes_download', ['pid' => $coreEntity->getTleo()->getPid()], 301);
@@ -74,7 +77,10 @@ class PodcastController extends BaseController
             $genre = $genre->getTopLevel();
         }
 
+        $schema = $this->getSchema($structuredDataHelper, $programme, $downloadableVersions, $coreEntity);
+
         return $this->renderWithChrome('podcast/podcast.html.twig', [
+            'schema' => $schema,
             'programme' => $programme,
             'entity' => $coreEntity,
             'podcast' => $podcast,
@@ -83,5 +89,20 @@ class PodcastController extends BaseController
             'promotions' => $promotions,
             'genre' => $genre,
         ]);
+    }
+
+    private function getSchema(StructuredDataHelper $structuredDataHelper, Programme $programme, array $availableEpisodes, CoreEntity $coreEntity): array
+    {
+        if ($coreEntity->getType() == 'collection') {
+            $schemaContext = $structuredDataHelper->getSchemaForCollection($programme);
+        } else {
+            $schemaContext = $structuredDataHelper->getSchemaForProgrammeContainerAndParents($programme);
+        }
+        foreach ($availableEpisodes as $episode) {
+            $episodeSchema = $structuredDataHelper->getSchemaForEpisode($episode->getProgrammeItem(), false);
+            $episodeSchema['publication'] = $structuredDataHelper->getSchemaForOnDemand($episode->getProgrammeItem());
+            $schemaContext['hasPart'][] = $episodeSchema;
+        }
+        return $structuredDataHelper->prepare($schemaContext);
     }
 }

@@ -8,6 +8,7 @@ use BBC\ProgrammesPagesService\Domain\Entity\Clip;
 use BBC\ProgrammesPagesService\Domain\Entity\CollapsedBroadcast;
 use BBC\ProgrammesPagesService\Domain\Entity\Contribution;
 use BBC\ProgrammesPagesService\Domain\Entity\Episode;
+use BBC\ProgrammesPagesService\Domain\Entity\Programme;
 use BBC\ProgrammesPagesService\Domain\Entity\ProgrammeContainer;
 use BBC\ProgrammesPagesService\Domain\Entity\ProgrammeItem;
 use BBC\ProgrammesPagesService\Domain\Entity\Series;
@@ -82,6 +83,16 @@ class StructuredDataHelper
         return $this->schemaHelper->getSchemaForSeason($programmeContainer);
     }
 
+    public function getSchemaForCollectionContainer(ProgrammeContainer $programmeContainer): array
+    {
+        if ($programmeContainer->isTlec()) {
+            return $this->schemaHelper->getSchemaForCollection($programmeContainer);
+        }
+
+        /** @var Series $programmeContainer */
+        return $this->schemaHelper->getSchemaForSeason($programmeContainer);
+    }
+
     public function buildSchemaForClip(Clip $clip) :array
     {
         return $this->schemaHelper->buildSchemaForClip($clip);
@@ -95,6 +106,35 @@ class StructuredDataHelper
     public function getSchemaForNonActorContribution(Contribution $contribution): array
     {
         return $this->schemaHelper->buildSchemaForContributor($contribution);
+    }
+
+    public function getSchemaForProgrammeContainerAndParents(Programme $programmeContainer): array
+    {
+        $schemaContext = $this->getSchemaForProgrammeContainer($programmeContainer);
+        if ($programmeContainer->isTlec()) {
+            return $schemaContext;
+        }
+        $ancestry = \array_slice($programmeContainer->getAncestry(), 1); // First item is the programme itself, we only want the parents
+        $tleo = array_pop($ancestry); // last item is the TLEO (pop removes this from the ancestry array too)
+        foreach ($ancestry as $ancestor) {
+            $schemaContext['partOfSeason'] = $this->getSchemaForProgrammeContainer($ancestor);
+        }
+        $schemaContext['partOfSeries'] = $this->getSchemaForProgrammeContainer($tleo);
+
+        return $schemaContext;
+    }
+
+    public function getSchemaForCollection(Programme $programmeContainer): array
+    {
+        $schemaContext = $this->getSchemaForCollectionContainer($programmeContainer);
+        if ($programmeContainer->isTlec()) {
+            return $schemaContext;
+        }
+        $ancestry = $programmeContainer->getAncestry();
+        foreach ($ancestry as $ancestor) {
+            $schemaContext['partOf'] = $this->getSchemaForCollectionContainer($ancestor);
+        }
+        return $schemaContext;
     }
 
     private function getSchemaForService(Service $service): array

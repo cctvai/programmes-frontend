@@ -60,7 +60,7 @@ class UpcomingController extends BaseProgrammeEpisodesController
      */
     private function getSchema(StructuredDataHelper $structuredDataHelper, ProgrammeContainer $programmeContainer, array $upcomingBroadcasts): array
     {
-        $schemaContext = $this->getSchemaForProgrammeContainerAndParents($structuredDataHelper, $programmeContainer);
+        $schemaContext = $structuredDataHelper->getSchemaForProgrammeContainerAndParents($programmeContainer);
 
         foreach ($upcomingBroadcasts as $upcomingBroadcast) {
             $episodeSchema = $structuredDataHelper->getSchemaForEpisode($upcomingBroadcast->getProgrammeItem(), false);

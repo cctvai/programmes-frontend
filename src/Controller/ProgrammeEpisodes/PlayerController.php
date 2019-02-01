@@ -78,7 +78,7 @@ class PlayerController extends BaseProgrammeEpisodesController
      */
     private function getSchema(StructuredDataHelper $structuredDataHelper, ProgrammeContainer $programmeContainer, array $availableEpisodes): array
     {
-        $schemaContext = $this->getSchemaForProgrammeContainerAndParents($structuredDataHelper, $programmeContainer);
+        $schemaContext = $structuredDataHelper->getSchemaForProgrammeContainerAndParents($programmeContainer);
 
         foreach ($availableEpisodes as $episode) {
             $episodeSchema = $structuredDataHelper->getSchemaForEpisode($episode, false);

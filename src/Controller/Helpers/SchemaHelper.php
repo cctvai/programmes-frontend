@@ -6,6 +6,7 @@ namespace App\Controller\Helpers;
 use App\DsShared\Helpers\StreamableHelper;
 use BBC\ProgrammesPagesService\Domain\Entity\BroadcastInfoInterface;
 use BBC\ProgrammesPagesService\Domain\Entity\Clip;
+use BBC\ProgrammesPagesService\Domain\Entity\Collection;
 use BBC\ProgrammesPagesService\Domain\Entity\Contribution;
 use BBC\ProgrammesPagesService\Domain\Entity\Episode;
 use BBC\ProgrammesPagesService\Domain\Entity\Network;
@@ -169,6 +170,18 @@ class SchemaHelper
             'identifier' => $season->getPid(),
             'name' => $season->getTitle(),
             'url' => $this->router->generate('find_by_pid', ['pid' => $season->getPid()], UrlGeneratorInterface::ABSOLUTE_URL),
+        ];
+    }
+
+    public function getSchemaForCollection(ProgrammeContainer $programmeContainer): array
+    {
+        return [
+            '@type' => 'Collection',
+            'image' => $programmeContainer->getImage()->getUrl(480),
+            'description' => $programmeContainer->getShortSynopsis(),
+            'identifier' => $programmeContainer->getPid(),
+            'name' => $programmeContainer->getTitle(),
+
         ];
     }
 

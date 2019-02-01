@@ -91,7 +91,7 @@ class GuideController extends BaseProgrammeEpisodesController
      */
     private function getSchema(StructuredDataHelper $structuredDataHelper, ProgrammeContainer $programmeContainer, array $children, array $upcomingBroadcast): array
     {
-        $schemaContext = $this->getSchemaForProgrammeContainerAndParents($structuredDataHelper, $programmeContainer);
+        $schemaContext = $structuredDataHelper->getSchemaForProgrammeContainerAndParents($programmeContainer);
 
         foreach ($children as $child) {
             if ($child instanceof Series) {
