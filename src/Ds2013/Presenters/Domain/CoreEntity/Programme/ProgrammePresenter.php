@@ -5,7 +5,7 @@ namespace App\Ds2013\Presenters\Domain\CoreEntity\Programme;
 use App\Ds2013\Presenters\Domain\CoreEntity\Programme\SubPresenters\ProgrammeBodyPresenter;
 use App\Ds2013\Presenters\Domain\CoreEntity\Programme\SubPresenters\ProgrammeOverlayPresenter;
 use App\Ds2013\Presenters\Domain\CoreEntity\SharedSubPresenters\CoreEntityTitlePresenter;
-use App\DsShared\Helpers\HelperFactory;
+use App\DsShared\Factory\HelperFactory;
 use App\DsShared\Helpers\StreamableHelper;
 use App\Exception\InvalidOptionException;
 use BBC\ProgrammesPagesService\Domain\Entity\Brand;
@@ -41,7 +41,7 @@ class ProgrammePresenter extends ProgrammePresenterBase
         'truncation_length',
     ];
 
-    /** @var HelperFactory */
+    /** @var \App\DsShared\Factory\HelperFactory */
     protected $helperFactory;
 
     public function __construct(

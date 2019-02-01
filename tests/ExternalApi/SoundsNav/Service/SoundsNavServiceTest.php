@@ -3,7 +3,7 @@ declare(strict_types = 1);
 
 namespace Tests\App\ExternalApi\SoundsNav\Service;
 
-use App\ExternalApi\Client\HttpApiClientFactory;
+use App\ExternalApi\Client\Factory\HttpApiClientFactory;
 use App\ExternalApi\SoundsNav\Domain\SoundsNav;
 use App\ExternalApi\SoundsNav\Mapper\SoundsNavMapper;
 use App\ExternalApi\SoundsNav\Service\SoundsNavService;

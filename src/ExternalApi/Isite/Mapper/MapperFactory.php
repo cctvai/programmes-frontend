@@ -4,7 +4,7 @@ declare(strict_types = 1);
 namespace App\ExternalApi\Isite\Mapper;
 
 use App\Controller\Helpers\IsiteKeyHelper;
-use App\ExternalApi\IdtQuiz\IdtQuizService;
+use App\ExternalApi\IdtQuiz\Service\IdtQuizService;
 use BBC\ProgrammesPagesService\Service\CoreEntitiesService;
 use BBC\ProgrammesPagesService\Service\ProgrammesService;
 use BBC\ProgrammesPagesService\Service\VersionsService;

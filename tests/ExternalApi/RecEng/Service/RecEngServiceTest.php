@@ -3,7 +3,7 @@ declare(strict_types = 1);
 
 namespace Tests\App\ExternalApi\RecEng\Service;
 
-use App\ExternalApi\Client\HttpApiClientFactory;
+use App\ExternalApi\Client\Factory\HttpApiClientFactory;
 use App\ExternalApi\RecEng\Service\RecEngService;
 use BBC\ProgrammesPagesService\Domain\Entity\Episode;
 use BBC\ProgrammesPagesService\Domain\Entity\Programme;

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-namespace App\DsAmen;
+namespace App\DsAmen\Factory;
 
 use App\DsAmen\Presenters\Domain\CoreEntity\CollapsedBroadcast\CollapsedBroadcastPresenter;
 use App\DsAmen\Presenters\Domain\CoreEntity\Group\GroupPresenter;
@@ -14,7 +14,7 @@ use App\DsAmen\Presenters\Section\Footer\FooterPresenter;
 use App\DsAmen\Presenters\Section\Map\MapPresenter;
 use App\DsAmen\Presenters\Section\RelatedTopics\RelatedTopicsPresenter;
 use App\DsAmen\Presenters\Utilities\Duration\DurationPresenter;
-use App\DsShared\Helpers\HelperFactory;
+use App\DsShared\Factory\HelperFactory;
 use App\ExternalApi\Ada\Domain\AdaClass;
 use App\ExternalApi\Electron\Domain\SupportingContentItem;
 use App\ExternalApi\Recipes\Domain\Recipe;
@@ -39,7 +39,7 @@ class PresenterFactory
     /** @var UrlGeneratorInterface */
     private $router;
 
-    /** @var HelperFactory */
+    /** @var \App\DsShared\Factory\HelperFactory */
     private $helperFactory;
 
     public function __construct(TranslateProvider $translateProvider, UrlGeneratorInterface $router, HelperFactory $helperFactory)

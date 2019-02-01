@@ -5,7 +5,7 @@ namespace Tests\App\ExternalApi\Isite\Mapper\Clip;
 use App\Builders\ClipBuilder;
 use App\Builders\VersionBuilder;
 use App\Controller\Helpers\IsiteKeyHelper;
-use App\ExternalApi\IdtQuiz\IdtQuizService;
+use App\ExternalApi\IdtQuiz\Service\IdtQuizService;
 use App\ExternalApi\Isite\Domain\ContentBlock\ClipBlock\ClipStandAlone;
 use App\ExternalApi\Isite\Mapper\ContentBlockMapper;
 use App\ExternalApi\Isite\Mapper\MapperFactory;

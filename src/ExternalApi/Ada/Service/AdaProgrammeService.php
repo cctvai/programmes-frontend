@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace App\ExternalApi\Ada\Service;
 
 use App\ExternalApi\Ada\Mapper\AdaProgrammeMapper;
-use App\ExternalApi\Client\HttpApiClientFactory;
+use App\ExternalApi\Client\Factory\HttpApiClientFactory;
 use App\ExternalApi\Exception\MultiParseException;
 use BBC\ProgrammesCachingLibrary\CacheInterface;
 use BBC\ProgrammesPagesService\Domain\Entity\Programme;

@@ -2,7 +2,8 @@
 
 namespace App\ExternalApi\CircuitBreaker;
 
-use App\ExternalApi\ApiType\UriToApiTypeMapper;
+use App\ExternalApi\ApiType\Mapper\UriToApiTypeMapper;
+use App\ExternalApi\CircuitBreaker\Factory\CircuitBreakerFactory;
 use App\ExternalApi\Exception\CircuitBreakerClosedException;
 use App\Fixture\ScenarioManager;
 use GuzzleHttp\Psr7\Response;

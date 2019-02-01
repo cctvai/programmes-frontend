@@ -2,10 +2,10 @@
 declare(strict_types = 1);
 namespace Tests\App;
 
-use App\Ds2013\PresenterFactory as Ds2013PresenterFactory;
-use App\DsAmen\PresenterFactory as DsAmenPresenterFactory;
-use App\DsShared\Helpers\HelperFactory;
-use App\DsShared\PresenterFactory as DsSharedPresenterFactory;
+use App\Ds2013\Factory\PresenterFactory as Ds2013PresenterFactory;
+use App\DsAmen\Factory\PresenterFactory as DsAmenPresenterFactory;
+use App\DsShared\Factory\HelperFactory;
+use App\DsShared\Factory\PresenterFactory as DsSharedPresenterFactory;
 use App\Translate\TranslateProvider;
 use App\Twig\DesignSystemPresenterExtension;
 use App\Twig\AdditionalJavascriptExtension;

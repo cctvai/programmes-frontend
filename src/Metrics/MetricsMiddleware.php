@@ -2,7 +2,7 @@
 
 namespace App\Metrics;
 
-use App\ExternalApi\ApiType\UriToApiTypeMapper;
+use App\ExternalApi\ApiType\Mapper\UriToApiTypeMapper;
 use App\Fixture\ScenarioManager;
 use GuzzleHttp\TransferStats;
 use Psr\Http\Message\RequestInterface;

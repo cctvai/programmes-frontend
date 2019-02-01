@@ -3,7 +3,7 @@ declare(strict_types = 1);
 
 namespace App\ExternalApi\Isite\Service;
 
-use App\ExternalApi\Client\HttpApiClientFactory;
+use App\ExternalApi\Client\Factory\HttpApiClientFactory;
 use App\ExternalApi\Isite\Domain\Article;
 use App\ExternalApi\Isite\Domain\Profile;
 use App\ExternalApi\Isite\GuidQuery;

@@ -6,7 +6,7 @@ namespace Tests\App\ExternalApi\Ada\Service;
 use App\ExternalApi\Ada\Domain\AdaProgrammeItem;
 use App\ExternalApi\Ada\Mapper\AdaProgrammeMapper;
 use App\ExternalApi\Ada\Service\AdaProgrammeService;
-use App\ExternalApi\Client\HttpApiClientFactory;
+use App\ExternalApi\Client\Factory\HttpApiClientFactory;
 use BBC\ProgrammesPagesService\Domain\Entity\Programme;
 use BBC\ProgrammesPagesService\Domain\ValueObject\Pid;
 use BBC\ProgrammesPagesService\Service\ProgrammesService;

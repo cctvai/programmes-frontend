@@ -6,7 +6,7 @@ use App\Ds2013\Presenters\Domain\CoreEntity\Programme\BroadcastSubPresenters\Bro
 use App\Ds2013\Presenters\Domain\CoreEntity\Programme\BroadcastSubPresenters\BroadcastProgrammeTitlePresenter;
 use App\Ds2013\Presenters\Domain\CoreEntity\Programme\SubPresenters\ProgrammeBodyPresenter;
 use App\Ds2013\Presenters\Domain\CoreEntity\SharedSubPresenters\CoreEntityTitlePresenter;
-use App\DsShared\Helpers\HelperFactory;
+use App\DsShared\Factory\HelperFactory;
 use App\DsShared\Helpers\StreamableHelper;
 use BBC\ProgrammesPagesService\Domain\Entity\Broadcast;
 use BBC\ProgrammesPagesService\Domain\Entity\Programme;

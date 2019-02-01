@@ -7,7 +7,7 @@ use App\Controller\Helpers\StructuredDataHelper;
 use App\Controller\Traits\SchedulesPageResponseCodeTrait;
 use App\Controller\Traits\UtcOffsetValidatorTrait;
 use App\Ds2013\Presenters\Pages\Schedules\ByWeekPage\SchedulesByWeekPagePresenter;
-use App\DsShared\Helpers\HelperFactory;
+use App\DsShared\Factory\HelperFactory;
 use App\ValueObject\BroadcastWeek;
 use BBC\ProgrammesPagesService\Domain\ApplicationTime;
 use BBC\ProgrammesPagesService\Domain\Entity\Broadcast;
@@ -139,8 +139,12 @@ class ByWeekController extends SchedulesBaseController
      * @param string $date in format Y-m-d
      * @return Broadcast[][]
      */
-    private function addFinalBroadcastGapIfNecessary(array $broadcastsToday, Service $service, DateTimeZone $tz, string $date): array
-    {
+    private function addFinalBroadcastGapIfNecessary(
+        array $broadcastsToday,
+        Service $service,
+        DateTimeZone $tz,
+        string $date
+    ): array {
 
         $lastHour = end($broadcastsToday);
         $lastBroadcast = end($lastHour);
@@ -160,8 +164,12 @@ class ByWeekController extends SchedulesBaseController
      * @param string $date in format Y-m-d
      * @return Broadcast[][]
      */
-    private function createDayOfBroadcastsAndGaps(array $dayOfBroadcasts, Service $service, DateTimeZone $tz, string $date): array
-    {
+    private function createDayOfBroadcastsAndGaps(
+        array $dayOfBroadcasts,
+        Service $service,
+        DateTimeZone $tz,
+        string $date
+    ): array {
         $broadcastsToday = [];
         $priorBroadcast = null;
         foreach ($dayOfBroadcasts as $hour => $hourOfBroadcasts) {
@@ -203,7 +211,8 @@ class ByWeekController extends SchedulesBaseController
 
     private function serviceIsActiveDuringWeek(Service $service, BroadcastWeek $broadcastWeek): bool
     {
-        return (!$service->getStartDate() || $service->getStartDate() <= $broadcastWeek->end()) && (!$service->getEndDate() || $broadcastWeek->start() < $service->getEndDate());
+        return (!$service->getStartDate() || $service->getStartDate() <= $broadcastWeek->end())
+            && (!$service->getEndDate() || $broadcastWeek->start() < $service->getEndDate());
     }
 
     /**

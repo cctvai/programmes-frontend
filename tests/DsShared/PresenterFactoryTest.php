@@ -2,8 +2,8 @@
 declare(strict_types = 1);
 namespace Tests\App\DsShared;
 
-use App\DsShared\Helpers\HelperFactory;
-use App\DsShared\PresenterFactory;
+use App\DsShared\Factory\HelperFactory;
+use App\DsShared\Factory\PresenterFactory;
 use App\DsShared\Utilities\ImageEntity\ImageEntityPresenter;
 use App\Translate\TranslateProvider;
 use BBC\ProgrammesPagesService\Domain\Entity\Image;
@@ -13,7 +13,7 @@ use RMP\Translate\Translate;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
- * @covers \App\DsShared\PresenterFactory
+ * @covers \App\DsShared\Factory\PresenterFactory
  */
 class PresenterFactoryTest extends TestCase
 {
@@ -23,7 +23,7 @@ class PresenterFactoryTest extends TestCase
     /** @var UrlGeneratorInterface|PHPUnit_Framework_MockObject_MockObject */
     private $router;
 
-    /** @var HelperFactory|PHPUnit_Framework_MockObject_MockObject */
+    /** @var \App\DsShared\Factory\HelperFactory|PHPUnit_Framework_MockObject_MockObject */
     private $helperFactory;
 
     /** @var PresenterFactory */

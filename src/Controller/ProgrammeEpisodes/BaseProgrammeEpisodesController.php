@@ -4,7 +4,7 @@ namespace App\Controller\ProgrammeEpisodes;
 
 use App\Controller\BaseController;
 use App\Controller\Helpers\StructuredDataHelper;
-use App\Ds2013\PresenterFactory;
+use App\Ds2013\Factory\PresenterFactory;
 use App\Ds2013\Presenters\Section\EpisodesSubNav\EpisodesSubNavPresenter;
 use BBC\ProgrammesCachingLibrary\CacheInterface;
 use BBC\ProgrammesPagesService\Domain\Entity\ProgrammeContainer;

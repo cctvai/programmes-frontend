@@ -4,7 +4,7 @@ namespace App\Ds2013\Presenters\Domain\CoreEntity\Group;
 
 use App\Ds2013\Presenter;
 use App\Ds2013\Presenters\Domain\CoreEntity\SharedSubPresenters\CoreEntityTitlePresenter;
-use App\DsShared\Helpers\HelperFactory;
+use App\DsShared\Factory\HelperFactory;
 use BBC\ProgrammesPagesService\Domain\Entity\Collection;
 use BBC\ProgrammesPagesService\Domain\Entity\Gallery;
 use BBC\ProgrammesPagesService\Domain\Entity\Group;
@@ -28,7 +28,7 @@ class GroupPresenter extends Presenter
     /** @var UrlGeneratorInterface */
     private $router;
 
-    /** @var HelperFactory */
+    /** @var \App\DsShared\Factory\HelperFactory */
     private $helperFactory;
 
     /** @var Group */

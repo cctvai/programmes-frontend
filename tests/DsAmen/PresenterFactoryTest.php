@@ -2,9 +2,9 @@
 declare(strict_types = 1);
 namespace Tests\App\DsAmen;
 
-use App\DsAmen\PresenterFactory;
+use App\DsAmen\Factory\PresenterFactory;
 use App\DsAmen\Presenters\Domain\CoreEntity\Programme\ProgrammePresenter;
-use App\DsShared\Helpers\HelperFactory;
+use App\DsShared\Factory\HelperFactory;
 use App\Translate\TranslateProvider;
 use BBC\ProgrammesPagesService\Domain\Entity\Programme;
 use PHPUnit\Framework\TestCase;
@@ -13,7 +13,7 @@ use RMP\Translate\Translate;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
- * @covers \App\DsAmen\PresenterFactory
+ * @covers \App\DsAmen\Factory\PresenterFactory
  */
 class PresenterFactoryTest extends TestCase
 {

@@ -1,8 +1,9 @@
 <?php
 declare(strict_types = 1);
 
-namespace App\ExternalApi\Client;
+namespace App\ExternalApi\Client\Factory;
 
+use App\ExternalApi\Client\HttpApiMultiClient;
 use BBC\ProgrammesCachingLibrary\CacheInterface;
 use GuzzleHttp\ClientInterface;
 use Psr\Log\LoggerInterface;

@@ -6,7 +6,7 @@ use App\Controller\Helpers\StructuredDataHelper;
 use App\Controller\Traits\SchedulesPageResponseCodeTrait;
 use App\Controller\Traits\UtcOffsetValidatorTrait;
 use App\Ds2013\Presenters\Pages\Schedules\ByDayPage\SchedulesByDayPagePresenter;
-use App\DsShared\Helpers\HelperFactory;
+use App\DsShared\Factory\HelperFactory;
 use App\ValueObject\BroadcastDay;
 use BBC\ProgrammesPagesService\Domain\ApplicationTime;
 use BBC\ProgrammesPagesService\Domain\Entity\Broadcast;

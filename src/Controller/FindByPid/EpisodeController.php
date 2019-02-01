@@ -4,7 +4,7 @@ namespace App\Controller\FindByPid;
 
 use App\Controller\BaseController;
 use App\Controller\Helpers\StructuredDataHelper;
-use App\Ds2013\PresenterFactory;
+use App\Ds2013\Factory\PresenterFactory;
 use App\ExternalApi\Ada\Service\AdaClassService;
 use App\ExternalApi\Ada\Service\AdaProgrammeService;
 use App\ExternalApi\Electron\Service\ElectronService;

@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\ExternalApi\RecEng\Service;
 
-use App\ExternalApi\Client\HttpApiClientFactory;
+use App\ExternalApi\Client\Factory\HttpApiClientFactory;
 use App\ExternalApi\Client\HttpApiMultiClient;
 use App\ExternalApi\Exception\MultiParseException;
 use BBC\ProgrammesCachingLibrary\CacheInterface;

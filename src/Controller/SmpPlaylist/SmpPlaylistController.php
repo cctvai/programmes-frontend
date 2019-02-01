@@ -5,7 +5,7 @@ namespace App\Controller\SmpPlaylist;
 
 use App\Controller\BaseController;
 use App\Controller\Helpers\SmpPlaylistHelper;
-use App\DsShared\Helpers\HelperFactory;
+use App\DsShared\Factory\HelperFactory;
 use BBC\ProgrammesPagesService\Domain\Entity\ProgrammeItem;
 use BBC\ProgrammesPagesService\Domain\ValueObject\Pid;
 use BBC\ProgrammesPagesService\Service\ProgrammesService;

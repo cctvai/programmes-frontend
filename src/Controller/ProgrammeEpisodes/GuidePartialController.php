@@ -4,7 +4,7 @@ namespace App\Controller\ProgrammeEpisodes;
 
 use App\Controller\BaseController;
 use App\Controller\Traits\IndexerTrait;
-use App\Ds2013\PresenterFactory;
+use App\Ds2013\Factory\PresenterFactory;
 use BBC\ProgrammesPagesService\Domain\Entity\ProgrammeContainer;
 use BBC\ProgrammesPagesService\Service\CollapsedBroadcastsService;
 use BBC\ProgrammesPagesService\Service\ProgrammesService;

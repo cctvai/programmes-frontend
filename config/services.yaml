@@ -25,7 +25,7 @@ parameters:
     app.ada.programme_service.class: App\ExternalApi\Ada\Service\AdaProgrammeService
     app.electron.baseurl: 'https://api.live.bbc.co.uk/electron'
     app.electron.service.class: App\ExternalApi\Electron\Service\ElectronService
-    app.idtquiz.service.class: App\ExternalApi\IdtQuiz\IdtQuizService
+    app.idtquiz.service.class: App\ExternalApi\IdtQuiz\Service\IdtQuizService
     app.favourites.baseurl: 'https://www.bbc.co.uk/modules/plugin/musicfavourite/init'
     app.favourites.service.class: App\ExternalApi\FavouritesButton\Service\FavouritesButtonService
     app.isite.baseurl: 'https://api.live.bbc.co.uk/isite2-content-reader'
@@ -58,21 +58,39 @@ services:
                             # fetching services directly from the container via $container->get() won't work.
                             # The best practice is to be explicit about your dependencies anyway.
 
-    # makes classes in src/ available to be used as services
-    # this creates a service per class whose id is the fully-qualified class name
+    # List of services to be autowired, please be conservative
+    # note: This creates a service per class whose id is the fully-qualified class name
     App\:
-        resource: '../src/{ArgumentResolver,Ds2013,DsAmen,DsShared,ExternalApi,Branding,Translate,Twig}'
+        resource: '../src/{Branding,Cosmos,Translate,Twig,Ds2013/Factory,DsAmen/Factory,DsShared/Factory}'
+
+    App\ExternalApi\:
+        resource: '../src/ExternalApi/*/{Mapper,Factory,Helpers,Service}'
 
     # controllers are imported separately to make sure services can be injected
     # as action arguments even if you don't extend any base controller class
     App\Controller\:
         resource: '../src/Controller'
+        exclude: '../src/Controller/Helpers'
         tags: ['controller.service_arguments']
+
+    # Helpers separate from controllers to prevent method autowiring
+    App\Controller\Helpers\:
+        resource: '../src/Controller/Helpers'
+
+    ### Begin the services!
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+    App\DsShared\Helpers\StreamableHelper:
+        factory: 'App\DsShared\Factory\HelperFactory:getStreamUrlHelper'
 
-    ### Begin the services!
+    App\ExternalApi\Isite\Mapper\ArticleMapper:
+        factory: 'App\ExternalApi\Isite\Mapper\MapperFactory:createArticleMapper'
+
+    App\ExternalApi\Isite\Mapper\ProfileMapper:
+        factory: 'App\ExternalApi\Isite\Mapper\MapperFactory:createProfileMapper'
+
+    App\ExternalApi\XmlParser\XmlParser: ~
 
     App\Cosmos\Dials:
         arguments:
@@ -343,9 +361,9 @@ services:
         arguments:
             $baseUrl: '%app.tupac.baseurl%'
 
-    App\ExternalApi\IdtQuiz\IdtQuizService:
+    App\ExternalApi\IdtQuiz\Service\IdtQuizService:
         class: '%app.idtquiz.service.class%'
         arguments:
-            $clientFactory: '@App\ExternalApi\Client\HttpApiClientFactory'
+            $clientFactory: '@App\ExternalApi\Client\Factory\HttpApiClientFactory'
             $smallproxEndpoint: '%app.services.smallprox.endpoint%'
 

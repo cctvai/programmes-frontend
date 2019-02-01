@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-namespace App\DsShared;
+namespace App\DsShared\Factory;
 
 use App\DsShared\Utilities\EntityContext\EntityContextPresenter;
 use App\DsShared\Utilities\Image\ImagePresenter;

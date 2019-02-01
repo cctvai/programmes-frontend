@@ -6,7 +6,7 @@ namespace Tests\App\Ds2013\Presenters\Domain\CoreEntity\Programme;
 use App\Ds2013\Presenters\Domain\CoreEntity\Programme\CollapsedBroadcastProgrammePresenter;
 use App\Ds2013\Presenters\Domain\CoreEntity\Programme\CollapsedBroadcastSubPresenters\CollapsedBroadcastProgrammeBodyPresenter;
 use App\Ds2013\Presenters\Domain\CoreEntity\Programme\CollapsedBroadcastSubPresenters\CollapsedBroadcastProgrammeOverlayPresenter;
-use App\DsShared\Helpers\HelperFactory;
+use App\DsShared\Factory\HelperFactory;
 use App\DsShared\Helpers\LiveBroadcastHelper;
 use App\DsShared\Helpers\LocalisedDaysAndMonthsHelper;
 use App\DsShared\Helpers\PlayTranslationsHelper;

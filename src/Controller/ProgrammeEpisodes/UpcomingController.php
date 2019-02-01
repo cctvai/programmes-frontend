@@ -4,7 +4,7 @@ declare(strict_types = 1);
 namespace App\Controller\ProgrammeEpisodes;
 
 use App\Controller\Helpers\StructuredDataHelper;
-use App\Ds2013\PresenterFactory;
+use App\Ds2013\Factory\PresenterFactory;
 use BBC\ProgrammesPagesService\Domain\Entity\CollapsedBroadcast;
 use BBC\ProgrammesPagesService\Domain\Entity\ProgrammeContainer;
 use BBC\ProgrammesPagesService\Service\CollapsedBroadcastsService;

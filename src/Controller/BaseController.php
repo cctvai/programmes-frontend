@@ -5,7 +5,7 @@ namespace App\Controller;
 
 use App\Branding\BrandingPlaceholderResolver;
 use App\Cosmos\Dials;
-use App\Ds2013\PresenterFactory;
+use App\Ds2013\Factory\PresenterFactory;
 use App\Translate\TranslateProvider;
 use App\ValueObject\AnalyticsCounterName;
 use App\ValueObject\AtiAnalyticsLabels;

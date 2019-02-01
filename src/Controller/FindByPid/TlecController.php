@@ -5,8 +5,8 @@ namespace App\Controller\FindByPid;
 
 use App\Controller\BaseController;
 use App\Controller\Helpers\StructuredDataHelper;
-use App\DsAmen\PresenterFactory;
-use App\DsShared\Helpers\HelperFactory;
+use App\DsAmen\Factory\PresenterFactory;
+use App\DsShared\Factory\HelperFactory;
 use App\ExternalApi\Ada\Service\AdaClassService;
 use App\ExternalApi\Electron\Service\ElectronService;
 use App\ExternalApi\FavouritesButton\Service\FavouritesButtonService;

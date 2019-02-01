@@ -1,8 +1,9 @@
 <?php
 declare(strict_types = 1);
 
-namespace App\ExternalApi\ApiType;
+namespace App\ExternalApi\ApiType\Mapper;
 
+use App\ExternalApi\ApiType\ApiTypeEnum;
 use Psr\Http\Message\UriInterface;
 
 class UriToApiTypeMapper

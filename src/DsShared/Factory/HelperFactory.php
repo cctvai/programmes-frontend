@@ -1,7 +1,16 @@
 <?php
 
-namespace App\DsShared\Helpers;
+namespace App\DsShared\Factory;
 
+use App\DsShared\Helpers\BroadcastNetworksHelper;
+use App\DsShared\Helpers\FixIsiteMarkupHelper;
+use App\DsShared\Helpers\GuidanceWarningHelper;
+use App\DsShared\Helpers\LiveBroadcastHelper;
+use App\DsShared\Helpers\LocalisedDaysAndMonthsHelper;
+use App\DsShared\Helpers\PlayTranslationsHelper;
+use App\DsShared\Helpers\SmpPlaylistHelper;
+use App\DsShared\Helpers\StreamableHelper;
+use App\DsShared\Helpers\TitleLogicHelper;
 use App\Translate\TranslateProvider;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 

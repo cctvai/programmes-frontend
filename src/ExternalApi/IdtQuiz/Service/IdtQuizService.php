@@ -1,8 +1,8 @@
 <?php
 
-namespace App\ExternalApi\IdtQuiz;
+namespace App\ExternalApi\IdtQuiz\Service;
 
-use App\ExternalApi\Client\HttpApiClientFactory;
+use App\ExternalApi\Client\Factory\HttpApiClientFactory;
 use GuzzleHttp\Promise\PromiseInterface;
 use Closure;
 use BBC\ProgrammesCachingLibrary\CacheInterface;

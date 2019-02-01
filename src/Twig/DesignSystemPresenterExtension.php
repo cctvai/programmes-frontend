@@ -4,11 +4,11 @@ declare(strict_types = 1);
 namespace App\Twig;
 
 use App\Ds2013\Presenter as Ds2013Presenter;
-use App\Ds2013\PresenterFactory as Ds2013PresenterFactory;
+use App\Ds2013\Factory\PresenterFactory as Ds2013PresenterFactory;
 use App\DsAmen\Presenter as DsAmenPresenter;
-use App\DsAmen\PresenterFactory as DsAmenPresenterFactory;
+use App\DsAmen\Factory\PresenterFactory as DsAmenPresenterFactory;
 use App\DsShared\Presenter as DsSharedPresenter;
-use App\DsShared\PresenterFactory as DsSharedPresenterFactory;
+use App\DsShared\Factory\PresenterFactory as DsSharedPresenterFactory;
 use Twig_Environment;
 use Twig_Extension;
 use Twig_Function;

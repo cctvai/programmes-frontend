@@ -1,7 +1,8 @@
 <?php
 declare(strict_types = 1);
-namespace App\Ds2013;
+namespace App\Ds2013\Factory;
 
+use App\Ds2013\Presenter;
 use App\Ds2013\Presenters\Domain\Article\ArticlePresenter;
 use App\Ds2013\Presenters\Domain\Broadcast\BroadcastPresenter;
 use App\Ds2013\Presenters\Domain\BroadcastEvent\BroadcastEventPresenter;
@@ -45,7 +46,7 @@ use App\Ds2013\Presenters\Utilities\DateList\DateListPresenter;
 use App\Ds2013\Presenters\Utilities\Download\DownloadPresenter;
 use App\Ds2013\Presenters\Utilities\Paginator\PaginatorPresenter;
 use App\Ds2013\Presenters\Utilities\SMP\SmpPresenter;
-use App\DsShared\Helpers\HelperFactory;
+use App\DsShared\Factory\HelperFactory;
 use App\ExternalApi\Electron\Domain\SupportingContentItem;
 use App\ExternalApi\Isite\Domain\Article;
 use App\ExternalApi\Isite\Domain\ContentBlock\AbstractContentBlock;
@@ -90,7 +91,7 @@ use Cake\Chronos\Date;
 use InvalidArgumentException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use BBC\ProgrammesPagesService\Domain\Entity\Image as DomainImage;
-use App\DsShared\PresenterFactory as SharedPresenterFactory;
+use App\DsShared\Factory\PresenterFactory as SharedPresenterFactory;
 
 /**
  * Ds2013 Factory Class for creating presenters.

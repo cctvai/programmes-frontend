@@ -11,7 +11,7 @@ use App\DsAmen\Presenters\Section\Map\SubPresenter\ProgrammeInfoPresenter;
 use App\DsAmen\Presenters\Section\Map\SubPresenter\PromoPriorityPresenter;
 use App\DsAmen\Presenters\Section\Map\SubPresenter\SocialBarPresenter;
 use App\DsAmen\Presenters\Section\Map\SubPresenter\TxPresenter;
-use App\DsShared\Helpers\HelperFactory;
+use App\DsShared\Factory\HelperFactory;
 use App\Translate\TranslateProvider;
 use BBC\ProgrammesPagesService\Domain\Entity\CollapsedBroadcast;
 use BBC\ProgrammesPagesService\Domain\Entity\Episode;
@@ -36,7 +36,7 @@ class MapPresenter extends Presenter
     /** @var Promotion|null */
     private $priorityPromotion;
 
-    /** @var HelperFactory */
+    /** @var \App\DsShared\Factory\HelperFactory */
     private $helperFactory;
 
     /** @var CollapsedBroadcast|null */

@@ -7,7 +7,7 @@ use App\Controller\Helpers\IsiteKeyHelper;
 use App\ExternalApi\Isite\Domain\ContentBlock\ClipBlock\ClipStandAlone;
 use App\ExternalApi\Isite\Domain\ContentBlock\ClipBlock\ClipStream;
 use App\ExternalApi\Isite\Domain\ContentBlock\ClipBlock\StreamItem;
-use App\ExternalApi\IdtQuiz\IdtQuizService;
+use App\ExternalApi\IdtQuiz\Service\IdtQuizService;
 use App\ExternalApi\Isite\Domain\ContentBlock\AbstractContentBlock;
 use App\ExternalApi\Isite\Domain\ContentBlock\Faq;
 use App\ExternalApi\Isite\Domain\ContentBlock\Galleries;

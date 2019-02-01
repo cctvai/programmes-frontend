@@ -3,7 +3,7 @@ declare(strict_types = 1);
 
 namespace Tests\App\ExternalApi\Electron\Service;
 
-use App\ExternalApi\Client\HttpApiClientFactory;
+use App\ExternalApi\Client\Factory\HttpApiClientFactory;
 use App\ExternalApi\Electron\Mapper\SupportingContentMapper;
 use App\ExternalApi\Electron\Service\ElectronService;
 use App\ExternalApi\XmlParser\XmlParser;

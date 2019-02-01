@@ -3,7 +3,7 @@ declare(strict_types = 1);
 
 namespace App\ExternalApi\Electron\Service;
 
-use App\ExternalApi\Client\HttpApiClientFactory;
+use App\ExternalApi\Client\Factory\HttpApiClientFactory;
 use App\ExternalApi\Client\HttpApiMultiClient;
 use App\ExternalApi\Electron\Domain\SupportingContentItem;
 use App\ExternalApi\Electron\Mapper\SupportingContentMapper;

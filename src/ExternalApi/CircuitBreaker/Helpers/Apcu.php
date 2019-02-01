@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-namespace App\ExternalApi\CircuitBreaker;
+namespace App\ExternalApi\CircuitBreaker\Helpers;
 
 /**
  * Class Apcu

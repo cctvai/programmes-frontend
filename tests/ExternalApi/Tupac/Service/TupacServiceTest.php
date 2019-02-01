@@ -3,7 +3,7 @@ declare(strict_types = 1);
 
 namespace Tests\App\ExternalApi\Tupac\Service;
 
-use App\ExternalApi\Client\HttpApiClientFactory;
+use App\ExternalApi\Client\Factory\HttpApiClientFactory;
 use App\ExternalApi\Tupac\Domain\Record;
 use App\ExternalApi\Tupac\Service\TupacService;
 use GuzzleHttp\Client;

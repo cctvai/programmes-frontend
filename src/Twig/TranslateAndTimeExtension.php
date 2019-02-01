@@ -2,7 +2,7 @@
 declare(strict_types = 1);
 namespace App\Twig;
 
-use App\DsShared\Helpers\HelperFactory;
+use App\DsShared\Factory\HelperFactory;
 use App\Translate\TranslatableTrait;
 use App\Translate\TranslateProvider;
 use BBC\ProgrammesPagesService\Domain\ApplicationTime;

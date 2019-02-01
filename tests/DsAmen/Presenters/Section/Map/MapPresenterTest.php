@@ -12,7 +12,7 @@ use App\DsAmen\Presenters\Section\Map\SubPresenter\LastOnPresenter;
 use App\DsAmen\Presenters\Section\Map\SubPresenter\OnDemandPresenter;
 use App\DsAmen\Presenters\Section\Map\SubPresenter\PromoPriorityPresenter;
 use App\DsAmen\Presenters\Section\Map\SubPresenter\TxPresenter;
-use App\DsShared\Helpers\HelperFactory;
+use App\DsShared\Factory\HelperFactory;
 use App\Translate\TranslateProvider;
 use BBC\ProgrammesPagesService\Domain\Entity\CollapsedBroadcast;
 use BBC\ProgrammesPagesService\Domain\Entity\Network;

@@ -5,7 +5,7 @@ namespace App\ExternalApi\Ada\Service;
 
 use App\ExternalApi\Ada\Domain\AdaClass;
 use App\ExternalApi\Ada\Mapper\AdaClassMapper;
-use App\ExternalApi\Client\HttpApiClientFactory;
+use App\ExternalApi\Client\Factory\HttpApiClientFactory;
 use App\ExternalApi\Client\HttpApiMultiClient;
 use App\ExternalApi\Exception\MultiParseException;
 use BBC\ProgrammesCachingLibrary\CacheInterface;

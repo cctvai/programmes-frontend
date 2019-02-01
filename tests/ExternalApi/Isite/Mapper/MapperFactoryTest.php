@@ -3,7 +3,7 @@ declare(strict_types = 1);
 namespace Tests\App\ExternalApi\Isite\Mapper;
 
 use App\Controller\Helpers\IsiteKeyHelper;
-use App\ExternalApi\IdtQuiz\IdtQuizService;
+use App\ExternalApi\IdtQuiz\Service\IdtQuizService;
 use App\ExternalApi\Isite\Mapper\ContentBlockMapper;
 use App\ExternalApi\Isite\Mapper\MapperFactory;
 use BBC\ProgrammesPagesService\Service\CoreEntitiesService;

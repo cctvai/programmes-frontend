@@ -1,6 +1,6 @@
 <?php
 
-namespace App\ExternalApi\IdtQuiz;
+namespace App\ExternalApi\IdtQuiz\Service;
 
 use GuzzleHttp\Promise\FulfilledPromise;
 use GuzzleHttp\Promise\PromiseInterface;

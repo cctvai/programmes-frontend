@@ -7,7 +7,7 @@ use App\Builders\ClipBuilder;
 use App\Builders\ContributionBuilder;
 use App\Builders\ExternalApi\Recipes\RecipeBuilder;
 use App\Builders\VersionBuilder;
-use App\Ds2013\PresenterFactory;
+use App\Ds2013\Factory\PresenterFactory;
 use App\Ds2013\Presenters\Domain\Broadcast\BroadcastPresenter;
 use App\Ds2013\Presenters\Domain\ContentBlock\Clip\ClipPlayable\ClipPlayablePresenter;
 use App\Ds2013\Presenters\Domain\ContentBlock\Clip\ClipStandalone\ClipStandalonePresenter;
@@ -20,7 +20,7 @@ use App\Ds2013\Presenters\Section\RelatedTopics\RelatedTopicsPresenter;
 use App\Ds2013\Presenters\Utilities\Calendar\CalendarPresenter;
 use App\Ds2013\Presenters\Utilities\DateList\DateListPresenter;
 use App\Ds2013\Presenters\Utilities\Download\DownloadPresenter;
-use App\DsShared\Helpers\HelperFactory;
+use App\DsShared\Factory\HelperFactory;
 use App\ExternalApi\Isite\Domain\ContentBlock\ClipBlock\ClipStandAlone;
 use App\ExternalApi\Isite\Domain\ContentBlock\ClipBlock\ClipStream;
 use App\ExternalApi\Isite\Domain\ContentBlock\ClipBlock\StreamItem;
@@ -35,7 +35,7 @@ use BBC\ProgrammesPagesService\Domain\Entity\Programme;
 use BBC\ProgrammesPagesService\Domain\Entity\Service;
 use BBC\ProgrammesPagesService\Domain\Entity\Version;
 use BBC\ProgrammesPagesService\Domain\ValueObject\Pid;
-use App\DsShared\PresenterFactory as DsSharedPresenterFactory;
+use App\DsShared\Factory\PresenterFactory as DsSharedPresenterFactory;
 use Cake\Chronos\Chronos;
 use Cake\Chronos\Date;
 use PHPUnit\Framework\TestCase;
@@ -44,7 +44,7 @@ use RMP\Translate\Translate;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
- * @covers \App\Ds2013\PresenterFactory
+ * @covers \App\Ds2013\Factory\PresenterFactory
  */
 class PresenterFactoryTest extends TestCase
 {
@@ -54,7 +54,7 @@ class PresenterFactoryTest extends TestCase
     /** @var UrlGeneratorInterface|PHPUnit_Framework_MockObject_MockObject */
     private $router;
 
-    /** @var HelperFactory|PHPUnit_Framework_MockObject_MockObject */
+    /** @var \App\DsShared\Factory\HelperFactory|PHPUnit_Framework_MockObject_MockObject */
     private $helperFactory;
 
     /** @var PresenterFactory */

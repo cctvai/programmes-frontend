@@ -3,7 +3,7 @@ declare(strict_types = 1);
 
 namespace Tests\App\ExternalApi\FavouritesButton\Service;
 
-use App\ExternalApi\Client\HttpApiClientFactory;
+use App\ExternalApi\Client\Factory\HttpApiClientFactory;
 use App\ExternalApi\FavouritesButton\Domain\FavouritesButton;
 use App\ExternalApi\FavouritesButton\Mapper\FavouritesButtonMapper;
 use App\ExternalApi\FavouritesButton\Service\FavouritesButtonService;

@@ -12,7 +12,7 @@ use App\Builders\MasterBrandBuilder;
 use App\Builders\ServiceBuilder;
 use App\Controller\BaseController;
 use App\Ds2013\Presenters\Utilities\Cta\LiveCtaPresenter;
-use App\DsShared\Helpers\HelperFactory;
+use App\DsShared\Factory\HelperFactory;
 use BBC\ProgrammesPagesService\Domain\Enumeration\MediaTypeEnum;
 use BBC\ProgrammesPagesService\Domain\ValueObject\Pid;
 use BBC\ProgrammesPagesService\Domain\ValueObject\Sid;

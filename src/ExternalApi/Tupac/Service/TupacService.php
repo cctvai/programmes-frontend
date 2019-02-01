@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\ExternalApi\Tupac\Service;
 
-use App\ExternalApi\Client\HttpApiClientFactory;
+use App\ExternalApi\Client\Factory\HttpApiClientFactory;
 use App\ExternalApi\Exception\MultiParseException;
 use App\ExternalApi\Tupac\Domain\Record;
 use BBC\ProgrammesCachingLibrary\CacheInterface;

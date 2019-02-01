@@ -4,8 +4,8 @@ declare(strict_types = 1);
 namespace Tests\App\ExternalApi\Isite\Mapper;
 
 use App\Controller\Helpers\IsiteKeyHelper;
-use App\ExternalApi\Client\HttpApiClientFactory;
-use App\ExternalApi\IdtQuiz\IdtQuizService;
+use App\ExternalApi\Client\Factory\HttpApiClientFactory;
+use App\ExternalApi\IdtQuiz\Service\IdtQuizService;
 use App\ExternalApi\Isite\Domain\ContentBlock\Faq;
 use App\ExternalApi\Isite\Domain\ContentBlock\Promotions;
 use App\ExternalApi\Isite\Domain\ContentBlock\Prose;

@@ -4,9 +4,9 @@ declare(strict_types = 1);
 namespace Tests\App\ExternalApi\CircuitBreaker;
 
 use App\ExternalApi\ApiType\ApiTypeEnum;
-use App\ExternalApi\CircuitBreaker\Apcu;
+use App\ExternalApi\CircuitBreaker\Helpers\Apcu;
 use App\ExternalApi\CircuitBreaker\CircuitBreaker;
-use App\ExternalApi\CircuitBreaker\CircuitBreakerFactory;
+use App\ExternalApi\CircuitBreaker\Factory\CircuitBreakerFactory;
 use App\Metrics\MetricsManager;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;

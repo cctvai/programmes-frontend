@@ -1,9 +1,11 @@
 <?php
 declare(strict_types = 1);
 
-namespace App\ExternalApi\CircuitBreaker;
+namespace App\ExternalApi\CircuitBreaker\Factory;
 
 use App\ExternalApi\ApiType\ApiTypeEnum;
+use App\ExternalApi\CircuitBreaker\CircuitBreaker;
+use App\ExternalApi\CircuitBreaker\Helpers\Apcu;
 use App\Metrics\MetricsManager;
 use InvalidArgumentException;
 use Psr\Log\LoggerInterface;

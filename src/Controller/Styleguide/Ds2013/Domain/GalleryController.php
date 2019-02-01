@@ -6,7 +6,7 @@ namespace App\Controller\Styleguide\Ds2013\Domain;
 use App\Builders\GalleryBuilder;
 use App\Builders\ImageBuilder;
 use App\Controller\BaseController;
-use App\Ds2013\PresenterFactory;
+use App\Ds2013\Factory\PresenterFactory;
 use BBC\ProgrammesPagesService\Domain\ValueObject\Pid;
 use BBC\ProgrammesPagesService\Service\CollapsedBroadcastsService;
 use BBC\ProgrammesPagesService\Service\CoreEntitiesService;

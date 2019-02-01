@@ -4,7 +4,7 @@
 namespace App\Ds2013\Presenters\Section\GalleryDisplay;
 
 use App\Ds2013\Presenter;
-use App\DsShared\PresenterFactory;
+use App\DsShared\Factory\PresenterFactory;
 use BBC\ProgrammesPagesService\Domain\Entity\Gallery;
 use BBC\ProgrammesPagesService\Domain\Entity\Image;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;

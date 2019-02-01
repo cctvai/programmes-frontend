@@ -6,7 +6,7 @@ namespace Tests\App\ExternalApi\Ada\Service;
 use App\ExternalApi\Ada\Domain\AdaClass;
 use App\ExternalApi\Ada\Mapper\AdaClassMapper;
 use App\ExternalApi\Ada\Service\AdaClassService;
-use App\ExternalApi\Client\HttpApiClientFactory;
+use App\ExternalApi\Client\Factory\HttpApiClientFactory;
 use BBC\ProgrammesPagesService\Domain\Entity\Programme;
 use BBC\ProgrammesPagesService\Domain\ValueObject\Pid;
 use GuzzleHttp\Psr7\Response;

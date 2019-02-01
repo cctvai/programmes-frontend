@@ -9,7 +9,7 @@ use App\DsAmen\Presenters\Domain\CoreEntity\Group\SubPresenter\MediaIconCtaPrese
 use App\DsAmen\Presenters\Domain\CoreEntity\Group\SubPresenter\TitlePresenter;
 use App\DsAmen\Presenters\Domain\CoreEntity\Shared\SubPresenter\BodyPresenter;
 use App\DsAmen\Presenters\Domain\CoreEntity\Shared\SubPresenter\ImagePresenter;
-use App\DsShared\Helpers\HelperFactory;
+use App\DsShared\Factory\HelperFactory;
 use BBC\ProgrammesPagesService\Domain\Entity\Group;
 use PHPUnit\Framework\TestCase;
 use PHPUnit_Framework_MockObject_MockObject;
@@ -20,7 +20,7 @@ class GroupPresenterTest extends TestCase
     /** @var UrlGenerator|PHPUnit_Framework_MockObject_MockObject */
     private $mockRouter;
 
-    /** @var HelperFactory|PHPUnit_Framework_MockObject_MockObject */
+    /** @var \App\DsShared\Factory\HelperFactory|PHPUnit_Framework_MockObject_MockObject */
     private $mockHelperFactory;
 
     /** @var Group|PHPUnit_Framework_MockObject_MockObject */

@@ -4,7 +4,7 @@ declare(strict_types = 1);
 namespace App\Controller\ProgrammeEpisodes;
 
 use App\Controller\Helpers\StructuredDataHelper;
-use App\Ds2013\PresenterFactory;
+use App\Ds2013\Factory\PresenterFactory;
 use App\Ds2013\Presenters\Utilities\Paginator\PaginatorPresenter;
 use BBC\ProgrammesPagesService\Domain\Entity\Episode;
 use BBC\ProgrammesPagesService\Domain\Entity\ProgrammeContainer;

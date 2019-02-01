@@ -3,7 +3,7 @@ declare(strict_types = 1);
 
 namespace Tests\App\Twig;
 
-use App\DsShared\Helpers\HelperFactory;
+use App\DsShared\Factory\HelperFactory;
 use App\Translate\TranslateProvider;
 use App\Twig\TranslateAndTimeExtension;
 use BBC\ProgrammesPagesService\Domain\ApplicationTime;

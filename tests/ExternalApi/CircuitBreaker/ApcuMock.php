@@ -3,7 +3,7 @@ declare(strict_types = 1);
 
 namespace Tests\App\ExternalApi\CircuitBreaker;
 
-use App\ExternalApi\CircuitBreaker\Apcu;
+use App\ExternalApi\CircuitBreaker\Helpers\Apcu;
 use Cake\Chronos\Chronos;
 
 /**

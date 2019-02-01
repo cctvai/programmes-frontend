@@ -4,9 +4,9 @@ declare(strict_types = 1);
 namespace Tests\App\ExternalApi\CircuitBreaker;
 
 use App\ExternalApi\ApiType\ApiTypeEnum;
-use App\ExternalApi\ApiType\UriToApiTypeMapper;
+use App\ExternalApi\ApiType\Mapper\UriToApiTypeMapper;
 use App\ExternalApi\CircuitBreaker\CircuitBreaker;
-use App\ExternalApi\CircuitBreaker\CircuitBreakerFactory;
+use App\ExternalApi\CircuitBreaker\Factory\CircuitBreakerFactory;
 use App\ExternalApi\CircuitBreaker\CircuitBreakerMiddleware;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ConnectException;

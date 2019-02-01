@@ -3,7 +3,7 @@ declare(strict_types = 1);
 
 namespace Tests\App\ExternalApi\Recipes\Service;
 
-use App\ExternalApi\Client\HttpApiClientFactory;
+use App\ExternalApi\Client\Factory\HttpApiClientFactory;
 use App\ExternalApi\Recipes\Domain\RecipesApiResult;
 use App\ExternalApi\Recipes\Mapper\RecipeMapper;
 use App\ExternalApi\Recipes\Service\RecipesService;
