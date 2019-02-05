@@ -397,7 +397,7 @@ msgstr ""
 #. Priority for: Programmes
 msgid "clips"
 msgid_plural "clips %count%"
-msgstr[0] "Ghearrthóg"
+msgstr[0] "Gearrthóga"
 msgstr[1] "Gearrthóg"
 msgstr[2] "Gearrthóga"
 
@@ -1788,7 +1788,7 @@ msgstr "Oíche Nollag"
 
 #. English: "Last %1".
 msgid "schedules_last_weekday"
-msgstr "%1 Seo chugainn"
+msgstr "%1 Seo caite"
 
 #. English: "New Year's Day".
 msgid "schedules_new_years_day"
@@ -1796,7 +1796,7 @@ msgstr "Lá Caille"
 
 #. English: "Next %1".
 msgid "schedules_next_weekday"
-msgstr "%1 Seo caite"
+msgstr "%1 Seo chugainn"
 
 #. English: "There is no schedule for today. Please choose another day from the calendar".
 msgid "schedules_no_result"
