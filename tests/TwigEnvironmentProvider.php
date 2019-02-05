@@ -30,16 +30,16 @@ use Twig_Loader_Filesystem;
 class TwigEnvironmentProvider
 {
     /** @var Twig_Environment */
-    static private $twig;
+    private static $twig;
 
     /** @var Ds2013PresenterFactory */
-    static private $ds2013PresenterFactory;
+    private static $ds2013PresenterFactory;
 
     /** @var DsAmenPresenterFactory */
-    static private $dsAmenPresenterFactory;
+    private static $dsAmenPresenterFactory;
 
     /** @var DsSharedPresenterFactory */
-    static private $dsSharedPresenterFactory;
+    private static $dsSharedPresenterFactory;
 
     public static function twig(): Twig_Environment
     {

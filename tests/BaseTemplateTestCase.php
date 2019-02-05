@@ -10,7 +10,7 @@ use Twig_Environment;
 abstract class BaseTemplateTestCase extends TestCase
 {
     /** @var Twig_Environment */
-    static private $twig;
+    private static $twig;
 
     public static function setUpBeforeClass()
     {
