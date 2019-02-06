@@ -81,6 +81,19 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+    App\DsShared\Helpers\TitleLogicHelper:
+        factory: 'App\DsShared\Factory\HelperFactory:getTitleLogicHelper'
+
+    App\DsShared\Helpers\LiveBroadcastHelper:
+        factory: 'App\DsShared\Factory\HelperFactory:getLiveBroadcastHelper'
+
+    App\DsShared\Helpers\PlayTranslationsHelper:
+        factory: 'App\DsShared\Factory\HelperFactory:getPlayTranslationsHelper'
+
+    App\DsShared\Helpers\SmpPlaylistHelper:
+        factory: 'App\DsShared\Factory\HelperFactory:getSmpPlaylistHelper'
+
     App\DsShared\Helpers\StreamableHelper:
         factory: 'App\DsShared\Factory\HelperFactory:getStreamUrlHelper'
 
