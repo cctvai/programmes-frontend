@@ -58,6 +58,8 @@ class AtiAnalyticsLabels
             'contentId' => $this->contentId,
             'additionalProperties' => [
                 ['name' => 'app_name', 'value' => 'programmes'],
+                ['name' => 'custom_var_2', 'value' => $this->calculateCustomVarBrand()],
+                ['name' => 'custom_var_4', 'value' => $this->calculateCustomVarMid()],
             ],
         ];
 
@@ -181,5 +183,26 @@ class AtiAnalyticsLabels
         }
 
         return 'BBC';
+    }
+
+    private function calculateCustomVarBrand(): ?string
+    {
+        if ($this->context instanceof CoreEntity && !empty($this->context->getTleo())) {
+            return $this->context->getTleo()->getTitle();
+        }
+
+        return null;
+    }
+
+    private function calculateCustomVarMid(): ?string
+    {
+        if ($this->context instanceof CoreEntity && !empty($this->context->getMasterBrand())) {
+            return (string) $this->context->getMasterBrand()->getMid();
+        }
+        if ($this->context instanceof Service && !empty($this->context->getNetwork())) {
+            return (string) $this->context->getNetwork()->getNid();
+        }
+
+        return null;
     }
 }
