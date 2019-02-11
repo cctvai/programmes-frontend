@@ -4,6 +4,7 @@ declare (strict_types = 1);
 namespace App\ValueObject;
 
 use App\Cosmos\Dials;
+use BBC\ProgrammesPagesService\Domain\Entity\Brand;
 use BBC\ProgrammesPagesService\Domain\Entity\Service;
 use BBC\ProgrammesPagesService\Domain\Entity\Network;
 use BBC\ProgrammesPagesService\Domain\Enumeration\NetworkMediumEnum;
@@ -188,7 +189,11 @@ class AtiAnalyticsLabels
     private function calculateCustomVarBrand(): ?string
     {
         if ($this->context instanceof CoreEntity && !empty($this->context->getTleo())) {
-            return $this->context->getTleo()->getTitle();
+            $tleo = $this->context->getTleo();
+            if (!$tleo instanceof Brand) {
+                return null;
+            }
+            return $tleo->getTitle();
         }
 
         return null;
