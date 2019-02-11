@@ -173,14 +173,14 @@ class SchemaHelper
         ];
     }
 
-    public function getSchemaForCollection(ProgrammeContainer $programmeContainer): array
+    public function getSchemaForCollection(Collection $collection): array
     {
         return [
             '@type' => 'Collection',
-            'image' => $programmeContainer->getImage()->getUrl(480),
-            'description' => $programmeContainer->getShortSynopsis(),
-            'identifier' => $programmeContainer->getPid(),
-            'name' => $programmeContainer->getTitle(),
+            'image' => $collection->getImage()->getUrl(480),
+            'description' => $collection->getShortSynopsis(),
+            'identifier' => $collection->getPid(),
+            'name' => $collection->getTitle(),
 
         ];
     }

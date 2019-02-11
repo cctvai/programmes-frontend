@@ -71,8 +71,11 @@ class PodcastController extends BaseController
         }
 
         $promotions = $promotionsService->findActivePromotionsByEntityGroupedByType($coreEntity);
-        $genres = $programme->getGenres();
-        $genre = reset($genres);
+        $genre = null;
+        if ($programme) {
+            $genres = $programme->getGenres();
+            $genre = reset($genres);
+        }
         if ($genre) {
             $genre = $genre->getTopLevel();
         }
@@ -94,7 +97,7 @@ class PodcastController extends BaseController
     private function getSchema(StructuredDataHelper $structuredDataHelper, Programme $programme, array $availableEpisodes, CoreEntity $coreEntity): array
     {
         if ($coreEntity->getType() == 'collection') {
-            $schemaContext = $structuredDataHelper->getSchemaForCollection($programme);
+            $schemaContext = $structuredDataHelper->getSchemaForCollection($coreEntity, $programme);
         } else {
             $schemaContext = $structuredDataHelper->getSchemaForProgrammeContainerAndParents($programme);
         }
@@ -103,6 +106,7 @@ class PodcastController extends BaseController
             $episodeSchema['publication'] = $structuredDataHelper->getSchemaForOnDemand($episode->getProgrammeItem());
             $schemaContext['hasPart'][] = $episodeSchema;
         }
+
         return $structuredDataHelper->prepare($schemaContext);
     }
 }

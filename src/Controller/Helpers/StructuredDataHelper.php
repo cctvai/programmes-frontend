@@ -11,6 +11,7 @@ use BBC\ProgrammesPagesService\Domain\Entity\Episode;
 use BBC\ProgrammesPagesService\Domain\Entity\Programme;
 use BBC\ProgrammesPagesService\Domain\Entity\ProgrammeContainer;
 use BBC\ProgrammesPagesService\Domain\Entity\ProgrammeItem;
+use BBC\ProgrammesPagesService\Domain\Entity\Collection;
 use BBC\ProgrammesPagesService\Domain\Entity\Series;
 use BBC\ProgrammesPagesService\Domain\Entity\Service;
 
@@ -124,16 +125,14 @@ class StructuredDataHelper
         return $schemaContext;
     }
 
-    public function getSchemaForCollection(Programme $programmeContainer): array
+    public function getSchemaForCollection(Collection $collection, ?Programme $programme): array
     {
-        $schemaContext = $this->getSchemaForCollectionContainer($programmeContainer);
-        if ($programmeContainer->isTlec()) {
+        $schemaContext = $this->schemaHelper->getSchemaForCollection($collection);
+        if (!$programme) {
             return $schemaContext;
         }
-        $ancestry = $programmeContainer->getAncestry();
-        foreach ($ancestry as $ancestor) {
-            $schemaContext['partOf'] = $this->getSchemaForCollectionContainer($ancestor);
-        }
+        $schemaContext['isPartOf'] = $this->getSchemaForProgrammeContainerAndParents($programme);
+
         return $schemaContext;
     }
 
