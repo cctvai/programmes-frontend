@@ -2231,6 +2231,10 @@ msgstr "आज प्रसारित हुए कार्यक्रम �
 msgid "view_episodes"
 msgstr "एपिसोड्स देखिए"
 
+#. English: "This vote is not available in your location".
+msgid "vote_not_available"
+msgstr ""
+
 #. English: "%1 added".
 #. %1 is a variable, which may contain the value: "3".
 #. Priority for: Favourites

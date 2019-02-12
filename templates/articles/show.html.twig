@@ -23,7 +23,7 @@
 
                                     {% for block in row.getPrimaryBlocks() %}
                                         {% if block is not null %} {# Remove this line once all content block types are populated #}
-                                            {{ ds2013('contentBlock', block, true, row.hasPrimaryBlocksOnly()) }}
+                                            {{ ds2013('contentBlock', block, true, row.hasPrimaryBlocksOnly(), {'canDisplayVote': canDisplayVote}) }}
                                         {% endif %}
                                     {% endfor %}
                                 {% endif %}
@@ -33,7 +33,7 @@
                             <div class="grid 5/12@bpw2 5/12@bpe">
                                 {% for block in row.getSecondaryBlocks() %}
                                     {% if block is not null %} {# Remove this line once all content block types are populated #}
-                                        {{ ds2013('contentBlock', block, false) }}
+                                        {{ ds2013('contentBlock', block, false, false, {'canDisplayVote': canDisplayVote}) }}
                                     {% endif %}
                                 {% endfor %}
                             </div>

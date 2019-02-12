@@ -361,6 +361,7 @@ class ContentBlockMapper extends Mapper
                 $contentBlock = new Telescope(
                     $this->getString($contentBlockData->title),
                     $this->getString($contentBlockData->vote_id),
+                    $this->getString($contentBlockData->is_uk_only),
                     $this->getString($form->metadata->name)
                 );
                 // @codingStandardsIgnoreEnd

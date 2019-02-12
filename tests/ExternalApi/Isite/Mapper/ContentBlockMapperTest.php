@@ -11,6 +11,7 @@ use App\ExternalApi\Isite\Domain\ContentBlock\Promotions;
 use App\ExternalApi\Isite\Domain\ContentBlock\Prose;
 use App\ExternalApi\Isite\Domain\ContentBlock\Quiz;
 use App\ExternalApi\Isite\Domain\ContentBlock\Table;
+use App\ExternalApi\Isite\Domain\ContentBlock\Telescope;
 use App\ExternalApi\Isite\Mapper\ContentBlockMapper;
 use App\ExternalApi\Isite\Mapper\MapperFactory;
 use BBC\ProgrammesPagesService\Service\CoreEntitiesService;
@@ -163,5 +164,17 @@ class ContentBlockMapperTest extends TestCase
         $this->assertEquals('Only two things are infinite', $block->getQuote());
         $this->assertEquals('Albert Einstein', $block->getQuoteAttribution());
         $this->assertEquals('right', $block->getMediaPosition());
+    }
+
+    public function testMappingTelescopeObject()
+    {
+        $xml = new SimpleXMLElement(file_get_contents(__DIR__ . '/telescope.xml'));
+
+        $block = $this->mapper->getDomainModel($xml);
+
+        $this->assertInstanceOf(Telescope::class, $block);
+        $this->assertEquals('This is a Telescope vote squeezed in here:', $block->getTitle());
+        $this->assertEquals('abcd012', $block->getVoteId());
+        $this->assertTrue($block->isUkOnly());
     }
 }

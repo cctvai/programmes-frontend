@@ -5,6 +5,7 @@ namespace App\Controller\FindByPid;
 
 use App\Controller\BaseController;
 use App\Controller\Helpers\StructuredDataHelper;
+use App\Controller\Helpers\TelescopeHelper;
 use App\DsAmen\Factory\PresenterFactory;
 use App\DsShared\Factory\HelperFactory;
 use App\ExternalApi\Ada\Service\AdaClassService;
@@ -143,11 +144,20 @@ class TlecController extends BaseController
         $isVotePriority = $this->isVotePriority($programme);
         $showMiniMap = $this->showMiniMap($request, $programme, $isVotePriority, isset($resolvedPromises['lxPromo']));
 
+        // We need to vary on X-Ip_is_uk_combined to avoid returning same cached content to non UK users when there is
+        // a vote set to UK only. There is already a vary header set on nginx, this doesn't override the existing "vary"
+        // values, this adds a new value to the "vary" list of values
+        if ($programme->getOption('telescope_block') !== null
+            && isset($programme->getOption('telescope_block')['content']['is_uk_only'])
+            && $programme->getOption('telescope_block')['content']['is_uk_only'] === true
+            ) {
+            $this->response()->headers->set('vary', 'X-Ip_is_uk_combined');
+        }
+
         $priorityPromotion = null;
         if ($programme->getOption('brand_layout') === 'promo' && !empty($promotions) && $programme->isTlec() && !$showMiniMap) {
             $priorityPromotion = array_shift($promotions);
         }
-
 
         $mapPresenter = $presenterFactory->mapPresenter(
             $programme,
@@ -172,6 +182,7 @@ class TlecController extends BaseController
             'galleries' => $galleries,
             'mapPresenter' => $mapPresenter,
             'isVotePriority' => $isVotePriority,
+            'canDisplayVote' => $this->canDisplayVote($programme->getOption('telescope_block'), $this->request()),
             'relatedLinks' => $relatedLinks,
             'schema' => $schema,
         ];
@@ -374,5 +385,23 @@ class TlecController extends BaseController
     private function isSamePublication(Episode $onDemandEpisode, CollapsedBroadcast $upcomingBroadcast)
     {
         return (string) $onDemandEpisode->getPid() == (string) $upcomingBroadcast->getProgrammeItem()->getPid();
+    }
+
+    /**
+     * Return true unless the vote is set to "only available in the UK" and the connections is not in the UK
+     *
+     * @param array|null $telescopeBlock
+     * @param Request $request
+     * @return bool
+     */
+    private function canDisplayVote(?array $telescopeBlock, Request $request): bool
+    {
+        if (isset($telescopeBlock['content']['is_uk_only'])
+            && $telescopeBlock['content']['is_uk_only'] === true
+            && $request->headers->get('X-Ip_is_uk_combined') === 'no'
+        ) {
+            return false;
+        }
+        return true;
     }
 }

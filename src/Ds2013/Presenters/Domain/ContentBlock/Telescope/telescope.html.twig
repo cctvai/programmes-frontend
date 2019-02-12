@@ -1,14 +1,19 @@
 {% set container_html_id = 'vote-telescope-' ~ random() %}
-
 <div class="component component--box component--box--primary component--box-flushbody" data-content-block-type="vote">
     <div class="component__body br-box-page">
-        {% include 'shared/telescope/target_element.html.twig' with {
-            container_html_id: container_html_id
-        } %}
+        {% if (content_block.canDisplayVote() == true) %}
+            {% include 'shared/telescope/target_element.html.twig' with {
+                container_html_id: container_html_id
+            } %}
+        {% else %}
+            <div class="br-box-subtle island">{{ tr('vote_not_available') }}</div>
+        {%- endif -%}
     </div>
 </div>
 
-{% include 'shared/telescope/initialisation.html.twig' with {
-    vote_id: content_block.getBlock().getVoteId(),
-    container_html_id: container_html_id
-} %}
+{% if (content_block.canDisplayVote() == true) %}
+    {% include 'shared/telescope/initialisation.html.twig' with {
+        vote_id: content_block.getBlock().getVoteId(),
+        container_html_id: container_html_id
+    } %}
+{%- endif -%}

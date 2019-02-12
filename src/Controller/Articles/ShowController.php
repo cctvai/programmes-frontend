@@ -5,6 +5,8 @@ namespace App\Controller\Articles;
 
 use App\Controller\BaseIsiteController;
 use App\Controller\Helpers\IsiteKeyHelper;
+use App\ExternalApi\Isite\Domain\Article;
+use App\ExternalApi\Isite\Domain\ContentBlock\Telescope;
 use App\ExternalApi\Isite\Service\ArticleService;
 use BBC\ProgrammesPagesService\Service\CoreEntitiesService;
 use App\Exception\HasContactFormException;
@@ -36,6 +38,7 @@ class ShowController extends BaseIsiteController
 
         $guid = $this->isiteKeyHelper->convertKeyToGuid($this->key);
         try {
+            /**  @var Article $isiteObject  */
             $isiteObject = $this->getBaseIsiteObject($guid, $preview);
         } catch (HasContactFormException $e) {
             if (!$this->slug) {
@@ -72,6 +75,7 @@ class ShowController extends BaseIsiteController
                 'projectSpace' => $isiteObject->getProjectSpace(),
                 'programme' => $this->getParentProgramme($this->context),
                 'article' => $isiteObject,
+                'canDisplayVote' => $this->canDisplayVote($isiteObject->getRowGroups(), $request),
                 'paginatorPresenter' => $paginatorPresenter,
             ]
         );
@@ -80,5 +84,40 @@ class ShowController extends BaseIsiteController
     protected function getRouteName()
     {
         return 'programme_article';
+    }
+
+    /**
+     * Return false if the user is not connected from the UK and the vote is set to "UK Only". We assume there is only
+     * one telescope content block per page, if there is more than one (which is not an expected behaviour) and
+     * "UK Only" is enabled the restriction will be applied to all of them.
+     *
+     * If the Telescope vote is set to UK Only we need to "vary" on "X-Ip_is_uk_combined" header to avoid returning
+     * same cached content to non UK users when there is a vote set to UK only
+     *
+     * @param array $rowGroups
+     * @param Request $request
+     * @return bool
+     */
+    private function canDisplayVote(array $rowGroups, Request $request): bool
+    {
+        foreach ($rowGroups as $rowGroup) {
+            foreach ($rowGroup->getPrimaryBlocks() as $primaryBlocks) {
+                if ($primaryBlocks instanceof Telescope && $primaryBlocks->isUkOnly() === true) {
+                    $this->response()->headers->set('vary', 'X-Ip_is_uk_combined');
+                    if ($request->headers->get('X-Ip_is_uk_combined') === 'no') {
+                        return false;
+                    }
+                }
+            }
+            foreach ($rowGroup->getSecondaryBlocks() as $secondaryBlocks) {
+                if ($secondaryBlocks instanceof Telescope && $secondaryBlocks->isUkOnly() === true) {
+                    $this->response()->headers->set('vary', 'X-Ip_is_uk_combined');
+                    if ($request->headers->get('X-Ip_is_uk_combined') === 'no') {
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
     }
 }

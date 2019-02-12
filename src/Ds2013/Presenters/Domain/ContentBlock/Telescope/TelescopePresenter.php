@@ -8,8 +8,21 @@ use App\ExternalApi\Isite\Domain\ContentBlock\Telescope;
 
 class TelescopePresenter extends ContentBlockPresenter
 {
-    public function __construct(Telescope $telescopeBlock, bool $inPrimaryColumn, bool $isPrimaryColumnFullWith, array $options = [])
-    {
+    /** @var bool */
+    protected $canDisplayVote;
+
+    public function __construct(
+        Telescope $telescopeBlock,
+        bool $inPrimaryColumn,
+        bool $isPrimaryColumnFullWith,
+        array $options = []
+    ) {
+        $this->canDisplayVote = $options['canDisplayVote'];
         parent::__construct($telescopeBlock, $inPrimaryColumn, $isPrimaryColumnFullWith, $options);
+    }
+
+    public function canDisplayVote(): bool
+    {
+        return $this->canDisplayVote;
     }
 }

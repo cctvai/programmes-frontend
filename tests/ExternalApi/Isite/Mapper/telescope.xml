@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<result xmlns="https://production.bbc.co.uk/isite2/contentreader/xml/result">
+    <metadata>
+        <modifiedDateTime>2019-02-05T15:37:41.47201Z</modifiedDateTime>
+        <creationDateTime>2018-08-22T09:51:32.282021Z</creationDateTime>
+        <type>programmes-telescope-vote</type>
+        <fileId>programmes-content-1534935086</fileId>
+        <guid>7cf05591-e290-44f8-b21d-e5647a3aabc7</guid>
+    </metadata>
+    <document>
+        <form xmlns="https://production.bbc.co.uk/isite2/project/progs-drwho/programmes-telescope-vote">
+            <metadata>
+                <name>Telescope test</name>
+                <file_id>1534935086</file_id>
+            </metadata>
+            <content>
+                <title>This is a Telescope vote squeezed in here:</title>
+                <vote_id>abcd012</vote_id>
+                <is_uk_only>Yes</is_uk_only>
+            </content>
+        </form>
+    </document>
+</result>
