@@ -93,6 +93,7 @@ class AtiAnalyticsLabels
 
     private function calculateProducerVariable() : string
     {
+        // This list comes from Audience Analytics in co-ordination with ATI
         $producersMap = [
             'bbc_afrique_radio' => 'AFRIQUE',
             'bbc_afrique_tv' => 'AFRIQUE',
@@ -159,6 +160,7 @@ class AtiAnalyticsLabels
             'cbbc' => 'CBBC',
             'cbeebies' => 'CBEEBIES',
             'cbeebies_radio' => 'CBEEBIES',
+            's4cpbs' => 'BBC',
         ];
 
         $network = null;
@@ -173,6 +175,10 @@ class AtiAnalyticsLabels
 
         if (array_key_exists($id, $producersMap)) {
             return $producersMap[$id];
+        }
+
+        if ($network && $network->isInternational()) {
+            return 'BBC';
         }
 
         if ($network && $network->getMedium() === NetworkMediumEnum::RADIO) {
