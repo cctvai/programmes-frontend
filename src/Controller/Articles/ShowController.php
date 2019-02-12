@@ -46,7 +46,7 @@ class ShowController extends BaseIsiteController
                 $params = ['key' => $this->key, 'slug' => $this->slug];
             }
 
-            return $this->cachedRedirectToRoute($route, $params, 302, 3600);
+            return $this->cachedRedirectToRoute($route, $params, 302, 300);
         }
 
         if ($redirect = $this->getRedirectToSlugIfNeeded($isiteObject, $preview)) {
