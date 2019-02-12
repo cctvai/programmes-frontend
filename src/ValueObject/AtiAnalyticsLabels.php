@@ -188,14 +188,9 @@ class AtiAnalyticsLabels
 
     private function calculateCustomVarBrand(): ?string
     {
-        if ($this->context instanceof CoreEntity && !empty($this->context->getTleo())) {
-            $tleo = $this->context->getTleo();
-            if (!$tleo instanceof Brand) {
-                return null;
-            }
-            return $tleo->getTitle();
+        if ($this->context instanceof CoreEntity && $this->context->getTleo() && $this->context->getTleo()->isTlec()) {
+            return $this->context->getTleo()->getTitle();
         }
-
         return null;
     }
 
