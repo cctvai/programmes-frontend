@@ -59,8 +59,8 @@ class AtiAnalyticsLabels
             'contentId' => $this->contentId,
             'additionalProperties' => [
                 ['name' => 'app_name', 'value' => 'programmes'],
-                ['name' => 'custom_var_2', 'value' => $this->calculateCustomVarBrand()],
-                ['name' => 'custom_var_4', 'value' => $this->calculateCustomVarMid()],
+                ['name' => 'custom_var_2', 'value' => urlencode($this->calculateCustomVarBrand())],
+                ['name' => 'custom_var_4', 'value' => urlencode($this->calculateCustomVarMid())],
             ],
         ];
 
