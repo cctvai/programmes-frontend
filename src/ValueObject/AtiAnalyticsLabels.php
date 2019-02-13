@@ -50,6 +50,16 @@ class AtiAnalyticsLabels
 
     public function orbLabels()
     {
+        $brandCustomVar = $this->calculateCustomVarBrand();
+        $masterbrandCustomVar = $this->calculateCustomVarMid();
+
+        if ($brandCustomVar) {
+            $brandCustomVar = urlencode($brandCustomVar);
+        }
+
+        if ($masterbrandCustomVar) {
+            $masterbrandCustomVar = urlencode($masterbrandCustomVar);
+        }
 
         $labels = [
             'destination' => $this->getDestination(),
@@ -59,8 +69,8 @@ class AtiAnalyticsLabels
             'contentId' => $this->contentId,
             'additionalProperties' => [
                 ['name' => 'app_name', 'value' => 'programmes'],
-                ['name' => 'custom_var_2', 'value' => urlencode($this->calculateCustomVarBrand())],
-                ['name' => 'custom_var_4', 'value' => urlencode($this->calculateCustomVarMid())],
+                ['name' => 'custom_var_2', 'value' => $brandCustomVar],
+                ['name' => 'custom_var_4', 'value' => $masterbrandCustomVar],
             ],
         ];
 
