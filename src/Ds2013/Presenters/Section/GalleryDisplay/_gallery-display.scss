@@ -75,7 +75,8 @@ $gallery-previous-next-bpw-size: 24px;
 
 .gallery-slideshow__window--scrollable::-webkit-scrollbar,
 .gallery-slideshow__window--scrollable::-webkit-scrollbar-thumb,
-.gallery__hidescrollbars {
+.gallery__hidescrollbars::-webkit-scrollbar,
+.gallery__hidescrollbars::-webkit-scrollbar-thumb {
     display: none;
 }
 
