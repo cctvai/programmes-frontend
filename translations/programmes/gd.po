@@ -1446,7 +1446,7 @@ msgstr "Tachartasan"
 msgid "played:"
 msgstr "Chluich:"
 
-#. English: "Add music you love and enjoy it with %1".
+#. English: "Adding a track to %1 will no longer be available from late March".
 msgid "playlister_tagline"
 msgstr ""
 

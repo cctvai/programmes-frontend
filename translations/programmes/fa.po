@@ -1443,9 +1443,9 @@ msgstr ""
 msgid "played:"
 msgstr "پخش شده:"
 
-#. English: "Add music you love and enjoy it with %1".
+#. English: "Adding a track to %1 will no longer be available from late March".
 msgid "playlister_tagline"
-msgstr "موسیقی مورد علاقه خود را اضافه کنید و با %1 لذت ببرید"
+msgstr ""
 
 #. English: "Higher quality (128kbps)"
 #. Example URL: "http://www.bbc.co.uk/programmes/p02nrsfl/episodes/downloads"

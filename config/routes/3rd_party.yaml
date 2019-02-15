@@ -61,7 +61,7 @@ music_artist:
     requirements: { mbid: '[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}' }
 
 my_tracks:
-    path: /music/tracks/my
+    path: /programmes/articles/BHmrZF1Z7JDckzFSZ9cl7l/changes-to-the-bbc-music-website
     defaults: { _controller: FrameworkBundle:Redirect:redirect, route: '' }
 
 ### /programmes v2

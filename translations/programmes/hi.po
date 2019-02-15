@@ -1442,9 +1442,9 @@ msgstr ""
 msgid "played:"
 msgstr "चलाया गया"
 
-#. English: "Add music you love and enjoy it with %1".
+#. English: "Adding a track to %1 will no longer be available from late March".
 msgid "playlister_tagline"
-msgstr "%1 के साथ अपना पसंदीदा संगीत जोड़ें और आनंद लें"
+msgstr ""
 
 #. English: "Higher quality (128kbps)"
 #. Example URL: "http://www.bbc.co.uk/programmes/p02nrsfl/episodes/downloads"

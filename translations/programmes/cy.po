@@ -1454,9 +1454,9 @@ msgstr "Perfformiadau a Digwyddiadau"
 msgid "played:"
 msgstr "Chwaraewyd:"
 
-#. English: "Add music you love and enjoy it with %1".
+#. English: "Adding a track to %1 will no longer be available from late March".
 msgid "playlister_tagline"
-msgstr "Ychwanegwch eich hoff gerddoriaeth a’i fwynhau gyda %1"
+msgstr ""
 
 #. English: "Higher quality (128kbps)"
 #. Example URL: "http://www.bbc.co.uk/programmes/p02nrsfl/episodes/downloads"
