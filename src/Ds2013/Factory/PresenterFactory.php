@@ -30,6 +30,8 @@ use App\Ds2013\Presenters\Domain\Recipe\RecipePresenter;
 use App\Ds2013\Presenters\Domain\Superpromo\SuperpromoPresenter;
 use App\Ds2013\Presenters\Pages\EpisodeGuideList\EpisodeGuideListPresenter;
 use App\Ds2013\Presenters\Pages\Schedules\NoSchedule\NoSchedulePresenter;
+use App\Ds2013\Presenters\Section\Atoz\LetterNav\AtozLetterNavPresenter;
+use App\Ds2013\Presenters\Section\Atoz\SearchBar\AtozSearchBarPresenter;
 use App\Ds2013\Presenters\Section\Clip\Details\ClipDetailsPresenter;
 use App\Ds2013\Presenters\Section\Clip\Playout\ClipPlayoutPresenter;
 use App\Ds2013\Presenters\Section\Episode\Map\EpisodeMapPresenter;
@@ -500,6 +502,40 @@ class PresenterFactory
         array $options = []
     ) :RecipePresenter {
         return new RecipePresenter($recipe, $options);
+    }
+
+    /**
+     * @param string $current
+     * @param string $slice
+     * @param array $options
+     */
+    public function atozLetterNavPresenter(
+        string $current,
+        string $slice,
+        array $options = []
+    ): AtozLetterNavPresenter {
+        return new AtozLetterNavPresenter(
+            $current,
+            $slice,
+            $options
+        );
+    }
+
+    /**
+     * @param string $search
+     * @param string $slice
+     * @param array $options
+     */
+    public function atozSearchBarPresenter(
+        string $search,
+        string $slice,
+        array $options = []
+    ): AtozSearchBarPresenter {
+        return new AtozSearchBarPresenter(
+            $search,
+            $slice,
+            $options
+        );
     }
 
     /**

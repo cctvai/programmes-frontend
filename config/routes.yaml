@@ -210,3 +210,23 @@ cloud_labs:
 snippet_get_records:
     path: /programmes/snippet/{recordsIds}.json
     defaults: { _controller: App\Controller\SnippetController }
+
+# A to Z pages
+atoz_index:
+    path: /programmes/a-z
+    defaults: { _controller: App\Controller\Atoz\IndexController }
+
+atoz_list:
+    path: /programmes/a-z/{slice}
+    defaults: { _controller: App\Controller\Atoz\ListController }
+    requirements: { slice: 'all|player' }
+
+atoz_naked_search:
+    path: /programmes/a-z/by/{search}
+    controller: App\Controller\RedirectAndCacheController::redirectAction
+    defaults: { route: atoz_show, slice: "player", permanent: true }
+
+atoz_show:
+    path: /programmes/a-z/by/{search}/{slice}
+    defaults: { _controller: App\Controller\Atoz\ShowController }
+    requirements: { slice: 'all|player' }

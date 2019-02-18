@@ -139,6 +139,10 @@ msgstr "Programmes beginning with numbers or punctuation symbols"
 msgid "atoz_search"
 msgstr "Search"
 
+#. English: "Search for a programme title".
+msgid "atoz_search_label"
+msgstr "Search for a programme title"
+
 #. English: "Search results for '%1'".
 #. Example URL: http://www.bbc.co.uk/bbcone/programmes/a-z/by/thisisnotarealword .
 #. %1 is a variable, which may contain the value: "eastenders".

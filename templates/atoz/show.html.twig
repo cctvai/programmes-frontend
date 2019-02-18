@@ -1,0 +1,14 @@
+{% extends 'base_ds2013.html.twig' %}
+
+{% block title %}BBC - {{ tr('programmes') }} - {{ tr('atoz_title') }}{% endblock %}
+{% block page_classes %}programmes-page text-base b-g-p br-box-page{% endblock %}
+
+{% block body %}
+    {% if current is empty %}
+        <h1>{{ tr('atoz_search_title', { '%1': search }) }}</h1>
+        {{ ds2013('atozSearchBar', search, slice) }}
+    {% else %}
+        <h1>{{ tr('atoz_title_full') }} - {{ current|upper }}</h1>
+        {{ ds2013('atozLetterNav', current, slice) }}
+    {% endif %}
+{% endblock %}

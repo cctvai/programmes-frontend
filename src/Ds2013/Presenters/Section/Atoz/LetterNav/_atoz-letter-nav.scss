@@ -1,0 +1,117 @@
+$letter-nav-item-width: 38px;
+$letter-nav-gutter-width: 2px;
+$letter-nav-item-total-width: $letter-nav-item-width + $letter-nav-gutter-width;
+
+.letter-nav {
+    margin-bottom: $basic-spacing;
+    position: relative;
+    z-index: 0;
+}
+
+.letter-nav__page {
+    border-width: 0 $letter-nav-gutter-width $letter-nav-gutter-width 0;
+    border-style: solid;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.letter-nav__page a {
+    @extend .text--no-ul;
+}
+
+.letter-nav__page a,
+.letter-nav__page span {
+    display: block;
+    width: $letter-nav-item-width;
+    padding: 10px 0;
+}
+
+.letter-nav__page--doublewidth a,
+.letter-nav__page--doublewidth span {
+    width: ($letter-nav-item-total-width * 2) - $letter-nav-gutter-width;
+}
+
+// Spacer element to display a faded box behind the entire letter nav area,
+// this exists as an actual element because it means we can position it so
+// we don't have to adjust the borders of the final .letter-nav__page in a row
+// to avoid overspill.
+.letter-nav__spacer {
+    position: absolute;
+    top: 0;
+    bottom: $letter-nav-gutter-width;
+    left: 0;
+    right: $letter-nav-gutter-width;
+    z-index: -1;
+}
+
+@include mq-range('bpw') {
+    .letter-nav {
+        margin-bottom: $wide-spacing;
+    }
+}
+
+// Letter nav width clamping because we want to be able to hide any background
+// overspill. This is a seperate class because we sometimes want other page
+// elements to use this clamping so they appear inline with the letter nav panel.
+.letter-nav-clamp {
+    margin-left: auto;
+    margin-right: auto;
+
+    // Pull letter nav box back so that it suppresses the final gutter on the
+    // right-most item.
+    .letter-nav {
+        margin-right: -$letter-nav-gutter-width;
+    }
+
+    .letter-nav__spacer {
+        // IE8 and below wants to stick the spacer out more than usual when
+        // trying to deal with negative margin-right, counter it by shunting
+        // the right offset across even further
+        // Should be this, but Sass eats up the backslash
+        // right: ($letter-nav-gutter-width * 2)#{'\9'};
+        right: 4px\9;
+    }
+}
+
+// For IE to get a full-screen sizing
+@include mq-range('bpe') {
+    .letter-nav-clamp {
+        max-width:  ($letter-nav-item-total-width * 24);
+    }
+}
+
+// Because we don't want overspill of the background color we have to explicitly
+// set the width of .letter-nav. This generates multiple breakpoints as each
+// letter can fit into the page, taking into account the change in container
+// margin at 400px. For chrome/IE the ideal $letter-nav-offset is 80px as it
+// calculates media queries starting from within the scroll-bar, however FireFox
+// (and the W3C spec) say that the scrollbar should be included. Thus we need to
+// add an extra 15px to account for the scrollbar, otherwise the .letter-nav width
+// ends up being slightly too big for a given container.
+//
+// Container width - $letter-nav-gutter-width because we want items to sit flush
+// with the visual end of the letter nav container, ignoring the gutter on the
+// final letter.
+@if (not $ie) {
+    $letter-nav-offset: 95px;
+    $letter-nav-container-width: ($letter-nav-item-total-width * 2) - $letter-nav-gutter-width;
+    @while ($letter-nav-offset <= 1007px) {
+        $block: if($letter-nav-offset < 600px, 'bpb1', 'bpw');
+        $current-global-margin: if($letter-nav-offset < 400px, 16px, 32px);
+
+        @include mq($from: $letter-nav-offset + $current-global-margin) {
+            .letter-nav-clamp {
+                max-width: $letter-nav-container-width;
+            }
+        }
+
+        $letter-nav-offset: $letter-nav-offset + $letter-nav-item-total-width;
+        $letter-nav-container-width: $letter-nav-container-width + $letter-nav-item-total-width;
+    }
+
+    @include mq($until: 599px) {
+        .letter-nav-clamp--only-wide {
+            max-width: none;
+        }
+    }
+}

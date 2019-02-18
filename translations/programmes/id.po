@@ -137,6 +137,10 @@ msgstr ""
 msgid "atoz_search"
 msgstr ""
 
+#. English: "Search for a programme title".
+msgid "atoz_search_label"
+msgstr ""
+
 #. English: "Search results for '%1'".
 #. Example URL: http://www.bbc.co.uk/bbcone/programmes/a-z/by/thisisnotarealword .
 #. %1 is a variable, which may contain the value: "eastenders".
