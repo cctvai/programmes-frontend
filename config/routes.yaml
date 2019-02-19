@@ -221,6 +221,16 @@ atoz_list:
     defaults: { _controller: App\Controller\Atoz\ListController }
     requirements: { slice: 'all|player' }
 
+atoz_redirect_current_list:
+    path: /programmes/a-z/current
+    controller: App\Controller\RedirectAndCacheController::redirectAction
+    defaults: { route: atoz_index, permanent: true }
+
+atoz_shorthand:
+    path: /programmes/a-z/{search}
+    controller: App\Controller\RedirectAndCacheController::redirectAction
+    defaults: { route: atoz_show, slice: "all", permanent: true }
+
 atoz_naked_search:
     path: /programmes/a-z/by/{search}
     controller: App\Controller\RedirectAndCacheController::redirectAction
@@ -230,3 +240,8 @@ atoz_show:
     path: /programmes/a-z/by/{search}/{slice}
     defaults: { _controller: App\Controller\Atoz\ShowController }
     requirements: { slice: 'all|player' }
+
+atoz_redirect_current_show:
+    path: /programmes/a-z/by/{search}/current
+    controller: App\Controller\RedirectAndCacheController::redirectAction
+    defaults: { route: atoz_show, slice: "player", permanent: true }
