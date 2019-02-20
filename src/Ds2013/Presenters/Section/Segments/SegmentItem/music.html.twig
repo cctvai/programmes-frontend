@@ -105,12 +105,6 @@
         {%- if loop.length > 1 and loop.index > 1 -%}
             {%- if loop.last %} &amp; {% else %}, {% endif -%}
         {%- endif -%}
-        {%- if contribution.getContributor().getMusicBrainzId() -%}
-            <a href="{{ path('music_artist', { mbid: contribution.getContributor().getMusicBrainzId() }) }}">{# remove whitespace
-              #}<span class="artist">{{ contribution.getContributor().getName() }}</span>{# remove whitespace
-          #}</a>
-        {%- else -%}
-            <span class="artist">{{ contribution.getContributor().getName() }}</span>
-        {%- endif -%}
+        <span class="artist">{{ contribution.getContributor().getName() }}</span>
     {%- endfor -%}
 {%- endmacro -%}
