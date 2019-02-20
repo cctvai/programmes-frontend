@@ -25,9 +25,12 @@ class GalleryController extends BaseController
         $images = $imagesService->findByGroup($gallery);
         $image = $this->getFirstImage($imagePid, $images);
         $programme = $gallery->getParent();
-        $brand = $programme->getTleo();
-        $network = $programme->getMasterBrand()->getNetwork()->getName();
-        $galleries = $programmesAggregationService->findDescendantGalleries($brand, $siblingLimit);
+        $brand = null;
+        $galleries = null;
+        if ($programme) {
+            $brand = $programme->getTleo();
+            $galleries = $programmesAggregationService->findDescendantGalleries($brand, $siblingLimit);
+        }
         $hasImageHighlighted = !empty($imagePid);
         $this->setAtiContentId((string) $gallery->getPid(), 'pips');
 
@@ -36,7 +39,6 @@ class GalleryController extends BaseController
             'programme' => $programme,
             'image' => $image,
             'images' => $images,
-            'network' => $network,
             'galleries' => $galleries,
             'brand' => $brand,
             'hasImageHighlighted' => $hasImageHighlighted,
