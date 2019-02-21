@@ -105,6 +105,10 @@ msgstr "Celfyddydau, Diwylliant a'r Cyfryngau"
 msgid "atoz_all"
 msgstr "Pob Rhaglen"
 
+#. English: "Available Programmes".
+msgid "atoz_available"
+msgstr ""
+
 #. English: "Available now & Coming soon".
 msgid "atoz_current"
 msgstr "Ar gael nawr ac yn dod yn fuan"

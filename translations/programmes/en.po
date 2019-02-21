@@ -104,6 +104,10 @@ msgstr "Arts, Culture &amp; the Media"
 msgid "atoz_all"
 msgstr "All Programmes"
 
+#. English: "Available Programmes".
+msgid "atoz_available"
+msgstr "Available Programmes"
+
 #. English: "Available now & Coming soon".
 msgid "atoz_current"
 msgstr "Available now & Coming soon"

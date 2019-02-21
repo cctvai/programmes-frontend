@@ -1,14 +1,28 @@
 {% extends 'base_ds2013.html.twig' %}
 
-{% block title %}BBC - {{ tr('programmes') }} - {{ tr('atoz_title') }}{% endblock %}
+{% block inline_head %}{% if selectedLetter is empty %}<meta name="robots" content="noindex,nofollow">{% endif %}{% endblock %}
+{%- block title -%}
+    BBC -
+    {%- if slice == 'all' -%}
+        {{ ' ' }}{{ tr('atoz_all') }}{{ ' ' }}
+    {%- else -%}
+        {{ ' ' }}{{ tr('atoz_available') }}{{ ' ' }}
+    {%- endif -%}
+    - {{ tr('atoz_title') }},
+    {%- if selectedLetter is empty -%}
+        {{ ' ' }}{{ search }}
+    {%- else -%}
+        {{ ' ' }}{{ selectedLetter|upper }}
+    {%- endif -%}
+{%- endblock -%}
 {% block page_classes %}programmes-page text-base b-g-p br-box-page{% endblock %}
 
 {% block body %}
-    {% if current is empty %}
+    {% if selectedLetter is empty %}
         <h1>{{ tr('atoz_search_title', { '%1': search }) }}</h1>
         {{ ds2013('atozSearchBar', search, slice) }}
     {% else %}
-        <h1>{{ tr('atoz_title_full') }} - {{ current|upper }}</h1>
-        {{ ds2013('atozLetterNav', current, slice) }}
+        <h1>{{ tr('atoz_title_full') }} - {{ selectedLetter|upper }}</h1>
+        {{ ds2013('atozLetterNav', selectedLetter, slice) }}
     {% endif %}
 {% endblock %}

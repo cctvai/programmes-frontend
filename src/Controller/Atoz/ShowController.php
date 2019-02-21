@@ -10,19 +10,33 @@ class ShowController extends BaseController
 {
     public function __invoke(string $search, string $slice)
     {
-        $current = '';
+        $selectedLetter = '';
         if (strlen($search) === 1) {
             if ($search === '@') {
-                $current = '0-9';
+                $selectedLetter = '0-9';
             } else {
-                $current = strtolower($search);
+                $selectedLetter = strtolower($search);
             }
         }
 
-        // TODO: add meta robots noindex,nofollow for keyword searches
+        if ($slice === 'all') {
+            $descriptionSlice = 'all';
+        } else {
+            $descriptionSlice = 'available';
+        }
+        if ($selectedLetter === '') {
+            $descriptionSearch = 'matching "' . $search . '"';
+        } else {
+            $descriptionSearch = 'beginning with ' . strtoupper($selectedLetter);
+        }
+        $this->overridenDescription = 'A list of '
+                                    . $descriptionSlice
+                                    . ' BBC television, radio and other programmes '
+                                    . $descriptionSearch
+                                    . '.';
 
         return $this->renderWithChrome('atoz/show.html.twig', [
-            'current' => $current,
+            'selectedLetter' => $selectedLetter,
             'search' => $search,
             'slice' => $slice,
         ]);

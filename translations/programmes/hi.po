@@ -102,6 +102,10 @@ msgstr ""
 msgid "atoz_all"
 msgstr "सभी कार्यक्रम"
 
+#. English: "Available Programmes".
+msgid "atoz_available"
+msgstr ""
+
 #. English: "Available now & Coming soon".
 msgid "atoz_current"
 msgstr "अभी  मौजूद हैं और जल्द आने वाला है"

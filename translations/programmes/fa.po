@@ -101,6 +101,10 @@ msgstr ""
 msgid "atoz_all"
 msgstr "همه برنامه‌ها"
 
+#. English: "Available Programmes".
+msgid "atoz_available"
+msgstr ""
+
 #. English: "Available now & Coming soon".
 msgid "atoz_current"
 msgstr "هم اکنون موجود است و بزودی بخش جدیدی اضافه خواهد شد"

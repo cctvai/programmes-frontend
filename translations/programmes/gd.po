@@ -104,6 +104,10 @@ msgstr "Na h-Ealain, Cultar &amp; Na Meadhanan"
 msgid "atoz_all"
 msgstr ""
 
+#. English: "Available Programmes".
+msgid "atoz_available"
+msgstr ""
+
 #. English: "Available now & Coming soon".
 msgid "atoz_current"
 msgstr ""
