@@ -5,16 +5,17 @@ namespace App\Controller\Styleguide\Ds2013\Utilities;
 
 use App\Builders\CollapsedBroadcastBuilder;
 use App\Builders\ServiceBuilder;
-use App\Controller\BaseController;
+use App\Controller\Styleguide\Ds2013\StyleGuideBaseController;
 use BBC\ProgrammesPagesService\Domain\ValueObject\Pid;
 use BBC\ProgrammesPagesService\Domain\ValueObject\Sid;
 use BBC\ProgrammesPagesService\Service\CoreEntitiesService;
 use Symfony\Component\HttpFoundation\Request;
 
-class CtaInSituController extends BaseController
+class CtaInSituController extends StyleGuideBaseController
 {
     public function __invoke(Request $request, CoreEntitiesService $coreEntitiesService)
     {
+        parent::__construct();
         if ($request->query->has('branding_context')) {
             $coreEntity = $coreEntitiesService->findByPidFull(new Pid($request->query->get('branding_context')));
             $this->setContextAndPreloadBranding($coreEntity);

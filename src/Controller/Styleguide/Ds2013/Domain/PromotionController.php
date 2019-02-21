@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Styleguide\Ds2013\Domain;
 
-use App\Controller\BaseController;
+use App\Controller\Styleguide\Ds2013\StyleGuideBaseController;
 use BBC\ProgrammesPagesService\Domain\ValueObject\Pid;
 use BBC\ProgrammesPagesService\Service\CoreEntitiesService;
 use BBC\ProgrammesPagesService\Service\ProgrammesService;
@@ -11,7 +11,7 @@ use BBC\ProgrammesPagesService\Service\PromotionsService;
 use BBC\ProgrammesPagesService\Service\ServicesService;
 use Symfony\Component\HttpFoundation\Request;
 
-class PromotionController extends BaseController
+class PromotionController extends StyleGuideBaseController
 {
     public function __invoke(
         ProgrammesService $programmesService,
@@ -20,6 +20,7 @@ class PromotionController extends BaseController
         ServicesService $servicesService,
         Request $request
     ) {
+        parent::__construct();
         if ($request->query->has('branding_context')) {
             $coreEntity = $coreEntitiesService->findByPidFull(new Pid($request->query->get('branding_context')));
             $this->setContextAndPreloadBranding($coreEntity);

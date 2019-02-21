@@ -2,9 +2,9 @@
 declare(strict_types = 1);
 namespace App\Controller\Styleguide\Amen;
 
-use App\Controller\BaseController;
+use App\Controller\Styleguide\Ds2013\StyleGuideBaseController;
 
-class IntroController extends BaseController
+class IntroController extends StyleGuideBaseController
 {
     public function __invoke()
     {

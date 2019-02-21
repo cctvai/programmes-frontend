@@ -8,15 +8,16 @@ use App\Builders\ContributorBuilder;
 use App\Builders\EpisodeBuilder;
 use App\Builders\MusicSegmentBuilder;
 use App\Builders\SegmentEventBuilder;
-use App\Controller\BaseController;
+use App\Controller\Styleguide\Ds2013\StyleGuideBaseController;
 use App\Ds2013\Presenters\Section\Segments\SegmentsListPresenter;
 use App\DsShared\Helpers\LiveBroadcastHelper;
 use App\DsShared\Helpers\PlayTranslationsHelper;
 
-class MusicSegmentsController extends BaseController
+class MusicSegmentsController extends StyleGuideBaseController
 {
     public function __invoke(LiveBroadcastHelper $liveBroadcastHelper, PlayTranslationsHelper $playTranslationsHelper)
     {
+        parent::__construct();
         return $this->renderWithChrome('styleguide/ds2013/domain/music_segments.html.twig', [
             'popular_music_segments' => $this->buildPopularMusicSegmentsListPresenter($liveBroadcastHelper, $playTranslationsHelper),
         ]);

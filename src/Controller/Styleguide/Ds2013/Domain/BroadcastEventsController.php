@@ -3,14 +3,14 @@ declare(strict_types=1);
 
 namespace App\Controller\Styleguide\Ds2013\Domain;
 
-use App\Controller\BaseController;
+use App\Controller\Styleguide\Ds2013\StyleGuideBaseController;
 use BBC\ProgrammesPagesService\Domain\ValueObject\Pid;
 use BBC\ProgrammesPagesService\Service\CollapsedBroadcastsService;
 use BBC\ProgrammesPagesService\Service\CoreEntitiesService;
 use BBC\ProgrammesPagesService\Service\ServicesService;
 use Symfony\Component\HttpFoundation\Request;
 
-class BroadcastEventsController extends BaseController
+class BroadcastEventsController extends StyleGuideBaseController
 {
     public function __invoke(
         CollapsedBroadcastsService $collapsedBroadcastService,
@@ -18,7 +18,7 @@ class BroadcastEventsController extends BaseController
         Request $request,
         ServicesService $servicesService
     ) {
-
+        parent::__construct();
         if ($request->query->has('branding_context')) {
             $coreEntity = $coreEntitiesService->findByPidFull(new Pid($request->query->get('branding_context')));
             $this->setContextAndPreloadBranding($coreEntity);

@@ -10,7 +10,7 @@ use App\Builders\EpisodeBuilder;
 use App\Builders\GalleryBuilder;
 use App\Builders\MasterBrandBuilder;
 use App\Builders\ServiceBuilder;
-use App\Controller\BaseController;
+use App\Controller\Styleguide\Ds2013\StyleGuideBaseController;
 use App\Ds2013\Presenters\Utilities\Cta\LiveCtaPresenter;
 use App\DsShared\Factory\HelperFactory;
 use BBC\ProgrammesPagesService\Domain\Enumeration\MediaTypeEnum;
@@ -20,7 +20,7 @@ use BBC\ProgrammesPagesService\Service\CoreEntitiesService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-class CtaController extends BaseController
+class CtaController extends StyleGuideBaseController
 {
     public function __invoke(
         Request $request,
@@ -28,6 +28,7 @@ class CtaController extends BaseController
         HelperFactory $helperFactory,
         UrlGeneratorInterface $router
     ) {
+        parent::__construct();
         if ($request->query->has('branding_context')) {
             $coreEntity = $coreEntitiesService->findByPidFull(new Pid($request->query->get('branding_context')));
             $this->setContextAndPreloadBranding($coreEntity);

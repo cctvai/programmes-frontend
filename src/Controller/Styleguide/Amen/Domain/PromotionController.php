@@ -3,9 +3,9 @@ declare(strict_types = 1);
 namespace App\Controller\Styleguide\Amen\Domain;
 
 use App\Builders\PromotionBuilder;
-use App\Controller\BaseController;
+use App\Controller\Styleguide\Ds2013\StyleGuideBaseController;
 
-class PromotionController extends BaseController
+class PromotionController extends StyleGuideBaseController
 {
     public function __invoke()
     {

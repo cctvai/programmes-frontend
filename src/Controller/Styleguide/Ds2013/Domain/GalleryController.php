@@ -5,7 +5,7 @@ namespace App\Controller\Styleguide\Ds2013\Domain;
 
 use App\Builders\GalleryBuilder;
 use App\Builders\ImageBuilder;
-use App\Controller\BaseController;
+use App\Controller\Styleguide\Ds2013\StyleGuideBaseController;
 use App\Ds2013\Factory\PresenterFactory;
 use BBC\ProgrammesPagesService\Domain\ValueObject\Pid;
 use BBC\ProgrammesPagesService\Service\CollapsedBroadcastsService;
@@ -13,7 +13,7 @@ use BBC\ProgrammesPagesService\Service\CoreEntitiesService;
 use BBC\ProgrammesPagesService\Service\ServicesService;
 use Symfony\Component\HttpFoundation\Request;
 
-class GalleryController extends BaseController
+class GalleryController extends StyleGuideBaseController
 {
     public function __invoke(
         CollapsedBroadcastsService $collapsedBroadcastService,
@@ -22,7 +22,7 @@ class GalleryController extends BaseController
         ServicesService $servicesService,
         PresenterFactory $presenterFactory
     ) {
-
+        parent::__construct();
         if ($request->query->has('branding_context')) {
             $coreEntity = $coreEntitiesService->findByPidFull(new Pid($request->query->get('branding_context')));
             $this->setContextAndPreloadBranding($coreEntity);

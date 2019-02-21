@@ -6,10 +6,10 @@ use App\Builders\BrandBuilder;
 use App\Builders\ClipBuilder;
 use App\Builders\EpisodeBuilder;
 use App\Builders\SeriesBuilder;
-use App\Controller\BaseController;
+use App\Controller\Styleguide\Ds2013\StyleGuideBaseController;
 use BBC\ProgrammesPagesService\Domain\ValueObject\PartialDate;
 
-class ProgrammeController extends BaseController
+class ProgrammeController extends StyleGuideBaseController
 {
     public function __invoke()
     {
