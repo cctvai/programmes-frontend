@@ -3,6 +3,7 @@ declare(strict_types = 1);
 
 namespace App\Controller\Helpers;
 
+use BBC\ProgrammesPagesService\Domain\Entity\Image;
 use App\ExternalApi\Recipes\Domain\Recipe;
 use BBC\ProgrammesPagesService\Domain\Entity\Broadcast;
 use BBC\ProgrammesPagesService\Domain\Entity\Clip;
@@ -10,6 +11,7 @@ use BBC\ProgrammesPagesService\Domain\Entity\CollapsedBroadcast;
 use BBC\ProgrammesPagesService\Domain\Entity\Contribution;
 use BBC\ProgrammesPagesService\Domain\Entity\CoreEntity;
 use BBC\ProgrammesPagesService\Domain\Entity\Episode;
+use BBC\ProgrammesPagesService\Domain\Entity\Gallery;
 use BBC\ProgrammesPagesService\Domain\Entity\Programme;
 use BBC\ProgrammesPagesService\Domain\Entity\ProgrammeContainer;
 use BBC\ProgrammesPagesService\Domain\Entity\ProgrammeItem;
@@ -126,6 +128,22 @@ class StructuredDataHelper
     public function getSchemaForNonActorContribution(Contribution $contribution): array
     {
         return $this->schemaHelper->buildSchemaForContributor($contribution);
+    }
+
+
+    public function getSchemaForImage(Image $image, Programme $programme, Gallery $gallery, bool $showParent = true)
+    {
+        $schema = $this->schemaHelper->buildSchemaForImage($image, $programme);
+        if ($showParent) {
+            $schema['isPartOf'] = $this->getSchemaForGallery($gallery, $programme);
+        }
+
+        return $schema;
+    }
+
+    public function getSchemaForGallery(Gallery $gallery, Programme $programme)
+    {
+        return $this->schemaHelper->buildSchemaForGallery($gallery, $programme);
     }
 
     public function getSchemaForProgrammeContainerAndParents(Programme $programmeContainer): array

@@ -10,7 +10,10 @@ use BBC\ProgrammesPagesService\Domain\Entity\Clip;
 use BBC\ProgrammesPagesService\Domain\Entity\Collection;
 use BBC\ProgrammesPagesService\Domain\Entity\Contribution;
 use BBC\ProgrammesPagesService\Domain\Entity\Episode;
+use BBC\ProgrammesPagesService\Domain\Entity\Gallery;
+use BBC\ProgrammesPagesService\Domain\Entity\Image;
 use BBC\ProgrammesPagesService\Domain\Entity\Network;
+use BBC\ProgrammesPagesService\Domain\Entity\Programme;
 use BBC\ProgrammesPagesService\Domain\Entity\ProgrammeContainer;
 use BBC\ProgrammesPagesService\Domain\Entity\Series;
 use BBC\ProgrammesPagesService\Domain\Entity\Service;
@@ -218,6 +221,31 @@ class SchemaHelper
             $schema['@id'] = $this->router->generate('music_artist', ['mbid' => $contribution->getContributor()->getMusicBrainzId()]);
         }
         return $schema;
+    }
+
+    public function buildSchemaForImage(Image $image, Programme $programme)
+    {
+        $schema = [
+            "@type" => "ImageObject",
+            "caption" => $programme->getTitle() . ' - ' . $image->getTitle() . ' - ' . $image->getLongestSynopsis(),
+            "thumbnail" => "https://ichef.bbci.co.uk/images/ic/224xn/" . $image->getPid() . ".jpg",
+            "contentUrl" => $image->getUrl(976),
+        ];
+
+        return $schema;
+    }
+
+    public function buildSchemaForGallery(Gallery $gallery, Programme $programme)
+    {
+
+        return [
+            '@type' => 'ImageGallery',
+            'name' => $gallery->getTitle(),
+            'description' => $programme->getTitle() . ' - ' . $gallery->getTitle(),
+            'url' => $this->router->generate('find_by_pid', ['pid' => $gallery->getPid()], UrlGeneratorInterface::ABSOLUTE_URL),
+            'author' => $this->getSchemaForOrganisation(),
+            'isPartOf' => $this->getSchemaForSeries($programme),
+        ];
     }
 
     public function getSchemaForRecipe(Recipe $recipe): array
