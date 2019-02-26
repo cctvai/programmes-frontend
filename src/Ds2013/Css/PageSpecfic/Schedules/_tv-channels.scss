@@ -55,24 +55,28 @@
     background-position: 0 -205px;
 }
 
-.tv-channels__item--bbc_hd {
+.tv-channels__item--bbc_scotland {
     background-position: 0 -246px;
 }
 
-.tv-channels__item--bbc_news24 {
+.tv-channels__item--bbc_hd {
     background-position: 0 -287px;
 }
 
-.tv-channels__item--bbc_parliament {
+.tv-channels__item--bbc_news24 {
     background-position: 0 -328px;
 }
 
-.tv-channels__item--bbc_alba {
+.tv-channels__item--bbc_parliament {
     background-position: 0 -369px;
 }
 
-.tv-channels__item--s4cpbs {
+.tv-channels__item--bbc_alba {
     background-position: 0 -410px;
+}
+
+.tv-channels__item--s4cpbs {
+    background-position: 0 -451px;
 }
 
 .tv-channels__item--bbc_one.tv-channels__item--active,
@@ -117,38 +121,45 @@
     background-position: -96px -205px;
 }
 
+.tv-channels__item--bbc_scotland.tv-channels__item--active,
+.tv-channels__item--bbc_scotland:active,
+.tv-channels__item--bbc_scotland:focus,
+.tv-channels__item--bbc_scotland:hover {
+    background-position: -96px -246px;
+}
+
 .tv-channels__item--bbc_hd.tv-channels__item--active,
 .tv-channels__item--bbc_hd:active,
 .tv-channels__item--bbc_hd:focus,
 .tv-channels__item--bbc_hd:hover {
-    background-position: -96px -246px;
+    background-position: -96px -287px;
 }
 
 .tv-channels__item--bbc_news24.tv-channels__item--active,
 .tv-channels__item--bbc_news24:active,
 .tv-channels__item--bbc_news24:focus,
 .tv-channels__item--bbc_news24:hover {
-    background-position: -96px -287px;
+    background-position: -96px -328px;
 }
 
 .tv-channels__item--bbc_parliament.tv-channels__item--active,
 .tv-channels__item--bbc_parliament:active,
 .tv-channels__item--bbc_parliament:focus,
 .tv-channels__item--bbc_parliament:hover {
-    background-position: -96px -328px;
+    background-position: -96px -369px;
 }
 
 .tv-channels__item--bbc_alba.tv-channels__item--active,
 .tv-channels__item--bbc_alba:active,
 .tv-channels__item--bbc_alba:focus,
 .tv-channels__item--bbc_alba:hover {
-    background-position: -96px -369px;
+    background-position: -96px -410px;
 }
 
 .tv-channels__item--s4cpbs.tv-channels__item--active,
 .tv-channels__item--s4cpbs:active .tv-channels__item--s4cpbs:focus,
 .tv-channels__item--s4cpbs:hover {
-    background-position: -96px -410px;
+    background-position: -96px -451px;
 }
 
 @include mq-range ('bpb2') {

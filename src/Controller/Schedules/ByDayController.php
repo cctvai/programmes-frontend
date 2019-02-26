@@ -256,6 +256,7 @@ class ByDayController extends SchedulesBaseController
             'bbc_four',
             'cbbc',
             'cbeebies',
+            'bbc_scotland',
             'bbc_news24',
             'bbc_parliament',
             'bbc_alba',
