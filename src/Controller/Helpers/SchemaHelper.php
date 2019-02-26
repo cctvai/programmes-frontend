@@ -4,6 +4,7 @@ declare(strict_types = 1);
 namespace App\Controller\Helpers;
 
 use App\DsShared\Helpers\StreamableHelper;
+use App\ExternalApi\Recipes\Domain\Recipe;
 use BBC\ProgrammesPagesService\Domain\Entity\BroadcastInfoInterface;
 use BBC\ProgrammesPagesService\Domain\Entity\Clip;
 use BBC\ProgrammesPagesService\Domain\Entity\Collection;
@@ -215,6 +216,35 @@ class SchemaHelper
         ];
         if ($contribution->getContributor()->getMusicBrainzId()) {
             $schema['@id'] = $this->router->generate('music_artist', ['mbid' => $contribution->getContributor()->getMusicBrainzId()]);
+        }
+        return $schema;
+    }
+
+    public function getSchemaForRecipe(Recipe $recipe): array
+    {
+        $chef = $recipe->getChef();
+        $schema = [
+            '@type' => 'Recipe',
+            'url' => $recipe->getUrl(),
+            'name' => $recipe->getTitle(),
+            'about' => $recipe->getDescription(),
+
+        ];
+
+        if ($recipe->getImage()) {
+            $schema['image'] = $recipe->getImage()->getUrl('480');
+        }
+
+        if ($chef) {
+            $schema['author'] = [
+                '@type' => 'Person',
+                'jobTitle' => 'Chef',
+                'name' => $chef->getName(),
+                'identifier' => $chef->getId(),
+            ];
+            if ($chef->getImage()) {
+                $schema['author']['image'] = $chef->getImage()->getUrl('480');
+            }
         }
         return $schema;
     }

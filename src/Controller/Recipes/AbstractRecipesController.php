@@ -4,13 +4,15 @@ declare(strict_types=1);
 namespace App\Controller\Recipes;
 
 use App\Controller\BaseController;
+use App\ExternalApi\Recipes\Domain\RecipesApiResult;
 use App\ExternalApi\Recipes\Service\RecipesService;
 use BBC\ProgrammesPagesService\Domain\Entity\Programme;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use App\Controller\Helpers\StructuredDataHelper;
 
 abstract class AbstractRecipesController extends BaseController
 {
-    public function __invoke(Programme $programme, RecipesService $recipesService)
+    public function __invoke(Programme $programme, RecipesService $recipesService, StructuredDataHelper $structuredDataHelper)
     {
         $pid = (string) $programme->getPid();
         if (!$programme->getOption('recipes_enabled')) {
@@ -34,17 +36,33 @@ abstract class AbstractRecipesController extends BaseController
         $this->response()->setMaxAge(300);
 
         $this->overridenDescription = 'Recipes from ' . $programme->getTitle();
-
+        $recipes = $apiResponse->getRecipes();
+        $schema = $this->getSchema($structuredDataHelper, $recipes, $programme);
         return $this->renderRecipes([
-            'recipes' => $apiResponse->getRecipes(),
+            'recipes' => $recipes,
             'total' => $apiResponse->getTotal(),
             'pid' => $pid,
             'showImage' => $showImage,
             'programme' => $programme,
+            'schema' => $schema,
         ]);
     }
 
     abstract protected function noRecipesError($pid);
 
     abstract protected function renderRecipes(array $dataForTemplate);
+
+    private function getSchema(StructuredDataHelper $structuredDataHelper, array $recipes, Programme $programme)
+    {
+        $recipeArray = [];
+        foreach ($recipes as $recipe) {
+            $recipeArray[] = $structuredDataHelper->getSchemaForRecipe($recipe);
+        }
+        if ($programme) {
+            $schema = $structuredDataHelper->getSchemaForCoreEntity($programme);
+            $schema['hasPart'] = $recipeArray;
+            return $schema;
+        }
+        return $recipes;
+    }
 }

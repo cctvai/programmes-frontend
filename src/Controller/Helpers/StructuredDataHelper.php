@@ -3,10 +3,12 @@ declare(strict_types = 1);
 
 namespace App\Controller\Helpers;
 
+use App\ExternalApi\Recipes\Domain\Recipe;
 use BBC\ProgrammesPagesService\Domain\Entity\Broadcast;
 use BBC\ProgrammesPagesService\Domain\Entity\Clip;
 use BBC\ProgrammesPagesService\Domain\Entity\CollapsedBroadcast;
 use BBC\ProgrammesPagesService\Domain\Entity\Contribution;
+use BBC\ProgrammesPagesService\Domain\Entity\CoreEntity;
 use BBC\ProgrammesPagesService\Domain\Entity\Episode;
 use BBC\ProgrammesPagesService\Domain\Entity\Programme;
 use BBC\ProgrammesPagesService\Domain\Entity\ProgrammeContainer;
@@ -74,6 +76,23 @@ class StructuredDataHelper
         return $episode;
     }
 
+    public function getSchemaForCoreEntity(CoreEntity $programme): array
+    {
+        if ($programme instanceof Episode) {
+            return $this->schemaHelper->getSchemaForEpisode($programme);
+        }
+        if ($programme instanceof Clip) {
+            return $this->buildSchemaForClip($programme);
+        }
+        if ($programme instanceof Series) {
+            return $this->schemaHelper->getSchemaForSeries($programme);
+        }
+        if ($programme instanceof ProgrammeContainer) {
+            return $this->getSchemaForProgrammeContainer($programme);
+        }
+        return [];
+    }
+
     public function getSchemaForProgrammeContainer(ProgrammeContainer $programmeContainer): array
     {
         if ($programmeContainer->isTlec()) {
@@ -134,6 +153,13 @@ class StructuredDataHelper
         $schemaContext['isPartOf'] = $this->getSchemaForProgrammeContainerAndParents($programme);
 
         return $schemaContext;
+    }
+
+    public function getSchemaForRecipe(Recipe $recipe): array
+    {
+        $schema = $this->schemaHelper->getSchemaForRecipe($recipe);
+
+        return $schema;
     }
 
     private function getSchemaForService(Service $service): array
