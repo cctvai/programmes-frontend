@@ -92,7 +92,6 @@ class ByDayController extends SchedulesBaseController
                 );
             }
         }
-
         $pagePresenter = new SchedulesByDayPagePresenter(
             $service,
             $broadcastDay->start(),

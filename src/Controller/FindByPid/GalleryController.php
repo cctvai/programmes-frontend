@@ -33,7 +33,6 @@ class GalleryController extends BaseController
         }
         $hasImageHighlighted = !empty($imagePid);
         $this->setAtiContentId((string) $gallery->getPid(), 'pips');
-
         return $this->renderWithChrome('find_by_pid/gallery.html.twig', [
             'gallery' => $gallery,
             'programme' => $programme,
