@@ -16,7 +16,7 @@ class Article extends BaseIsiteObject
         string $parentPid,
         ?string $shortSynopsis,
         string $brandingId,
-        string $image,
+        ?IsiteImage $image,
         array $parents,
         array $rowGroups,
         ?string $bbcSite

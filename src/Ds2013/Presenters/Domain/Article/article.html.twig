@@ -3,7 +3,7 @@
     <div class="programme__img 1/1 programme__img--hasimage">
         <div class="programme__img--container programme__img-box">
             {% if article.getArticle().getImage() %}
-                {{ ds_shared('image', article.getArticle().getImage(), 256, '') }}
+                {{ ds_shared('imageEntity', article.getArticle().getImage(), 256, '') }}
             {% endif %}
         </div>
     </div>

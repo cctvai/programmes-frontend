@@ -1,6 +1,7 @@
 <?php
 namespace App\Builders;
 
+use App\ExternalApi\Isite\Domain\IsiteImage;
 use App\ExternalApi\Isite\Domain\Profile;
 use BBC\ProgrammesPagesService\Domain\ValueObject\Pid;
 use Faker\Factory;
@@ -26,8 +27,8 @@ class ProfileBuilder extends AbstractBuilder
             'brandingId' => $faker->word,
             'contentBlocks' => [],
             'keyFacts' => [],
-            'image' => $faker->regexify('[0-9b-df-hj-np-tv-z]{8,15}'),
-            'portraitImage' => '',
+            'image' => new IsiteImage(new Pid($faker->regexify('[0-9b-df-hj-np-tv-z]{8,15}'))),
+            'portraitImage' => null,
             'onwardJourneyBlock' => null,
             'tagline' => "This brand new sofa is only £399! (Other sofas are available)",
             'parents' => [],

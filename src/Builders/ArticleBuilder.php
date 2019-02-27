@@ -2,6 +2,7 @@
 namespace App\Builders;
 
 use App\ExternalApi\Isite\Domain\Article;
+use App\ExternalApi\Isite\Domain\IsiteImage;
 use BBC\ProgrammesPagesService\Domain\ValueObject\Pid;
 use Faker\Factory;
 
@@ -20,7 +21,7 @@ class ArticleBuilder extends AbstractBuilder
             'parentPid' => new Pid($faker->regexify('[0-9b-df-hj-np-tv-z]{8,15}')),
             'shortSynopsis' => $faker->sentence(5),
             'brandingId' => $faker->word,
-            'image' => $faker->regexify('[0-9b-df-hj-np-tv-z]{8,15}'),
+            'image' => new IsiteImage(new Pid($faker->regexify('[0-9b-df-hj-np-tv-z]{8,15}'))),
             'parents' => [],
             'rowGroups' => [],
             'bbc_site' => null,

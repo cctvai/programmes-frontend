@@ -6,9 +6,7 @@ namespace App\Controller;
 use App\Controller\Helpers\IsiteKeyHelper;
 use App\Ds2013\Presenters\Utilities\Paginator\PaginatorPresenter;
 use App\ExternalApi\Isite\Domain\BaseIsiteObject;
-use App\ExternalApi\Isite\Domain\IsiteImage;
 use App\ExternalApi\Isite\Service\IsiteService;
-use BBC\ProgrammesPagesService\Domain\ValueObject\Pid;
 use BBC\ProgrammesPagesService\Service\CoreEntitiesService;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use App\ExternalApi\Isite\IsiteResult;
@@ -138,9 +136,9 @@ abstract class BaseIsiteController extends BaseController
             $this->overridenDescription = $shortSynopsis;
         }
 
-        $imagePid = $isiteObject->getImage();
-        if ($imagePid) {
-            $this->overridenImage = new IsiteImage(new Pid($imagePid));
+        $image = $isiteObject->getImage();
+        if ($image) {
+            $this->overridenImage = $image;
         }
     }
 

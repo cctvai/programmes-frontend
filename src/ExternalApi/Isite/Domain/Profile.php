@@ -27,7 +27,7 @@ class Profile extends BaseIsiteObject
     /** @var string */
     private $tagline;
 
-    /** @var string|null */
+    /** @var IsiteImage|null */
     private $portraitImage;
 
     /** @var int  */
@@ -49,8 +49,8 @@ class Profile extends BaseIsiteObject
         string $brandingId,
         ?array $contentBlocks,
         array $keyFacts,
-        string $image,
-        ?string $portraitImage,
+        ?IsiteImage $image,
+        ?IsiteImage $portraitImage,
         ?AbstractContentBlock $onwardJourneyBlock,
         ?string $tagline,
         array $parents,
@@ -101,9 +101,9 @@ class Profile extends BaseIsiteObject
         return $this->onwardJourneyBlock;
     }
 
-    public function getPortraitImage(): string
+    public function getPortraitImage(): ?IsiteImage
     {
-        return $this->portraitImage ?: $this->image;
+        return $this->portraitImage ?: $this->getImage();
     }
 
     public function getTagline(): ?string

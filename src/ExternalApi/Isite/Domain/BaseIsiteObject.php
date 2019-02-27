@@ -22,7 +22,7 @@ abstract class BaseIsiteObject
     /** @var string */
     protected $brandingId;
 
-    /** @var string */
+    /** @var IsiteImage */
     protected $image;
 
     /** @var BaseIsiteObject[] */
@@ -49,7 +49,7 @@ abstract class BaseIsiteObject
         string $projectSpace,
         string $parentPid,
         string $brandingId,
-        string $image,
+        ?IsiteImage $image,
         array $parents,
         string $key,
         ?string $shortSynopsis,
@@ -72,7 +72,7 @@ abstract class BaseIsiteObject
         return $this->fileId;
     }
 
-    public function getImage(): string
+    public function getImage(): ?IsiteImage
     {
         return $this->image;
     }
