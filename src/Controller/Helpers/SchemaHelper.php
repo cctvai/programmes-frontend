@@ -4,6 +4,9 @@ declare(strict_types = 1);
 namespace App\Controller\Helpers;
 
 use App\DsShared\Helpers\StreamableHelper;
+use App\ExternalApi\Isite\Domain\Article;
+use App\ExternalApi\Isite\Domain\IsiteImage;
+use App\ExternalApi\Isite\Domain\Profile;
 use App\ExternalApi\Recipes\Domain\Recipe;
 use BBC\ProgrammesPagesService\Domain\Entity\BroadcastInfoInterface;
 use BBC\ProgrammesPagesService\Domain\Entity\Clip;
@@ -17,6 +20,7 @@ use BBC\ProgrammesPagesService\Domain\Entity\Programme;
 use BBC\ProgrammesPagesService\Domain\Entity\ProgrammeContainer;
 use BBC\ProgrammesPagesService\Domain\Entity\Series;
 use BBC\ProgrammesPagesService\Domain\Entity\Service;
+use BBC\ProgrammesPagesService\Domain\ValueObject\Pid;
 use Cake\Chronos\ChronosInterval;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
@@ -220,6 +224,49 @@ class SchemaHelper
         if ($contribution->getContributor()->getMusicBrainzId()) {
             $schema['@id'] = $this->router->generate('music_artist', ['mbid' => $contribution->getContributor()->getMusicBrainzId()]);
         }
+        return $schema;
+    }
+
+    public function buildSchemaForPerson(Profile $profile)
+    {
+        $imageUrl = null;
+        if ($profile->getPortraitImage()) {
+            $imageUrl = $profile->getPortraitImage()->getUrl(480);
+        } elseif ($profile->getImage()) {
+            $imageUrl = $profile->getImage()->getUrl(480);
+        }
+        $schema = [
+            '@type' => 'person',
+            'name' => $profile->getTitle(),
+            'url' => $this->router->generate(
+                'programme_profile',
+                ['key' => $profile->getKey(), 'slug' => $profile->getSlug()],
+                UrlGeneratorInterface::ABSOLUTE_URL
+            ),
+        ];
+        if ($imageUrl) {
+            $schema['image'] = $imageUrl;
+        }
+        return $schema;
+    }
+
+
+    public function buildSchemaForArticle(Article $article, ?Programme $programme)
+    {
+        $schema['@type'] = 'Article';
+
+        if ($programme) {
+            $headline = $programme->getTitle() . ' - ' . $article->getTitle();
+        } else {
+            $headline = $article->getTitle();
+        }
+
+        $schema['headline'] = $headline;
+        if ($article->getImage()) {
+            $schema['image'] = $article->getImage()->getUrl(480);
+        }
+        $schema['Author'][] = $this->getSchemaForOrganisation();
+
         return $schema;
     }
 

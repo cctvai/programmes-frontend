@@ -5,8 +5,10 @@ namespace App\Controller\Profiles;
 
 use App\Controller\BaseIsiteController;
 use App\Controller\Helpers\IsiteKeyHelper;
+use App\Controller\Helpers\StructuredDataHelper;
 use App\ExternalApi\Isite\Domain\Profile;
 use App\ExternalApi\Isite\Service\ProfileService;
+use BBC\ProgrammesPagesService\Domain\Entity\Programme;
 use BBC\ProgrammesPagesService\Service\CoreEntitiesService;
 use GuzzleHttp\Promise\FulfilledPromise;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,7 +21,8 @@ class ShowController extends BaseIsiteController
         Request $request,
         ProfileService $isiteService,
         IsiteKeyHelper $isiteKeyHelper,
-        CoreEntitiesService $coreEntitiesService
+        CoreEntitiesService $coreEntitiesService,
+        StructuredDataHelper $structuredDataHelper
     ) {
         $this->setIstatsProgsPageType('profiles_index');
         $this->setAtiContentLabels('profile', 'profile');
@@ -47,6 +50,7 @@ class ShowController extends BaseIsiteController
         $this->removeHeadersForPreview($preview);
         $this->initContextAndBranding($isiteObject, $guid);
 
+        $programme = $this->getParentProgramme($this->context);
         // Calculate siblings display
         $siblingsPromise = new FulfilledPromise(null);
         if ($isiteObject->getParents()) {
@@ -55,15 +59,17 @@ class ShowController extends BaseIsiteController
                 self::MAX_LIST_DISPLAYED_ITEMS
             );
         }
-
         if ($isiteObject->isIndividual()) {
             $this->resolvePromises(['siblings' => $siblingsPromise]);
 
+            $schema = $this->getSchema($structuredDataHelper, $isiteObject);
+
             return $this->renderWithChrome('profiles/individual.html.twig', [
+                'schema' => $schema,
                 'guid' => $guid,
                 'projectSpace' => $isiteObject->getProjectSpace(),
                 'profile' => $isiteObject,
-                'programme' => $this->getParentProgramme($this->context),
+                'programme' => $programme,
                 'maxSiblings' => self::MAX_LIST_DISPLAYED_ITEMS,
             ]);
         }
@@ -81,18 +87,20 @@ class ShowController extends BaseIsiteController
                 $childProfilesThatAreGroups[] = $childProfile;
             }
         }
+
         $grandChildrenPromise = $isiteService->setChildrenOn(
             $childProfilesThatAreGroups,
             $isiteObject->getProjectSpace()
         );
         $this->resolvePromises([$grandChildrenPromise, $siblingsPromise]);
-
+        $schema = $this->getSchema($structuredDataHelper, $isiteObject);
         return $this->renderWithChrome('profiles/group.html.twig', [
+            'schema' => $schema,
             'guid' => $guid,
             'projectSpace' => $isiteObject->getProjectSpace(),
             'profile' => $isiteObject,
             'paginatorPresenter' => $this->getPaginator($isiteObject->getChildCount()),
-            'programme' => $this->getParentProgramme($this->context),
+            'programme' => $programme,
             'maxSiblings' => self::MAX_LIST_DISPLAYED_ITEMS,
         ]);
     }
@@ -100,5 +108,26 @@ class ShowController extends BaseIsiteController
     protected function getRouteName()
     {
         return 'programme_profile';
+    }
+
+    private function getSchema(StructuredDataHelper $structuredDataHelper, Profile $profile)
+    {
+        if ($profile->isIndividual()) {
+            $schema = $structuredDataHelper->getSchemaForPerson($profile);
+            return $schema;
+        }
+
+        $people = [];
+        foreach ($profile->getChildren() as $family) {
+            if ($family->isIndividual()) {
+                $people[] = $structuredDataHelper->getSchemaForPerson($family);
+            } else {
+                foreach ($family->getChildren() as $profile) {
+                    $people[] = $structuredDataHelper->getSchemaForPerson($profile);
+                };
+            }
+        }
+
+        return $people;
     }
 }
