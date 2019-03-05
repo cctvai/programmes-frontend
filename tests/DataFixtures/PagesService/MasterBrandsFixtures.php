@@ -14,7 +14,7 @@ class MasterBrandsFixtures
     public static function bbcOne(): MasterBrand
     {
         return MasterBrandBuilder::any()->with([
-            'mid' => new Mid('bbc_one_london'),
+            'mid' => new Mid('bbc_one'),
             'name' => 'BBC One London',
             'image' => ImagesFixtures::bbcOneLogo(),
             'network' => ServicesAndNetworksFixtures::networkBbcOne(),
