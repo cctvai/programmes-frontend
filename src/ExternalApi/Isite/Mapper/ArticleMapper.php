@@ -4,10 +4,7 @@ declare(strict_types = 1);
 namespace App\ExternalApi\Isite\Mapper;
 
 use App\ExternalApi\Isite\Domain\Article;
-use App\ExternalApi\Isite\Domain\IsiteImage;
 use App\ExternalApi\Isite\WrongEntityTypeException;
-use BBC\ProgrammesPagesService\Domain\ValueObject\Pid;
-use InvalidArgumentException;
 use SimpleXMLElement;
 
 class ArticleMapper extends Mapper
@@ -31,12 +28,7 @@ class ArticleMapper extends Mapper
         $key = $this->isiteKeyHelper->convertGuidToKey($guid);
         $title = $this->getString($formMetaData->title);
         $fileId = $this->getString($resultMetaData->fileId); // NOTE: This is the metadata fileId, not the form data file_id
-        try {
-            $imagePid = new Pid($this->getString($formMetaData->image));
-            $image = new IsiteImage($imagePid);
-        } catch (InvalidArgumentException $e) {
-            $image = null;
-        }
+        $image = $this->getIsiteImage($formMetaData->image);
         // @codingStandardsIgnoreStart
         // Ignored PHPCS cause of snake variable fields included in the xml
         $shortSynopsis = $this->getString($formMetaData->short_synopsis);

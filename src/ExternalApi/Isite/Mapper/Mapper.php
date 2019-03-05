@@ -5,6 +5,9 @@ namespace App\ExternalApi\Isite\Mapper;
 
 use App\Controller\Helpers\IsiteKeyHelper;
 use App\ExternalApi\Exception\ParseException;
+use App\ExternalApi\Isite\Domain\IsiteImage;
+use BBC\ProgrammesPagesService\Domain\ValueObject\Pid;
+use InvalidArgumentException;
 use Psr\Log\LoggerInterface;
 use SimpleXMLElement;
 
@@ -85,5 +88,21 @@ abstract class Mapper
     protected function isPublished(SimpleXMLElement $context): bool
     {
         return isset($context->result->metadata->guid);
+    }
+
+    protected function getIsiteImage(?SimpleXMLElement $formMetaDataImage): ?IsiteImage
+    {
+        try {
+            $imagePidString = $this->getString($formMetaDataImage);
+            if (!empty($imagePidString)) {
+                $imagePid = new Pid($imagePidString);
+                $image = new IsiteImage($imagePid);
+            } else {
+                $image = null;
+            }
+        } catch (InvalidArgumentException $e) {
+            $image = null;
+        }
+        return $image;
     }
 }

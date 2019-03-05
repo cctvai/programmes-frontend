@@ -253,6 +253,7 @@ class SchemaHelper
 
     public function buildSchemaForArticle(Article $article, ?Programme $programme)
     {
+        $schema = [];
         $schema['@type'] = 'Article';
 
         if ($programme) {
@@ -263,35 +264,41 @@ class SchemaHelper
 
         $schema['headline'] = $headline;
         if ($article->getImage()) {
-            $schema['image'] = $article->getImage()->getUrl(480);
+            $schema['image'] = [
+                $article->getImage()->getUrl(1040, 1040),
+                $article->getImage()->getUrl(1920, 1080),
+            ];
         }
-        $schema['Author'][] = $this->getSchemaForOrganisation();
+        $schema['author'] = $this->getSchemaForOrganisation();
 
         return $schema;
     }
 
-    public function buildSchemaForImage(Image $image, Programme $programme)
+    public function buildSchemaForImage(Image $image)
     {
         $schema = [
-            "@type" => "ImageObject",
-            "caption" => $programme->getTitle() . ' - ' . $image->getTitle() . ' - ' . $image->getLongestSynopsis(),
-            "thumbnail" => "https://ichef.bbci.co.uk/images/ic/224xn/" . $image->getPid() . ".jpg",
-            "contentUrl" => $image->getUrl(976),
+            '@type' => 'ImageObject',
+            'name' => $image->getTitle(),
+            'caption' => $image->getLongestSynopsis(),
+            'thumbnail' => [
+                '@type' => 'ImageObject',
+                'contentUrl' => $image->getUrl(224),
+            ],
+            'contentUrl' => $image->getUrl(976),
         ];
 
         return $schema;
     }
 
-    public function buildSchemaForGallery(Gallery $gallery, Programme $programme)
+    public function buildSchemaForGallery(Gallery $gallery, ?Programme $tleoProgramme)
     {
-
+        $tleoTitle = $tleoProgramme ? $tleoProgramme->getTitle() . ' - ' : '';
         return [
             '@type' => 'ImageGallery',
-            'name' => $gallery->getTitle(),
-            'description' => $programme->getTitle() . ' - ' . $gallery->getTitle(),
+            'name' => $tleoTitle . $gallery->getTitle(),
+            'description' => $gallery->getTitle(),
             'url' => $this->router->generate('find_by_pid', ['pid' => $gallery->getPid()], UrlGeneratorInterface::ABSOLUTE_URL),
             'author' => $this->getSchemaForOrganisation(),
-            'isPartOf' => $this->getSchemaForSeries($programme),
         ];
     }
 
@@ -302,12 +309,12 @@ class SchemaHelper
             '@type' => 'Recipe',
             'url' => $recipe->getUrl(),
             'name' => $recipe->getTitle(),
-            'about' => $recipe->getDescription(),
+            'description' => $recipe->getDescription(),
 
         ];
 
         if ($recipe->getImage()) {
-            $schema['image'] = $recipe->getImage()->getUrl('480');
+            $schema['image'] = $recipe->getImage()->getUrl('832');
         }
 
         if ($chef) {
@@ -315,7 +322,6 @@ class SchemaHelper
                 '@type' => 'Person',
                 'jobTitle' => 'Chef',
                 'name' => $chef->getName(),
-                'identifier' => $chef->getId(),
             ];
             if ($chef->getImage()) {
                 $schema['author']['image'] = $chef->getImage()->getUrl('480');

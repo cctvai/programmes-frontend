@@ -205,7 +205,7 @@ class EpisodeController extends BaseController
         }
 
         foreach ($clips as $clip) {
-            $schemaContext['hasPart'][] = $structuredDataHelper->buildSchemaForClip($clip);
+            $schemaContext['hasPart'][] = $structuredDataHelper->getSchemaForClip($clip, false);
         }
 
         $actors = [];

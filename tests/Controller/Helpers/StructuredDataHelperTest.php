@@ -289,7 +289,7 @@ class StructuredDataHelperTest extends TestCase
             'parent' => SeriesBuilder::any()->build(),
         ])->build();
 
-        $schemaClips = $this->helper->buildSchemaForClip($clip);
+        $schemaClips = $this->helper->getSchemaForClip($clip, true);
 
         $this->assertEquals('RadioClip', $schemaClips['@type'], 'We built a radio clip, so the schema:@type should be RadioClip');
     }

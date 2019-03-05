@@ -114,7 +114,7 @@ class ShowController extends BaseIsiteController
     {
         if ($profile->isIndividual()) {
             $schema = $structuredDataHelper->getSchemaForPerson($profile);
-            return $schema;
+            return $structuredDataHelper->prepare($schema);
         }
 
         $people = [];
@@ -122,12 +122,12 @@ class ShowController extends BaseIsiteController
             if ($family->isIndividual()) {
                 $people[] = $structuredDataHelper->getSchemaForPerson($family);
             } else {
-                foreach ($family->getChildren() as $profile) {
-                    $people[] = $structuredDataHelper->getSchemaForPerson($profile);
+                foreach ($family->getChildren() as $individualProfile) {
+                    $people[] = $structuredDataHelper->getSchemaForPerson($individualProfile);
                 };
             }
         }
 
-        return $people;
+        return $structuredDataHelper->prepare($people, true);
     }
 }

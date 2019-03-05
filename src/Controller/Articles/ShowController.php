@@ -97,7 +97,7 @@ class ShowController extends BaseIsiteController
     private function getSchema(StructuredDataHelper $structuredDataHelper, Article $article, ?Programme $programme)
     {
         $schema = $structuredDataHelper->getSchemaForArticle($article, $programme);
-        return $schema;
+        return $structuredDataHelper->prepare($schema);
     }
     /**
      * Return false if the user is not connected from the UK and the vote is set to "UK Only". We assume there is only

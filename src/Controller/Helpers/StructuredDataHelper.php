@@ -20,6 +20,7 @@ use BBC\ProgrammesPagesService\Domain\Entity\ProgrammeContainer;
 use BBC\ProgrammesPagesService\Domain\Entity\ProgrammeItem;
 use BBC\ProgrammesPagesService\Domain\Entity\Series;
 use BBC\ProgrammesPagesService\Domain\Entity\Service;
+use BBC\ProgrammesPagesService\Domain\Exception\DataNotFetchedException;
 
 /**
  * Method names are BBC domain language
@@ -83,16 +84,13 @@ class StructuredDataHelper
     public function getSchemaForCoreEntity(CoreEntity $programme): array
     {
         if ($programme instanceof Episode) {
-            return $this->schemaHelper->getSchemaForEpisode($programme);
+            return $this->getSchemaForEpisode($programme, true);
         }
         if ($programme instanceof Clip) {
-            return $this->buildSchemaForClip($programme);
-        }
-        if ($programme instanceof Series) {
-            return $this->schemaHelper->getSchemaForSeries($programme);
+            return $this->getSchemaForClip($programme, true);
         }
         if ($programme instanceof ProgrammeContainer) {
-            return $this->getSchemaForProgrammeContainer($programme);
+            return $this->getSchemaForProgrammeContainerAndParents($programme);
         }
         return [];
     }
@@ -117,9 +115,24 @@ class StructuredDataHelper
         return $this->schemaHelper->getSchemaForSeason($programmeContainer);
     }
 
-    public function buildSchemaForClip(Clip $clip) :array
+    public function getSchemaForClip(Clip $clip, bool $includeParent) :array
     {
-        return $this->schemaHelper->buildSchemaForClip($clip);
+        $clipSchema = $this->schemaHelper->buildSchemaForClip($clip);
+        if (!$includeParent) {
+            return $clipSchema;
+        }
+        $parent = $clip->getParent();
+        if ($parent instanceof Episode) {
+            $clipSchema['partOfEpisode'] = $this->getSchemaForEpisode($parent, true);
+        } elseif ($parent instanceof ProgrammeContainer) {
+            if ($parent->isTlec()) {
+                $clipSchema['partOfSeries'] = $this->getSchemaForProgrammeContainer($parent);
+            } else {
+                $clipSchema['partOfSeries'] = $this->getSchemaForProgrammeContainer($parent->getTleo());
+                $clipSchema['partOfSeason'] = $this->getSchemaForProgrammeContainer($parent);
+            }
+        }
+        return $clipSchema;
     }
 
     public function getSchemaForActorContribution(Contribution $contribution): array
@@ -139,34 +152,38 @@ class StructuredDataHelper
 
     public function getSchemaForArticle(Article $article, ?Programme $programme, bool $showParent = true)
     {
-        if ($programme and !$programme->isTlec()) {
-            $programme = $programme->getParent();
-        }
         $schema = $this->schemaHelper->buildSchemaForArticle($article, $programme);
-        if ($showParent and $programme) {
-            $schema['isPartOf'] = $this->getSchemaForProgrammeContainer($programme);
+        if ($showParent && $programme) {
+            $schema['isPartOf'] = $this->getSchemaForCoreEntity($programme);
         }
-
         return $schema;
     }
 
 
-    public function getSchemaForImage(Image $image, Programme $programme, Gallery $gallery, bool $showParent = true)
+    public function getSchemaForImage(Image $image)
     {
-        $schema = $this->schemaHelper->buildSchemaForImage($image, $programme);
-        if ($showParent) {
-            $schema['isPartOf'] = $this->getSchemaForGallery($gallery, $programme);
-        }
+        return $this->schemaHelper->buildSchemaForImage($image);
+    }
 
+    public function getSchemaForGallery(Gallery $gallery, array $images)
+    {
+        $parentProgramme = null;
+        try {
+            $parentProgramme = $gallery->getParent();
+        } catch (DataNotFetchedException $e) {
+        }
+        $tleo = $parentProgramme ? $parentProgramme->getTleo() : null;
+        $schema = $this->schemaHelper->buildSchemaForGallery($gallery, $tleo);
+        if ($parentProgramme) {
+            $schema['isPartOf'] = $this->getSchemaForCoreEntity($parentProgramme);
+        }
+        foreach ($images as $image) {
+            $schema['hasPart'][] = $this->schemaHelper->buildSchemaForImage($image);
+        }
         return $schema;
     }
 
-    public function getSchemaForGallery(Gallery $gallery, Programme $programme)
-    {
-        return $this->schemaHelper->buildSchemaForGallery($gallery, $programme);
-    }
-
-    public function getSchemaForProgrammeContainerAndParents(Programme $programmeContainer): array
+    public function getSchemaForProgrammeContainerAndParents(ProgrammeContainer $programmeContainer): array
     {
         $schemaContext = $this->getSchemaForProgrammeContainer($programmeContainer);
         if ($programmeContainer->isTlec()) {
@@ -188,16 +205,14 @@ class StructuredDataHelper
         if (!$programme) {
             return $schemaContext;
         }
-        $schemaContext['isPartOf'] = $this->getSchemaForProgrammeContainerAndParents($programme);
+        $schemaContext['isPartOf'] = $this->getSchemaForCoreEntity($programme);
 
         return $schemaContext;
     }
 
     public function getSchemaForRecipe(Recipe $recipe): array
     {
-        $schema = $this->schemaHelper->getSchemaForRecipe($recipe);
-
-        return $schema;
+        return $this->schemaHelper->getSchemaForRecipe($recipe);
     }
 
     private function getSchemaForService(Service $service): array

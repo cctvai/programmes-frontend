@@ -3,13 +3,8 @@ declare(strict_types = 1);
 
 namespace App\ExternalApi\Isite\Mapper;
 
-use App\Controller\Helpers\IsiteKeyHelper;
-use App\ExternalApi\Isite\Domain\IsiteImage;
 use App\ExternalApi\Isite\Domain\Profile;
 use App\ExternalApi\Isite\WrongEntityTypeException;
-use BBC\ProgrammesPagesService\Domain\ValueObject\Pid;
-use InvalidArgumentException;
-use Psr\Log\LoggerInterface;
 use SimpleXMLElement;
 
 class ProfileMapper extends Mapper
@@ -34,24 +29,14 @@ class ProfileMapper extends Mapper
         $title = $this->getString($formMetaData->title);
         $type = $this->getString($formMetaData->type);
         $fileId = $this->getString($resultMetaData->fileId); // NOTE: This is the metadata fileId, not the form data file_id
-        try {
-            $imagePid = new Pid($this->getString($formMetaData->image));
-            $image = new IsiteImage($imagePid);
-        } catch (InvalidArgumentException $e) {
-            $image = null;
-        }
+        $image = $this->getIsiteImage($formMetaData->image);
         // @codingStandardsIgnoreStart
         // Ignored PHPCS cause of snake variable fields included in the xml
         $shortSynopsis = $this->getString($formMetaData->short_synopsis);
         $longSynopsis = $this->getString($formMetaData->long_synopsis);
         $parentPid = $this->getString($formMetaData->parent_pid);
         $brandingId = $this->getString($formMetaData->branding_id);
-        try {
-            $imagePortraitPid = new Pid($this->getString($form->profile->image_portrait));
-            $imagePortrait = new IsiteImage($imagePortraitPid);
-        } catch (InvalidArgumentException $e) {
-            $imagePortrait= null;
-        }
+        $imagePortrait = $this->getIsiteImage($formMetaData->image_portrait);
         $tagline = $this->getString($formMetaData->tagline);
         $bbcSite = $this->getString($formMetaData->bbc_site) ?: null;
         $groupSize = null;

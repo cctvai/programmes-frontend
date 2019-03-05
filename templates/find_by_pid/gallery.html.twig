@@ -1,9 +1,9 @@
 {% extends 'base_ds2013.html.twig' %}
 
-{% block title %}{{ meta_context.titlePrefix() }} {{  (hasImageHighlighted) ? ' - ' ~ image.getTitle() : '' }}{% endblock %}
+{% block title %}{{ meta_context.titlePrefix() }} {{  (isIndividualImagePage) ? ' - ' ~ image.getTitle() : '' }}{% endblock %}
 
 {% block twitter_tags %}
-    {% if hasImageHighlighted %}
+    {% if isIndividualImagePage %}
         <meta name="twitter:card" content="photo" />
         <meta name="twitter:description" content="{{ image.getShortSynopsis() }}" />
         <meta name="twitter:image" content="{{ image.getUrl(560) }}">
@@ -33,7 +33,7 @@
         <p class="delta">{{ gallery.getShortSynopsis() }}</p>
 
         {% if image %}
-            {{ ds2013('galleryDisplay', gallery, image, images, hasImageHighlighted ,[]) }}
+            {{ ds2013('galleryDisplay', gallery, image, images, isIndividualImagePage ,[]) }}
         {% endif %}
     </div>
 

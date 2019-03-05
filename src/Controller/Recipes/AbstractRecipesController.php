@@ -58,11 +58,9 @@ abstract class AbstractRecipesController extends BaseController
         foreach ($recipes as $recipe) {
             $recipeArray[] = $structuredDataHelper->getSchemaForRecipe($recipe);
         }
-        if ($programme) {
-            $schema = $structuredDataHelper->getSchemaForCoreEntity($programme);
-            $schema['hasPart'] = $recipeArray;
-            return $schema;
-        }
-        return $recipes;
+
+        $schema = $structuredDataHelper->getSchemaForCoreEntity($programme);
+        $schema['hasPart'] = $recipeArray;
+        return $structuredDataHelper->prepare($schema);
     }
 }

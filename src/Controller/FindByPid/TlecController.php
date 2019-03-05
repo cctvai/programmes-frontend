@@ -341,7 +341,7 @@ class TlecController extends BaseController
 
         // clips
         foreach ($clips as $clip) {
-            $schemaContext['hasPart'][] = $structuredDataHelper->buildSchemaForClip($clip);
+            $schemaContext['hasPart'][] = $structuredDataHelper->getSchemaForClip($clip, false);
         }
 
         // publications

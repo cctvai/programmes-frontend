@@ -34,10 +34,11 @@ class GalleryController extends BaseController
             $brand = $programme->getTleo();
             $galleries = $programmesAggregationService->findDescendantGalleries($brand, $siblingLimit);
         }
-        $hasImageHighlighted = !empty($imagePid);
+        $isIndividualImagePage = !empty($imagePid);
         $this->setAtiContentId((string) $gallery->getPid(), 'pips');
 
-        $schema = $this->getSchema($structuredDataHelper, $images, $programme, $gallery);
+        $individualPageImage = $isIndividualImagePage ? $image : null;
+        $schema = $this->getSchema($structuredDataHelper, $images, $gallery, $individualPageImage);
 
         return $this->renderWithChrome('find_by_pid/gallery.html.twig', [
             'schema' => $schema,
@@ -47,7 +48,7 @@ class GalleryController extends BaseController
             'images' => $images,
             'galleries' => $galleries,
             'brand' => $brand,
-            'hasImageHighlighted' => $hasImageHighlighted,
+            'isIndividualImagePage' => $isIndividualImagePage,
         ]);
     }
 
@@ -71,13 +72,14 @@ class GalleryController extends BaseController
         return $image;
     }
 
-    public function getSchema(StructuredDataHelper $structuredDataHelper, array $images, Programme $programme, Gallery $gallery)
+    public function getSchema(StructuredDataHelper $structuredDataHelper, array $images, Gallery $gallery, ?Image $individualPageImage)
     {
-        $schema = $structuredDataHelper->getSchemaForGallery($gallery, $programme);
-        foreach ($images as $image) {
-            $schema['hasPart'][] = $structuredDataHelper->getSchemaForImage($image, $programme, $gallery, false);
+        if ($individualPageImage) {
+            $schema = $structuredDataHelper->getSchemaForImage($individualPageImage);
+            $schema['isPartOf'] = $structuredDataHelper->getSchemaForGallery($gallery, $images);
+        } else {
+            $schema = $structuredDataHelper->getSchemaForGallery($gallery, $images);
         }
-
-        return $schema;
+        return $structuredDataHelper->prepare($schema);
     }
 }

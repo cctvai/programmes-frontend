@@ -155,19 +155,7 @@ class ClipController extends BaseController
         StructuredDataHelper $structuredDataHelper,
         Clip $clip
     ): array {
-        $clipSchema = $structuredDataHelper->buildSchemaForClip($clip);
-        $parent = $clip->getParent();
-
-        if ($parent instanceof Episode) {
-            $clipSchema['partOfEpisode'] = $structuredDataHelper->getSchemaForEpisode($parent, true);
-        } elseif ($parent instanceof ProgrammeContainer) {
-            if ($parent->isTlec()) {
-                $clipSchema['partOfSeries'] = $structuredDataHelper->getSchemaForProgrammeContainer($parent);
-            } else {
-                $clipSchema['partOfSeries'] = $structuredDataHelper->getSchemaForProgrammeContainer($parent->getTleo());
-                $clipSchema['partOfSeason'] = $structuredDataHelper->getSchemaForProgrammeContainer($parent);
-            }
-        }
+        $clipSchema = $structuredDataHelper->getSchemaForClip($clip, true);
 
         $duration = new ChronosInterval(null, null, null, null, null, null, $clip->getDuration());
         $clipSchema['timeRequired'] = (string) $duration;
@@ -183,7 +171,7 @@ class ClipController extends BaseController
             }, $genres);
         }
 
-        return $clipSchema;
+        return $structuredDataHelper->prepare($clipSchema);
     }
 
     /**
