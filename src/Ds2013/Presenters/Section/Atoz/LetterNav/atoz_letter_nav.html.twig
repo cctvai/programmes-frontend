@@ -13,7 +13,7 @@
 {%- macro item(search, slice, text, current, classes) -%}
     <li class="br-box-page br-page-bg-onborder letter-nav__page{% if classes is not empty %} {{ classes }}{% endif %}">
         {% if text != current %}
-            <a class="br-page-link-onbg015 br-page-linkhover-onbg--hover br-page-bg-ontext--hover" href="/programmes/a-z/by/{{ search|url_encode }}/{{ slice|url_encode }}">{{ text }}</a>
+            <a class="br-page-link-onbg015 br-page-linkhover-onbg--hover br-page-bg-ontext--hover" href="{{ path('atoz_show', { search: search, slice: slice }) }}">{{ text }}</a>
         {% else %}
             <span class="br-box-highlight">{{ text }}</span>
         {% endif %}

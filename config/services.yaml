@@ -253,6 +253,9 @@ services:
     BBC\ProgrammesPagesService\Service\SegmentEventsService:
         factory: ['@BBC\ProgrammesPagesService\Service\ServiceFactory', 'getSegmentEventsService']
 
+    BBC\ProgrammesPagesService\Service\AtozTitlesService:
+        factory: ['@BBC\ProgrammesPagesService\Service\ServiceFactory', 'getAtozTitlesService']
+
     BBC\ProgrammesPagesService\Service\BroadcastsService:
         factory: ['@BBC\ProgrammesPagesService\Service\ServiceFactory', 'getBroadcastsService']
 

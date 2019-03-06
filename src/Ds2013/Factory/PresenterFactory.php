@@ -32,6 +32,7 @@ use App\Ds2013\Presenters\Pages\EpisodeGuideList\EpisodeGuideListPresenter;
 use App\Ds2013\Presenters\Pages\Schedules\NoSchedule\NoSchedulePresenter;
 use App\Ds2013\Presenters\Section\Atoz\LetterNav\AtozLetterNavPresenter;
 use App\Ds2013\Presenters\Section\Atoz\SearchBar\AtozSearchBarPresenter;
+use App\Ds2013\Presenters\Section\Atoz\SliceNav\AtozSliceNavPresenter;
 use App\Ds2013\Presenters\Section\Clip\Details\ClipDetailsPresenter;
 use App\Ds2013\Presenters\Section\Clip\Playout\ClipPlayoutPresenter;
 use App\Ds2013\Presenters\Section\Episode\Map\EpisodeMapPresenter;
@@ -532,6 +533,23 @@ class PresenterFactory
         array $options = []
     ): AtozSearchBarPresenter {
         return new AtozSearchBarPresenter(
+            $search,
+            $slice,
+            $options
+        );
+    }
+
+    /**
+     * @param string $search
+     * @param string $slice
+     * @param array $options
+     */
+    public function atozSliceNavPresenter(
+        string $search,
+        string $slice,
+        array $options = []
+    ): AtozSliceNavPresenter {
+        return new AtozSliceNavPresenter(
             $search,
             $slice,
             $options

@@ -158,6 +158,14 @@ msgstr "Search results for '%1'"
 msgid "atoz_title"
 msgstr "A to Z"
 
+#. English: "All Programmes A to Z".
+msgid "atoz_title_all"
+msgstr "All Programmes A to Z"
+
+#. English: "Available Programmes A to Z".
+msgid "atoz_title_available"
+msgstr "Available Programmes A to Z"
+
 #. English: "Programmes A to Z".
 msgid "atoz_title_full"
 msgstr "Programmes A to Z"

@@ -1,0 +1,70 @@
+.atoz-slice-nav {
+    @extend %list-unstyled;
+    margin-bottom: $basic-spacing;
+    word-wrap: break-word;
+
+    // For Faux columns
+    overflow: hidden;
+}
+
+.atoz-slice-nav a {
+    // For IE7 not marking the entire block as clickable
+    zoom: 1;
+
+    &:hover {
+        text-decoration: none;
+    }
+}
+
+.atoz-slice-nav__link {
+    display: block;
+    padding: 0.25em $basic-half-spacing;
+
+    // Faux columns to ensure the grey always fills down
+    // Use border for spacing, because we're already using padding
+    margin-bottom: -100px;
+    border-bottom: 100px solid transparent;
+
+    text-align: center;
+
+    // Surpress highlight box that's 100px bigger than the actual link
+    // in iOS/Android browsers (there is an active state for user feedback so we can get away with this)
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0); // sass-lint:disable-line no-vendor-prefixes
+
+    // Suppress branding border coloring as we want to enforce transparency
+    &:hover {
+        border-color: transparent;
+    }
+}
+
+@include mq($until: 'gel3b') {
+    .atoz-slice-nav--long .atoz-slice-nav__link {
+        margin-bottom: 0;
+        border-bottom: 0;
+    }
+}
+
+@include mq($from: 'gel1b', $until: 350px) {
+    // Reduce the font-size and padding slightly so that the "all programmes"
+    // link fits onto two line always fits onto two lines, instead of wrapping
+    // onto three lines at 320px wide screens.
+    .atoz-slice-nav__link {
+        $font-size: 14px;
+        font-size: mq-px2em($font-size, gel-typography('bpb1', 'base', 'font-size'));
+        line-height: gel-typography('bpb1', 'centi', 'line-height') / $font-size;
+
+        padding-left: 0;
+        padding-right: 0;
+    }
+}
+
+@include mq-range('bpw') {
+    .atoz-slice-nav {
+        margin-bottom: $wide-spacing;
+    }
+
+    .atoz-slice-nav__link {
+        display: block;
+        padding: 0.25em $wide-half-spacing;
+    }
+}

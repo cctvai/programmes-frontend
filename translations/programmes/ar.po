@@ -156,6 +156,14 @@ msgstr " نتائج البحث بالنسبة ل'%1'"
 msgid "atoz_title"
 msgstr "Z إلى A من"
 
+#. English: "All Programmes A to Z".
+msgid "atoz_title_all"
+msgstr ""
+
+#. English: "Available Programmes A to Z".
+msgid "atoz_title_available"
+msgstr ""
+
 #. English: "Programmes A to Z".
 msgid "atoz_title_full"
 msgstr "Z إلى A البرامج من"

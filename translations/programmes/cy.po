@@ -160,6 +160,14 @@ msgstr "Canlyniadau chwilio ar gyfer '%1'"
 msgid "atoz_title"
 msgstr "A-Z"
 
+#. English: "All Programmes A to Z".
+msgid "atoz_title_all"
+msgstr ""
+
+#. English: "Available Programmes A to Z".
+msgid "atoz_title_available"
+msgstr ""
+
 #. English: "Programmes A to Z".
 msgid "atoz_title_full"
 msgstr "A-Z Rhaglenni"

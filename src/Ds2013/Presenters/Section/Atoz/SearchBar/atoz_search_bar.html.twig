@@ -1,5 +1,5 @@
 {% spaceless %}
-    <form class="component search-bar" action="/programmes/a-z/{{ atoz_search_bar.getSlice() }}" method="GET">
+    <form class="component search-bar" action="{{ path('atoz_list', { slice: atoz_search_bar.getSlice() }) }}" method="GET">
         <label class="search-bar__label">
             <span class="visually-hidden">{{ tr('atoz_search_label') }}</span>
             <input

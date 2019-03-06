@@ -156,6 +156,14 @@ msgstr "%1'के नतीजे खोजिए"
 msgid "atoz_title"
 msgstr "वर्णमाला के अक्षर"
 
+#. English: "All Programmes A to Z".
+msgid "atoz_title_all"
+msgstr ""
+
+#. English: "Available Programmes A to Z".
+msgid "atoz_title_available"
+msgstr ""
+
 #. English: "Programmes A to Z".
 msgid "atoz_title_full"
 msgstr "वर्णमाला के अक्षरों से खोजें"

@@ -1,0 +1,24 @@
+{% import _self as self %}
+
+<div class="letter-nav-clamp letter-nav-clamp--only-wide">
+    <div class="grid-wrapper">
+        <div class="grid 1/1@bpw">
+            {% spaceless %}
+                <ul class="atoz-slice-nav grid-wrapper">
+                    {{ self.item(atoz_slice_nav.getSearch(), 'player', atoz_slice_nav.getSlice(), tr('atoz_available')) }}
+                    {{ self.item(atoz_slice_nav.getSearch(), 'all', atoz_slice_nav.getSlice(), tr('atoz_all')) }}
+                </ul>
+            {% endspaceless %}
+        </div>
+    </div>
+</div>
+
+{%- macro item(search, slice, selectedSlice, text) -%}
+    <li class="grid 1/2">
+        {% if slice == selectedSlice %}
+            <span class="atoz-slice-nav__link centi br-box-highlight">{{ text }}</span>
+        {% else %}
+            <a href="{{ path('atoz_show', { search: search, slice: slice }) }}" class="atoz-slice-nav__link centi br-page-linkhover-onbg--hover br-page-bg-ontext--hover deemphasize">{{ text }}</a>
+        {% endif %}
+    </li>
+{%- endmacro -%}
