@@ -1,1 +1,21 @@
-[]
+[
+    {
+        "name": "name-dial",
+        "default-value": "jeff",
+        "values": [
+            {
+                "value": "geoff",
+                "description": "Geoff is the correct spelling of Jeff"
+            },
+            {
+                "value": "jeff",
+                "description": "Jeff is the correct spelling of Jeff"
+            },
+            {
+                "value": "geff",
+                "description": "No."
+            }
+        ],
+        "description": "What is the correct spelling of 'Jeff'?"
+    }
+]
