@@ -43,13 +43,29 @@ class ShowController extends BaseController
             switch ($slice) {
                 case 'all':
                     $count = $this->verifyPageIsInRange($atozTitlesService->countTleosByFirstLetter($search));
-                    $results = $atozTitlesService->findTleosByFirstLetter(
-                        $search,
-                        self::RESULTS_PER_PAGE,
-                        $this->currentPage
-                    );
+                    if ($count > 0) {
+                        $results = $atozTitlesService->findTleosByFirstLetter(
+                            $search,
+                            self::RESULTS_PER_PAGE,
+                            $this->currentPage
+                        );
+                    } else {
+                        $results = [];
+                    }
                     break;
-                default: // Case for 'player' will be added in available programmes ticket.
+                case 'player':
+                    $count = $this->verifyPageIsInRange($atozTitlesService->countAvailableTleosByFirstLetter($search));
+                    if ($count > 0) {
+                        $results = $atozTitlesService->findAvailableTleosByFirstLetter(
+                            $search,
+                            self::RESULTS_PER_PAGE,
+                            $this->currentPage
+                        );
+                    } else {
+                        $results = [];
+                    }
+                    break;
+                default:
                     $count = 0;
                     $results = [];
             }
