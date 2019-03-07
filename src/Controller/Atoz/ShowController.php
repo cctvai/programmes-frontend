@@ -7,6 +7,7 @@ namespace App\Controller\Atoz;
 use App\Controller\BaseController;
 use App\Ds2013\Presenters\Utilities\Paginator\PaginatorPresenter;
 use BBC\ProgrammesPagesService\Service\AtozTitlesService;
+use BBC\ProgrammesPagesService\Service\ProgrammesService;
 use Symfony\Component\HttpFoundation\Request;
 
 class ShowController extends BaseController
@@ -20,8 +21,11 @@ class ShowController extends BaseController
         string $search,
         string $slice,
         AtozTitlesService $atozTitlesService,
-        Request $request
+        Request $request,
+        ProgrammesService $programmesService
     ) {
+        $this->setAtiContentLabels('foo', 'bar');
+
         $this->currentPage = $this->getPage();
         if ($this->currentPage < 1) {
             $this->pageNotInRange();
@@ -52,8 +56,35 @@ class ShowController extends BaseController
         } else {
             $selectedLetter = '';
 
-            $count = 0; // This will be replaced in the results page ticket.
-            $results = [];  // This will be replaced in the results page ticket.
+            switch ($slice) {
+                case 'all':
+                    $count = $this->verifyPageIsInRange($programmesService->countByKeywords($search));
+                    if ($count > 0) {
+                        $results = $programmesService->searchByKeywords(
+                            $search,
+                            self::RESULTS_PER_PAGE,
+                            $this->currentPage
+                        );
+                    } else {
+                        $results = [];
+                    }
+                    break;
+                case 'player':
+                    $count = $this->verifyPageIsInRange($programmesService->countAvailableByKeywords($search));
+                    if ($count > 0) {
+                        $results = $programmesService->searchAvailableByKeywords(
+                            $search,
+                            self::RESULTS_PER_PAGE,
+                            $this->currentPage
+                        );
+                    } else {
+                        $results = [];
+                    }
+                    break;
+                default:
+                    $count = 0;
+                    $results = [];
+            }
         }
 
         switch ($slice) {
@@ -103,7 +134,7 @@ class ShowController extends BaseController
 
     private function verifyPageIsInRange(int $count): int
     {
-        if ($this->currentPage > ceil($count / self::RESULTS_PER_PAGE)) {
+        if ($this->currentPage > ceil($count / self::RESULTS_PER_PAGE) && ($count > 0 || $this->currentPage > 1)) {
             $this->pageNotInRange();
         }
 

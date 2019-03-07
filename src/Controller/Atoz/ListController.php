@@ -12,6 +12,8 @@ class ListController extends BaseController
 {
     public function __invoke(Request $request, string $slice)
     {
+        $this->setAtiContentLabels('foo', 'bar');
+
         $searchQuery = preg_replace('/[^A-Za-z0-9 \'-]/', '', $request->query->get('query', ''));
         if ($searchQuery !== '') {
             return $this->cachedRedirectToRoute('atoz_show', [

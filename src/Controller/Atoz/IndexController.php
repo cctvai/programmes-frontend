@@ -13,6 +13,8 @@ class IndexController extends BaseController
 
     public function __invoke()
     {
+        $this->setAtiContentLabels('foo', 'bar');
+
         return $this->renderWithChrome('atoz/index.html.twig');
     }
 }
