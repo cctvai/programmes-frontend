@@ -36,7 +36,7 @@ class ProfileMapper extends Mapper
         $longSynopsis = $this->getString($formMetaData->long_synopsis);
         $parentPid = $this->getString($formMetaData->parent_pid);
         $brandingId = $this->getString($formMetaData->branding_id);
-        $imagePortrait = $this->getIsiteImage($formMetaData->image_portrait);
+        $imagePortrait = $this->getIsiteImage($form->profile->image_portrait);
         $tagline = $this->getString($formMetaData->tagline);
         $bbcSite = $this->getString($formMetaData->bbc_site) ?: null;
         $groupSize = null;
