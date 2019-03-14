@@ -41,6 +41,9 @@ class BrandFixtures extends AbstractFixture implements DependentFixtureInterface
     {
         $brand = new Brand($pid, $title);
         $brand->setAvailableEpisodesCount($countEpisodes);
+        if ($countEpisodes > 0) {
+            $brand->setStreamable(true);
+        }
         $brand->setIsPodcastable($isPodcastable);
         $brand->setShortSynopsis($description);
         $brand->setMasterBrand($this->getReference('masterbrand_p1000001'));
