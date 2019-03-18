@@ -24,7 +24,12 @@ class ShowController extends BaseController
         Request $request,
         ProgrammesService $programmesService
     ) {
-        $this->setAtiContentLabels('foo', 'bar');
+
+        if ($slice == 'all') {
+            $this->setAtiContentLabels('list-atoz', 'atoz-all');
+        } elseif ($slice == 'player') {
+            $this->setAtiContentLabels('list-atoz', 'atoz-available');
+        }
 
         $this->currentPage = $this->getPage();
         if ($this->currentPage < 1) {
