@@ -20,7 +20,7 @@
         <meta name="twitter:url" content="{{ meta_context.canonicalUrl() }}">
     {% endif %}
 
-    <meta name="twitter:title" content="{{ meta_context.titlePrefix() }}" />
+    <meta name="twitter:title" content="{{ block('title') }}" />
 {% endblock %}
 
 {% block page_classes %}programmes-page text-base programmes-page--flush prog-layout{% endblock %}
