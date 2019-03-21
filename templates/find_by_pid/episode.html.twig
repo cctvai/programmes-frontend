@@ -202,7 +202,7 @@
                                         <li>
                                             {{- ds2013('group', collection, {
                                                 'highlight_box_classes': 'highlight-box--list',
-                                                'title_tag': 'h3'
+                                                'title_options': { 'title_tag': 'h3' }
                                             }) -}}
                                         </li>
                                     {% endfor %}
@@ -303,7 +303,7 @@
                                             'img_sizes': { 0: 1/2, 768: 1/4, 1008: '240px'},
                                             'show_synopsis': false,
                                             'branding_context': 'page',
-                                            'title_tag': 'h3'
+                                            'title_options': { 'title_tag': 'h3' }
                                         }) }}
                                     </li>
                                 {% endfor %}

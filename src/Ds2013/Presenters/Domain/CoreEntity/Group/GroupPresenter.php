@@ -22,7 +22,10 @@ class GroupPresenter extends Presenter
         'img_sizes' => [ 0 => '0vw', 320 => 1/4, 480 => 1/4, 600 => 1/3, 1008 => '336px' ],
         'highlight_box_classes' => '',
         'branding_context' => 'page',
-        'title_tag' => 'h4',
+        'title_options' => [
+            'title_tag' => 'h4',
+            'title_format' => 'item::ancestry',
+        ],
     ];
 
     /** @var UrlGeneratorInterface */
@@ -40,6 +43,12 @@ class GroupPresenter extends Presenter
         Group $group,
         array $options = []
     ) {
+        if (array_key_exists('title_options', $options)) {
+            $options['title_options'] = array_merge(
+                $this->options['title_options'],
+                $options['title_options']
+            );
+        }
         parent::__construct($options);
         $this->router = $router;
         $this->helperFactory = $helperFactory;
@@ -60,12 +69,10 @@ class GroupPresenter extends Presenter
             $this->helperFactory->getTitleLogicHelper(),
             $this->group,
             $this->helperFactory->getStreamUrlHelper(),
-            [
-                'context_programme' => $this->options['context_programme'],
-                'title_format' => 'item::ancestry',
+            array_merge($this->options['title_options'], [
                 'link_location_track' => $this->getLinkTrack(),
-                'title_tag' => $this->options['title_tag'],
-            ]
+                'context_programme' => $this->options['context_programme'],
+            ])
         );
     }
 

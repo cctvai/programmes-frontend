@@ -267,7 +267,7 @@ define(['jquery-1.9','rv-bootstrap', 'istats-1'], function ($, bootstrap, istats
                 win = $('<div class="' + this.classes.window + '"></div>'),
                 panel = $('<div class="' + this.classes.panel + ' ' + this.options.panel_class + '"></div>'),
                 list = this.container.children(),
-                buttons = $('<div class="stream__buttons ' + this.options.button_wrap_classes + '"><div class="stream__buttons-wrap"><button class="' + this.classes.button + ' ' + this.classes.button + '--prev ' + this.options.button_classes + '">' + this.options.previous_button_text + '</button><button class="stream__button stream__button--next ' + this.options.button_classes + '">' + this.options.next_button_text + '</button></div></div>');
+                buttons = $('<div class="stream__buttons ' + this.options.button_wrap_classes + '"><div class="stream__buttons-wrap"><button class="' + this.classes.button + ' ' + this.classes.button + '--prev ' + this.options.button_classes + '" tabindex="-1" aria-hidden="true">' + this.options.previous_button_text + '</button><button class="stream__button stream__button--next ' + this.options.button_classes + '" tabindex="-1" aria-hidden="true">' + this.options.next_button_text + '</button></div></div>');
 
             this.container.addClass(this.classes.main);
             list.appendTo(panel);
