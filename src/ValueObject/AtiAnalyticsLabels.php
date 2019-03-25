@@ -151,7 +151,7 @@ class AtiAnalyticsLabels
             'bbc_uzbek_tv' => 'UZBEK',
             'bbc_wales' => 'WALES',
             'bbc_weather' => 'WEATHER',
-            'bbc_webonly' => 'BBC',
+            'bbc_webonly' => 'IPLAYER',
             'bbc_world_news' => 'BBC_WORLD_NEWS',
             'bbc_world_service' => 'WORLD_SERVICE_ENGLISH',
             'bbc_world_service_tv' => 'IPLAYER',
