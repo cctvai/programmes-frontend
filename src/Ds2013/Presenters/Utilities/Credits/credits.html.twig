@@ -23,13 +23,7 @@
             {% endif %}
 
             <td class="br-subtle-bg-onborder">
-                {% if contribution.getContributor().getMusicBrainzId() %}
-                    <a href="{{ path('music_artist', {mbid: contribution.getContributor().getMusicBrainzId()}) }}">
-                        <span>{{ contribution.getContributor().getName() }}</span>
-                    </a>
-                {% else %}
-                    <span>{{ contribution.getContributor().getName() }}</span>
-                {% endif %}
+                <span>{{ contribution.getContributor().getName() }}</span>
             </td>
         </tr>
     {% endfor %}
