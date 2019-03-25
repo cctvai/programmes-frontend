@@ -65,6 +65,9 @@ abstract class BaseController extends AbstractController
     /** @var string */
     private $atiChapterOne;
 
+    /** @var string */
+    private $atiOverriddenEntityTitle;
+
     private $isInternational = false;
 
     protected $canonicalUrl;
@@ -238,7 +241,8 @@ abstract class BaseController extends AbstractController
             $this->atistatsExtraLabels,
             $this->atiContentType,
             $this->atiChapterOne,
-            $this->atiContentId
+            $this->atiContentId,
+            $this->atiOverriddenEntityTitle
         );
         $atiAnalyticsLabelsValues = $atiAnalyticsLabelsValues->orbLabels();
 
@@ -361,6 +365,11 @@ abstract class BaseController extends AbstractController
     {
         $this->atiContentType = $type;
         $this->atiChapterOne = $chapter;
+    }
+
+    protected function setAtiOverriddenEntityTitle(string $title): void
+    {
+        $this->atiOverriddenEntityTitle = $title;
     }
 
     protected function request(): Request

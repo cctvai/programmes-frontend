@@ -49,6 +49,7 @@ class ShowController extends BaseIsiteController
 
         $this->removeHeadersForPreview($preview);
         $this->initContextAndBranding($isiteObject, $guid);
+        $this->setAtiOverriddenEntityTitle($isiteObject->getTitle());
 
         $programme = $this->getParentProgramme($this->context);
         // Calculate siblings display

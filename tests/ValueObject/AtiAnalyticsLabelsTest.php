@@ -23,7 +23,7 @@ class AtiAnalyticsLabelsTest extends TestCase
 {
     public function testService()
     {
-        $context = $this->serviceFactory('bbc_one', 'tv');
+        $context = $this->serviceFactory('bbc_one', 'tv', 'BBC One');
         $labels = $this->getAnalyticsLabels(
             $context, // Context
             'schedule', // contentType
@@ -42,6 +42,10 @@ class AtiAnalyticsLabelsTest extends TestCase
                 [
                     'name' => 'app_name',
                     'value' => 'programmes',
+                ],
+                [
+                    'name' => 'custom_var_1',
+                    'value' => 'BBC One',
                 ],
                 [
                     'name' => 'custom_var_2',
@@ -71,6 +75,10 @@ class AtiAnalyticsLabelsTest extends TestCase
                 [
                     'name' => 'app_name',
                     'value' => 'programmes',
+                ],
+                [
+                    'name' => 'custom_var_1',
+                    'value' => 'EastEnders',
                 ],
                 [
                     'name' => 'custom_var_2',
@@ -109,6 +117,10 @@ class AtiAnalyticsLabelsTest extends TestCase
                     'value' => 'programmes',
                 ],
                 [
+                    'name' => 'custom_var_1',
+                    'value' => 'Some Gallery',
+                ],
+                [
                     'name' => 'custom_var_2',
                     'value' => null,
                 ],
@@ -121,7 +133,7 @@ class AtiAnalyticsLabelsTest extends TestCase
         $this->assertEquals($expectedLabels, $labels);
     }
 
-    private function serviceFactory(string $networkId, string $networkMedium)
+    private function serviceFactory(string $networkId, string $networkMedium, string $serviceName)
     {
         $service = $this->createMock(Service::class);
         if (!empty($networkId) && !empty($networkMedium)) {
@@ -129,6 +141,7 @@ class AtiAnalyticsLabelsTest extends TestCase
         } else {
             $service->method('getNetwork')->willReturn(null);
         }
+        $service->method('getName')->willReturn($serviceName);
         return $service;
     }
 

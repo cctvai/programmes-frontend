@@ -26,10 +26,13 @@ class AtiAnalyticsLabels
     /** @var string */
     private $chapterOne;
 
-    /** @var string */
+    /** @var string|null */
     private $contentId;
 
-    public function __construct($context, CosmosInfo $cosmosInfo, array $extraLabels, string $contentType, string $chapterOne, string $contentId = null)
+    /** @var string|null */
+    private $overriddenEntityTitle;
+
+    public function __construct($context, CosmosInfo $cosmosInfo, array $extraLabels, string $contentType, string $chapterOne, string $contentId = null, string $overriddenEntityTitle = null)
     {
         $this->context = $context;
         $this->appEnvironment = $cosmosInfo->getAppEnvironment();
@@ -37,6 +40,7 @@ class AtiAnalyticsLabels
         $this->contentType = $contentType;
         $this->chapterOne = $chapterOne;
         $this->contentId = $contentId;
+        $this->overriddenEntityTitle = $overriddenEntityTitle;
     }
 
     public function orbLabels()
@@ -60,6 +64,7 @@ class AtiAnalyticsLabels
             'contentId' => $this->contentId,
             'additionalProperties' => [
                 ['name' => 'app_name', 'value' => 'programmes'],
+                ['name' => 'custom_var_1', 'value' => $this->calculateEntityTitle()],
                 ['name' => 'custom_var_2', 'value' => $brandCustomVar],
                 ['name' => 'custom_var_4', 'value' => $masterbrandCustomVar],
             ],
@@ -210,5 +215,22 @@ class AtiAnalyticsLabels
         }
 
         return null;
+    }
+
+    private function calculateEntityTitle(): ?string
+    {
+        if ($this->overriddenEntityTitle) {
+            return $this->overriddenEntityTitle;
+        }
+
+        if (!$this->context) {
+            return null;
+        }
+
+        if ($this->context instanceof Service) {
+            return $this->context->getName();
+        }
+
+        return $this->context->getTitle();
     }
 }

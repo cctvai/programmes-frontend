@@ -61,6 +61,7 @@ class ShowController extends BaseIsiteController
 
         $this->removeHeadersForPreview($preview);
         $this->initContextAndBranding($isiteObject, $guid);
+        $this->setAtiOverriddenEntityTitle($isiteObject->getTitle());
         $programme = $this->getParentProgramme($this->context);
         $parents = $isiteObject->getParents();
         $siblingPromise = $isiteService->setChildrenOn($parents, $isiteObject->getProjectSpace()); //if more than 48, extras are removed
