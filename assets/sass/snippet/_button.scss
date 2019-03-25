@@ -3,9 +3,10 @@
  * sizing from this base font-size. */
 
 .spt-snippet {
-
+    max-height: 8.8em;
+    overflow: hidden;
     width: 4em;
-    height: 4em;
+    height: 8.8em;
     background: $inactive-bg;
     cursor: default;
 
@@ -18,7 +19,7 @@
     .spt-button {
         background: none;
         width: 4em;
-        height: 4em;
+        height: 8.8em;
         font-size: 1em;
         display: block;
         padding: 0;
@@ -33,7 +34,7 @@
             height: 0;
             display: block;
             content: "";
-            top: 1em;
+            top: 3.4em;
             left: 1.2em;
             position: absolute;
             border-top: 1em solid transparent;
@@ -69,7 +70,7 @@
                 width: 2.2em;
                 height: 2.2em;
                 position: absolute;
-                top: 0.9em;
+                top: 3.3em;
                 left: 0.9em;
                 display: block;
                 content: "";
@@ -170,7 +171,7 @@
                 display: block;
                 content: "";
                 position: absolute;
-                top: 1.5em;
+                top: 3.9em;
                 left: 1.5em;
                 border: 0;
                 background: $playing-icon;
@@ -195,7 +196,7 @@
                 border-right: 0.3em solid $playing-icon;
                 background: transparent;
                 position: absolute;
-                top: 1.4em;
+                top: 3.8em;
                 left: 1.5em;
             }
         }
@@ -215,7 +216,7 @@
                 border-width: 0.6em 0;
                 border-left: 1.1em solid $default-icon;
                 position: absolute;
-                top: 1.4em;
+                top: 3.8em;
                 left: 1.6em;
             }
         }

@@ -91,11 +91,6 @@
             <div class="segment__button segment__button--snippet">
                 <bbc-snippet data-record-id="{{ music.getSegment().getMusicRecordId() }}"></bbc-snippet>
             </div>
-            {% if music.hasMusicFavouritesButton() %}
-                {% set id = "favourites-button-" ~ music.getSegmentEvent().getPid() %}
-                <div id="{{ id }}" class="segment__button segment__button--playlister favourites-module-wrapper buttons--favourites-small"></div>
-                {{ add_button(id, music.getSegment().getMusicRecordId(), 'track', music.getOption('context_pid'), music.getFavouriteButtonTitle(), 'track') }}
-            {%- endif -%}
         </div>
     </div>
 </li>

@@ -176,22 +176,9 @@ $image-width: 88px;
 
 // @todo remove old snippet CSS
 .has-js .segment__button--snippet {
-    // (0.909091em (favouites.css font size for button element) * 1.6em (favouites.css button width)) * 28px (segment__button--playlister)
-    // ______________________________________________________________________________________________________
-    //                                         4em (snippet.css button width)
-    //
-    // = 10.1818192px
-    font-size: 10.1818192px;
+    font-size: 10px;
     display: block;
     vertical-align: top;
     text-align: center;
     width: 4em;
-}
-
-// Targeting the internals of the snippet module. Potentially dodgy.
-.segment__button--snippet .spt-snippet {
-    margin-bottom: 7px;
-    // This prevents the button from jumping around like a crackhead on a pogo stick at page load
-    max-height: 4em;
-    overflow: hidden;
 }
