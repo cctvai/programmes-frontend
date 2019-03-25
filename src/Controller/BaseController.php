@@ -6,6 +6,7 @@ namespace App\Controller;
 use App\Branding\BrandingPlaceholderResolver;
 use App\Cosmos\Dials;
 use App\Ds2013\Factory\PresenterFactory;
+use App\DsShared\Factory\HelperFactory;
 use App\Translate\TranslateProvider;
 use App\ValueObject\AnalyticsCounterName;
 use App\ValueObject\AtiAnalyticsLabels;
@@ -95,6 +96,7 @@ abstract class BaseController extends AbstractController
             CosmosInfo::class,
             Dials::class,
             PresenterFactory::class,
+            HelperFactory::class,
         ]);
     }
 
@@ -233,9 +235,16 @@ abstract class BaseController extends AbstractController
     protected function renderWithChrome(string $view, array $parameters = [])
     {
         $this->preRender();
-
         $cosmosInfo = $this->container->get(CosmosInfo::class);
+
+        // Didn't iStats die? Why is this still here?
+        // Without this bit, the SMP Stats won't work, until we are happy that we should remove iStats completely
+        // then we can get rid of this.
+        $this->createAnalyticsCounterNameFromContext();
+
         $atiAnalyticsLabelsValues = new AtiAnalyticsLabels(
+            $this->container->get(HelperFactory::class)->getProducerVariableHelper(),
+            $this->container->get(HelperFactory::class)->getDestinationVariableHelper(),
             $this->context,
             $cosmosInfo,
             $this->atistatsExtraLabels,

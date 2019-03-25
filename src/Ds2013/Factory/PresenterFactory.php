@@ -424,6 +424,8 @@ class PresenterFactory
             $this->router,
             $this->cosmosInfo,
             $this->helperFactory->getStreamUrlHelper(),
+            $this->helperFactory->getProducerVariableHelper(),
+            $this->helperFactory->getDestinationVariableHelper(),
             $options
         );
     }

@@ -3,6 +3,8 @@ declare(strict_types = 1);
 
 namespace App\Ds2013\Presenters\Utilities\SMP;
 
+use App\Controller\Helpers\ProducerVariableHelper;
+use App\Controller\Helpers\DestinationVariableHelper;
 use App\Ds2013\Presenter;
 use App\DsShared\Helpers\SmpPlaylistHelper;
 use App\DsShared\Helpers\StreamableHelper;
@@ -58,6 +60,15 @@ class SmpPresenter extends Presenter
     /** @var string */
     private $containerId;
 
+    /** @var ProducerVariableHelper */
+    private $producerVariableHelper;
+
+    /** @var DestinationVariableHelper */
+    private $destinationVariableHelper;
+
+    /** @var string */
+    private $appEnvironment;
+
     public function __construct(
         ProgrammeItem $programmeItem,
         ?Version $streamableVersion,
@@ -68,6 +79,8 @@ class SmpPresenter extends Presenter
         UrlGeneratorInterface $router,
         CosmosInfo $cosmosInfo,
         StreamableHelper $streamableHelper,
+        ProducerVariableHelper $producerVariableHelper,
+        DestinationVariableHelper $destinationVariableHelper,
         array $options = []
     ) {
         parent::__construct($options);
@@ -82,6 +95,9 @@ class SmpPresenter extends Presenter
         $this->streamableHelper = $streamableHelper;
         self::$smpInstanceCounter++;
         $this->containerId = 'playout-' . (string) $this->programmeItem->getPid() . self::$smpInstanceCounter;
+        $this->producerVariableHelper = $producerVariableHelper;
+        $this->destinationVariableHelper = $destinationVariableHelper;
+        $this->appEnvironment = $cosmosInfo->getAppEnvironment();
     }
 
     public function getProgrammeItem(): ProgrammeItem
@@ -103,6 +119,16 @@ class SmpPresenter extends Presenter
             $this->programmeItem,
             $this->streamableVersion
         );
+
+        $seriesPid = null;
+        $episodePid = null;
+        foreach ($this->programmeItem->getAncestry() as $parent) {
+            if ($parent->getType() == 'episode') {
+                $episodePid = (string) $parent->getPid();
+            } elseif ($parent->getType() == 'series') {
+                $seriesPid = (string) $parent->getPid();
+            }
+        }
 
         $smpConfig = [
             'container' => '#' . $this->getContainerId(),
@@ -127,14 +153,28 @@ class SmpPresenter extends Presenter
         if (!empty($this->analyticsCounterName)) {
             $smpConfig['smpSettings']['counterName'] = $this->analyticsCounterName;
         }
+
+        $brand = null;
+        if ($this->programmeItem->getTleo()->isTlec()) {
+            $brand = $this->programmeItem->getTleo();
+        }
+
         if (!empty($this->analyticsLabels)) {
             $smpConfig['smpSettings']['statsObject'] = [
                 'siteId' => $this->analyticsLabels['bbc_site'] ?? '',
                 'product' => $this->analyticsLabels['prod_name'],
+
+                //Vulcan stats
+                'destination' => $this->destinationVariableHelper->getDestinationFromContext($this->programmeItem, $this->appEnvironment),
+                'brandPID' => $brand ? (string) $brand->getPid() : null,
                 'appName' => $this->analyticsLabels['app_name'],
+                'seriesPID' => $seriesPid,
                 'appType' => 'responsive',
-                'parentPID'     => (string) $this->programmeItem->getPid(),
+                'clipPID' => (string) $this->programmeItem->getPid(),
+                'producer' => $this->producerVariableHelper->calculateProducerVariable($this->programmeItem),
                 'parentPIDType' => $this->programmeItem->getType(),
+                'episodePID' => $episodePid,
+
                 'sessionLabels' => [
                     'bbc_site' => $this->analyticsLabels['bbc_site'] ?? '',
                     'event_master_brand' => $this->analyticsLabels['event_master_brand'] ?? '',
