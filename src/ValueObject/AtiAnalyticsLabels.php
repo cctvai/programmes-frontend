@@ -47,6 +47,7 @@ class AtiAnalyticsLabels
     {
         $brandCustomVar = $this->calculateCustomVarBrand();
         $masterbrandCustomVar = $this->calculateCustomVarMid();
+        $entityTitle = $this->calculateEntityTitle();
 
         if ($brandCustomVar) {
             $brandCustomVar = urlencode($brandCustomVar);
@@ -54,6 +55,10 @@ class AtiAnalyticsLabels
 
         if ($masterbrandCustomVar) {
             $masterbrandCustomVar = urlencode($masterbrandCustomVar);
+        }
+
+        if ($entityTitle) {
+            $entityTitle = urlencode($entityTitle);
         }
 
         $labels = [
@@ -64,7 +69,7 @@ class AtiAnalyticsLabels
             'contentId' => $this->contentId,
             'additionalProperties' => [
                 ['name' => 'app_name', 'value' => 'programmes'],
-                ['name' => 'custom_var_1', 'value' => urlencode($this->calculateEntityTitle())],
+                ['name' => 'custom_var_1', 'value' => $entityTitle],
                 ['name' => 'custom_var_2', 'value' => $brandCustomVar],
                 ['name' => 'custom_var_4', 'value' => $masterbrandCustomVar],
             ],

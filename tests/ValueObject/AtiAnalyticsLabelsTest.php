@@ -45,7 +45,7 @@ class AtiAnalyticsLabelsTest extends TestCase
                 ],
                 [
                     'name' => 'custom_var_1',
-                    'value' => 'BBC One',
+                    'value' => 'BBC+One',
                 ],
                 [
                     'name' => 'custom_var_2',
@@ -118,7 +118,7 @@ class AtiAnalyticsLabelsTest extends TestCase
                 ],
                 [
                     'name' => 'custom_var_1',
-                    'value' => 'Some Gallery',
+                    'value' => 'Some+Gallery',
                 ],
                 [
                     'name' => 'custom_var_2',
