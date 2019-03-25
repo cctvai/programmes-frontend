@@ -64,7 +64,7 @@ class AtiAnalyticsLabels
             'contentId' => $this->contentId,
             'additionalProperties' => [
                 ['name' => 'app_name', 'value' => 'programmes'],
-                ['name' => 'custom_var_1', 'value' => $this->calculateEntityTitle()],
+                ['name' => 'custom_var_1', 'value' => urlencode($this->calculateEntityTitle())],
                 ['name' => 'custom_var_2', 'value' => $brandCustomVar],
                 ['name' => 'custom_var_4', 'value' => $masterbrandCustomVar],
             ],
