@@ -24,6 +24,7 @@ class GalleriesController extends BaseController
             throw new NotFoundHttpException();
         }
 
+        $this->overridenDescription = 'Galleries from ' . $programme->getTitle();
         $this->setContextAndPreloadBranding($programme);
         $this->setAtiContentLabels('list-photo-gallery', 'list-galleries');
         $this->setAtiContentId((string) $programme->getPid(), 'pips');

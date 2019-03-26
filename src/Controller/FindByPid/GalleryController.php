@@ -23,6 +23,7 @@ class GalleryController extends BaseController
     ) {
         $this->setIstatsProgsPageType('galleries_show');
         $this->setAtiContentLabels('article-photo-gallery', 'gallery');
+        $this->overridenDescription = $gallery->getSynopses()->getLongestSynopsis();
         $this->setContextAndPreloadBranding($gallery);
         $siblingLimit = 4;
         $images = $imagesService->findByGroup($gallery);

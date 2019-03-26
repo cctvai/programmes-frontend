@@ -75,6 +75,12 @@ class ShowController extends BaseIsiteController
             ]);
         }
 
+        if ($programme !== null) {
+            $this->overridenDescription = $programme->getTitle() . ' profiles: ' . $isiteObject->getTitle();
+        } else {
+            $this->overridenDescription = $isiteObject->getTitle() . ' profiles';
+        }
+
         // Get the children of the current profile synchronously, as we may need their children also
         $isiteService
             ->setChildrenOn([$isiteObject], $isiteObject->getProjectSpace(), $this->getPage())

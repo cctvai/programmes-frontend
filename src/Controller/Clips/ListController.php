@@ -28,6 +28,7 @@ class ListController extends BaseController
     ) {
         $this->setIstatsProgsPageType(self::ISTATS_PAGE_ID);
         $this->setAtiContentLabels('list-clip', 'list-clip');
+        $this->overridenDescription = 'Clips from ' . $programme->getTitle();
         $this->setContextAndPreloadBranding($programme);
         $this->setAtiContentId((string) $programme->getPid(), 'pips');
         $page = $this->getPage();
