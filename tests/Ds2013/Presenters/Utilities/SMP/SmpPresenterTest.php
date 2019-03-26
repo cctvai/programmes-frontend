@@ -14,8 +14,6 @@ use BBC\ProgrammesPagesService\Domain\Enumeration\MediaTypeEnum;
 use BBC\ProgrammesPagesService\Domain\ValueObject\Pid;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use App\Controller\Helpers\ProducerVariableHelper;
-use App\Controller\Helpers\DestinationVariableHelper;
 
 class SmpPresenterTest extends TestCase
 {
@@ -77,13 +75,8 @@ class SmpPresenterTest extends TestCase
             'product' => 'prod____name',
             'appName' => 'app____name',
             'appType' => 'responsive',
-            'brandPID' => null,
-            'seriesPID' => null,
-            'clipPID' => 'st000001',
-            'episodePID' => null,
+            'parentPID' => 'st000001',
             'parentPIDType' => 'clip',
-            'destination' => 'ps_programmes_test',
-            'producer' => 'BBC',
             'sessionLabels' => [
                 'bbc_site' => 'bbc_____site',
                 'event_master_brand' => 'event___master___brand',
@@ -127,10 +120,8 @@ class SmpPresenterTest extends TestCase
             ],
             new SmpPlaylistHelper($this->createMock(GuidanceWarningHelper::class)),
             $stubRouter,
-            $this->createConfiguredMock(CosmosInfo::class, ['getAppEnvironment' => 'sandbox']),
+            $this->createMock(CosmosInfo::class),
             $this->createMock(StreamableHelper::class),
-            $this->createConfiguredMock(ProducerVariableHelper::class, ['calculateProducerVariable' => 'BBC']),
-            $this->createConfiguredMock(DestinationVariableHelper::class, ['getDestinationFromContext' => 'ps_programmes_test']),
             $options
         );
     }

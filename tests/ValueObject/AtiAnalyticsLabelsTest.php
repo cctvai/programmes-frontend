@@ -18,8 +18,6 @@ use BBC\ProgrammesPagesService\Domain\ValueObject\Mid;
 use BBC\ProgrammesPagesService\Domain\ValueObject\Nid;
 use BBC\ProgrammesPagesService\Domain\ValueObject\Pid;
 use PHPUnit\Framework\TestCase;
-use App\Controller\Helpers\ProducerVariableHelper;
-use App\Controller\Helpers\DestinationVariableHelper;
 
 class AtiAnalyticsLabelsTest extends TestCase
 {
@@ -27,7 +25,6 @@ class AtiAnalyticsLabelsTest extends TestCase
     {
         $context = $this->serviceFactory('bbc_one', 'tv', 'BBC One');
         $labels = $this->getAnalyticsLabels(
-            $this->getProducerVariableHelperMock('BBC'),
             $context, // Context
             'schedule', // contentType
             'schedule-day', // chapterOne
@@ -66,14 +63,7 @@ class AtiAnalyticsLabelsTest extends TestCase
     public function testBrand()
     {
         $context = BrandsFixtures::eastEnders();
-        $labels = $this->getAnalyticsLabels(
-            $this->getProducerVariableHelperMock('IPLAYER'),
-            $context,
-            'brand',
-            'brand',
-            'urn:bbc:pips:b006m86d',
-            ['extraLabel' => 'extraValue']
-        );
+        $labels = $this->getAnalyticsLabels($context, 'brand', 'brand', 'urn:bbc:pips:b006m86d', ['extraLabel' => 'extraValue']);
         $expectedLabels = [
             'destination' => 'programmes_ps_test',
             'producer' => 'IPLAYER',
@@ -108,7 +98,6 @@ class AtiAnalyticsLabelsTest extends TestCase
         $brand = $this->brandFactory('b006q2x0', 'Doctor Who', 'bbc_one', 'bbc_one', 'tv');
         $context = $this->galleryFactory('b0000001', 'Some Gallery', 'bbc_one', 'bbc_one', NetworkMediumEnum::TV, $brand);
         $labels = $this->getAnalyticsLabels(
-            $this->getProducerVariableHelperMock('BBC'),
             $context,
             'article-photo-gallery',
             'gallery',
@@ -219,28 +208,10 @@ class AtiAnalyticsLabelsTest extends TestCase
         return $cosmosinfo;
     }
 
-    private function getProducerVariableHelperMock(string $value)
+    private function getAnalyticsLabels($context, string $contentType, string $chapterOne, string $contentId, array $extraLabels = [])
     {
-        $mock = $this->createMock(ProducerVariableHelper::class);
-        $mock->method('calculateProducerVariable')->willReturn($value);
-
-        return $mock;
-    }
-
-    private function getDestinationVariableHelperMock()
-    {
-        $mock = $this->createMock(DestinationVariableHelper::class);
-        $mock->method('getDestinationFromContext')->willReturn('programmes_ps_test');
-
-        return $mock;
-    }
-
-
-    private function getAnalyticsLabels($producerHelperMock, $context, string $contentType, string $chapterOne, string $contentId, array $extraLabels = [])
-    {
+        $labelsArray = [];
         $analyticsLabels = new AtiAnalyticsLabels(
-            $producerHelperMock,
-            $this->getDestinationVariableHelperMock(),
             $context,
             $this->getCosmosInfoMock(),
             $extraLabels,

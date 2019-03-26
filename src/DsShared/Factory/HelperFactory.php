@@ -11,8 +11,6 @@ use App\DsShared\Helpers\PlayTranslationsHelper;
 use App\DsShared\Helpers\SmpPlaylistHelper;
 use App\DsShared\Helpers\StreamableHelper;
 use App\DsShared\Helpers\TitleLogicHelper;
-use App\Controller\Helpers\ProducerVariableHelper;
-use App\Controller\Helpers\DestinationVariableHelper;
 use App\Translate\TranslateProvider;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
@@ -42,11 +40,6 @@ class HelperFactory
     public function getBroadcastNetworksHelper()
     {
         return $this->getHelper(BroadcastNetworksHelper::class, $this->translateProvider);
-    }
-
-    public function getDestinationVariableHelper(): DestinationVariableHelper
-    {
-        return $this->getHelper(DestinationVariableHelper::class);
     }
 
     public function getFixIsiteMarkupHelper()
@@ -87,11 +80,6 @@ class HelperFactory
     public function getTitleLogicHelper(): TitleLogicHelper
     {
         return $this->getHelper(TitleLogicHelper::class);
-    }
-
-    public function getProducerVariableHelper(): ProducerVariableHelper
-    {
-        return $this->getHelper(ProducerVariableHelper::class);
     }
 
     private function getHelper(string $className, ...$injectables)
