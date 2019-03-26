@@ -4,13 +4,11 @@ namespace App\Controller\Clips;
 
 use App\Controller\BaseController;
 use App\Ds2013\Presenters\Utilities\Paginator\PaginatorPresenter;
-use BBC\ProgrammesPagesService\Domain\Entity\Brand;
 use BBC\ProgrammesPagesService\Domain\Entity\Programme;
 use BBC\ProgrammesPagesService\Domain\Entity\ProgrammeContainer;
 use BBC\ProgrammesPagesService\Service\ProgrammesAggregationService;
 use BBC\ProgrammesPagesService\Service\ProgrammesService;
 use BBC\ProgrammesPagesService\Service\AbstractService;
-use BBC\ProgrammesCachingLibrary\CacheInterface;
 
 class ListController extends BaseController
 {
@@ -44,12 +42,10 @@ class ListController extends BaseController
 
         $series = [];
         if ($programme->getTleo() instanceof ProgrammeContainer) {
-            $series = $programmesService->findChildrenSeriesByParent(
+            $series = $programmesService->findChildrenSeriesWithClipsByParent(
                 $programme->getTleo(),
-                AbstractService::DEFAULT_LIMIT,
-                AbstractService::DEFAULT_PAGE,
-                CacheInterface::NORMAL,
-                true
+                AbstractService::NO_LIMIT,
+                AbstractService::DEFAULT_PAGE
             );
         }
 
