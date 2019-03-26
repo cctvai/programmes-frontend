@@ -24,7 +24,7 @@ class AtiAnalyticsLabels
 
     /** @var string */
     private $chapterOne;
-  
+
     /** @var ProducerVariableHelper */
     private $producerVariableHelper;
 
@@ -33,7 +33,7 @@ class AtiAnalyticsLabels
 
     /** @var string|null */
     private $contentId;
-  
+
     /** @var string|null */
     private $overriddenEntityTitle;
 
@@ -63,7 +63,7 @@ class AtiAnalyticsLabels
         if ($masterbrandCustomVar) {
             $masterbrandCustomVar = urlencode($masterbrandCustomVar);
         }
-      
+
         if ($entityTitle) {
             $entityTitle = urlencode($entityTitle);
         }
@@ -73,10 +73,7 @@ class AtiAnalyticsLabels
             $producer = $this->producerVariableHelper->calculateProducerVariable($this->context);
         }
 
-        $destination = 'programmes_ps';
-        if ($this->context) {
-            $destination = $this->destinationVariableHelper->getDestinationFromContext($this->context, $this->appEnvironment);
-        }
+        $destination = $this->destinationVariableHelper->getDestinationFromContext($this->context, $this->appEnvironment);
 
         $labels = [
             'destination' => $destination,
