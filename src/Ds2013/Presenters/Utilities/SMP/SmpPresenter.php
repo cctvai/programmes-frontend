@@ -159,10 +159,7 @@ class SmpPresenter extends Presenter
             $brand = $this->programmeItem->getTleo();
         }
 
-        if (!empty($this->analyticsLabels)) {
             $smpConfig['smpSettings']['statsObject'] = [
-                'siteId' => $this->analyticsLabels['bbc_site'] ?? '',
-                'product' => $this->analyticsLabels['prod_name'],
 
                 //Vulcan stats
                 'destination' => $this->destinationVariableHelper->getDestinationFromContext($this->programmeItem, $this->appEnvironment),
@@ -172,17 +169,10 @@ class SmpPresenter extends Presenter
                 'appType' => 'responsive',
                 'clipPID' => (string) $this->programmeItem->getPid(),
                 'producer' => $this->producerVariableHelper->calculateProducerVariable($this->programmeItem),
-                'parentPIDType' => $this->programmeItem->getType(),
                 'episodePID' => $episodePid,
-
-                'sessionLabels' => [
-                    'bbc_site' => $this->analyticsLabels['bbc_site'] ?? '',
-                    'event_master_brand' => $this->analyticsLabels['event_master_brand'] ?? '',
-                ],
             ];
-        }
 
-        return $smpConfig;
+            return $smpConfig;
     }
 
     public function getFactoryOptions(): array

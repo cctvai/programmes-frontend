@@ -73,21 +73,14 @@ class SmpPresenterTest extends TestCase
     public function testStatsObject()
     {
         $this->assertEquals([
-            'siteId' => 'bbc_____site',
-            'product' => 'prod____name',
             'appName' => 'app____name',
             'appType' => 'responsive',
             'brandPID' => null,
             'seriesPID' => null,
             'clipPID' => 'st000001',
             'episodePID' => null,
-            'parentPIDType' => 'clip',
             'destination' => 'ps_programmes_test',
             'producer' => 'BBC',
-            'sessionLabels' => [
-                'bbc_site' => 'bbc_____site',
-                'event_master_brand' => 'event___master___brand',
-            ],
         ], $this->presenter()->getSmpConfig()['smpSettings']['statsObject']);
     }
 
