@@ -58,6 +58,7 @@ class ProducerVariableHelper
             'bbc_sport' => 'SPORT',
             'bbc_swahili_radio' => 'SWAHILI',
             'bbc_swahili_tv' => 'SWAHILI',
+            'bbc_switch' => 'IPLAYER',
             'bbc_tamil_radio' => 'TAMIL',
             'bbc_tamil_tv' => 'TAMIL',
             'bbc_telugu_tv' => 'TELUGU',
@@ -80,6 +81,7 @@ class ProducerVariableHelper
             'cbeebies' => 'CBEEBIES',
             'cbeebies_radio' => 'CBEEBIES',
             's4cpbs' => 'BBC',
+            'parliaments_online' => 'IPLAYER',
         ];
 
         $network = null;
