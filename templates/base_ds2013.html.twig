@@ -129,6 +129,9 @@
             {{ soundsNav.getFoot()|raw }}
         {% endif %}
         {{ orb.getBodylast()|raw }}
+        {% if appVersion is defined %}
+            <!-- Programmes Version: {{ appVersion }} -->
+        {% endif %}
     </body>
     {% if show_popup() %}
         <script type="text/javascript">

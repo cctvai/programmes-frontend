@@ -101,5 +101,8 @@
     {% include 'base_ds_common_js_partial.html.twig' with {'title': block('title')} %}
     {{ branding.getBodyLast()|raw }}
     {{ orb.getBodylast()|raw }}
+    {% if appVersion is defined %}
+        <!-- Programmes Version: {{ appVersion }} -->
+    {% endif %}
     </body>
 </html>

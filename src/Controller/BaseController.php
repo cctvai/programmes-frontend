@@ -265,6 +265,7 @@ abstract class BaseController extends AbstractController
         ]);
 
         $parameters = array_merge([
+            'appVersion' => $this->container->get(CosmosInfo::class)->getAppVersion(),
             'orb' => $orb,
             'meta_context' => $this->createMetaContextFromContext(),
             'branding' => $this->branding,
