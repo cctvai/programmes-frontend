@@ -15,6 +15,7 @@ use BBC\ProgrammesPagesService\Service\ProgrammesAggregationService;
 use BBC\ProgrammesPagesService\Service\PromotionsService;
 use BBC\ProgrammesPagesService\Service\VersionsService;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * Podcast full page. Future implementation.
@@ -29,7 +30,8 @@ class PodcastController extends BaseController
         ProgrammesAggregationService $programmesAggregationService,
         PromotionsService $promotionsService,
         VersionsService $versionsService,
-        StructuredDataHelper $structuredDataHelper
+        StructuredDataHelper $structuredDataHelper,
+        UrlGeneratorInterface $router
     ) {
         if ((!$coreEntity instanceof Collection) && !$coreEntity->isTleo()) {
             return $this->cachedRedirectToRoute('programme_podcast_episodes_download', ['pid' => $coreEntity->getTleo()->getPid()], 301);
@@ -82,6 +84,18 @@ class PodcastController extends BaseController
 
         $schema = $this->getSchema($structuredDataHelper, $programme, $downloadableVersions, $coreEntity);
 
+        switch ($coreEntity->getType()) {
+            case 'collection':
+                $soundsSubscribeUrl = $router->generate('sounds_collection', [
+                    'collectionPid' => $coreEntity->getPid(),
+                ], UrlGeneratorInterface::ABSOLUTE_URL);
+                break;
+            default:
+                $soundsSubscribeUrl = $router->generate('sounds_brand', [
+                    'brandPid' => $coreEntity->getPid(),
+                ], UrlGeneratorInterface::ABSOLUTE_URL);
+        }
+
         return $this->renderWithChrome('podcast/podcast.html.twig', [
             'schema' => $schema,
             'programme' => $programme,
@@ -91,6 +105,7 @@ class PodcastController extends BaseController
             'paginatorPresenter' => $paginator,
             'promotions' => $promotions,
             'genre' => $genre,
+            'soundsSubscribeUrl' => $soundsSubscribeUrl,
         ]);
     }
 

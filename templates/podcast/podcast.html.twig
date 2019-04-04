@@ -45,35 +45,14 @@
                 </div>
                 <div class="grid 1/3@bpw2 1/4@bpe map__column map__column--2 map__column--last">
                     <div class="map__inner br-box-secondary">
-                        <div class="island">
-                            <div class="popup">
-                                <input class="popup__status" type="checkbox" id="popup-2" checked>
-                                <h2 class="gamma popup__button popup__button--subscribe br-pseudolink br-linkinvert">
-                                    <label for="popup-2">
-                                        <span class="buttons__icon">{{ gelicon('basics', 'podcast', 'gelicon--gamma') }}</span>
-                                        {{ tr('subscribe') }}
-                                    </label>
-                                </h2>
-                                <div class="popup__holder" id="popup-2-holder">
-                                    <div class="popup__content popup__content--subscribe br-box-secondary br-secondary-link-onbg br-secondary-link-onborder br-secondary-link-onborder--beforeafter">
-                                        <h3 class="popup__header br-secondary-link-onborder--beforeafter br-secondary-linkhover-onborder--hover-beforeafter gamma no-margin deemphasize">
-                                            <label class="popup__close island--squashed br-secondary-bg-onborder br-linkinvert" for="popup-2">
-                                                <span class="pull--right-spaced">
-                                                    {{ gelicon('basics', 'no', 'gelicon--gamma') }}
-                                                </span>
-                                                {{ tr('subscribe_to_podcast')}}
-                                            </label>
-                                        </h3>
-                                        <ul class="list-unstyled popup__list">
-                                            {{ self.subscribeLink('pcast', entity, 'itunes', 'iTunes / iOS', 'progs-icons', 'apple')  }}
-                                            {{ self.subscribeLink('https', entity, 'android', 'Android / Google Play', 'progs-icons', 'android')  }}
-                                            {{ self.subscribeLink('pcast', entity, 'windows', 'Windows Phone', 'progs-icons', 'windows') }}
-                                            {{ self.subscribeLink('https', entity, 'rss', 'RSS', 'basics', 'rss')  }}
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <nav class="island">
+                            <a href="{{ soundsSubscribeUrl }}" class="popup__button popup__button--subscribe br-linkinvert podcast--subscribe-link">
+                                {{ gelicon('basics', 'external-link', 'podcast--subscribe-icon') }}
+                                {{ tr('subscribe_sounds') }}
+                            </a>
+                            <br />
+                            <a href="{{ url('podcast_download_rss', {'pid' : entity.getPid()}) }}" class="podcast--rss-link">RSS</a>
+                        </nav>
                     </div>
                 </div>
             </div>
@@ -187,15 +166,3 @@
 {%- block javascripts -%}
     {{ add_popup() }}
 {%- endblock -%}
-
-{% macro subscribeLink(protocol, coreEntity, type, name, iconset, icon) %}
-    {%  set url = protocol ~ '://podcasts.files.bbci.co.uk/' ~ coreEntity.getPid() ~ '.rss'%}
-    <li>
-        <a data-istats-track="programmes_podcast_series_subscribe_{{ type }}" class="link-complex popup__list__item island--squashed br-secondary-bg-ontext br-secondary-bg-onbg--hover br-secondary-link-ontext--hover" href="{{ url }}">
-            {{ gelicon(iconset, icon, 'gelicon--delta gelicon--leading') }}
-            <span class="link-complex__target">
-             {{ name }}
-            </span>
-        </a>
-    </li>
-{% endmacro %}

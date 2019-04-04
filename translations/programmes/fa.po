@@ -2100,6 +2100,10 @@ msgstr "ایستگاه‌ها"
 msgid "subscribe"
 msgstr "مشترک شوید"
 
+#. English: "Subscribe in Sounds".
+msgid "subscribe_sounds"
+msgstr ""
+
 #. English: "Subscribe to podcast".
 msgid "subscribe_to_podcast"
 msgstr "مشترک پادکست شوید"

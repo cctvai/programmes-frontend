@@ -2098,6 +2098,10 @@ msgstr "स्टेशंस"
 msgid "subscribe"
 msgstr "सब्सक्राइब"
 
+#. English: "Subscribe in Sounds".
+msgid "subscribe_sounds"
+msgstr ""
+
 #. English: "Subscribe to podcast".
 msgid "subscribe_to_podcast"
 msgstr "पॉडकास्ट के लिए सब्सक्राइब करें"

@@ -2109,6 +2109,10 @@ msgstr "Stations"
 msgid "subscribe"
 msgstr "Subscribe"
 
+#. English: "Subscribe in Sounds".
+msgid "subscribe_sounds"
+msgstr "Subscribe in Sounds"
+
 #. English: "Subscribe to podcast".
 msgid "subscribe_to_podcast"
 msgstr "Subscribe to podcast"
