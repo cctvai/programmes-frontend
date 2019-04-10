@@ -125,7 +125,10 @@ abstract class BaseIsiteController extends BaseController
         $context = null;
         if (!empty($isiteObject->getParentPid())) {
             $context = $this->coreEntitiesService->findByPidFull($isiteObject->getParentPid());
-            if ($context && ($isiteObject->getProjectSpace() !== $context->getOption('project_space'))) {
+            // If the parent of the article is a group, the project space is determined by the parent programme
+            $programme = $this->getParentProgramme($context);
+
+            if ($programme && ($isiteObject->getProjectSpace() !== $programme->getOption('project_space'))) {
                 throw $this->createNotFoundException('Project space in Article or Profile not matching');
             }
         }
