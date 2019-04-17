@@ -23,12 +23,6 @@ class RedirectTest extends BaseWebTestCase
         $this->assertRedirectTo($this->client, 301, 'http://localhost/programmes/a-z');
     }
 
-    public function testRedirectShorthand()
-    {
-        $this->client->request('GET', '/programmes/a-z/a');
-        $this->assertRedirectTo($this->client, 301, 'http://localhost/programmes/a-z/by/a/all');
-    }
-
     public function testRedirectNakedSearch()
     {
         $this->client->request('GET', '/programmes/a-z/by/a');

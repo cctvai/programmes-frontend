@@ -529,23 +529,6 @@ class PresenterFactory
      * @param string $slice
      * @param array $options
      */
-    public function atozSearchBarPresenter(
-        string $search,
-        string $slice,
-        array $options = []
-    ): AtozSearchBarPresenter {
-        return new AtozSearchBarPresenter(
-            $search,
-            $slice,
-            $options
-        );
-    }
-
-    /**
-     * @param string $search
-     * @param string $slice
-     * @param array $options
-     */
     public function atozSliceNavPresenter(
         string $search,
         string $slice,

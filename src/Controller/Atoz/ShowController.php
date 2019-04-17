@@ -9,6 +9,7 @@ use App\Ds2013\Presenters\Utilities\Paginator\PaginatorPresenter;
 use BBC\ProgrammesPagesService\Service\AtozTitlesService;
 use BBC\ProgrammesPagesService\Service\ProgrammesService;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ShowController extends BaseController
 {
@@ -36,76 +37,47 @@ class ShowController extends BaseController
             $this->pageNotInRange();
         }
 
-        if (preg_match('/^[a-zA-Z@]$/', $search)) {
-            switch ($search) {
-                case '@':
-                    $selectedLetter = '0-9';
-                    break;
-                default:
-                    $selectedLetter = strtolower($search);
-            }
+        if (!preg_match('/^[a-zA-Z@]$/', $search)) {
+            // Throw a 404 if not a single letter or @ as that's a search and that's invalid now
+            throw new NotFoundHttpException();
+        }
 
-            switch ($slice) {
-                case 'all':
-                    $count = $this->verifyPageIsInRange($atozTitlesService->countTleosByFirstLetter($search));
-                    if ($count > 0) {
-                        $results = $atozTitlesService->findTleosByFirstLetter(
-                            $search,
-                            self::RESULTS_PER_PAGE,
-                            $this->currentPage
-                        );
-                    } else {
-                        $results = [];
-                    }
-                    break;
-                case 'player':
-                    $count = $this->verifyPageIsInRange($atozTitlesService->countAvailableTleosByFirstLetter($search));
-                    if ($count > 0) {
-                        $results = $atozTitlesService->findAvailableTleosByFirstLetter(
-                            $search,
-                            self::RESULTS_PER_PAGE,
-                            $this->currentPage
-                        );
-                    } else {
-                        $results = [];
-                    }
-                    break;
-                default:
-                    $count = 0;
-                    $results = [];
-            }
-        } else {
-            $selectedLetter = '';
+        switch ($search) {
+            case '@':
+                $selectedLetter = '0-9';
+                break;
+            default:
+                $selectedLetter = strtolower($search);
+        }
 
-            switch ($slice) {
-                case 'all':
-                    $count = $this->verifyPageIsInRange($programmesService->countByKeywords($search));
-                    if ($count > 0) {
-                        $results = $programmesService->searchByKeywords(
-                            $search,
-                            self::RESULTS_PER_PAGE,
-                            $this->currentPage
-                        );
-                    } else {
-                        $results = [];
-                    }
-                    break;
-                case 'player':
-                    $count = $this->verifyPageIsInRange($programmesService->countAvailableByKeywords($search));
-                    if ($count > 0) {
-                        $results = $programmesService->searchAvailableByKeywords(
-                            $search,
-                            self::RESULTS_PER_PAGE,
-                            $this->currentPage
-                        );
-                    } else {
-                        $results = [];
-                    }
-                    break;
-                default:
-                    $count = 0;
+        switch ($slice) {
+            case 'all':
+                $count = $this->verifyPageIsInRange($atozTitlesService->countTleosByFirstLetter($search));
+                if ($count > 0) {
+                    $results = $atozTitlesService->findTleosByFirstLetter(
+                        $search,
+                        self::RESULTS_PER_PAGE,
+                        $this->currentPage
+                    );
+                } else {
                     $results = [];
-            }
+                }
+                break;
+            case 'player':
+                $count = $this->verifyPageIsInRange($atozTitlesService->countAvailableTleosByFirstLetter($search));
+                if ($count > 0) {
+                    $results = $atozTitlesService->findAvailableTleosByFirstLetter(
+                        $search,
+                        self::RESULTS_PER_PAGE,
+                        $this->currentPage
+                    );
+                } else {
+                    $results = [];
+                }
+                break;
+            default:
+                $count = 0;
+                $results = [];
         }
 
         switch ($slice) {
@@ -119,13 +91,7 @@ class ShowController extends BaseController
                 $descriptionSlice = '';
         }
 
-        switch ($selectedLetter) {
-            case '':
-                $descriptionSearch = 'matching "' . $search . '"';
-                break;
-            default:
-                $descriptionSearch = 'beginning with ' . strtoupper($selectedLetter);
-        }
+        $descriptionSearch = 'beginning with ' . strtoupper($selectedLetter);
 
         $this->overridenDescription = 'A list of '
                                     . $descriptionSlice

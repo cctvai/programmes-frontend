@@ -1,6 +1,5 @@
 {% extends 'base_ds2013.html.twig' %}
 
-{% block inline_head %}{% if selectedLetter is empty %}<meta name="robots" content="noindex,nofollow">{% endif %}{% endblock %}
 {%- block title -%}
     BBC -
     {%- if slice == 'all' -%}
@@ -8,35 +7,20 @@
     {%- else -%}
         {{ ' ' ~ tr('atoz_available') ~ ' ' }}
     {%- endif -%}
-    - {{ tr('atoz_title') }},
-    {%- if selectedLetter is empty -%}
-        {{ ' ' ~ search }}
-    {%- else -%}
-        {{ ' ' ~ selectedLetter|upper }}
-    {%- endif -%}
+    - {{ tr('atoz_title') ~ ', ' ~ selectedLetter|upper }}
 {%- endblock -%}
 {% block page_classes %}programmes-page text-base b-g-p br-box-page{% endblock %}
 
 {% block body %}
-    {% if selectedLetter is empty %}
-        <h1>{{ tr('atoz_search_title', { '%1': search }) }}</h1>
-        {{ ds2013('atozSearchBar', search, slice) }}
-    {% else %}
-        <h1>{% if slice == 'all' %}{{ tr('atoz_title_all') }}{% else %}{{ tr('atoz_title_available') }}{% endif %} - {{ selectedLetter|upper }}</h1>
-        {{ ds2013('atozLetterNav', selectedLetter, slice) }}
-    {% endif %}
+    <h1>{% if slice == 'all' %}{{ tr('atoz_title_all') }}{% else %}{{ tr('atoz_title_available') }}{% endif %} - {{ selectedLetter|upper }}</h1>
+    {{ ds2013('atozLetterNav', selectedLetter, slice) }}
     {{ ds2013('atozSliceNav', search, slice) }}
     <div class="g-c-l">
         {% if results is not empty %}
             <ol class="highlight-box-wrapper grid-wrapper">
                 {% for result in results %}
-                    {% if selectedLetter is empty %}
-                        {% set programme = result %}
-                    {% else %}
-                        {% set programme = result.getTitledEntity() %}
-                    {% endif %}
                     <li class="grid 1/1 atoz-title">
-                        {{ ds2013('programme', programme, {
+                        {{ ds2013('programme', result.getTitledEntity(), {
                             'highlight_box_classes': 'highlight-box--list',
                             'title_options': {
                                 'title_tag': 'h2',
@@ -57,12 +41,7 @@
             </ol>
         {% else %}
             <p class="nothingtoshow">
-                {%- if selectedLetter is not empty -%}
-                    {{ tr('atoz_noresults', { '%1': selectedLetter|upper }) }}
-                {%- else -%}
-                    {{ tr('atoz_nocontaining', { '%1': '"' ~ search ~ '"' }) }}
-                {%- endif -%}
-                .
+                {{ tr('atoz_noresults', { '%1': selectedLetter|upper }) ~ '.' }}
                 {%- if slice == 'player' -%}
                     {{ (' ' ~ tr('atoz_tryall', {
                         '%1': '<a rel="rdfs:seeAlso" href="' ~ path('atoz_show', { 'search': search, 'slice': 'all' }) ~ '">',
