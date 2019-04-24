@@ -79,6 +79,10 @@ msgstr "All podcasts"
 msgid "all_previous_episodes"
 msgstr "All previous episodes"
 
+#. English: "All programmes".
+msgid "all_programmes"
+msgstr "All programmes"
+
 #. English: "All programmes beginning with".
 #. Used by: RadioNav
 msgid "all_programmes_beginning_with"

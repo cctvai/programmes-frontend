@@ -1,0 +1,280 @@
+/**
+ * Categories Navigation.
+ *
+ */
+
+/**
+ * Generic styling
+ */
+
+.categories-breadcrumb__item {
+    @include inline-block();
+    padding: $basic-half-spacing $basic-spacing;
+    margin-top: -$basic-half-spacing;
+    margin-bottom: -$basic-half-spacing;
+    margin-left: -$basic-spacing;
+}
+
+.categories-navigation__options {
+    @extend %list-unstyled;
+    margin-bottom: 1em;
+    word-wrap: break-word;
+}
+
+.categories-navigation__heading {
+    font-weight: normal;
+}
+
+.categories-navigation a {
+
+    // For IE7 not marking the entire block as clickable
+    zoom: 1;
+
+    &:hover {
+        text-decoration: none;
+    }
+}
+
+
+/**
+ * Top Navigation.
+ *
+ * Is an inline-block nav at small screen sizes. Changing position and reflowing
+ * is handled by the grid system, so here we just need to change presentation
+ * and don't need to worry about layout.
+ */
+.categories-navigation-top__options {
+    text-align: center;
+    // For Faux columns
+    overflow: hidden;
+}
+
+.categories-navigation-top__link {
+    display: block;
+    padding: 0.25em $basic-half-spacing;
+
+    // Faux columns to ensure the grey always fills down
+    // Use border for spacing, because we're already using padding
+    margin-bottom: -100px;
+    border-bottom: 100px solid transparent;
+
+    // Suppress branding border coloring as we want to enforce transparency
+    &:hover {
+        border-color: transparent;
+    };
+
+    .categories-navigation__item--fix & {
+        margin-bottom: 0;
+        border-bottom: 0;
+        padding: 0.75em $basic-half-spacing;
+    }
+}
+
+
+/**
+ * Sort By.
+ *
+ * Is an inline, nav at small screen sizes. This is wrapped in a media query as
+ * we don't want to have to undo this css at larger sizes.
+ */
+.categories-navigation-sort-by__heading,
+.categories-navigation-sort-by__options {
+    display: inline-block;
+}
+
+.categories-navigation-sort-by__options > li {
+    display: inline;
+}
+
+.categories-navigation-sort-by__heading {
+    span::after {
+        content: ':';
+    }
+}
+
+.categories-navigation-sort-by__options > li a {
+    padding: $basic-half-spacing $basic-spacing;
+}
+
+
+/**
+ * Filter By
+ *
+ * Is a button that when clicked displays a a list of items at small screen
+ * sizes.
+ */
+.categories-navigation-filter-by__button {
+    cursor: pointer;
+}
+
+.categories-navigation-filter-by__options li {
+    display: block;
+}
+
+.categories-navigation-filter-by__options {
+    position: relative;
+    padding-top: $basic-half-spacing;
+
+    // Pull up by the line height minus the arrow size, so it sits flush to
+    // the button above it
+    margin-top: -(gel-typography('basic', 'base', 'line-height')) + 8px;
+
+    &::before {
+        position: absolute;
+        content: '';
+        left: 8px;
+        top: -16px;
+
+        border-style: solid;
+        border-width: 8px;
+        // Abuse of !important so that we can just specify a generic
+        // border-color in branding which allows us to control the location
+        // of the arrow entirely within /programmes
+        border-right-color: transparent !important;
+        border-top-color: transparent !important;
+        border-left-color: transparent !important;
+        // Abuse of opacity so we can fade out the color to the required
+        // level as branding doesn't provide multiple levels of opacity on
+        // these pseudo elements as it's too niche. Filter for ie8 support
+        filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=15);
+        opacity: 0.15;
+    }
+}
+
+.categories-navigation-filter-by__link {
+    display: block;
+    padding: 0.25em $basic-spacing;
+}
+
+@include mq($from: 'gel1b', $until: 350px) {
+    // Reduce the font-size and padding slightly so that the "all programmes"
+    // link fits onto two line always fits onto two lines, instead of wrapping
+    // onto three lines at 320px wide screens.
+    .categories-navigation-top__link {
+        $font-size: 14px;
+        font-size: mq-px2em($font-size, gel-typography('bpb1', 'base', 'font-size'));
+        line-height: gel-typography('bpb1', 'centi', 'line-height') / $font-size;
+
+        padding-left: 0;
+        padding-right: 0;
+    }
+}
+
+@include mq-range('bpb1') {
+    .categories-navigation-filter-by__options {
+        // Pull up by the line height minus the arrow size, so it sits flush to
+        // the button above it
+        margin-top: -(gel-typography('bpb1', 'base', 'line-height')) + 8px;
+    }
+}
+
+@include mq-range('bpw') {
+    /**
+     * Generic styling.
+     *
+     * At large sizes navigation is a vertical list.
+     */
+
+    .categories-navigation {
+        width: 162.66016px;
+    }
+
+    .categories-navigation__heading {
+        margin-bottom: $basic-spacing;
+        padding: 0.25em $basic-spacing;
+        margin-top: -0.25em;
+        margin-left: -$basic-spacing;
+    }
+
+    .categories-navigation__options,
+    .categories-navigation__options li {
+        display: block;
+    }
+
+    .categories-navigation__link {
+        display: block;
+        padding: 0.25em $basic-spacing;
+        margin-left: -$basic-spacing;
+    }
+
+
+    /**
+     * Top Navigation.
+     *
+     * Undo styling set at the basic size.
+     */
+    .categories-navigation-top__options {
+        // Undo central alignment and faux columns overflow
+        text-align: left;
+        overflow: inherit;
+
+        li {
+            @include inline-block();
+        }
+    }
+
+    .categories-navigation-top__link {
+        // Undo Faux columns overflow and background coloring
+        margin-bottom: 0;
+        border-bottom-style: none;
+        //background: inherit;
+
+        // IE7 doesn't support background:inherit
+        //*background: none;
+    }
+
+    .categories-navigation__item--fix .categories-navigation-top__link {
+        padding-top: 0.25em;
+        padding-bottom: 0.25em;
+    }
+
+
+    /**
+     * Sort By.
+     *
+     * Undo styling set at the basic size.
+     */
+    .categories-navigation-sort-by__heading,
+    .categories-navigation-sort-by__options,
+    .categories-navigation-sort-by__options > li {
+        display: block;
+    }
+
+    .categories-navigation-sort-by__heading {
+        span::after {
+            content: '';
+        }
+    }
+
+    .categories-navigation-sort-by__options > li {
+        padding: 0;
+    }
+
+
+    /**
+     * Filter By
+     *
+     * Undo styling set at the basic size.
+     */
+    .categories-navigation-filter-by__options {
+        // Undo pushing down space for arrow
+        margin-top: 0;
+        padding-top: 0;
+
+        // Don't apply branding coloring on the wide viewport
+        background: inherit;
+        // For <=IE9 which uses filter shenanigans for opaque backgrounds
+        filter: none;
+
+        &::before {
+            display: none;
+        }
+    }
+}
+
+@include mq($until: 599px) {
+    .categories-navigation-top__heading,
+    .categories-navigation-sort-by__heading {
+        background-color: inherit;
+    }
+}

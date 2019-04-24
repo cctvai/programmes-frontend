@@ -256,6 +256,9 @@ services:
     BBC\ProgrammesPagesService\Service\AtozTitlesService:
         factory: ['@BBC\ProgrammesPagesService\Service\ServiceFactory', 'getAtozTitlesService']
 
+    BBC\ProgrammesPagesService\Service\CategoriesService:
+        factory: ['@BBC\ProgrammesPagesService\Service\ServiceFactory', 'getCategoriesService']
+
     BBC\ProgrammesPagesService\Service\BroadcastsService:
         factory: ['@BBC\ProgrammesPagesService\Service\ServiceFactory', 'getBroadcastsService']
 

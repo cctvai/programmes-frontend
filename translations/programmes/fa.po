@@ -76,6 +76,10 @@ msgstr ""
 msgid "all_previous_episodes"
 msgstr "همه قسمت‌های قبلی"
 
+#. English: "All programmes".
+msgid "all_programmes"
+msgstr ""
+
 #. English: "All programmes beginning with".
 #. Used by: RadioNav
 msgid "all_programmes_beginning_with"

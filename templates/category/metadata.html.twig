@@ -1,0 +1,95 @@
+{% import _self as self %}
+
+{% extends 'base_ds2013.html.twig' %}
+
+{%- block title -%}
+    BBC -
+    {%- if categoryType == 'genres' -%}
+        {{ ' ' ~ tr('genres') }}
+    {%- else -%}
+        {{ ' ' ~ tr('formats') }}
+    {%- endif -%}
+    {{ ' - ' ~ category.getHierarchicalTitle() }}
+{%- endblock -%}
+{% block page_classes %}programmes-page text-base b-g-p br-box-page{% endblock %}
+
+{% block body %}
+    <h1 class="alpha categories-breadcrumb">
+        <span class="categories-breadcrumb__item deemphasize">{{ tr('categories') }}:</span>
+        {% for ancestor in category.getAncestry()[:-1] %}
+            <a href="{{ path('category_metadata', { categoryType: categoryType, categoryHierarchy: ancestor.getUrlKeyHierarchy() }) }}" class="categories-breadcrumb__item deemphasize br-page-linkhover-onbg--hover br-page-bg-ontext--hover">
+                {{ ancestor.getTitle() }}:
+            </a>
+        {% endfor %}
+        <span class="categories-breadcrumb__item br-highlight-bg-ontext">{{ category.getTitle() }}</span>
+    </h1>
+    <div class="grid-wrapper">
+        <nav class="grid-float categories-navigation grid">
+            <ul class="categories-navigation__options categories-navigation-top__options grid-wrapper">
+                {{ self.item(categoryType, category.getUrlKeyHierarchy(), 'player', tr('available_now')) }}
+                {{ self.item(categoryType, category.getUrlKeyHierarchy(), 'all', tr('all_programmes')) }}
+            </ul>
+            {% if children is not empty %}
+                <h2 class="categories-navigation__heading categories-navigation-filter-by__heading hidden visible@bpw centi br-page-text-onbg015">
+                    {{ tr('filter_by') }}
+                </h2>
+                <div class="categories-navigation-filter-by__button island hidden@bpw br-box-page__link br-page-link-onbg015 br-page-linkhover-onbg--hover br-page-bg-ontext--hover js-subcategory-toggle component">
+                    {{ gelicon('core', 'list', 'gelicon--centi') }}
+                    {{ tr('filter_by') }}
+                </div>
+                <ol class="categories-navigation__options categories-navigation-filter-by__options hidden visible@bpw br-page-link-onbg015 br-page-link-onborder--beforeafter">
+                    {% for child in children %}
+                        <li class="category">
+                            <a href="{{ path('category_metadata', { categoryType: categoryType, categoryHierarchy: child.getUrlKeyHierarchy() }) }}" class="categories-navigation__link categories-navigation-filter-by__link centi br-page-linkhover-onbg--hover br-page-bg-ontext--hover deemphasize">
+                                {{ child.getTitle() }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ol>
+            {% endif %}
+        </nav>
+        <ol class="grid-float grow-to-fit@bpw list-unstyled">
+            {{ self.box(categoryType, category.getUrlKeyHierarchy(), 'player', tr('available_now'), 'audio-visual', 'play', availableCount) }}
+            {{ self.box(categoryType, category.getUrlKeyHierarchy(), 'all', tr('all_programmes'), 'core', 'list-thumb', null) }}
+        </ol>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {% if children is not empty %}
+        <script type="text/javascript">
+            require(['jquery-1.9'],function($) {
+                $('.js-subcategory-toggle').on('click', function() {
+                    if (document.documentElement.clientWidth < 600) {
+                        $('.categories-navigation-filter-by__options').toggleClass('hidden');
+                    }
+                });
+            });
+        </script>
+    {% endif %}
+{% endblock %}
+
+{%- macro item(categoryType, categoryHierarchy, slice, text) -%}
+    <li class="grid bpw-one-whole one-half categories-navigation__item--fix categories-navigation__item--on-iplayer">
+        <a href="{{ path('category_slice', { categoryType: categoryType, categoryHierarchy: categoryHierarchy, slice: slice }) }}" class="categories-navigation__link centi categories-navigation-top__link br-page-linkhover-onbg--hover br-page-bg-ontext--hover deemphasize">
+            {{ text }}
+        </a>
+    </li>
+{%- endmacro -%}
+
+{%- macro box(categoryType, categoryHierarchy, slice, text, iconFolder, iconName, count) -%}
+    <li class="grid 1/2 1/3@bpb2 1/4@bpw 1/2@bpw1 1/3@bpw2">
+        <div class="icon-box br-box-page">
+            <a class="icon-box__link br-box-page__link br-page-link-onbg015 br-page-linkhover-onbg015--hover" href="{{ path('category_slice', { categoryType: categoryType, categoryHierarchy: categoryHierarchy, slice: slice }) }}">
+                {{ gelicon(iconFolder, iconName, 'icon-box__icon') }}
+                <h2 class="icon-box__title gamma">{{ text }}</h2>
+                <p class="icon-box__note micro">
+                    {{ tr('view_all') }}
+                    {% if count is not null %}
+                        <span class="icon-box__notedetail">({{ count }})</span>
+                    {% endif %}
+                </p>
+            </a>
+        </div>
+    </li>
+{%- endmacro -%}

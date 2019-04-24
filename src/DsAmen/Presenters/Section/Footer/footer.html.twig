@@ -23,11 +23,11 @@
                                 <ul class="list-raw list-unstyled text--shout gel-brevier-bold">
                                     {%- for genreTree in footer.getGenres() -%}
                                         <li>
-                                            {%- for genre in genreTree.getAncestry()|reverse -%}
+                                            {%- for genre in genreTree.getAncestry() -%}
                                                 {%- if not loop.first -%}&#32;&#62;&#32;{%- endif -%}
-                                                <a href="{{ path('categories_show', {
+                                                <a href="{{ path('category_metadata', {
                                                     'categoryType': 'genres',
-                                                    'urlKeyHierarchy': genre.getUrlKeyHierarchy()
+                                                    'categoryHierarchy': genre.getUrlKeyHierarchy()
                                                 }) }}">{{ genre.getTitle() }}</a>
                                             {%- endfor -%}
                                         </li>
@@ -41,9 +41,9 @@
                                 <ul class="list-raw list-unstyled text--shout gel-brevier-bold">
                                     {%- for format in footer.getFormats() -%}
                                         <li>
-                                            <a href="{{ path( 'categories_show', {
+                                            <a href="{{ path( 'category_metadata', {
                                                 'categoryType': 'formats',
-                                                'urlKeyHierarchy': format.getUrlKey()
+                                                'categoryHierarchy': format.getUrlKey()
                                             }) }}">{{ format.getTitle() }}</a>
                                         </li>
                                     {%- endfor -%}

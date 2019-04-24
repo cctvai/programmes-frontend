@@ -230,10 +230,22 @@ atoz_naked_search:
 atoz_show:
     path: /programmes/a-z/by/{search}/{slice}
     defaults: { _controller: App\Controller\Atoz\ShowController }
-    requirements: { slice: 'all|player',search: '^[a-zA-Z@]$' }
+    requirements: { slice: 'all|player', search: '^[a-zA-Z@]$' }
 
 atoz_redirect_current_show:
     path: /programmes/a-z/by/{search}/current
     controller: App\Controller\RedirectAndCacheController::redirectAction
     defaults: { route: atoz_show, slice: "player", permanent: true }
     requirements: { search: '^[a-zA-Z@]$' }
+
+# Category pages
+category_slice:
+    path: /programmes/{categoryType}/{categoryHierarchy}/{slice}
+    # Temporary until controller is implemented
+    defaults: { _controller: FrameworkBundle:Redirect:redirect, route: '' }
+    requirements: { categoryType: 'formats|genres', categoryHierarchy: '.+', slice: 'player|all' }
+
+category_metadata:
+    path: /programmes/{categoryType}/{categoryHierarchy}
+    defaults: { _controller: App\Controller\Category\MetadataController }
+    requirements: { categoryType: 'formats|genres', categoryHierarchy: '.+' }

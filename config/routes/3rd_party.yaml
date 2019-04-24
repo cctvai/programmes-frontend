@@ -73,17 +73,6 @@ my_tracks:
 
 ### /programmes v2
 
-atoz_list_all:
-    path: /programmes/a-z/all
-    defaults: { _controller: FrameworkBundle:Redirect:redirect, route: '' }
-    schemes: [https]
-
-categories_show:
-    path: /programmes/{categoryType}/{urlKeyHierarchy}
-    defaults: { _controller: FrameworkBundle:Redirect:redirect, route: '' }
-    requirements: { categoryType: 'formats|genres', urlKeyHierarchy: '.+' }
-    schemes: [https]
-
 article_with_contact_form:
     path: /programmes/articles/{key}/{slug}/contact
     defaults: { _controller: FrameworkBundle:Redirect:redirect, route: '' }
