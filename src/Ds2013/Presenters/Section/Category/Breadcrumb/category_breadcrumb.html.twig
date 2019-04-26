@@ -1,0 +1,13 @@
+<h1 class="alpha categories-breadcrumb">
+    <span class="categories-breadcrumb__item deemphasize">{{ tr('categories') }}:</span>
+    {% if category_breadcrumb.isTitle() %}
+        <span class="categories-breadcrumb__item br-highlight-bg-ontext">{{ category_breadcrumb.getTitle() }}</span>
+    {% else %}
+        {% for ancestor in category_breadcrumb.getCategory().getAncestry()[:-1] %}
+            <a href="{{ path('category_metadata', { categoryType: category_breadcrumb.getCategoryType(), categoryHierarchy: ancestor.getUrlKeyHierarchy() }) }}" class="categories-breadcrumb__item deemphasize br-page-linkhover-onbg--hover br-page-bg-ontext--hover">
+                {{ ancestor.getTitle() }}:
+            </a>
+        {% endfor %}
+        <span class="categories-breadcrumb__item br-highlight-bg-ontext">{{ category_breadcrumb.getCategory().getTitle() }}</span>
+    {% endif %}
+</h1>

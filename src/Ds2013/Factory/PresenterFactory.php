@@ -31,8 +31,8 @@ use App\Ds2013\Presenters\Domain\Superpromo\SuperpromoPresenter;
 use App\Ds2013\Presenters\Pages\EpisodeGuideList\EpisodeGuideListPresenter;
 use App\Ds2013\Presenters\Pages\Schedules\NoSchedule\NoSchedulePresenter;
 use App\Ds2013\Presenters\Section\Atoz\LetterNav\AtozLetterNavPresenter;
-use App\Ds2013\Presenters\Section\Atoz\SearchBar\AtozSearchBarPresenter;
 use App\Ds2013\Presenters\Section\Atoz\SliceNav\AtozSliceNavPresenter;
+use App\Ds2013\Presenters\Section\Category\Breadcrumb\CategoryBreadcrumbPresenter;
 use App\Ds2013\Presenters\Section\Clip\Details\ClipDetailsPresenter;
 use App\Ds2013\Presenters\Section\Clip\Playout\ClipPlayoutPresenter;
 use App\Ds2013\Presenters\Section\Episode\Map\EpisodeMapPresenter;
@@ -74,6 +74,7 @@ use App\ValueObject\AnalyticsCounterName;
 use App\ValueObject\CosmosInfo;
 use App\ValueObject\IstatsAnalyticsLabels;
 use BBC\ProgrammesPagesService\Domain\Entity\Broadcast;
+use BBC\ProgrammesPagesService\Domain\Entity\Category;
 use BBC\ProgrammesPagesService\Domain\Entity\Clip;
 use BBC\ProgrammesPagesService\Domain\Entity\CollapsedBroadcast;
 use BBC\ProgrammesPagesService\Domain\Entity\Contribution;
@@ -537,6 +538,23 @@ class PresenterFactory
         return new AtozSliceNavPresenter(
             $search,
             $slice,
+            $options
+        );
+    }
+
+    /**
+     * @param Category|string $categoryOrTitle
+     * @param string $categoryType
+     * @param array $options
+     */
+    public function categoryBreadcrumbPresenter(
+        $categoryOrTitle,
+        string $categoryType = '',
+        array $options = []
+    ): CategoryBreadcrumbPresenter {
+        return new CategoryBreadcrumbPresenter(
+            $categoryOrTitle,
+            $categoryType,
             $options
         );
     }

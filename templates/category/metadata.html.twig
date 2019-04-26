@@ -14,15 +14,7 @@
 {% block page_classes %}programmes-page text-base b-g-p br-box-page{% endblock %}
 
 {% block body %}
-    <h1 class="alpha categories-breadcrumb">
-        <span class="categories-breadcrumb__item deemphasize">{{ tr('categories') }}:</span>
-        {% for ancestor in category.getAncestry()[:-1] %}
-            <a href="{{ path('category_metadata', { categoryType: categoryType, categoryHierarchy: ancestor.getUrlKeyHierarchy() }) }}" class="categories-breadcrumb__item deemphasize br-page-linkhover-onbg--hover br-page-bg-ontext--hover">
-                {{ ancestor.getTitle() }}:
-            </a>
-        {% endfor %}
-        <span class="categories-breadcrumb__item br-highlight-bg-ontext">{{ category.getTitle() }}</span>
-    </h1>
+    {{ ds2013('categoryBreadcrumb', category, categoryType) }}
     <div class="grid-wrapper">
         <nav class="grid-float categories-navigation grid">
             <ul class="categories-navigation__options categories-navigation-top__options grid-wrapper">

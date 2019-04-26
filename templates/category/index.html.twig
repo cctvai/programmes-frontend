@@ -1,0 +1,36 @@
+{% extends 'base_ds2013.html.twig' %}
+
+{%- block title -%}
+    BBC -
+    {%- if categoryType == 'genres' -%}
+        {{ ' ' ~ tr('genres') }}
+    {%- else -%}
+        {{ ' ' ~ tr('formats') }}
+    {%- endif -%}
+{%- endblock -%}
+{% block page_classes %}programmes-page text-base b-g-p br-box-page{% endblock %}
+
+{% block body %}
+    {{ ds2013('categoryBreadcrumb', tr(categoryType)) }}
+    <p class="note">{{ tr(categoryType ~ '_note', { '%1': 'BBC' }) }}</p>
+    <ol class="categories list-unstyled">
+        {% for category in categories %}
+            <li class="category br-keyline highlight-box--list">
+                <a class="beta box-link" href="{{ path('category_metadata', { categoryType: categoryType, categoryHierarchy: category.getUrlKeyHierarchy() }) }}">
+                    {{ category.getTitle() }}
+                </a>
+                {% if category.getChildren() is not empty %}
+                    <ol class="categories list-unlabeled columns columns--2@bpb2 columns--2@bpw">
+                        {% for child in category.getChildren() %}
+                            <li class="category">
+                                <a class="box-link" href="{{ path('category_metadata', { categoryType: categoryType, categoryHierarchy: child.getUrlKeyHierarchy() }) }}">
+                                    {{ child.getTitle() }}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ol>
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ol>
+{% endblock %}
