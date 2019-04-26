@@ -254,3 +254,7 @@ category_metadata:
     path: /programmes/{categoryType}/{categoryHierarchy}
     defaults: { _controller: App\Controller\Category\MetadataController }
     requirements: { categoryType: 'formats|genres', categoryHierarchy: '.+' }
+
+food_index:
+    path: /programmes/food
+    defaults: { _controller: App\Controller\Food\IndexController }
