@@ -24,12 +24,12 @@ use Symfony\Component\Routing\Generator\UrlGenerator;
 use Symfony\Component\Routing\Loader\YamlFileLoader;
 use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\RouteCollectionBuilder;
-use Twig_Environment;
-use Twig_Loader_Filesystem;
+use Twig\Environment;
+use Twig\Loader\FilesystemLoader;
 
 class TwigEnvironmentProvider
 {
-    /** @var Twig_Environment */
+    /** @var Environment */
     private static $twig;
 
     /** @var Ds2013PresenterFactory */
@@ -41,7 +41,7 @@ class TwigEnvironmentProvider
     /** @var DsSharedPresenterFactory */
     private static $dsSharedPresenterFactory;
 
-    public static function twig(): Twig_Environment
+    public static function twig(): Environment
     {
         if (self::$twig === null) {
             self::build();
@@ -93,12 +93,12 @@ class TwigEnvironmentProvider
 
     private static function build(): void
     {
-        $loader = new Twig_Loader_Filesystem(__DIR__ . '/../templates');
+        $loader = new FilesystemLoader(__DIR__ . '/../templates');
         $loader->addPath(__DIR__ . '/../src/Ds2013', 'Ds2013');
         $loader->addPath(__DIR__ . '/../src/DsShared', 'DsShared');
         $loader->addPath(__DIR__ . '/../src/DsAmen', 'DsAmen');
 
-        $twig = new Twig_Environment($loader, ['strict_variables' => true]);
+        $twig = new Environment($loader, ['strict_variables' => true]);
 
         $translateFactory = new TranslateFactory([
             'fallback_locale' => 'en_GB',

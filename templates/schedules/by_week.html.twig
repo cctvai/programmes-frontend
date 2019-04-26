@@ -58,7 +58,7 @@
         {%- endif -%}
     </div>
     {% if service.isRadio() %}
-        {% spaceless %}
+        {% filter spaceless %}
             <ul class="heading-links nav nav--piped pull--right delta">
                 <li class="hidden grid-visible@bpw">
                     <a href="{{ path('schedules_by_day', {pid: service.getPid()}) }}" class="introduction--switch-link" data-href-add-utcoffset="true">{{ tr('schedules_today')  }}</a>
@@ -67,7 +67,7 @@
                     <a href="{{ path('schedules_by_vanity', {pid: service.getPid(), vanity: 'this_month'}) }}" class="introduction--calendar-link">{{ tr('schedules_calendar') }}</a>
                 </li>
             </ul>
-        {% endspaceless %}
+        {% endfilter %}
     {%- endif -%}
 {%- endblock -%}
 
