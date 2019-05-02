@@ -137,6 +137,9 @@ services:
     App\ArgumentResolver\IdentifierValueResolver:
         tags: [{name: 'controller.argument_value_resolver', priority: 125 }]
 
+    App\ArgumentResolver\CategoryByUrlKeyValueResolver:
+        tags: [{name: 'controller.argument_value_resolver', priority: 0 }]
+
     ### Caches
 
     cache.null_provider:

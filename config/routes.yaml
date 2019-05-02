@@ -247,7 +247,7 @@ category_index:
 category_slice:
     path: /programmes/{categoryType}/{categoryHierarchy}/{slice}
     # Temporary until controller is implemented
-    defaults: { _controller: FrameworkBundle:Redirect:redirect, route: '' }
+    defaults: { _controller: App\Controller\Category\ListingController }
     requirements: { categoryType: 'formats|genres', categoryHierarchy: '.+', slice: 'player|all' }
 
 category_metadata:

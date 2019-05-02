@@ -10,4 +10,7 @@
         {% endfor %}
         <span class="categories-breadcrumb__item br-highlight-bg-ontext">{{ category_breadcrumb.getCategory().getTitle() }}</span>
     {% endif %}
+    {% if category_breadcrumb.getOption('hidden_suffix') %}
+        <span class="visually-hidden">{{ category_breadcrumb.getOption('hidden_suffix') }}</span>
+    {% endif %}
 </h1>

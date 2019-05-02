@@ -33,6 +33,7 @@ use App\Ds2013\Presenters\Pages\Schedules\NoSchedule\NoSchedulePresenter;
 use App\Ds2013\Presenters\Section\Atoz\LetterNav\AtozLetterNavPresenter;
 use App\Ds2013\Presenters\Section\Atoz\SliceNav\AtozSliceNavPresenter;
 use App\Ds2013\Presenters\Section\Category\Breadcrumb\CategoryBreadcrumbPresenter;
+use App\Ds2013\Presenters\Section\Category\Sidenav\CategorySidenavPresenter;
 use App\Ds2013\Presenters\Section\Clip\Details\ClipDetailsPresenter;
 use App\Ds2013\Presenters\Section\Clip\Playout\ClipPlayoutPresenter;
 use App\Ds2013\Presenters\Section\Episode\Map\EpisodeMapPresenter;
@@ -558,6 +559,20 @@ class PresenterFactory
             $options
         );
     }
+
+    public function categorySidenavPresenter(
+        Category $category,
+        string $categoryType,
+        array $options = []
+    ): CategorySidenavPresenter {
+        return new CategorySidenavPresenter(
+            $this->router,
+            $category,
+            $categoryType,
+            $options
+        );
+    }
+
 
     /**
      * @param Clip $clip

@@ -16,6 +16,10 @@ class CategoryBreadcrumbPresenter extends Presenter
     /** @var string|null */
     private $title;
 
+    protected $options = [
+        'hidden_suffix' => '',
+    ];
+
     /**
      * @param Category|string $categoryOrTitle
      * @param string $categoryType

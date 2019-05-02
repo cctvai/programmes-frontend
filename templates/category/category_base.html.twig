@@ -1,0 +1,23 @@
+{% extends 'base_ds2013.html.twig' %}
+
+{%- block title -%}
+    BBC - {{ tr('category_title', {'%1' : category.getHierarchicalTitle()}) }}{{ block('slice_title') }}
+{%- endblock -%}
+
+{%- block slice_title -%}{%- endblock -%}
+
+{% block page_classes %}programmes-page text-base b-g-p br-box-page{% endblock %}
+
+{% block javascripts %}
+    {% if category.getChildren() is not empty %}
+        <script type="text/javascript">
+            require(['jquery-1.9'],function($) {
+                $('.js-subcategory-toggle').on('click', function() {
+                    if (document.documentElement.clientWidth < 600) {
+                        $('.categories-navigation-filter-by__options').toggleClass('hidden');
+                    }
+                });
+            });
+        </script>
+    {% endif %}
+{% endblock %}

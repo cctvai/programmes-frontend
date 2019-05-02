@@ -1,0 +1,7 @@
+.categories-breadcrumb__item {
+    @include inline-block();
+    padding: $basic-half-spacing $basic-spacing;
+    margin-top: -$basic-half-spacing;
+    margin-bottom: -$basic-half-spacing;
+    margin-left: -$basic-spacing;
+}

@@ -1,0 +1,46 @@
+{% from _self import slice_link as slice_link %}
+<nav class="grid-float categories-navigation grid">
+    <ul class="categories-navigation__options categories-navigation-top__options grid-wrapper">
+        {{ slice_link(category_sidenav, 'player', tr('available_now')) }}
+        {{ slice_link(category_sidenav, 'all', tr('all_programmes')) }}
+    </ul>
+    {% if category_sidenav.getChildren() is not empty %}
+        <h2 class="categories-navigation__heading categories-navigation-filter-by__heading hidden visible@bpw centi br-page-text-onbg015">
+            {{ tr('filter_by') }}
+        </h2>
+        <div class="categories-navigation-filter-by__button island hidden@bpw br-box-page__link br-page-link-onbg015 br-page-linkhover-onbg--hover br-page-bg-ontext--hover js-subcategory-toggle component">
+            {{ gelicon('core', 'list', 'gelicon--centi') }}
+            {{ tr('filter_by') }}
+        </div>
+        <ol class="categories-navigation__options categories-navigation-filter-by__options hidden visible@bpw br-page-link-onbg015 br-page-link-onborder--beforeafter">
+            {% for child in category_sidenav.getChildren() %}
+                <li class="category">
+                    <a href="{{ category_sidenav.getChildLink(child) }}" class="categories-navigation__link categories-navigation-filter-by__link centi br-page-linkhover-onbg--hover br-page-bg-ontext--hover deemphasize">
+                        {{ child.getTitle() }}
+                    </a>
+                </li>
+            {% endfor %}
+        </ol>
+    {% endif %}
+</nav>
+
+{%- macro slice_link(category_sidenav, slice, text) -%}
+    {%- set is_active_slice = (slice == category_sidenav.getOption('active_slice')) -%}
+    {%-
+        set css_classes = build_css_classes({
+            'categories-navigation__link centi categories-navigation-top__link': true,
+            'br-page-linkhover-onbg--hover br-page-bg-ontext--hover deemphasize' : not is_active_slice,
+        })
+    -%}
+    <li class="grid bpw-one-whole one-half categories-navigation__item--fix categories-navigation__item--on-iplayer">
+        {% if is_active_slice %}
+            <span class="{{ css_classes }}">
+                {{ text }}
+            </span>
+        {% else %}
+            <a href="{{ category_sidenav.getSliceLink(slice) }}" class="{{ css_classes }}">
+                {{ text }}
+            </a>
+        {% endif %}
+    </li>
+{%- endmacro -%}

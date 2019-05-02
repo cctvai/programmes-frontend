@@ -3,18 +3,6 @@
  *
  */
 
-/**
- * Generic styling
- */
-
-.categories-breadcrumb__item {
-    @include inline-block();
-    padding: $basic-half-spacing $basic-spacing;
-    margin-top: -$basic-half-spacing;
-    margin-bottom: -$basic-half-spacing;
-    margin-left: -$basic-spacing;
-}
-
 .categories-navigation__options {
     @extend %list-unstyled;
     margin-bottom: 1em;
@@ -177,6 +165,7 @@
 
     .categories-navigation {
         width: 162.66016px;
+        margin-right: $wide-spacing;
     }
 
     .categories-navigation__heading {
