@@ -27,13 +27,13 @@ if [ ! -d "build/reports" ]; then
     mkdir -p build/reports
 fi
 
-yarn install
+npm install
 
 # Show php version for debugging
 php --version
 
 # Compile static assets
-yarn gulp-ci
+npm run gulp-ci
 
 # Run PHPUnit
 if $WITH_TEST_COVERAGE ; then
@@ -48,7 +48,7 @@ fi
 vendor/bin/phpcs -n --report=checkstyle --report-file=build/reports/checkstyle.xml || RESULT=1
 
 # Run sass-lint
-yarn run lint || RESULT=1
+npm run lint || RESULT=1
 
 # Run PHPStan
 vendor/bin/phpstan analyse -c phpstan.neon src tests --level=4 --memory-limit=256M || RESULT=1
