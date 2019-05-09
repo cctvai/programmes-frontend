@@ -17,7 +17,8 @@ class MetadataController extends BaseController
         CategoriesService $categoriesService,
         ProgrammesService $programmesService
     ) {
-        $this->setAtiContentLabels('dank', 'memes');
+        $this->setAtiContentLabels('index-category', 'category-homepage');
+        $this->setAtiContentId($category->getId());
 
         $this->overridenDescription = 'Find BBC programmes categorised as "' . $category->getHierarchicalTitle() . '".';
 

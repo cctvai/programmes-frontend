@@ -22,7 +22,8 @@ class ListingController extends BaseController
         CategoriesService $categoriesService,
         ProgrammesService $programmesService
     ) {
-        $this->setAtiContentLabels('communist', 'party');
+        $this->setAtiContentLabels('index-category', 'category-all');
+        $this->setAtiContentId($category->getId());
 
         switch ($slice) {
             case 'all':

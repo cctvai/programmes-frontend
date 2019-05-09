@@ -14,7 +14,7 @@ class IndexController extends BaseController
         string $categoryType,
         CategoriesService $categoriesService
     ) {
-        $this->setAtiContentLabels('rip', 'harambe');
+        $this->setAtiContentLabels('index-category', 'list-categories');
 
         switch ($categoryType) {
             case 'genres':
