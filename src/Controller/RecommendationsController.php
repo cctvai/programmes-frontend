@@ -7,17 +7,26 @@ use BBC\ProgrammesPagesService\Domain\Entity\Clip;
 use BBC\ProgrammesPagesService\Domain\Entity\Episode;
 use BBC\ProgrammesPagesService\Domain\Entity\Programme;
 use BBC\ProgrammesPagesService\Domain\Entity\ProgrammeContainer;
+use BBC\ProgrammesPagesService\Domain\ValueObject\Pid;
 use BBC\ProgrammesPagesService\Service\ProgrammesAggregationService;
+use BBC\ProgrammesPagesService\Service\ProgrammesService;
 use GuzzleHttp\Promise\FulfilledPromise;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class RecommendationsController extends BaseController
 {
     public function __invoke(
-        Programme $programme,
+        ProgrammesService $programmesService,
+        string $pid,
         string $extension,
         RecEngService $recEngService,
         ProgrammesAggregationService $programmeAggregationService
     ) {
+        $programme = $programmesService->findByPidFull(new Pid($pid), 'Programme');
+        if (!$programme) {
+            throw new NotFoundHttpException(sprintf('The item with PID "%s" was not found', $pid));
+        }
+
         $this->setContextAndPreloadBranding($programme);
 
         // Show 10 items when rendering the main page, show 2 on includes
