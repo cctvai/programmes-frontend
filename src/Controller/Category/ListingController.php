@@ -22,7 +22,6 @@ class ListingController extends BaseController
         CategoriesService $categoriesService,
         ProgrammesService $programmesService
     ) {
-        $this->setAtiContentLabels('index-category', 'category-all');
         $this->setAtiContentId($category->getId());
 
         switch ($slice) {
@@ -31,12 +30,14 @@ class ListingController extends BaseController
                 $page = $this->getAndValidatePage($programmeCount);
                 $programmes = $programmesService->findAllTleosByCategory($category, self::RESULTS_PER_PAGE, $page);
                 $this->overridenDescription = 'List all BBC programmes categorised as "' . $category->getHierarchicalTitle() . '".';
+                $this->setAtiContentLabels('index-category', 'category-all');
                 break;
             case 'player':
                 $programmeCount = $programmesService->countAvailableTleosByCategory($category, CacheInterface::LONG);
                 $page = $this->getAndValidatePage($programmeCount);
                 $programmes = $programmesService->findAvailableTleosByCategory($category, self::RESULTS_PER_PAGE, $page);
                 $this->overridenDescription = 'List available BBC programmes categorised as "' . $category->getHierarchicalTitle() . '".';
+                $this->setAtiContentLabels('index-category', 'category-available');
                 break;
             default:
                 throw new NotFoundHttpException("Why are you here?");
