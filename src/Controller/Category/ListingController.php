@@ -29,14 +29,14 @@ class ListingController extends BaseController
                 $programmeCount = $programmesService->countAllTleosByCategory($category, CacheInterface::LONG);
                 $page = $this->getAndValidatePage($programmeCount);
                 $programmes = $programmesService->findAllTleosByCategory($category, self::RESULTS_PER_PAGE, $page);
-                $this->overridenDescription = 'List all BBC programmes categorised as "' . $category->getHierarchicalTitle() . '".';
+                $this->overridenDescription = 'List of all BBC programmes categorised as "' . $category->getHierarchicalTitle() . '".';
                 $this->setAtiContentLabels('index-category', 'category-all');
                 break;
             case 'player':
                 $programmeCount = $programmesService->countAvailableTleosByCategory($category, CacheInterface::LONG);
                 $page = $this->getAndValidatePage($programmeCount);
                 $programmes = $programmesService->findAvailableTleosByCategory($category, self::RESULTS_PER_PAGE, $page);
-                $this->overridenDescription = 'List available BBC programmes categorised as "' . $category->getHierarchicalTitle() . '".';
+                $this->overridenDescription = 'List of available BBC programmes categorised as "' . $category->getHierarchicalTitle() . '".';
                 $this->setAtiContentLabels('index-category', 'category-available');
                 break;
             default:
