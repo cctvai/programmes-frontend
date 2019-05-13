@@ -26,7 +26,7 @@ gulp.task('js:clean', function () {
     return del([staticPathDist + '/js']);
 });
 
-gulp.task('js', gulp.series('js:clean', function () {
+gulp.task('js', gulp.series('js:clean', function (done) {
 
     const modulesToOptimize = [
         staticPathSrc + '/js/**/rv-bootstrap.js',
@@ -123,7 +123,7 @@ gulp.task('images', gulp.series('images:clean', function() {
 
 // ------
 
-gulp.task('rev', gulp.series('sass', 'images', 'js', function() {
+gulp.task('rev', gulp.series(gulp.parallel('sass', 'images', 'js'), function() {
     return gulp.src([staticPathDist + '/**/*', '!' + staticPathDist + '/**/rev-manifest.json'])
         .pipe(rev())
         .pipe(override())
@@ -162,8 +162,8 @@ gulp.task('watch',function() {
 
 gulp.task('default', function(cb){
     isSandbox = true;
-    let series = gulp.series('sass', 'images', 'js');
-    series();
+    let parallel = gulp.parallel('sass', 'images', 'js');
+    parallel();
     cb(); // This tells gulp the taks is finished
 });
 gulp.task('distribution', gulp.series('rev'));
