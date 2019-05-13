@@ -24,6 +24,12 @@
     padding-right: 0;
 }
 
+.island--horizontal {
+    @extend .island;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
 .islet {
     @extend .island;
     padding: $gel-unit-small;

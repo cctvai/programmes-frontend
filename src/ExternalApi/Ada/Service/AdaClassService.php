@@ -10,6 +10,7 @@ use App\ExternalApi\Client\HttpApiMultiClient;
 use App\ExternalApi\Exception\MultiParseException;
 use BBC\ProgrammesCachingLibrary\CacheInterface;
 use BBC\ProgrammesPagesService\Domain\Entity\Programme;
+use BBC\ProgrammesPagesService\Domain\Entity\ProgrammeContainer;
 use Closure;
 use GuzzleHttp\Promise\PromiseInterface;
 use GuzzleHttp\Psr7\Response;
@@ -43,6 +44,10 @@ use GuzzleHttp\Psr7\Response;
  */
 class AdaClassService
 {
+    private const RELATED_CLASS_LIMIT = 10;
+
+    private const RELATED_CLASS_PAGE = 1;
+
     /** @var HttpApiClientFactory */
     private $clientFactory;
 
@@ -60,6 +65,87 @@ class AdaClassService
         $this->clientFactory = $clientFactory;
         $this->baseUrl = $baseUrl;
         $this->mapper = $mapper;
+    }
+
+    public function findClassById(string $id): PromiseInterface
+    {
+        return $this->clientFactory->getHttpApiMultiClient(
+            $this->clientFactory->keyHelper(__CLASS__, __FUNCTION__, $id),
+            [$this->baseUrl . '/classes/' . urlencode($id)],
+            function (array $responses): AdaClass {
+                return $this->mapper->mapItem(
+                    json_decode(
+                        $responses[0]->getBody()->getContents(),
+                        true
+                    )['category'],
+                    null
+                );
+            },
+            [],
+            null,
+            CacheInterface::NORMAL,
+            CacheInterface::SHORT,
+            [
+                'timeout' => 10,
+            ]
+        )->makeCachedPromise();
+    }
+
+    public function findRelatedClassesByClass(AdaClass $adaClass): PromiseInterface
+    {
+        $id = $adaClass->getId();
+
+        return $this->clientFactory->getHttpApiMultiClient(
+            $this->clientFactory->keyHelper(__CLASS__, __FUNCTION__, $id),
+            [
+                $this->baseUrl .
+                '/classes/' .
+                urlencode($id) .
+                '/related?order=rank&direction=descending&page=' .
+                self::RELATED_CLASS_PAGE .
+                '&page_size=' .
+                self::RELATED_CLASS_LIMIT,
+            ],
+            Closure::fromCallable([$this, 'parseResponse']),
+            [null, self::RELATED_CLASS_LIMIT],
+            [],
+            CacheInterface::NORMAL,
+            CacheInterface::SHORT,
+            [
+                'timeout' => 10,
+            ]
+        )->makeCachedPromise();
+    }
+
+    public function findRelatedClassesByClassAndContainer(
+        AdaClass $adaClass,
+        ProgrammeContainer $programmeContainer
+    ): PromiseInterface {
+        $id = $adaClass->getId();
+        $pid = $programmeContainer->getPid();
+
+        return $this->clientFactory->getHttpApiMultiClient(
+            $this->clientFactory->keyHelper(__CLASS__, __FUNCTION__, $id, $pid),
+            [
+                $this->baseUrl .
+                '/classes/' .
+                urlencode($id) .
+                '/related?programme=' .
+                $pid .
+                '&order=rank&direction=descending&page=' .
+                self::RELATED_CLASS_PAGE .
+                '&page_size=' .
+                self::RELATED_CLASS_LIMIT,
+            ],
+            Closure::fromCallable([$this, 'parseResponse']),
+            [null, self::RELATED_CLASS_LIMIT],
+            [],
+            CacheInterface::NORMAL,
+            CacheInterface::SHORT,
+            [
+                'timeout' => 10,
+            ]
+        )->makeCachedPromise();
     }
 
     /**

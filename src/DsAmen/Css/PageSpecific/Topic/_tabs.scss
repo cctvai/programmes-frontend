@@ -1,0 +1,20 @@
+.tabs {
+    list-style: none;
+    padding: 0;
+}
+
+.tabs__item {
+    display: inline-block;
+}
+
+.tabs__link {
+    display: inline-block;
+    padding: $gel-unit-small $gel-unit-large;
+}
+
+.tabs--invert {
+    .tabs__item--active {
+        background: $medium-grey;
+        color: $iplayer-pink;
+    }
+}

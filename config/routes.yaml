@@ -254,3 +254,14 @@ category_metadata:
     path: /programmes/{categoryType}/{categoryHierarchy}
     defaults: { _controller: App\Controller\Category\MetadataController }
     requirements: { categoryType: 'formats|genres', categoryHierarchy: '.+' }
+
+# Topic pages
+programme_topic:
+    path: /programmes/{pid}/topics/{topic}
+    defaults: { _controller: App\Controller\Topic\ShowController }
+    requirements: { pid: '[0-9b-df-hj-np-tv-z]{8,15}' }
+
+topic_show:
+    path: /programmes/topics/{topic}/{slice}
+    defaults: { _controller: App\Controller\Topic\ShowController, slice: '' }
+    requirements: { slice: 'video|audio' }

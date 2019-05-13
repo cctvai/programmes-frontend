@@ -2,9 +2,9 @@
     {%- for relatedTopic in related_topics.getRelatedTopics() -%}
         <li>
             {% if relatedTopic.getProgrammeItemCountContext() %}
-                {% set url = path('programme_topics_topic', {pid: relatedTopic.getProgrammeItemCountContext(), topic: relatedTopic.getId()}) %}
+                {% set url = path('programme_topic', {pid: relatedTopic.getProgrammeItemCountContext(), topic: relatedTopic.getId()}) %}
             {% else %}
-                {% set url = path('topics_topic', {topic: relatedTopic.getId()}) %}
+                {% set url = path('topic_show', {topic: relatedTopic.getId()}) %}
             {% endif %}
             <a class="br-linkinvert" href="{{ url }}" data-linktrack="{{ related_topics.getLinkTrack() }}">
                 {{ relatedTopic.getTitle() }}

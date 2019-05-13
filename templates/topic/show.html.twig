@@ -1,0 +1,86 @@
+{% import _self as self %}
+
+{% extends 'base_ds_amen.html.twig' %}
+
+{%- block title -%}
+    {%- if programmeContainer is null -%}
+        BBC
+    {%- else -%}
+        {{- meta_context.titlePrefix() ~ ' - ' ~ tr('topics') -}}
+    {%- endif -%}
+    {{- ' - ' ~ topic.getTitle() -}}
+    {%- if slice is not null -%}
+        {%- if slice == 'video' -%}
+            {{- ' - ' ~ tr('video') -}}
+        {%- elseif slice == 'audio' -%}
+            {{- ' - ' ~ tr('audio') -}}
+        {%- endif -%}
+    {%- endif -%}
+{%- endblock -%}
+
+{% block body %}
+    <div class="{{ programmeContainer is null ? 'br-box-highlight' : 'page-limit' }}">
+        <div class="{{ programmeContainer is null ? 'page-limit' : 'br-box-secondary leading-gap' }}">
+            <h1 class="island{% if programmeContainer is null %}--vertical{% endif %}">
+                {%- if programmeContainer is not null -%}
+                    <span class="context context--notop gel-double-pica">
+                        {{ ds_shared('entityContext', programmeContainer) }}
+                    </span>
+                    <a href="{{ path('programme_topics', { pid: programmeContainer.getPid() }) }}">
+                        {{- tr('topics') -}}
+                    </a>
+                    {{- ' - ' -}}
+                {%- endif -%}
+                {{- topic.getTitle() -}}
+            </h1>
+            {% if relatedTopics is not empty %}
+                <div class="{{ programmeContainer is null ? 'grid-unit' : 'island--horizontal' }}" id="js-related-topics">
+                    <h2 class="islet--vertical">
+                        {{- tr('related_topics') -}}
+                    </h2>
+                    <ul class="list-inline list-inline--spaced">
+                        {% for relatedTopic in relatedTopics %}
+                            <li>
+                                <a class="link--button br-linkinvert" href="{{ programmeContainer is null ? path('topic_show', { topic: relatedTopic.getId() }) : path('programme_topic', { pid: programmeContainer.getPid(), topic: relatedTopic.getId() }) }}">
+                                    {{- relatedTopic.getTitle() }} ({{ relatedTopic.getProgrammeItemCount() -}})
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+            {% if programmeContainer is not null %}
+                <p class="island">
+                    <a href="{{ path('topic_show', { topic: topic.getId() }) }}">
+                        {{- tr('topic_in_all_programmes', { '%1': topic.getTitle() }) -}}
+                    </a>
+                </p>
+            {% endif %}
+            {% if slice is not null %}
+                <nav>
+                    <ul class="tabs">
+                        {{- self.tab(topic.getId(), tr('all'), '', slice == '') -}}
+                        {{- self.tab(topic.getId(), tr('video'), 'video', slice == 'video') -}}
+                        {{- self.tab(topic.getId(), tr('audio'), 'audio', slice == 'audio') -}}
+                    </ul>
+                </nav>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
+
+{%- macro tab(topicId, text, slice, isActive) -%}
+    {%- if isActive -%}
+        <li class="tabs__item br-box-page">
+            <span class="tabs__link">
+                {{- text -}}
+            </span>
+        </li>
+    {%- else -%}
+        <li class="tabs__item">
+            <a class="tabs__link" href="{{ path('topic_show', { topic: topicId, slice: slice }) }}">
+                {{- text -}}
+            </a>
+        </li>
+    {%- endif -%}
+{%- endmacro -%}
