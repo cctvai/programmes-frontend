@@ -109,9 +109,9 @@ class PodcastController extends BaseController
         ]);
     }
 
-    private function getSchema(StructuredDataHelper $structuredDataHelper, Programme $programme, array $availableEpisodes, CoreEntity $coreEntity): array
+    private function getSchema(StructuredDataHelper $structuredDataHelper, ?Programme $programme, array $availableEpisodes, CoreEntity $coreEntity): array
     {
-        if ($coreEntity->getType() == 'collection') {
+        if ($coreEntity instanceof Collection) {
             $schemaContext = $structuredDataHelper->getSchemaForCollection($coreEntity, $programme);
         } else {
             $schemaContext = $structuredDataHelper->getSchemaForProgrammeContainerAndParents($programme);
