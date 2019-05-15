@@ -3,11 +3,13 @@ declare(strict_types=1);
 
 namespace App\ExternalApi\Ada\Service;
 
+use App\ExternalApi\Ada\Domain\AdaClass;
 use App\ExternalApi\Ada\Mapper\AdaProgrammeMapper;
 use App\ExternalApi\Client\Factory\HttpApiClientFactory;
 use App\ExternalApi\Exception\MultiParseException;
 use BBC\ProgrammesCachingLibrary\CacheInterface;
 use BBC\ProgrammesPagesService\Domain\Entity\Programme;
+use BBC\ProgrammesPagesService\Domain\Entity\ProgrammeContainer;
 use BBC\ProgrammesPagesService\Domain\ValueObject\Pid;
 use BBC\ProgrammesPagesService\Service\ProgrammesService;
 use Closure;
@@ -16,6 +18,8 @@ use GuzzleHttp\Psr7\Response;
 
 class AdaProgrammeService
 {
+    private const PROGRAMME_LIMIT = 30;
+
     /** @var HttpApiClientFactory */
     private $clientFactory;
 
@@ -38,6 +42,40 @@ class AdaProgrammeService
         $this->baseUrl = $baseUrl;
         $this->mapper = $mapper;
         $this->programmesService = $programmesService;
+    }
+
+    public function findProgrammeItemsByClass(
+        AdaClass $adaClass,
+        string $mediaType,
+        int $page,
+        ?ProgrammeContainer $programmeContainer
+    ): PromiseInterface {
+        $id = $adaClass->getId();
+        $pid = $programmeContainer !== null ? $programmeContainer->getPid() : null;
+
+        return $this->clientFactory->getHttpApiMultiClient(
+            $this->clientFactory->keyHelper(__CLASS__, __FUNCTION__, $id, $mediaType, $page, $pid),
+            [
+                $this->baseUrl .
+                '/programme_items?class=' .
+                urlencode($id) .
+                ($pid !== null ? '&programme=' . $pid : '') .
+                ($mediaType !== '' ? '&media_type=' . $mediaType : '') .
+                '&page=' .
+                $page .
+                '&page_size=' .
+                self::PROGRAMME_LIMIT .
+                '&order=title&direction=ascending',
+            ],
+            Closure::fromCallable([$this, 'parseResponse']),
+            [],
+            [],
+            CacheInterface::NORMAL,
+            CacheInterface::SHORT,
+            [
+                'timeout' => 10,
+            ]
+        )->makeCachedPromise();
     }
 
     public function findSuggestedByProgrammeItem(Programme $programme, int $limit = 3): PromiseInterface
@@ -139,6 +177,27 @@ class AdaProgrammeService
             }
         }
         return $relatedProgrammes;
+    }
+
+    private function parseResponse(array $responses): array
+    {
+        $data = json_decode($responses[0]->getBody()->getContents(), true);
+        if (!isset($data['items'])) {
+            throw new MultiParseException(0, "Ada JSON response does not contain items element");
+        }
+
+        $items = $data['items'];
+
+        $programmes = $this->programmesService->findByPids(array_map(function ($item) {
+            return new Pid($item['pid']);
+        }, $items));
+
+        $adaProgrammeItems = [];
+        for ($i = 0, $l = count($items); $i < $l; $i++) {
+            $adaProgrammeItems[] = $this->mapper->mapItem($programmes[$i], $items[$i]);
+        }
+        
+        return $adaProgrammeItems;
     }
 
     private function requestUrlForRelatedProgrammeItems(Pid $pid, ?string $scope = null, ?Pid $countContextPid = null, int $limit = 10, int $page = 1)
