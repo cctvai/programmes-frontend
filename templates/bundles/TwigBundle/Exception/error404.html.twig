@@ -1,59 +1,56 @@
-{% extends base_template %}
+{% extends '@Twig/Exception/error.html.twig' %}
 
-{% block body %}
+{% block title %}{{ tr('page_not_found_title') }}{% endblock %}
+
+{% block image %}{{ asset('images/error/clanger_error.gif') }}{% endblock %}
+{% block pagenote %}{{ tr('page_not_found_note') }}{% endblock %}
+
+{% block javascripts %}
     <script>
-        require(['pixi'], (PIXI) => {
-            let type = "WebGL";
-            if (!PIXI.utils.isWebGLSupported()) {
-                type = "canvas";
-            }
+        const trigger = document.getElementsByClassName('grid')[1];
+        trigger.addEventListener('click', () => {
+            require(['pixi'], PIXI => {
+                let type = 'WebGL';
+                if (!PIXI.utils.isWebGLSupported()) {
+                    type = 'canvas';
+                }
 
-            PIXI.utils.sayHello(type);
+                const app = new PIXI.Application({
+                    width: window.innerWidth,
+                    height: window.innerHeight,
+                    backgroundColor: 0x000000,
+                    resolution: window.devicePixelRatio || 1,
+                    autoResize: true
+                });
 
-            const resolution = window.devicePixelRatio || 1;
-            const app = new PIXI.Application({
-                width: window.innerWidth / resolution,
-                height: window.innerHeight / resolution,
-                backgroundColor: 0x000,
-                resolution: resolution
+                const view = app.view;
+                const element = document.getElementsByClassName('programmes-page')[0];
+                element.parentElement.replaceChild(view, element);
+                view.scrollIntoView(true);
+
+                const container = new PIXI.Container();
+                app.stage.addChild(container);
+
+                const screenWidth = app.screen.width
+
+                const moonSize = screenWidth * 2;
+                const moon = new PIXI.Graphics()
+                    .beginFill(0xFFFFFF)
+                    .drawCircle(moonSize, moonSize, moonSize)
+                    .beginFill(0xFF0000)
+                    .drawStar(moonSize, moonSize, 5, moonSize);
+                container.addChild(moon);
+
+                container.x = screenWidth / 2;
+                container.y = (app.screen.height / 2) + moonSize * 1.1;
+
+                container.pivot.x = container.width / 2;
+                container.pivot.y = container.height / 2;
+
+                app.ticker.add(delta => {
+                    container.rotation -= 0.005 * delta;
+                });
             });
-            document.getElementsByClassName('programmes-page')[0].parentElement.replaceChild(app.view, document.getElementsByClassName('programmes-page')[0]);
-
-            const container = new PIXI.Container();
-
-            app.stage.addChild(container);
-
-            // Create a new texture
-            const texture = PIXI.Texture.from('examples/assets/bunny.png');
-
-            // Create a 5x5 grid of bunnies
-            for (let i = 0; i < 25; i++) {
-                const bunny = new PIXI.Sprite(texture);
-                bunny.anchor.set(0.5);
-                bunny.x = (i % 5) * 40;
-                bunny.y = Math.floor(i / 5) * 40;
-                container.addChild(bunny);
-            }
-
-            // Move container to the center
-            container.x = app.screen.width / 2;
-            container.y = app.screen.height / 2;
-
-            // Center bunny sprite in local container coordinates
-            container.pivot.x = container.width / 2;
-            container.pivot.y = container.height / 2;
-
-            // Listen for animate update
-            app.ticker.add((delta) => {
-                // rotate the container!
-                // use delta to create frame-independent transform
-                container.rotation -= 0.01 * delta;
-            });
-
-
-
-
-
-        });
+        }, { once: true });
     </script>
 {% endblock %}
