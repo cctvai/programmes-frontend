@@ -7,8 +7,7 @@
 
 {% block javascripts %}
     <script>
-        const trigger = document.getElementsByClassName('grid')[1];
-        trigger.addEventListener('click', () => {
+        document.getElementsByClassName('grid')[1].children[0].addEventListener('click', () => {
             require(['pixi'], PIXI => {
                 let type = 'WebGL';
                 if (!PIXI.utils.isWebGLSupported()) {
@@ -31,24 +30,24 @@
                 const container = new PIXI.Container();
                 app.stage.addChild(container);
 
-                const screenWidth = app.screen.width
+                const screenWidth = app.screen.width;
 
-                const moonSize = screenWidth * 2;
+                const moonRadius = screenWidth * 3;
                 const moon = new PIXI.Graphics()
                     .beginFill(0xFFFFFF)
-                    .drawCircle(moonSize, moonSize, moonSize)
+                    .drawCircle(moonRadius, moonRadius, moonRadius)
                     .beginFill(0xFF0000)
-                    .drawStar(moonSize, moonSize, 5, moonSize);
+                    .drawStar(moonRadius, moonRadius, 5, moonRadius);
                 container.addChild(moon);
 
                 container.x = screenWidth / 2;
-                container.y = (app.screen.height / 2) + moonSize * 1.1;
+                container.y = (app.screen.height * 0.75) + moonRadius;
 
                 container.pivot.x = container.width / 2;
                 container.pivot.y = container.height / 2;
 
                 app.ticker.add(delta => {
-                    container.rotation -= 0.005 * delta;
+                    container.rotation -= 0.0025 * delta;
                 });
             });
         }, { once: true });
