@@ -9,11 +9,6 @@
     <script>
         document.getElementsByClassName('grid')[1].children[0].addEventListener('click', () => {
             require(['pixi'], PIXI => {
-                let type = 'WebGL';
-                if (!PIXI.utils.isWebGLSupported()) {
-                    type = 'canvas';
-                }
-
                 const app = new PIXI.Application({
                     width: window.innerWidth,
                     height: window.innerHeight,
@@ -25,42 +20,56 @@
                 const view = app.view;
                 const element = document.getElementsByClassName('programmes-page')[0];
                 element.parentElement.replaceChild(view, element);
+                view.scrollIntoView(true);
 
                 const container = new PIXI.Container();
                 app.stage.addChild(container);
-                
-                const render = () => {
-                    container.removeChildren();
 
-                    view.scrollIntoView(true);
+                const screenWidth = app.screen.width;
 
-                    const screenWidth = app.screen.width;
+                const moonRadius = screenWidth * 3;
+                container.addChild(new PIXI.Graphics()
+                    .beginFill(0xFFFFFF)
+                    .drawCircle(moonRadius, moonRadius, moonRadius)
+                    .endFill()
+                    .beginFill(0xFF0000)
+                    .drawStar(moonRadius, moonRadius, 100, moonRadius)
+                    .endFill());
 
-                    const moonRadius = screenWidth * 3;
-                    const moon = new PIXI.Graphics()
-                        .beginFill(0xFFFFFF)
-                        .drawCircle(moonRadius, moonRadius, moonRadius)
-                        .beginFill(0xFF0000)
-                        .drawStar(moonRadius, moonRadius, 100, moonRadius);
-                    container.addChild(moon);
+                container.x = screenWidth / 2;
+                container.y = (app.screen.height * 0.75) + moonRadius;
 
-                    container.x = screenWidth / 2;
-                    container.y = (app.screen.height * 0.75) + moonRadius;
+                container.pivot.x = moonRadius;
+                container.pivot.y = moonRadius;
 
-                    container.pivot.x = container.width / 2;
-                    container.pivot.y = container.height / 2;
+                const ticker = app.ticker;
+
+                const generateObstacle = () => {
+                    const min = 1000;
+                    window.setTimeout(() => {
+                        const rotation = container.rotation;
+                        const obstacleRadius = moonRadius / 100;
+                        const offsetRadius = moonRadius + (obstacleRadius * 2);
+                        container.addChild(new PIXI.Graphics()
+                            .beginFill(0x0000FF)
+                            .drawCircle(
+                                moonRadius + (Math.cos(-rotation) * offsetRadius),
+                                moonRadius + (Math.sin(-rotation) * offsetRadius),
+                                obstacleRadius
+                            )
+                            .endFill());
+
+                        ticker.addOnce(generateObstacle);
+                    }, Math.floor(Math.random() * (5000 - min + 1)) + min);
                 };
 
-                render();
-
-                window.addEventListener('resize', () => {
-                    app.renderer.resize(window.innerWidth, window.innerHeight);
-                    render();
+                let speed = 0.002;
+                ticker.add(delta => {
+                    container.rotation -= speed * delta;
+                    speed += 0.000001;
                 });
 
-                app.ticker.add(delta => {
-                    container.rotation -= 0.0025 * delta;
-                });
+                ticker.addOnce(generateObstacle);
             });
         }, { once: true });
     </script>
