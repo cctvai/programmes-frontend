@@ -40,7 +40,7 @@ class ShowController extends BaseController
 
         if ($programmeContainer === null) {
             $this->overridenDescription = 'A list of BBC '
-                                        . ($this->slice !== '' ? $this->slice : 'programmes and clips')
+                                        . ($this->slice !== '' ? $this->slice : 'episodes and clips')
                                         . ' related to "'
                                         . $adaClass->getTitle()
                                         . '".';
