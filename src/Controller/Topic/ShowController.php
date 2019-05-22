@@ -29,8 +29,6 @@ class ShowController extends BaseController
         $this->adaProgrammeService = $adaProgrammeService;
         $this->slice = $slice;
 
-        $this->setAtiContentLabels('ayyyyyyy', 'lmaooooooo');
-
         $adaClass = $adaClassService->findClassById($topic)->wait();
         if ($adaClass === null) {
             throw $this->createNotFoundException('Topic does not exist.');
@@ -39,6 +37,7 @@ class ShowController extends BaseController
         $page = $this->getPage();
 
         if ($programmeContainer === null) {
+            $this->setAtiContentLabels('list-datadriven-linkeddata', 'bbc-list-programmes-topic');
             $this->overridenDescription = 'A list of BBC '
                                         . ($this->slice !== '' ? $this->slice : 'episodes and clips')
                                         . ' related to "'
@@ -61,6 +60,8 @@ class ShowController extends BaseController
             );
         } else {
             $this->setContextAndPreloadBranding($programmeContainer);
+            $this->setAtiContentLabels('list-datadriven-linkeddata', 'pid-list-programmes-topic');
+            $this->setAtiContentId((string) $programmeContainer->getPid());
             $this->overridenDescription = 'A list of '
                                         . $programmeContainer->getTitle()
                                         . ' episodes and clips related to "'
