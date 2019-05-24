@@ -27,14 +27,11 @@ class StreamableCtaPresenter extends BaseCtaPresenter
 
     public function getMediaIconName(): string
     {
-        if ($this->coreEntity instanceof Episode) {
-            if ($this->streamableHelper->shouldTreatProgrammeItemAsAudio($this->coreEntity)) {
-                return 'listen';
-            }
-
+        if ($this->streamableHelper->shouldTreatProgrammeItemAsAudio($this->coreEntity)) {
+            return 'listen';
+        } elseif ($this->coreEntity instanceof Episode ) {
             return 'iplayer';
         }
-
         return 'play';
     }
 
