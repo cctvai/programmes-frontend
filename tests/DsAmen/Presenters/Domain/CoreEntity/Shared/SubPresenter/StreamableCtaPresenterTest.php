@@ -72,7 +72,7 @@ class StreamableCtaPresenterTest extends BaseSubPresenterTest
     }
 
     /** @dataProvider getMediaIconNameProvider */
-    public function testGetMediaIconName(ProgrammeItem $programme, string $expected, ?bool $isAudio): void
+    public function testGetMediaIconName(ProgrammeItem $programme, string $expected, bool $isAudio): void
     {
         $streamableHelper = $this->createMock(StreamableHelper::class);
         $streamableHelper->method('shouldTreatProgrammeItemAsAudio')->willReturn($isAudio);
@@ -88,7 +88,8 @@ class StreamableCtaPresenterTest extends BaseSubPresenterTest
 
         return [
             'TV episode shows iPlayer CTA icon' => [$tvEpisode, 'iplayer', false],
-            'Clip shows play CTA icon' => [$clip, 'play', null],
+            'Video Clip shows play CTA icon' => [$clip, 'play', false],
+            'Audio Clip shows play CTA icon' => [$clip, 'listen', true],
             'Radio episode shows listen CTA icon' => [$radioEpisode, 'listen', true],
         ];
     }
