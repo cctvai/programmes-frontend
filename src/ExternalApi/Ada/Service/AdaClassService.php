@@ -44,6 +44,8 @@ use GuzzleHttp\Psr7\Response;
  */
 class AdaClassService
 {
+    private const ALL_CLASS_LIMIT = 100;
+
     private const RELATED_CLASS_LIMIT = 10;
 
     private const RELATED_CLASS_PAGE = 1;
@@ -67,6 +69,32 @@ class AdaClassService
         $this->mapper = $mapper;
     }
 
+    public function findAllClasses(int $page, ?ProgrammeContainer $programmeContainer): PromiseInterface
+    {
+        $pid = $programmeContainer !== null ? $programmeContainer->getPid() : null;
+
+        return $this->clientFactory->getHttpApiMultiClient(
+            $this->clientFactory->keyHelper(__CLASS__, __FUNCTION__, $page, $pid),
+            [
+                $this->baseUrl .
+                '/classes?order=title&direction=ascending&page=' .
+                urlencode((string) $page) .
+                '&page_size=' .
+                self::ALL_CLASS_LIMIT .
+                ($pid !== null ? '&programme=' . urlencode((string) $pid) . '&count_context=' . urlencode((string) $pid) : ''),
+            ],
+            Closure::fromCallable([$this, 'parseResponse']),
+            [null, self::ALL_CLASS_LIMIT],
+            [],
+            CacheInterface::NORMAL,
+            CacheInterface::SHORT,
+            [
+                'timeout' => 20,
+            ],
+            true
+        )->makeCachedPromise();
+    }
+
     public function findClassById(string $id): PromiseInterface
     {
         return $this->clientFactory->getHttpApiMultiClient(
@@ -74,10 +102,10 @@ class AdaClassService
             [$this->baseUrl . '/classes/' . urlencode($id)],
             function (array $responses): AdaClass {
                 return $this->mapper->mapItem(
-                    json_decode(
+                    array_values(json_decode(
                         $responses[0]->getBody()->getContents(),
                         true
-                    )['category'],
+                    ))[0],
                     null
                 );
             },
@@ -87,7 +115,8 @@ class AdaClassService
             CacheInterface::SHORT,
             [
                 'timeout' => 10,
-            ]
+            ],
+            true
         )->makeCachedPromise();
     }
 
@@ -113,7 +142,8 @@ class AdaClassService
             CacheInterface::SHORT,
             [
                 'timeout' => 10,
-            ]
+            ],
+            true
         )->makeCachedPromise();
     }
 
@@ -131,7 +161,7 @@ class AdaClassService
                 '/classes/' .
                 urlencode($id) .
                 '/related?programme=' .
-                $pid .
+                urlencode((string) $pid) .
                 '&order=rank&direction=descending&page=' .
                 self::RELATED_CLASS_PAGE .
                 '&page_size=' .
@@ -144,7 +174,8 @@ class AdaClassService
             CacheInterface::SHORT,
             [
                 'timeout' => 10,
-            ]
+            ],
+            true
         )->makeCachedPromise();
     }
 

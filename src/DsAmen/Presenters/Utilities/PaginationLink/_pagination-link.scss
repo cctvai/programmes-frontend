@@ -1,0 +1,17 @@
+.pagination-link--previous {
+    margin-bottom: $gel-unit-small;
+}
+
+.pagination-link--next {
+    margin-top: $gel-unit-small;
+}
+
+@include mq($from: gel3) {
+    .pagination-link--previous {
+        margin-bottom: $gel-unit-large;
+    }
+
+    .pagination-link--next {
+        margin-top: $gel-unit-large;
+    }
+}

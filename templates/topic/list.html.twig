@@ -1,0 +1,41 @@
+{% extends 'topic/topic_base.html.twig' %}
+
+{%- block topicTitle -%}
+    {%- if programmeContainer is null -%}
+        {{- ' - ' ~ tr('topics') -}}
+    {%- endif -%}
+{%- endblock -%}
+
+{% block body %}
+    {% if programmeContainer is null %}
+        <div class="br-box-highlight">
+            <h1 class="island--vertical page-limit">
+                {{ tr('topics') }}
+            </h1>
+        </div>
+    {% endif %}
+    <div class="page-limit">
+        {% if programmeContainer is not null %}
+            <div class="br-box-secondary leading-gap">
+                <h1 class="island">
+                    <span class="context context--notop gel-double-pica">
+                        {{ ds_shared('entityContext', programmeContainer) }}
+                    </span>
+                    {{ tr('topics') }}
+                </h1>
+            </div>
+        {% endif %}
+        <div class="br-box-page island{% if programmeContainer is null %}--vertical{% endif %}">
+            {% if page > 1 %}
+                {{ ds_amen('paginationLink', page - 1, 'previous') }}
+            {% endif %}
+            {{ ds_amen('topicList', topics, programmeContainer, {
+                'list_tag': 'ol',
+                'show_letter_headings': true
+            }) }}
+            {% if hasNextPage %}
+                {{ ds_amen('paginationLink', page + 1, 'next') }}
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

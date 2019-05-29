@@ -85,23 +85,12 @@ article_with_contact_form_noslug:
     requirements: { key: '[a-zA-Z0-9-]{1,40}' }
     schemes: [https]
 
-programme_topics:
-    path: /programmes/{pid}/topics
-    defaults: { _controller: FrameworkBundle:Redirect:redirect, route: '' }
-    requirements: { pid: '[0-9b-df-hj-np-tv-z]{8,15}' }
-    schemes: [http]
-
 # TODO implement slice and filter parameters properly
 programme_broadcasts:
     path: /programmes/{pid}/broadcasts
     defaults: { _controller: FrameworkBundle:Redirect:redirect, route: '' }
     requirements: { pid: '[0-9b-df-hj-np-tv-z]{8,15}' }
     schemes: [https]
-
-topics:
-    path: /programmes/topics
-    defaults: { _controller: FrameworkBundle:Redirect:redirect, route: '' }
-    schemes: [http]
 
 podcast_download:
     path: /mediaselector/6/redir/version/2.0/mediaset/audio-nondrm-download/proto/https/vpid/{pid}.mp3

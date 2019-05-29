@@ -13,7 +13,9 @@ use App\DsAmen\Presenters\Domain\SupportingContent\SupportingContentPresenter;
 use App\DsAmen\Presenters\Section\Footer\FooterPresenter;
 use App\DsAmen\Presenters\Section\Map\MapPresenter;
 use App\DsAmen\Presenters\Section\RelatedTopics\RelatedTopicsPresenter;
+use App\DsAmen\Presenters\Section\TopicList\TopicListPresenter;
 use App\DsAmen\Presenters\Utilities\Duration\DurationPresenter;
+use App\DsAmen\Presenters\Utilities\PaginationLink\PaginationLinkPresenter;
 use App\DsShared\Factory\HelperFactory;
 use App\ExternalApi\Ada\Domain\AdaClass;
 use App\ExternalApi\Electron\Domain\SupportingContentItem;
@@ -129,5 +131,31 @@ class PresenterFactory
     public function relatedTopicsPresenter(array $adaClasses, array $options = []): RelatedTopicsPresenter
     {
         return new RelatedTopicsPresenter($adaClasses, $options);
+    }
+
+    /**
+     * @param AdaClass[] $topics
+     * @param ProgrammeContainer|null $programmeContainer
+     * @param array $options
+     */
+    public function topicListPresenter(
+        array $topics,
+        ?ProgrammeContainer $programmeContainer,
+        array $options = []
+    ): TopicListPresenter {
+        return new TopicListPresenter($topics, $programmeContainer, $options);
+    }
+
+    /**
+     * @param int $page
+     * @param string $direction
+     * @param array $options
+     */
+    public function paginationLinkPresenter(
+        int $page,
+        string $direction,
+        array $options = []
+    ): PaginationLinkPresenter {
+        return new PaginationLinkPresenter($page, $direction, $options);
     }
 }

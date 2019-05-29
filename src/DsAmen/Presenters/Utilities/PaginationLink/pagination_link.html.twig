@@ -1,0 +1,6 @@
+<div class="island--vertical text--center{% if pagination_link.getOption('margin') %} pagination-link--{{ pagination_link.getText() }}{% endif %}">
+    <a class="island br-linkinvert link-complex" href="?page={{ pagination_link.getPage() }}">
+        {{ gelicon('core', pagination_link.getIcon(), 'gelicon--leading gelicon--great-primer') }}
+        <span class="link-complex__target gel-pica">{{ tr(pagination_link.getText()) }}</span>
+    </a>
+</div>

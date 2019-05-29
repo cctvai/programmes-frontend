@@ -74,7 +74,8 @@ class AdaProgrammeService
             CacheInterface::SHORT,
             [
                 'timeout' => 10,
-            ]
+            ],
+            true
         )->makeCachedPromise();
     }
 

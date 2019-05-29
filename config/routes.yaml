@@ -256,12 +256,21 @@ category_metadata:
     requirements: { categoryType: 'formats|genres', categoryHierarchy: '.+' }
 
 # Topic pages
+programme_topics:
+    path: /programmes/{pid}/topics
+    defaults: { _controller: App\Controller\Topic\ListController }
+    requirements: { pid: '[0-9b-df-hj-np-tv-z]{8,15}' }
+
 programme_topic:
     path: /programmes/{pid}/topics/{topic}
     defaults: { _controller: App\Controller\Topic\ShowController }
-    requirements: { pid: '[0-9b-df-hj-np-tv-z]{8,15}' }
+    requirements: { pid: '[0-9b-df-hj-np-tv-z]{8,15}', topic: '.+?' }
+
+topic_list:
+    path: /programmes/topics
+    defaults: { _controller: App\Controller\Topic\ListController }
 
 topic_show:
     path: /programmes/topics/{topic}/{slice}
     defaults: { _controller: App\Controller\Topic\ShowController, slice: '' }
-    requirements: { slice: 'video|audio' }
+    requirements: { slice: 'video|audio', topic: '.+?' }

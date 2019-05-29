@@ -1,13 +1,8 @@
 {% import _self as self %}
 
-{% extends 'base_ds_amen.html.twig' %}
+{% extends 'topic/topic_base.html.twig' %}
 
-{%- block title -%}
-    {%- if programmeContainer is null -%}
-        BBC
-    {%- else -%}
-        {{- meta_context.titlePrefix() ~ ' - ' ~ tr('topics') -}}
-    {%- endif -%}
+{%- block topicTitle -%}
     {{- ' - ' ~ topic.getTitle() -}}
     {%- if slice is not null -%}
         {%- if slice == 'video' -%}
@@ -38,20 +33,14 @@
                     <h2 class="islet--vertical">
                         {{- tr('related_topics') -}}
                     </h2>
-                    <ul class="list-inline list-inline--spaced">
-                        {% for relatedTopic in relatedTopics %}
-                            <li>
-                                <a class="link--button br-linkinvert" href="{{ programmeContainer is null ? path('topic_show', { topic: relatedTopic.getId() }) : path('programme_topic', { pid: programmeContainer.getPid(), topic: relatedTopic.getId() }) }}">
-                                    {{- relatedTopic.getTitle() }}{% if programmeContainer is null %} ({{ relatedTopic.getProgrammeItemCount() -}}){% endif %}
-                                </a>
-                            </li>
-                        {% endfor %}
-                    </ul>
+                    {{ ds_amen('topicList', relatedTopics, programmeContainer, {
+                        'show_count': programmeContainer is null
+                    }) }}
                 </div>
             {% endif %}
             {% if programmeContainer is not null %}
                 <p class="island">
-                    <a href="{{ path('topic_show', { topic: topic.getId() }) }}">
+                    <a href="{{ encoded_path('topic_show', { topic: topic.getId() }) }}">
                         {{- tr('topic_in_all_programmes', { '%1': topic.getTitle() }) -}}
                     </a>
                 </p>
@@ -92,7 +81,7 @@
         </li>
     {%- else -%}
         <li class="tabs__item">
-            <a class="tabs__link" href="{{ path('topic_show', { topic: topicId, slice: slice }) }}">
+            <a class="tabs__link" href="{{ encoded_path('topic_show', { topic: topicId, slice: slice }) }}">
                 {{- text -}}
             </a>
         </li>
@@ -104,7 +93,7 @@
 
     {% if programmes is not empty %}
         {% if page > 1 %}
-            {{ self.paginationLink('up', tr('previous'), page - 1, 'grid-unit') }}
+            {{ ds_amen('paginationLink', page - 1, 'previous') }}
         {% endif %}
         <ul class="grid">
             {% for programme in programmes %}
@@ -130,18 +119,11 @@
             {% endfor %}
         </ul>
         {% if hasNextPage %}
-            {{ self.paginationLink('down', tr('next'), page + 1, '') }}
+            {{ ds_amen('paginationLink', page + 1, 'next', {
+                'margin': false
+            }) }}
         {% endif %}
     {% else %}
         <p>{{ tr('episodes_none') }}</p>
     {% endif %}
-{% endmacro %}
-
-{% macro paginationLink(icon, text, page, classes) %}
-    <p class="island--vertical text--center{% if classes is not empty %} {{ classes }}{% endif %}">
-        <a class="island br-linkinvert link-complex" href="?page={{ page }}">
-            {{ gelicon('core', icon, 'gelicon--leading gelicon--great-primer') }}
-            <span class="link-complex__target">{{ text }}</span>
-        </a>
-    </p>
 {% endmacro %}

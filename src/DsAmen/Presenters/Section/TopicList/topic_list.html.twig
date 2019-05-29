@@ -1,0 +1,34 @@
+{% import _self as self %}
+
+{% if topic_list.getOption('show_letter_headings') %}
+    {% for letter, topics in topic_list.getTopics() %}
+        <div class="grid-unit">
+            <h2 class="lined-below br-keyline grid-unit">{{ letter }}</h2>
+            {{ self.listSection(
+                topic_list.getOption('list_tag'),
+                topics,
+                topic_list.getProgrammeContainer(),
+                topic_list.getOption('show_count')
+            ) }}
+        </div>
+    {% endfor %}
+{% else %}
+    {{ self.listSection(
+        topic_list.getOption('list_tag'),
+        topic_list.getTopics(),
+        topic_list.getProgrammeContainer(),
+        topic_list.getOption('show_count')
+    ) }}
+{% endif %}
+
+{% macro listSection(listTag, topics, programmeContainer, showCount) %}
+    <{{ listTag }} class="list-inline list-inline--spaced">
+        {% for topic in topics %}
+            <li>
+                <a class="link--button br-linkinvert" href="{{ programmeContainer is null ? encoded_path('topic_show', { topic: topic.getId() }) : encoded_path('programme_topic', { pid: programmeContainer.getPid(), topic: topic.getId() }) }}">
+                    {{- topic.getTitle() }}{% if showCount %} ({{ topic.getProgrammeItemCount() }}){% endif %}
+                </a>
+            </li>
+        {% endfor %}
+    </{{ listTag }}>
+{% endmacro %}

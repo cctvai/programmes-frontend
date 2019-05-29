@@ -1,0 +1,10 @@
+{% extends 'base_ds_amen.html.twig' %}
+
+{%- block title -%}
+    {%- if programmeContainer is null -%}
+        BBC
+    {%- else -%}
+        {{- meta_context.titlePrefix() ~ ' - ' ~ tr('topics') -}}
+    {%- endif -%}
+    {{- block('topicTitle') -}}
+{%- endblock -%}
