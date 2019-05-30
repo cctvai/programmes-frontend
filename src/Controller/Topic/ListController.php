@@ -15,8 +15,6 @@ class ListController extends BaseController
         ?ProgrammeContainer $programmeContainer,
         AdaClassService $adaClassService
     ) {
-        $this->setAtiContentLabels('yolo', 'swag');
-
         $page = $this->getPage();
 
         if ($programmeContainer === null) {
