@@ -21,10 +21,13 @@ class ListController extends BaseController
 
         if ($programmeContainer === null) {
             $this->overridenDescription = 'A list of topics related to BBC programmes.';
+            $this->setAtiContentLabels('list-datadriven-linkeddata', 'bbc-list-topics');
             $adaClasses = $adaClassService->findAllClasses($page, null);
             $nextPage = $adaClassService->findAllClasses($page + 1, null);
         } else {
             $this->setContextAndPreloadBranding($programmeContainer);
+            $this->setAtiContentId((string) $programmeContainer->getPid());
+            $this->setAtiContentLabels('list-datadriven-linkeddata', 'pid-list-topics');
             $this->overridenDescription = 'A list of topics related to '
                                         . $programmeContainer->getTitle()
                                         . ' episodes and clips.';
