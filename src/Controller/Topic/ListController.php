@@ -4,12 +4,11 @@ declare(strict_types = 1);
 
 namespace App\Controller\Topic;
 
-use App\Controller\BaseController;
 use App\ExternalApi\Ada\Service\AdaClassService;
 use BBC\ProgrammesPagesService\Domain\Entity\ProgrammeContainer;
 use RuntimeException;
 
-class ListController extends BaseController
+class ListController extends BaseTopicController
 {
     public function __invoke(
         ?ProgrammeContainer $programmeContainer,
@@ -27,7 +26,7 @@ class ListController extends BaseController
             $this->setAtiContentId((string) $programmeContainer->getPid());
             $this->setAtiContentLabels('list-datadriven-linkeddata', 'pid-list-topics');
             $this->overridenDescription = 'A list of topics related to '
-                                        . $programmeContainer->getTitle()
+                                        . $this->generateHierarchicalTitle($programmeContainer)
                                         . ' episodes and clips.';
             $adaClasses = $adaClassService->findAllClasses($page, $programmeContainer);
             $nextPage = $adaClassService->findAllClasses($page + 1, $programmeContainer);

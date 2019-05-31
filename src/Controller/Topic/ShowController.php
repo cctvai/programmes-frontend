@@ -4,14 +4,13 @@ declare(strict_types = 1);
 
 namespace App\Controller\Topic;
 
-use App\Controller\BaseController;
 use App\ExternalApi\Ada\Domain\AdaClass;
 use App\ExternalApi\Ada\Service\AdaClassService;
 use App\ExternalApi\Ada\Service\AdaProgrammeService;
 use BBC\ProgrammesPagesService\Domain\Entity\ProgrammeContainer;
 use GuzzleHttp\Promise\PromiseInterface;
 
-class ShowController extends BaseController
+class ShowController extends BaseTopicController
 {
     /** @var AdaProgrammeService */
     private $adaProgrammeService;
@@ -63,7 +62,7 @@ class ShowController extends BaseController
             $this->setAtiContentLabels('list-datadriven-linkeddata', 'pid-list-programmes-topic');
             $this->setAtiContentId((string) $programmeContainer->getPid());
             $this->overridenDescription = 'A list of '
-                                        . $programmeContainer->getTitle()
+                                        . $this->generateHierarchicalTitle($programmeContainer)
                                         . ' episodes and clips related to "'
                                         . $adaClass->getTitle()
                                         . '".';
