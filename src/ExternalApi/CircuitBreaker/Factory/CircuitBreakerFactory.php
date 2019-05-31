@@ -3,6 +3,7 @@ declare(strict_types = 1);
 
 namespace App\ExternalApi\CircuitBreaker\Factory;
 
+use App\Cosmos\Dials;
 use App\ExternalApi\ApiType\ApiTypeEnum;
 use App\ExternalApi\CircuitBreaker\CircuitBreaker;
 use App\ExternalApi\CircuitBreaker\Helpers\Apcu;
@@ -20,6 +21,9 @@ class CircuitBreakerFactory
 
     /** @var Apcu */
     private $apcu;
+
+    /** @var Dials */
+    private $dialsAgent;
 
     private $circuitBreakers = [];
 
@@ -40,11 +44,12 @@ class CircuitBreakerFactory
         ApiTypeEnum::API_TUPAC              => ['maxFailsPerMinute' => 24, 'secondsToOpenWhenFailed' => 60],
     ];
 
-    public function __construct(MetricsManager $metricsManager, LoggerInterface $logger, Apcu $apcu)
+    public function __construct(MetricsManager $metricsManager, LoggerInterface $logger, Apcu $apcu, Dials $dialsAgent)
     {
         $this->metricsManager = $metricsManager;
         $this->logger = $logger;
         $this->apcu = $apcu;
+        $this->dialsAgent = $dialsAgent;
     }
 
     public function getBreakerFor(string $apiName): ?CircuitBreaker
@@ -61,6 +66,7 @@ class CircuitBreakerFactory
                 $this->metricsManager,
                 $this->logger,
                 $this->apcu,
+                $this->dialsAgent,
                 $apiName,
                 self::BREAKER_PARAMETERS[$apiName]['maxFailsPerMinute'],
                 self::BREAKER_PARAMETERS[$apiName]['secondsToOpenWhenFailed']

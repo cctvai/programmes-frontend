@@ -1,21 +1,137 @@
 [
     {
-        "name": "name-dial",
-        "default-value": "jeff",
+        "name": "api-ada",
+        "default-value": "enabled",
         "values": [
             {
-                "value": "geoff",
-                "description": "Geoff is the correct spelling of Jeff"
+                "value": "enabled",
+                "description": "Allow requests to the ada API"
             },
             {
-                "value": "jeff",
-                "description": "Jeff is the correct spelling of Jeff"
-            },
-            {
-                "value": "geff",
-                "description": "No."
+                "value": "disabled",
+                "description": "Disable requests to the ada API"
             }
         ],
-        "description": "What is the correct spelling of 'Jeff'?"
+        "description": "Control the circuit breaker for the ada API."
+    },
+    {
+        "name": "api-electron",
+        "default-value": "enabled",
+        "values": [
+            {
+                "value": "enabled",
+                "description": "Allow requests to the electron API"
+            },
+            {
+                "value": "disabled",
+                "description": "Disable requests to the electron API"
+            }
+        ],
+        "description": "Control the circuit breaker for the electron API."
+    },
+    {
+        "name": "api-isite",
+        "default-value": "enabled",
+        "values": [
+            {
+                "value": "enabled",
+                "description": "Open the circuit breaker for the iSite API to disable requests"
+            },
+            {
+                "value": "disabled",
+                "description": "Close the circuit breaker for the iSite API to enable requests"
+            }
+        ],
+        "description": "Control the circuit breaker for the iSite API."
+    },
+    {
+        "name": "api-recipe",
+        "default-value": "enabled",
+        "values": [
+            {
+                "value": "enabled",
+                "description": "Allow requests to the recipe API"
+            },
+            {
+                "value": "disabled",
+                "description": "Disable requests to the recipe API"
+            }
+        ],
+        "description": "Control the circuit breaker for the recipe API."
+    },
+    {
+        "name": "api-recommendations",
+        "default-value": "enabled",
+        "values": [
+            {
+                "value": "enabled",
+                "description": "Allow requests to the recommendations API"
+            },
+            {
+                "value": "disabled",
+                "description": "Disable requests to the recommendations API"
+            }
+        ],
+        "description": "Control the circuit breaker for the recommendations API."
+    },
+    {
+        "name": "api-morph",
+        "default-value": "enabled",
+        "values": [
+            {
+                "value": "enabled",
+                "description": "Allow requests to the morph API"
+            },
+            {
+                "value": "disabled",
+                "description": "Disable requests to the morph API"
+            }
+        ],
+        "description": "Control the circuit breaker for the morph API."
+    },
+    {
+        "name": "api-favourites",
+        "default-value": "enabled",
+        "values": [
+            {
+                "value": "enabled",
+                "description": "Allow requests to the favourites API"
+            },
+            {
+                "value": "disabled",
+                "description": "Disable requests to the favourites API"
+            }
+        ],
+        "description": "Control the circuit breaker for the favourites API."
+    },
+    {
+        "name": "api-soundsnav",
+        "default-value": "enabled",
+        "values": [
+            {
+                "value": "enabled",
+                "description": "Allow requests to the soundsnav API"
+            },
+            {
+                "value": "disabled",
+                "description": "Disable requests to the soundsnav API"
+            }
+        ],
+        "description": "Control the circuit breaker for the soundsnav API."
+    },
+    {
+        "name": "api-tupac",
+        "default-value": "enabled",
+        "values": [
+            {
+                "value": "enabled",
+                "description": "Allow requests to the tupac API"
+            },
+            {
+                "value": "disabled",
+                "description": "Disable requests to the tupac API"
+            }
+        ],
+        "description": "Control the circuit breaker for the tupac API."
     }
 ]

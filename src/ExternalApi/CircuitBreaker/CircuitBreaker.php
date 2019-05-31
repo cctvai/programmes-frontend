@@ -8,6 +8,7 @@ use App\ExternalApi\CircuitBreaker\Helpers\Apcu;
 use App\Metrics\MetricsManager;
 use InvalidArgumentException;
 use Psr\Log\LoggerInterface;
+use App\Cosmos\Dials;
 
 class CircuitBreaker
 {
@@ -24,6 +25,9 @@ class CircuitBreaker
     /** @var Apcu */
     private $apcu;
 
+    /** @var Dials */
+    private $dialsAgent;
+
     /** @var string */
     private $apiName;
 
@@ -39,6 +43,7 @@ class CircuitBreaker
      * @param MetricsManager $metricsManager
      * @param LoggerInterface $logger
      * @param Apcu $apcu
+     * @param Dials $dialsAgent
      * @param string $apiName - the name of the api, must be a constant in MetricsManager
      * @param int $maxFailsPerMinute - If more failures than this are detected in a minute, close the breaker
      * @param int $secondsToOpenWhenFailed - Open the breaker for this long if $maxFailsPerMinute are exceeded
@@ -47,6 +52,7 @@ class CircuitBreaker
         MetricsManager $metricsManager,
         LoggerInterface $logger,
         Apcu $apcu,
+        Dials $dialsAgent,
         string $apiName,
         int $maxFailsPerMinute,
         int $secondsToOpenWhenFailed
@@ -54,6 +60,7 @@ class CircuitBreaker
         $this->metricsManager = $metricsManager;
         $this->logger = $logger;
         $this->apcu = $apcu;
+        $this->dialsAgent = $dialsAgent;
         if (!ApiTypeEnum::isValid($apiName)) {
             throw new InvalidArgumentException("$apiName is not a valid API type");
         }
@@ -106,6 +113,11 @@ class CircuitBreaker
             $this->metricsManager->addApiCircuitBreakerOpenMetric($this->apiName);
             return true;
         }
+
+        if ($this->dialsAgent->get('api-' . strtolower($this->apiName)) === 'disabled') {
+            return true;
+        }
+
         return false;
     }
 

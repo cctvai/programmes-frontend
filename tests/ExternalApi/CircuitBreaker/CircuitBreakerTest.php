@@ -9,6 +9,7 @@ use App\Metrics\MetricsManager;
 use BBC\ProgrammesPagesService\Domain\ApplicationTime;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
+use App\Cosmos\Dials;
 
 class CircuitBreakerTest extends TestCase
 {
@@ -22,11 +23,14 @@ class CircuitBreakerTest extends TestCase
     /** @var CircuitBreaker */
     private $circuitBreaker;
 
+    private $mockDials;
+
     public function setUp()
     {
         $this->mockMetricsManager = $this->createMock(MetricsManager::class);
         $this->mockLoggerInterface = $this->createMock(LoggerInterface::class);
         $this->mockApcu = new ApcuMock(ApplicationTime::getTime());
+        $this->mockDials = $this->createMock(Dials::class);
     }
 
     public function testOpens()
@@ -96,6 +100,7 @@ class CircuitBreakerTest extends TestCase
             $this->mockMetricsManager,
             $this->mockLoggerInterface,
             $this->mockApcu,
+            $this->mockDials,
             $apiName,
             $maxFailsPerMinute,
             $secondsToOpenWhenFailed

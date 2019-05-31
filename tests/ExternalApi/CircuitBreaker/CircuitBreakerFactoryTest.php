@@ -10,6 +10,7 @@ use App\ExternalApi\CircuitBreaker\Factory\CircuitBreakerFactory;
 use App\Metrics\MetricsManager;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
+use App\Cosmos\Dials;
 
 class CircuitBreakerFactoryTest extends TestCase
 {
@@ -19,6 +20,8 @@ class CircuitBreakerFactoryTest extends TestCase
 
     private $mockApcu;
 
+    private $mockDials;
+
     /** @var CircuitBreakerFactory */
     private $circuitBreakerFactory;
 
@@ -27,10 +30,12 @@ class CircuitBreakerFactoryTest extends TestCase
         $this->mockMetricsManager = $this->createMock(MetricsManager::class);
         $this->mockLogger = $this->createMock(LoggerInterface::class);
         $this->mockApcu = $this->createMock(Apcu::class);
+        $this->mockDials = $this->createMock(Dials::class);
         $this->circuitBreakerFactory = new CircuitBreakerFactory(
             $this->mockMetricsManager,
             $this->mockLogger,
-            $this->mockApcu
+            $this->mockApcu,
+            $this->mockDials
         );
     }
 
