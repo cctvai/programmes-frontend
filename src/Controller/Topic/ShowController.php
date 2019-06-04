@@ -33,6 +33,7 @@ class ShowController extends BaseTopicController
             throw $this->createNotFoundException('Topic does not exist.');
         }
 
+        $this->setContextAndPreloadBranding($programmeContainer);
         $page = $this->getPage();
 
         if ($programmeContainer === null) {
@@ -58,7 +59,6 @@ class ShowController extends BaseTopicController
                 null
             );
         } else {
-            $this->setContextAndPreloadBranding($programmeContainer);
             $this->setAtiContentLabels('list-datadriven-linkeddata', 'pid-list-programmes-topic');
             $this->setAtiContentId((string) $programmeContainer->getPid());
             $this->overridenDescription = 'A list of '
