@@ -5,7 +5,7 @@ use App\ExternalApi\Ada\Domain\AdaClass;
 use BBC\ProgrammesPagesService\Domain\ValueObject\Pid;
 use Faker\Factory;
 
-class AdaBuilder extends AbstractBuilder
+class AdaClassBuilder extends AbstractBuilder
 {
     protected function __construct()
     {

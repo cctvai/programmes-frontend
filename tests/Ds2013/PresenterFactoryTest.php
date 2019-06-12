@@ -2,7 +2,7 @@
 declare(strict_types = 1);
 namespace Tests\App\Ds2013;
 
-use App\Builders\AdaBuilder;
+use App\Builders\AdaClassBuilder;
 use App\Builders\ClipBuilder;
 use App\Builders\ContributionBuilder;
 use App\Builders\ExternalApi\Recipes\RecipeBuilder;
@@ -133,7 +133,7 @@ class PresenterFactoryTest extends TestCase
 
     public function testRelatedTopicPresenterCanBeCreated()
     {
-        $ada = AdaBuilder::any()->build();
+        $ada = AdaClassBuilder::any()->build();
         $clipMock = $this->getMockBuilder(Clip::class)->disableOriginalConstructor()->getMock();
         $presenter = $this->factory->relatedTopicsPresenter([$ada], $clipMock);
 

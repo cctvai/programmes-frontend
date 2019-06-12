@@ -3,7 +3,7 @@ declare(strict_types = 1);
 
 namespace Tests\App\Ds2013\Presenters\Section\RelatedTopics;
 
-use App\Builders\AdaBuilder;
+use App\Builders\AdaClassBuilder;
 use App\Ds2013\Presenters\Section\RelatedTopics\RelatedTopicsPresenter;
 use App\ExternalApi\Ada\Domain\AdaClass;
 use BBC\ProgrammesPagesService\Domain\Entity\Clip;
@@ -21,7 +21,7 @@ class RelatedTopicsPresenterTest extends BaseTemplateTestCase
      */
     public function testBasicPresenter(?Pid $givenContextPid, string $expectedUrl): void
     {
-        $ada = AdaBuilder::any()->with([
+        $ada = AdaClassBuilder::any()->with([
             'programmeItemCountContext' => $givenContextPid,
             'id' => 'any_id',
         ])->build();

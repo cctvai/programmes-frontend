@@ -3,8 +3,8 @@ parameters:
     app.branding_client.class: BBC\BrandingClient\BrandingStubClient
     app.metric_backend.class: App\Metrics\Backend\NullMetricBackend
     app.metric_cache.class: App\Metrics\Cache\MetricCacheNull
-    app.ada.class_service.class: App\ExternalApi\Ada\Service\AdaClassStubService
-    app.ada.programme_service.class: App\ExternalApi\Ada\Service\AdaProgrammeStubService
+    app.ada.class_service.class: App\ExternalApi\Ada\Service\AdaClassFakeService
+    app.ada.programme_service.class: App\ExternalApi\Ada\Service\AdaProgrammeFakeService
     app.electron.service.class: App\ExternalApi\Electron\Service\ElectronStubService
     app.idtquiz.service.class: App\ExternalApi\IdtQuiz\Service\IdtQuizStubService
     app.morph.service.lxpromo.class: App\ExternalApi\Morph\Service\LxPromoStubService
