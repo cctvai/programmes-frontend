@@ -114,7 +114,7 @@ class AdaClassService
             CacheInterface::NORMAL,
             CacheInterface::SHORT,
             [
-                'timeout' => 10,
+                'timeout' => 15,
             ],
             true
         )->makeCachedPromise();
@@ -141,7 +141,7 @@ class AdaClassService
             CacheInterface::NORMAL,
             CacheInterface::SHORT,
             [
-                'timeout' => 10,
+                'timeout' => 15,
             ],
             true
         )->makeCachedPromise();
@@ -173,7 +173,7 @@ class AdaClassService
             CacheInterface::NORMAL,
             CacheInterface::SHORT,
             [
-                'timeout' => 10,
+                'timeout' => 15,
             ],
             true
         )->makeCachedPromise();
