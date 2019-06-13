@@ -142,6 +142,7 @@ class LiveBroadcastHelper
         'bbc_world_service_west_africa'         => ['worldservice_news_west_africa', []],
         'cbeebies_radio'                        => ['playspace_live', ['sid' => 'cbeebies_radio']],
         'bbc_radio_two_eurovision'              => ['playspace_live', ['sid' => 'bbc_radio_two_eurovision']],
+        'bbc_radio_glastonbury'                 => ['playspace_live', ['sid' => 'bbc_radio_glastonbury']],
     ];
 
     /** @var Chronos */

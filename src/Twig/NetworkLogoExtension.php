@@ -38,6 +38,7 @@ class NetworkLogoExtension extends Twig_Extension
             'bbc_afrique_radio', 'bbc_gahuza_radio', 'bbc_hausa_radio',
             'bbc_indonesian_radio', 'bbc_somali_radio', 'bbc_swahili_radio', 'bbc_music_jazz',
             'bbc_news', 'bbc_sport', 'bbc_hindi_radio', 'bbc_radio_scotland_music_extra',
+            'bbc_radio_glastonbury',
     ];
 
     /**
