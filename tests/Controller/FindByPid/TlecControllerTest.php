@@ -71,15 +71,15 @@ class TlecControllerTest extends BaseWebTestCase
     }
 
     /**
-     * @dataProvider showMiniMapDataProvider
+     * @dataProvider shouldDisplayMiniMapDataProvider
      */
-    public function testShowMiniMap(Request $request, ProgrammeContainer $programmeContainer, bool $isPromoPriority, bool $hasLxPromo)
+    public function testshouldDisplayMiniMap(Request $request, ProgrammeContainer $programmeContainer, bool $isPromoPriority, bool $hasLxPromo)
     {
         $controller = $this->createMock(TlecController::class);
 
-        $showMiniMap = $this->invokeMethod(
+        $shouldDisplayMiniMap = $this->invokeMethod(
             $controller,
-            'showMiniMap',
+            'shouldDisplayMiniMap',
             [
                 $request,
                 $programmeContainer,
@@ -87,10 +87,10 @@ class TlecControllerTest extends BaseWebTestCase
                 $hasLxPromo,
             ]
         );
-        $this->assertTrue($showMiniMap);
+        $this->assertTrue($shouldDisplayMiniMap);
     }
 
-    public function showMiniMapDataProvider(): array
+    public function shouldDisplayMiniMapDataProvider(): array
     {
         $cases = [];
         $programmeContainer = $this->createMock(ProgrammeContainer::class);

@@ -13,6 +13,7 @@ use App\ExternalApi\FavouritesButton\Service\FavouritesButtonService;
 use App\ExternalApi\Morph\Service\LxPromoService;
 use App\ExternalApi\RecEng\Service\RecEngService;
 use BBC\ProgrammesPagesService\Domain\Entity\ProgrammeContainer;
+use BBC\ProgrammesPagesService\Domain\Entity\Promotion;
 use BBC\ProgrammesPagesService\Service\CollapsedBroadcastsService;
 use BBC\ProgrammesPagesService\Service\ImagesService;
 use BBC\ProgrammesPagesService\Service\ProgrammesAggregationService;
@@ -29,7 +30,7 @@ use Symfony\Component\HttpFoundation\Request;
  * We tend to call this "the brand page", but both Brands and Series are both
  * ProgrammeContainers that may appear at the top of the programme hierarchy.
  */
-class TlecController extends ContainerBaseController
+class TlecController extends BaseProgrammeContainerController
 {
     public function __invoke(
         PresenterFactory $presenterFactory,
@@ -49,6 +50,16 @@ class TlecController extends ContainerBaseController
         LxPromoService $lxPromoService,
         StructuredDataHelper $structuredDataHelper
     ) {
+        // We need to vary on X-Ip_is_uk_combined to avoid returning same cached content to non UK users when there is
+        // a vote set to UK only. There is already a vary header set on nginx, this doesn't override the existing "vary"
+        // values, this adds a new value to the "vary" list of values
+        if ($programme->getOption('telescope_block') !== null
+            && isset($programme->getOption('telescope_block')['content']['is_uk_only'])
+            && $programme->getOption('telescope_block')['content']['is_uk_only'] === true
+        ) {
+            $this->response()->headers->set('vary', 'X-Ip_is_uk_combined');
+        }
+
         return parent::__invoke(
             $presenterFactory,
             $request,
@@ -67,5 +78,54 @@ class TlecController extends ContainerBaseController
             $lxPromoService,
             $structuredDataHelper
         );
+    }
+
+    protected function getPriorityPromotion(
+        ProgrammeContainer $programme,
+        array $promotions,
+        bool $shouldDisplayMiniMap
+    ): ?Promotion {
+        if ($programme->getOption('brand_layout') === 'promo' && !empty($promotions) && $programme->isTlec() && !$shouldDisplayMiniMap) {
+            return array_shift($promotions);
+        }
+
+        return null;
+    }
+
+    protected function shouldDisplayLxPromo(ProgrammeContainer $programme): bool
+    {
+        return boolval($programme->getOption('livepromo_block'));
+    }
+
+    protected function shouldDisplayMiniMap(
+        Request $request,
+        ProgrammeContainer $programme,
+        bool $isVotePriority,
+        bool $hasLxPromo
+    ): bool {
+        if ($request->query->has('__2016minimap')) {
+            return (bool) $request->query->get('__2016minimap');
+        }
+
+        if ($isVotePriority || $hasLxPromo) {
+            return true;
+        }
+
+        return filter_var($programme->getOption('brand_2016_layout_use_minimap'), FILTER_VALIDATE_BOOLEAN);
+    }
+
+    protected function shouldDisplayPriorityText(): bool
+    {
+        return true;
+    }
+
+    protected function shouldDisplayTopics(ProgrammeContainer $programme): bool
+    {
+        return boolval($programme->getOption('show_enhanced_navigation'));
+    }
+
+    protected function shouldDisplayVote(): bool
+    {
+        return true;
     }
 }

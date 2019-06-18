@@ -11,6 +11,7 @@ use App\ExternalApi\FavouritesButton\Service\FavouritesButtonService;
 use App\ExternalApi\Morph\Service\LxPromoService;
 use App\ExternalApi\RecEng\Service\RecEngService;
 use BBC\ProgrammesPagesService\Domain\Entity\ProgrammeContainer;
+use BBC\ProgrammesPagesService\Domain\Entity\Promotion;
 use BBC\ProgrammesPagesService\Service\CollapsedBroadcastsService;
 use BBC\ProgrammesPagesService\Service\ImagesService;
 use BBC\ProgrammesPagesService\Service\ProgrammesAggregationService;
@@ -19,7 +20,7 @@ use BBC\ProgrammesPagesService\Service\PromotionsService;
 use BBC\ProgrammesPagesService\Service\RelatedLinksService;
 use Symfony\Component\HttpFoundation\Request;
 
-class SeriesController extends ContainerBaseController
+class SeriesController extends BaseProgrammeContainerController
 {
     public function __invoke(
         PresenterFactory $presenterFactory,
@@ -57,5 +58,38 @@ class SeriesController extends ContainerBaseController
             $lxPromoService,
             $structuredDataHelper
         );
+    }
+
+    protected function getPriorityPromotion(
+        ProgrammeContainer $programme,
+        array $promotions,
+        bool $shouldDisplayMiniMap
+    ): ?Promotion {
+        return null;
+    }
+
+    protected function shouldDisplayLxPromo(ProgrammeContainer $programme): bool
+    {
+        return false;
+    }
+
+    protected function shouldDisplayMiniMap(Request $request, ProgrammeContainer $programme, bool $isVotePriority, bool $hasLxPromo): bool
+    {
+        return false;
+    }
+
+    protected function shouldDisplayPriorityText(): bool
+    {
+        return false;
+    }
+
+    protected function shouldDisplayTopics(ProgrammeContainer $programme): bool
+    {
+        return false;
+    }
+
+    protected function shouldDisplayVote(): bool
+    {
+        return false;
     }
 }

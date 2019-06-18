@@ -31,7 +31,7 @@ use BBC\ProgrammesPagesService\Service\RelatedLinksService;
 use GuzzleHttp\Promise\FulfilledPromise;
 use Symfony\Component\HttpFoundation\Request;
 
-abstract class ContainerBaseController extends BaseController
+abstract class BaseProgrammeContainerController extends BaseController
 {
     public function __invoke(
         PresenterFactory $presenterFactory,
@@ -97,12 +97,12 @@ abstract class ContainerBaseController extends BaseController
 
         /* Start Promises */
         $lxPromoPromise = new FulfilledPromise(null);
-        if ($programme->getOption('livepromo_block')) {
+        if ($this->shouldDisplayLxPromo($programme)) {
             $lxPromoPromise = $lxPromoService->fetchByProgrammeContainer($programme);
         }
 
         $relatedTopicsPromise = new FulfilledPromise([]);
-        if ($programme->getOption('show_enhanced_navigation')) {
+        if ($this->shouldDisplayTopics($programme)) {
             // Less than 50 episodes (through ancestry)...
             $usePerContainerValues = $programme->getAggregatedEpisodesCount() >= 50;
             $relatedTopicsPromise = $adaClassService->findRelatedClassesByContainer($programme, $usePerContainerValues, 5);
@@ -134,33 +134,18 @@ abstract class ContainerBaseController extends BaseController
 
         // Map parameters
         $isVotePriority = $this->isVotePriority($programme);
-        $showMiniMap = $this->showMiniMap($request, $programme, $isVotePriority, isset($resolvedPromises['lxPromo']));
-
-        // We need to vary on X-Ip_is_uk_combined to avoid returning same cached content to non UK users when there is
-        // a vote set to UK only. There is already a vary header set on nginx, this doesn't override the existing "vary"
-        // values, this adds a new value to the "vary" list of values
-        if ($programme->getOption('telescope_block') !== null
-            && isset($programme->getOption('telescope_block')['content']['is_uk_only'])
-            && $programme->getOption('telescope_block')['content']['is_uk_only'] === true
-        ) {
-            $this->response()->headers->set('vary', 'X-Ip_is_uk_combined');
-        }
-
-        $priorityPromotion = null;
-        if ($programme->getOption('brand_layout') === 'promo' && !empty($promotions) && $programme->isTlec() && !$showMiniMap) {
-            $priorityPromotion = array_shift($promotions);
-        }
+        $shouldDisplayMiniMap = $this->shouldDisplayMiniMap($request, $programme, $isVotePriority, isset($resolvedPromises['lxPromo']));
 
         $mapPresenter = $presenterFactory->mapPresenter(
             $programme,
             $upcomingBroadcast,
             $lastOn,
-            $priorityPromotion,
+            $this->getPriorityPromotion($programme, $promotions, $shouldDisplayMiniMap),
             $comingSoonPromo,
             $onDemandEpisode,
             $upcomingRepeatsAndDebutsCounts['debuts'],
             $upcomingRepeatsAndDebutsCounts['repeats'],
-            $showMiniMap
+            $shouldDisplayMiniMap
         );
 
         $this->setIstatsLabelsForTlec($onDemandEpisode, $upcomingBroadcast, $lastOn);
@@ -173,16 +158,39 @@ abstract class ContainerBaseController extends BaseController
             'clips' => $clips,
             'galleries' => $galleries,
             'mapPresenter' => $mapPresenter,
+            'shouldDisplayVote' => $this->shouldDisplayVote(),
             'isVotePriority' => $isVotePriority,
-            'canDisplayVote' => $this->canDisplayVote($programme->getOption('telescope_block'), $this->request()),
+            'canDisplayVoteInRegion' => $this->canDisplayVoteInRegion($programme->getOption('telescope_block'), $this->request()),
             'relatedLinks' => $relatedLinks,
             'schema' => $schema,
+            'shouldDisplayPriorityText' => $this->shouldDisplayPriorityText(),
         ];
 
         $parameters = array_merge($parameters, $resolvedPromises);
 
-        return $this->renderWithChrome('find_by_pid/tlec.html.twig', $parameters);
+        return $this->renderWithChrome('find_by_pid/programme_container.html.twig', $parameters);
     }
+
+    abstract protected function getPriorityPromotion(
+        ProgrammeContainer $programme,
+        array $promotions,
+        bool $shouldDisplayMiniMap
+    ): ?Promotion;
+
+    abstract protected function shouldDisplayLxPromo(ProgrammeContainer $programme): bool;
+
+    abstract protected function shouldDisplayMiniMap(
+        Request $request,
+        ProgrammeContainer $programme,
+        bool $isVotePriority,
+        bool $hasLxPromo
+    ): bool;
+
+    abstract protected function shouldDisplayPriorityText(): bool;
+
+    abstract protected function shouldDisplayTopics(ProgrammeContainer $programme): bool;
+
+    abstract protected function shouldDisplayVote(): bool;
 
     private function getComingSoonPromotion(ImagesService $imagesService, ProgrammeContainer $programme): ?Promotion
     {
@@ -236,19 +244,6 @@ abstract class ContainerBaseController extends BaseController
     private function isVotePriority(ProgrammeContainer $programme): bool
     {
         return $programme->getOption('brand_layout') === 'vote' && $programme->getOption('telescope_block') !== null;
-    }
-
-    private function showMiniMap(Request $request, ProgrammeContainer $programme, bool $isVotePriority, bool $hasLxPromo): bool
-    {
-        if ($request->query->has('__2016minimap')) {
-            return (bool) $request->query->get('__2016minimap');
-        }
-
-        if ($isVotePriority || $hasLxPromo) {
-            return true;
-        }
-
-        return filter_var($programme->getOption('brand_2016_layout_use_minimap'), FILTER_VALIDATE_BOOLEAN);
     }
 
     private function setIstatsAvailabilityLabel(?ProgrammeItem $onDemandEpisode): void
@@ -386,7 +381,7 @@ abstract class ContainerBaseController extends BaseController
      * @param Request $request
      * @return bool
      */
-    private function canDisplayVote(?array $telescopeBlock, Request $request): bool
+    private function canDisplayVoteInRegion(?array $telescopeBlock, Request $request): bool
     {
         if (isset($telescopeBlock['content']['is_uk_only'])
             && $telescopeBlock['content']['is_uk_only'] === true

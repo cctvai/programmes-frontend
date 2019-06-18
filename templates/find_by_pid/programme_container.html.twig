@@ -40,11 +40,11 @@
         </div>
     {%- endif -%}
 
-    {% if isVotePriority %}
+    {% if shouldDisplayVote and isVotePriority %}
         <div class="p-g-p">
             <div class="grid leading-gap">
                 <div class="grid__item">
-                    {% if canDisplayVote %}
+                    {% if canDisplayVoteInRegion %}
                         {% include 'shared/telescope/target_element.html.twig' with {
                             container_html_id: 'account-wrapper-vote'
                         } %}
@@ -75,7 +75,7 @@
                 <div>
                     <h2 class="invisible">{{ tr('supporting_content') }}</h2>
                     {#{%- if programme.getOption('prioritytext_block') or isbbcdotcom or hasrecipes -%} TODO #}
-                    {%- if programme.getOption('prioritytext_block') -%}
+                    {%- if shouldDisplayPriorityText and programme.getOption('prioritytext_block') -%}
                         <ul class="grid">
                             {%- if programme.getOption('prioritytext_block') -%}
                                 <li class="grid__item 1/1">
@@ -215,10 +215,10 @@
                         </ul>
                     {%- endif -%}
 
-                    {% if programme.getOption('telescope_block') and not isVotePriority %}
+                    {% if shouldDisplayVote and programme.getOption('telescope_block') and not isVotePriority %}
                         <div class="grid">
                             <div class="grid__item 1/2@gel3b">
-                                {% if canDisplayVote %}
+                                {% if canDisplayVoteInRegion %}
                                     {% include 'shared/telescope/target_element.html.twig' with {
                                                 container_html_id: 'account-wrapper-vote'
                                             } %}
@@ -269,7 +269,7 @@
 {% block javascripts %}
     {{ parent() }}
 
-    {% if canDisplayVote and programme.getOption('telescope_block') %}
+    {% if shouldDisplayVote and canDisplayVoteInRegion and programme.getOption('telescope_block') %}
         {% include 'shared/telescope/initialisation.html.twig' with {
             container_html_id: 'account-wrapper-vote',
             vote_id: programme.getOption('telescope_block').content.vote_id
