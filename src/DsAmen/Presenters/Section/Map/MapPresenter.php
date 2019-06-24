@@ -28,52 +28,52 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 class MapPresenter extends Presenter
 {
     /** @var Promotion|null */
-    private $comingSoonPromo;
+    protected $comingSoonPromo;
 
     /** @var int */
-    private $debutsCount;
+    protected $debutsCount;
 
     /** @var Promotion|null */
-    private $priorityPromotion;
+    protected $priorityPromotion;
 
     /** @var \App\DsShared\Factory\HelperFactory */
-    private $helperFactory;
+    protected $helperFactory;
 
     /** @var CollapsedBroadcast|null */
-    private $lastOn;
+    protected $lastOn;
 
     /** @var Presenter */
-    private $leftColumn;
+    protected $leftColumn;
 
     /** @var string */
-    private $leftGridClasses = '1/2@gel3b';
+    protected $leftGridClasses = '1/2@gel3b';
 
     /** @var ProgrammeContainer */
-    private $programme;
+    protected $programme;
 
     /** @var int */
-    private $repeatsCount;
+    protected $repeatsCount;
 
     /** @var Presenter[] */
-    private $rightColumns = [];
+    protected $rightColumns = [];
 
     /** @var string */
-    private $rightGridClasses = '1/2@gel3b';
+    protected $rightGridClasses = '1/2@gel3b';
 
     /** @var UrlGeneratorInterface */
-    private $router;
+    protected $router;
 
     /** @var bool */
-    private $showMiniMap;
+    protected $showMiniMap;
 
     /** @var Episode|null*/
-    private $streamableEpisode;
+    protected $streamableEpisode;
 
     /** @var TranslateProvider */
-    private $translateProvider;
+    protected $translateProvider;
 
     /** @var CollapsedBroadcast|null */
-    private $upcomingBroadcast;
+    protected $upcomingBroadcast;
 
     public function __construct(
         HelperFactory $helperFactory,
@@ -146,7 +146,7 @@ class MapPresenter extends Presenter
         return $this->rightGridClasses;
     }
 
-    public function getSocialBarPresenter(): SocialBarPresenter
+    public function getSocialBarPresenter(): ?SocialBarPresenter
     {
         return new SocialBarPresenter($this->programme);
     }
@@ -154,6 +154,38 @@ class MapPresenter extends Presenter
     public function showMap(): bool
     {
         return $this->programme->getAggregatedEpisodesCount() || $this->hasComingSoon();
+    }
+
+    /**
+     * Must be run after construct(Two|Three)ColumnMap
+     */
+    protected function constructLeftColumn(): void
+    {
+        $leftColumnOptions = ['is_three_column' => $this->countTotalColumns() === 3];
+        if ($this->priorityPromotion) {
+            $this->leftColumn = new PromoPriorityPresenter(
+                $this->programme,
+                $this->priorityPromotion,
+                $leftColumnOptions
+            );
+        } else {
+            $leftColumnOptions['show_mini_map'] = $this->showMiniMap;
+            $this->leftColumn = new ProgrammeInfoPresenter(
+                $this->programme,
+                $leftColumnOptions
+            );
+        }
+    }
+
+    /**
+     * This is the left column and the main right columns
+     * The social column is ignored
+     *
+     * @return int
+     */
+    protected function countTotalColumns(): int
+    {
+        return 1 + count($this->rightColumns);
     }
 
     private function constructThreeColumnMap(): void
@@ -176,6 +208,7 @@ class MapPresenter extends Presenter
 
             $this->rightColumns[] = new OnDemandPresenter(
                 $this->translateProvider,
+                $this->router,
                 $this->programme,
                 $this->streamableEpisode,
                 $hasAnUpcomingEpisode,
@@ -213,6 +246,7 @@ class MapPresenter extends Presenter
 
         $this->rightColumns[] = new OnDemandPresenter(
             $this->translateProvider,
+            $this->router,
             $this->programme,
             $this->streamableEpisode,
             false,
@@ -222,38 +256,6 @@ class MapPresenter extends Presenter
                 'show_mini_map' => $this->showMiniMap,
             ]
         );
-    }
-
-    /**
-     * Must be run after construct(Two|Three)ColumnMap
-     */
-    private function constructLeftColumn(): void
-    {
-        $leftColumnOptions = ['is_three_column' => $this->countTotalColumns() === 3];
-        if ($this->priorityPromotion) {
-            $this->leftColumn = new PromoPriorityPresenter(
-                $this->programme,
-                $this->priorityPromotion,
-                $leftColumnOptions
-            );
-        } else {
-            $leftColumnOptions['show_mini_map'] = $this->showMiniMap;
-            $this->leftColumn = new ProgrammeInfoPresenter(
-                $this->programme,
-                $leftColumnOptions
-            );
-        }
-    }
-
-    /**
-     * This is the left column and the main right columns
-     * The social column is ignored
-     *
-     * @return int
-     */
-    private function countTotalColumns(): int
-    {
-        return 1 + count($this->rightColumns);
     }
 
     private function isWorldNews(): bool

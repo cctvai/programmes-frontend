@@ -12,6 +12,7 @@ use App\DsAmen\Presenters\Domain\RelatedLink\RelatedLinkPresenter;
 use App\DsAmen\Presenters\Domain\SupportingContent\SupportingContentPresenter;
 use App\DsAmen\Presenters\Section\Footer\FooterPresenter;
 use App\DsAmen\Presenters\Section\Map\MapPresenter;
+use App\DsAmen\Presenters\Section\Map\SeriesMapPresenter;
 use App\DsAmen\Presenters\Section\RelatedTopics\RelatedTopicsPresenter;
 use App\DsAmen\Presenters\Section\TopicList\TopicListPresenter;
 use App\DsAmen\Presenters\Utilities\Duration\DurationPresenter;
@@ -108,6 +109,22 @@ class PresenterFactory
         int $repeatsCount,
         bool $showMiniMap
     ): MapPresenter {
+        if (!$programme->isTlec()) {
+            return new SeriesMapPresenter(
+                $this->helperFactory,
+                $this->translateProvider,
+                $this->router,
+                $programme,
+                $upcomingBroadcast,
+                $lastOn,
+                $priorityPromotion,
+                $comingSoonPromo,
+                $streamableEpisode,
+                $debutsCount,
+                $repeatsCount,
+                $showMiniMap
+            );
+        }
         return new MapPresenter(
             $this->helperFactory,
             $this->translateProvider,

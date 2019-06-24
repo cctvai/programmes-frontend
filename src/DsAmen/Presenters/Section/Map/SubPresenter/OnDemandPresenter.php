@@ -9,6 +9,7 @@ use BBC\ProgrammesPagesService\Domain\Entity\CollapsedBroadcast;
 use BBC\ProgrammesPagesService\Domain\Entity\Episode;
 use BBC\ProgrammesPagesService\Domain\Entity\ProgrammeContainer;
 use Exception;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class OnDemandPresenter extends RightColumnPresenter
 {
@@ -40,18 +41,27 @@ class OnDemandPresenter extends RightColumnPresenter
      */
     private $streamableEpisode;
 
-    /**
-     * @var TranslateProvider
-     */
+    /** @var TranslateProvider */
     private $translateProvider;
 
-    public function __construct(TranslateProvider $translateProvider, ProgrammeContainer $programmeContainer, ?Episode $streamableEpisode, bool $hasUpcomingEpisode, ?CollapsedBroadcast $lastOn, $options = [])
-    {
+    /** @var UrlGeneratorInterface */
+    private $router;
+
+    public function __construct(
+        TranslateProvider $translateProvider,
+        UrlGeneratorInterface $router,
+        ProgrammeContainer $programmeContainer,
+        ?Episode $streamableEpisode,
+        bool $hasUpcomingEpisode,
+        ?CollapsedBroadcast $lastOn,
+        $options = []
+    ) {
         parent::__construct($programmeContainer, $options);
         $this->lastOn = $lastOn;
         $this->streamableEpisode = $streamableEpisode;
         $this->hasUpcomingEpisode = $hasUpcomingEpisode;
         $this->translateProvider = $translateProvider;
+        $this->router = $router;
         if ($this->getOption('full_width')) {
             $this->class = '1/1';
             $this->defaultImageSize = 320;
@@ -156,6 +166,24 @@ class OnDemandPresenter extends RightColumnPresenter
     public function shouldShowImage(): bool
     {
         return !$this->getOption('show_mini_map');
+    }
+
+    public function getEpisodeGuideLink(): string
+    {
+        if ($this->programmeContainer->isTv() && $this->programmeContainer->isTlec()) {
+            // iPlayer only have a brand, not a series episode guide
+            return $this->router->generate('iplayer_episodes', ['pid' => $this->programmeContainer->getPid()]);
+        }
+        return $this->router->generate('programme_episodes_player', ['pid' => $this->programmeContainer->getPid()]);
+    }
+
+    public function getEpisodeGuideTitleTranslation(): string
+    {
+        $translationKey = $this->programmeContainer->isTv() ? 'all_episodes_iplayer_title' : 'all_episodes_iplayer_radio_title';
+        return $this->translateProvider->getTranslate()->translate(
+            $translationKey,
+            ['%1' => $this->programmeContainer->getTitle()]
+        );
     }
 
     protected function validateOptions(array $options): void

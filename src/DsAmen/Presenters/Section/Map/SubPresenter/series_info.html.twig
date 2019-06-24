@@ -1,0 +1,12 @@
+{% extends "@DsAmen/Presenters/Section/Map/SubPresenter/programme_info.html.twig" %}
+{% block title %}
+    <h1>{{ programme_info.getMainTitleProgramme().getTitle() }}</h1>
+    <div class="gel-great-primer islet--vertical">
+        {%- for subtitle_programme in programme_info.getSubTitleProgrammes() -%}
+            {%- if not loop.first -%},{% endif %}
+            <a href="{{ path('find_by_pid', {'pid': subtitle_programme.getPid()}) }}">
+                {{- subtitle_programme.getTitle() -}}
+            </a>
+        {%- endfor -%}
+    </div>
+{% endblock %}

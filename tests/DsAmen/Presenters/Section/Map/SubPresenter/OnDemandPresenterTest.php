@@ -15,6 +15,7 @@ use BBC\ProgrammesPagesService\Domain\ValueObject\Pid;
 use Cake\Chronos\Chronos;
 use PHPUnit\Framework\TestCase;
 use PHPUnit_Framework_MockObject_MockObject;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class OnDemandPresenterTest extends TestCase
 {
@@ -38,7 +39,7 @@ class OnDemandPresenterTest extends TestCase
     {
         $programme = $this->createProgramme();
         $this->expectExceptionMessage($expectedExceptionMessage);
-        new OnDemandPresenter($this->createMock(TranslateProvider::class), $programme, null, false, null, $options);
+        $this->createOnDemandPresenter($programme, null, false, null, $options);
     }
 
     public function invalidOptionProvider(): array
@@ -57,7 +58,7 @@ class OnDemandPresenterTest extends TestCase
     {
         $episode = $this->createEpisode();
         $programme = $this->createProgramme($isRadio);
-        $odPresenter = new OnDemandPresenter($this->createMock(TranslateProvider::class), $programme, $episode, false, null);
+        $odPresenter = $this->createOnDemandPresenter($programme, $episode, false, null);
         if ($isRadio) {
             $this->assertEquals('map_ondemand_all', $odPresenter->getAllLinkLocation());
         } else {
@@ -72,7 +73,7 @@ class OnDemandPresenterTest extends TestCase
     public function testNoStreamablePendingOrUpcomingEpisodes(bool $isRadio)
     {
         $programme = $this->createProgramme($isRadio);
-        $odPresenter = new OnDemandPresenter($this->createMock(TranslateProvider::class), $programme, null, false, null);
+        $odPresenter = $this->createOnDemandPresenter($programme, null, false, null);
         $this->assertNull($odPresenter->getStreamableEpisode());
         $this->assertNull($odPresenter->getPendingEpisode());
         $this->assertTrue($odPresenter->shouldShowImage()); // Not that these are likely ever called
@@ -89,7 +90,7 @@ class OnDemandPresenterTest extends TestCase
     {
         $episode = $this->createEpisode(2, '+1 day', '-8 days');
         $programme = $this->createProgramme($isRadio);
-        $odPresenter = new OnDemandPresenter($this->createMock(TranslateProvider::class), $programme, $episode, false, null);
+        $odPresenter = $this->createOnDemandPresenter($programme, $episode, false, null);
         $this->assertSame($episode, $odPresenter->getStreamableEpisode());
         $this->assertNull($odPresenter->getPendingEpisode());
         $this->assertFalse($odPresenter->episodeIsPending());
@@ -101,7 +102,7 @@ class OnDemandPresenterTest extends TestCase
     {
         $episode = $this->createEpisode(2, '-1 day', '+1 days');
         $programme = $this->createProgramme(false);
-        $odPresenter = new OnDemandPresenter($this->createMock(TranslateProvider::class), $programme, $episode, false, null);
+        $odPresenter = $this->createOnDemandPresenter($programme, $episode, false, null);
         $this->assertSame($episode, $odPresenter->getStreamableEpisode());
         $this->assertNull($odPresenter->getPendingEpisode());
         $this->assertFalse($odPresenter->episodeIsPending());
@@ -117,7 +118,7 @@ class OnDemandPresenterTest extends TestCase
     {
         $episode = $this->createEpisode(2, '+1 day', '-6 days');
         $programme = $this->createProgramme($isRadio);
-        $odPresenter = new OnDemandPresenter($this->createMock(TranslateProvider::class), $programme, $episode, false, null);
+        $odPresenter = $this->createOnDemandPresenter($programme, $episode, false, null);
         $this->assertSame($episode, $odPresenter->getStreamableEpisode());
         $this->assertNull($odPresenter->getPendingEpisode());
         $this->assertFalse($odPresenter->episodeIsPending());
@@ -137,7 +138,7 @@ class OnDemandPresenterTest extends TestCase
     {
         $episode = $this->createEpisode(1, '+1 day', '-6 days');
         $programme = $this->createProgramme($isRadio);
-        $odPresenter = new OnDemandPresenter($this->createMock(TranslateProvider::class), $programme, $episode, false, null);
+        $odPresenter = $this->createOnDemandPresenter($programme, $episode, false, null);
         $this->assertSame($episode, $odPresenter->getStreamableEpisode());
         $this->assertNull($odPresenter->getPendingEpisode());
         $this->assertTrue($odPresenter->shouldShowImage());
@@ -161,7 +162,7 @@ class OnDemandPresenterTest extends TestCase
             ->willReturn(new Chronos('-8 days'));
         $collapsedBroadcast->method('getProgrammeItem')
             ->willReturn($episode);
-        $odPresenter = new OnDemandPresenter($this->createMock(TranslateProvider::class), $programme, $episode, false, $collapsedBroadcast);
+        $odPresenter = $this->createOnDemandPresenter($programme, $episode, false, $collapsedBroadcast);
         $this->assertSame($episode, $odPresenter->getStreamableEpisode());
         $this->assertSame($episode, $odPresenter->getPendingEpisode());
         $this->assertFalse($odPresenter->episodeIsPending());
@@ -182,7 +183,7 @@ class OnDemandPresenterTest extends TestCase
             ->willReturn(new Chronos('-6 days'));
         $collapsedBroadcast->method('getProgrammeItem')
             ->willReturn($episode);
-        $odPresenter = new OnDemandPresenter($this->createMock(TranslateProvider::class), $programme, $episode, false, $collapsedBroadcast);
+        $odPresenter = $this->createOnDemandPresenter($programme, $episode, false, $collapsedBroadcast);
         $this->assertSame($episode, $odPresenter->getStreamableEpisode());
         $this->assertSame($episode, $odPresenter->getPendingEpisode());
         $this->assertTrue($odPresenter->episodeIsPending());
@@ -203,7 +204,7 @@ class OnDemandPresenterTest extends TestCase
             ->willReturn(new Chronos('-8 days'));
         $collapsedBroadcast->method('getProgrammeItem')
             ->willReturn($episode);
-        $odPresenter = new OnDemandPresenter($this->createMock(TranslateProvider::class), $programme, $episode, false, $collapsedBroadcast);
+        $odPresenter = $this->createOnDemandPresenter($programme, $episode, false, $collapsedBroadcast);
         $this->assertSame($episode, $odPresenter->getStreamableEpisode());
         $this->assertSame($episode, $odPresenter->getPendingEpisode());
         $this->assertFalse($odPresenter->episodeIsPending());
@@ -214,7 +215,7 @@ class OnDemandPresenterTest extends TestCase
     public function testOnlyUpcomingEpisode()
     {
         $programme = $this->createProgramme(true);
-        $odPresenter = new OnDemandPresenter($this->createMock(TranslateProvider::class), $programme, null, true, null);
+        $odPresenter = $this->createOnDemandPresenter($programme, null, true, null);
         $this->assertTrue($odPresenter->hasUpcomingEpisode());
         $this->assertNull($odPresenter->getStreamableEpisode());
         $this->assertNull($odPresenter->getPendingEpisode());
@@ -237,7 +238,7 @@ class OnDemandPresenterTest extends TestCase
             ->willReturn(new Chronos('-8 months'));
         $collapsedBroadcast->method('getProgrammeItem')
             ->willReturn($episode);
-        $odPresenter = new OnDemandPresenter($this->createMock(TranslateProvider::class), $programme, null, false, $collapsedBroadcast);
+        $odPresenter = $this->createOnDemandPresenter($programme, null, false, $collapsedBroadcast);
         $this->assertNull($odPresenter->getStreamableEpisode());
         $this->assertNull($odPresenter->getPendingEpisode());
         $this->assertFalse($odPresenter->episodeIsPending());
@@ -258,7 +259,7 @@ class OnDemandPresenterTest extends TestCase
             ->willReturn(new Chronos('-6 days'));
         $collapsedBroadcast->method('getProgrammeItem')
             ->willReturn($episode);
-        $odPresenter = new OnDemandPresenter($this->createMock(TranslateProvider::class), $programme, null, false, $collapsedBroadcast);
+        $odPresenter = $this->createOnDemandPresenter($programme, null, false, $collapsedBroadcast);
         $this->assertEquals('coming_soon', $odPresenter->getBadgeTranslationString());
     }
 
@@ -279,7 +280,7 @@ class OnDemandPresenterTest extends TestCase
         $episode->method('getPosition')
             ->willReturn(1);
         $programme = $this->createProgramme($isRadio);
-        $odPresenter = new OnDemandPresenter($this->createMock(TranslateProvider::class), $programme, $episode, false, null);
+        $odPresenter = $this->createOnDemandPresenter($programme, $episode, false, null);
         $this->assertEmpty($odPresenter->getBadgeTranslationString());
     }
 
@@ -290,7 +291,7 @@ class OnDemandPresenterTest extends TestCase
         $collapsedBroadcast = $this->createMock(CollapsedBroadcast::class);
         $collapsedBroadcast->method('getStartAt')->willReturn(new Chronos('-6 days'));
         $collapsedBroadcast->method('getProgrammeItem')->willReturn($episode);
-        $odPresenter = new OnDemandPresenter($this->createMock(TranslateProvider::class), $programme, null, false, $collapsedBroadcast);
+        $odPresenter = $this->createOnDemandPresenter($programme, null, false, $collapsedBroadcast);
         $this->assertTrue($odPresenter->episodeIsPending());
     }
 
@@ -304,7 +305,7 @@ class OnDemandPresenterTest extends TestCase
         $programme = $this->createProgramme();
         $collapsedBroadcast = $this->createMock(CollapsedBroadcast::class);
         $collapsedBroadcast->method('getProgrammeItem')->willReturn($episode);
-        $odPresenter = new OnDemandPresenter($this->createMock(TranslateProvider::class), $programme, null, false, $collapsedBroadcast);
+        $odPresenter = $this->createOnDemandPresenter($programme, null, false, $collapsedBroadcast);
         $this->assertFalse($odPresenter->episodeIsPending());
     }
 
@@ -314,7 +315,7 @@ class OnDemandPresenterTest extends TestCase
         $programme = $this->createProgramme();
         $collapsedBroadcast = $this->createMock(CollapsedBroadcast::class);
         $collapsedBroadcast->method('getProgrammeItem')->willReturn($episode);
-        $odPresenter = new OnDemandPresenter($this->createMock(TranslateProvider::class), $programme, null, false, $collapsedBroadcast);
+        $odPresenter = $this->createOnDemandPresenter($programme, null, false, $collapsedBroadcast);
         $this->assertFalse($odPresenter->episodeIsPending());
     }
 
@@ -325,7 +326,7 @@ class OnDemandPresenterTest extends TestCase
         $collapsedBroadcast = $this->createMock(CollapsedBroadcast::class);
         $collapsedBroadcast->method('getStartAt')->willReturn(new Chronos('-8 days'));
         $collapsedBroadcast->method('getProgrammeItem')->willReturn($episode);
-        $odPresenter = new OnDemandPresenter($this->createMock(TranslateProvider::class), $programme, null, false, $collapsedBroadcast);
+        $odPresenter = $this->createOnDemandPresenter($programme, null, false, $collapsedBroadcast);
         $this->assertFalse($odPresenter->episodeIsPending());
     }
 
@@ -347,14 +348,14 @@ class OnDemandPresenterTest extends TestCase
         $collapsedBroadcast->method('getStartAt')->willReturn(new Chronos('-6 days'));
         $collapsedBroadcast->method('getProgrammeItem')
             ->willReturn($episode);
-        $odPresenter = new OnDemandPresenter($this->createMock(TranslateProvider::class), $programme, $episode, false, $collapsedBroadcast, ['show_mini_map' => true]);
+        $odPresenter = $this->createOnDemandPresenter($programme, $episode, false, $collapsedBroadcast, ['show_mini_map' => true]);
         $this->assertFalse($odPresenter->shouldShowImage());
     }
 
     public function testSizesWhenHalfWidth()
     {
         $programme = $this->createProgramme();
-        $odPresenter = new OnDemandPresenter($this->createMock(TranslateProvider::class), $programme, null, false, null, ['full_width' => false]);
+        $odPresenter = $this->createOnDemandPresenter($programme, null, false, null, ['full_width' => false]);
         $this->assertSame('1/2@gel1b', $odPresenter->getClass());
         $this->assertSame(240, $odPresenter->getDefaultImageSize());
         $this->assertSame([320 => 1/2, 768 => 1/4, 1008 => '242px', 1280 => '310px'], $odPresenter->getImageSizes());
@@ -363,7 +364,7 @@ class OnDemandPresenterTest extends TestCase
     public function testSizesWhenFullWidth()
     {
         $programme = $this->createProgramme();
-        $odPresenter = new OnDemandPresenter($this->createMock(TranslateProvider::class), $programme, null, false, null, ['full_width' => true]);
+        $odPresenter = $this->createOnDemandPresenter($programme, null, false, null, ['full_width' => true]);
         $this->assertSame('1/1', $odPresenter->getClass());
         $this->assertSame(320, $odPresenter->getDefaultImageSize());
         $this->assertSame([768 => 1/3, 1008 => '324px', 1280 => '414px'], $odPresenter->getImageSizes());
@@ -413,5 +414,23 @@ class OnDemandPresenterTest extends TestCase
         $programme->method('getImage')
             ->willReturn($programmeImage);
         return $programme;
+    }
+
+    private function createOnDemandPresenter(
+        ProgrammeContainer $programme,
+        ?Episode $episode,
+        bool $hasUpcomingEpisode,
+        ?CollapsedBroadcast $lastOn,
+        array $options = []
+    ): OnDemandPresenter {
+        return new OnDemandPresenter(
+            $this->createMock(TranslateProvider::class),
+            $this->createMock(UrlGeneratorInterface::class),
+            $programme,
+            $episode,
+            $hasUpcomingEpisode,
+            $lastOn,
+            $options
+        );
     }
 }

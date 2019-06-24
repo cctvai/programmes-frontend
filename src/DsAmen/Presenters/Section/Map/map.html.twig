@@ -10,7 +10,9 @@
                         {{ ds_amen_presenter(column) }}
                     {% endfor %}
                 </div>
-                {{ ds_amen_presenter(map.getSocialBarPresenter()) }}
+                {% if map.getSocialBarPresenter() %}
+                    {{ ds_amen_presenter(map.getSocialBarPresenter()) }}
+                {% endif %}
             </div>
         </div>
     </div>
