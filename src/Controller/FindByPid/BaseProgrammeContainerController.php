@@ -324,7 +324,7 @@ abstract class BaseProgrammeContainerController extends BaseController
         ?CollapsedBroadcast $upcomingBroadcast,
         array $clips = []
     ): array {
-        $schemaContext = $structuredDataHelper->getSchemaForProgrammeContainer($programme);
+        $schemaContext = $structuredDataHelper->getSchemaForProgrammeContainerAndParents($programme);
 
         // clips
         foreach ($clips as $clip) {
