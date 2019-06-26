@@ -136,11 +136,17 @@ abstract class BaseProgrammeContainerController extends BaseController
         $isVotePriority = $this->isVotePriority($programme);
         $shouldDisplayMiniMap = $this->shouldDisplayMiniMap($request, $programme, $isVotePriority, isset($resolvedPromises['lxPromo']));
 
+        // Promo priority
+        $priorityPromotion = null;
+        if ($this->hasPriorityPromotion($programme, $promotions, $shouldDisplayMiniMap)) {
+            $priorityPromotion = array_shift($promotions);
+        }
+
         $mapPresenter = $presenterFactory->mapPresenter(
             $programme,
             $upcomingBroadcast,
             $lastOn,
-            $this->getPriorityPromotion($programme, $promotions, $shouldDisplayMiniMap),
+            $priorityPromotion,
             $comingSoonPromo,
             $onDemandEpisode,
             $upcomingRepeatsAndDebutsCounts['debuts'],
@@ -171,11 +177,11 @@ abstract class BaseProgrammeContainerController extends BaseController
         return $this->renderWithChrome('find_by_pid/programme_container.html.twig', $parameters);
     }
 
-    abstract protected function getPriorityPromotion(
+    abstract protected function hasPriorityPromotion(
         ProgrammeContainer $programme,
         array $promotions,
         bool $shouldDisplayMiniMap
-    ): ?Promotion;
+    ): bool;
 
     abstract protected function shouldDisplayLxPromo(ProgrammeContainer $programme): bool;
 

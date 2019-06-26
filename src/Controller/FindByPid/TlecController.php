@@ -80,16 +80,15 @@ class TlecController extends BaseProgrammeContainerController
         );
     }
 
-    protected function getPriorityPromotion(
+    protected function hasPriorityPromotion(
         ProgrammeContainer $programme,
         array $promotions,
         bool $shouldDisplayMiniMap
-    ): ?Promotion {
-        if ($programme->getOption('brand_layout') === 'promo' && !empty($promotions) && $programme->isTlec() && !$shouldDisplayMiniMap) {
-            return array_shift($promotions);
+    ): bool {
+        if ($programme->getOption('brand_layout') === 'promo' && !empty($promotions) && !$shouldDisplayMiniMap) {
+            return true;
         }
-
-        return null;
+        return false;
     }
 
     protected function shouldDisplayLxPromo(ProgrammeContainer $programme): bool

@@ -60,12 +60,12 @@ class SeriesController extends BaseProgrammeContainerController
         );
     }
 
-    protected function getPriorityPromotion(
+    protected function hasPriorityPromotion(
         ProgrammeContainer $programme,
         array $promotions,
         bool $shouldDisplayMiniMap
-    ): ?Promotion {
-        return null;
+    ): bool {
+        return false;
     }
 
     protected function shouldDisplayLxPromo(ProgrammeContainer $programme): bool
