@@ -83,11 +83,6 @@ class SeriesController extends BaseProgrammeContainerController
         return false;
     }
 
-    protected function shouldDisplayTopics(ProgrammeContainer $programme): bool
-    {
-        return false;
-    }
-
     protected function shouldDisplayVote(): bool
     {
         return false;

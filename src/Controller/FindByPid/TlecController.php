@@ -118,11 +118,6 @@ class TlecController extends BaseProgrammeContainerController
         return true;
     }
 
-    protected function shouldDisplayTopics(ProgrammeContainer $programme): bool
-    {
-        return boolval($programme->getOption('show_enhanced_navigation'));
-    }
-
     protected function shouldDisplayVote(): bool
     {
         return true;

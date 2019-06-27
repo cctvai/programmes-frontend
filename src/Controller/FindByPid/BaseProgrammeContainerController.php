@@ -194,9 +194,12 @@ abstract class BaseProgrammeContainerController extends BaseController
 
     abstract protected function shouldDisplayPriorityText(): bool;
 
-    abstract protected function shouldDisplayTopics(ProgrammeContainer $programme): bool;
-
     abstract protected function shouldDisplayVote(): bool;
+
+    private function shouldDisplayTopics(ProgrammeContainer $programme): bool
+    {
+        return boolval($programme->getOption('show_enhanced_navigation'));
+    }
 
     private function getComingSoonPromotion(ImagesService $imagesService, ProgrammeContainer $programme): ?Promotion
     {
