@@ -44,31 +44,6 @@ class BroadcastEventPresenterTest extends TestCase
         $this->mockLocalisedDaysAndMonthsHelper = $this->createMock(LocalisedDaysAndMonthsHelper::class);
     }
 
-    /** @dataProvider getNetworkUrlProvider */
-    public function testGetNetworkUrl(?Network $network, string $expected)
-    {
-        $presenter = new BroadcastEventPresenter(
-            $this->mockCollapsedBroadcast,
-            $this->mockBroadcastNetworksHelper,
-            $this->mockLocalisedDaysAndMonthsHelper,
-            $this->createMock(LiveBroadcastHelper::class),
-            $this->router
-        );
-
-        $actual = $presenter->getNetworkUrl($network);
-        $this->assertSame($expected, $actual);
-    }
-
-    public function getNetworkUrlProvider(): array
-    {
-        $network = $this->createConfiguredMock(Network::class, ['getUrlKey' => 'radio4']);
-
-        return [
-            'network returns absolute url'  => [$network, 'http://localhost/radio4'],
-            'null returns empty url' => [null, ''],
-        ];
-    }
-
     public function servicesTypeProvider()
     {
         return [

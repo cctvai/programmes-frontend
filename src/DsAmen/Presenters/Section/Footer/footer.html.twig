@@ -54,12 +54,12 @@
                 {%- endif -%}
             </div>
             <!-- Watch live -->
-            {%- if footer.hasNetwork() -%}
+            {%- if footer.getNetwork() -%}
                 <div class="grid__item 1/8@gel4 1/6@gel3b 1/2 footer__service">
-                    {%- if footer.getNetworkUrlKey() -%}
+                    {%- if network_link(footer.getNetwork()) -%}
                         <div class="br-service-brand-box">
                             <div class="text--center">
-                                <a href="{{ path('network', { 'networkUrlKey': footer.getNetworkUrlKey() }) }}">
+                                <a href="{{ network_link(footer.getNetwork()) }}">
                                     <img alt="{{ tr('programme_homepage', { '%1': footer.getNetworkName() }) }}" src="{{ get_network_logo(footer.getNid(), '112x63') }}">
                                 </a>
                             </div>
@@ -76,13 +76,12 @@
                 </div>
                 <!-- Map links-->
                 <div class="grid__item 1/8@gel4 1/6@gel3b 1/2 footer__service-nav ">
-                    {%-  set networkUrlKey = footer.getNetworkUrlKey() -%}
-                    {%-  if networkUrlKey or footer.getNavigationLinks() -%}
+                    {%- if network_link(footer.getNetwork()) or footer.getNavigationLinks() -%}
                         <div class="island br-service-brand-box--alt">
                             <ul class="list-raw gel-long-primer-bold">
-                                {%-  if networkUrlKey -%}
+                                {%- if network_link(footer.getNetwork()) -%}
                                     <li class="footer-nav__item">
-                                        <a href="{{ path('network', { 'networkUrlKey': networkUrlKey }) }}"
+                                        <a href="{{ network_link(footer.getNetwork()) }}"
                                            title="{{ tr('programme_homepage', { '%1': footer.getNetworkName() }) }}"
                                            data-linktrack="global_footer_servicenav">
                                             {{ tr('home') }}

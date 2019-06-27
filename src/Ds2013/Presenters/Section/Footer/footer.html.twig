@@ -62,10 +62,10 @@
                 </div>
             {%- endif -%}
             </div>
-            {%- if footer.hasNetwork() -%}
-                {%- if footer.getNetworkUrlKey() -%}
+            {%- if footer.getNetwork() -%}
+                {%- if network_link(footer.getNetwork()) -%}
                     <div class="grid grid--flush 1/2 1/6@bpw2 1/6@bpe footer__service centi"><div class="footer__service-island br-service-brand-box fauxcolumn">
-                        <a class="islet--vertical footer__service__logo text--center@bpw" href="{{ path('network', { 'networkUrlKey': footer.getNetworkUrlKey() }) }}">
+                        <a class="islet--vertical footer__service__logo text--center@bpw" href="{{ network_link(footer.getNetwork()) }}">
                             <img alt="{{ tr('programme_homepage', { '%1': footer.getNetworkName() }) }}" src="{{ get_network_logo(footer.getNid(), '112x63') }}">
                         </a>
                         <div class="footer__watch-live">
@@ -79,26 +79,25 @@
                     </div></div>
                 {%- endif -%}
                 <div class="grid grid--flush 1/2 1/6@bpw2 1/6@bpe footer__service-nav centi"><div class="footer__service__nav">
-                    {%- set networkUrlKey = footer.getNetworkUrlKey() -%}
-                    {%- if networkUrlKey or footer.getNavigationLinks() -%}
-                    <div class="br-service-brand-box--alt fauxcolumn">
-                        <ul class="footer__service__nav__list list-unstyled footer__service-island">
-                            {%-  if networkUrlKey -%}
-                                <li class="footer__service__navitem">
-                                    <a href="{{ path('network', { 'networkUrlKey': networkUrlKey }) }}"
-                                        title="{{ tr('programme_homepage', { '%1': footer.getNetworkName() }) }}"
-                                        data-linktrack="global_footer_servicenav">
-                                        {{ tr('home') }}
-                                    </a>
-                                </li>
-                            {%- endif -%}
-                            {%- for links in footer.getNavigationLinks() -%}
-                                <li class="footer__service__navitem">
-                                    <a class="br-text" href="{{ links['url'] }}" data-linktrack="global_footer_servicenav">{{ links['title'] }}</a>
-                                </li>
-                            {%- endfor -%}
-                        </ul>
-                    </div>
+                    {%- if network_link(footer.getNetwork()) or footer.getNavigationLinks() -%}
+                        <div class="br-service-brand-box--alt fauxcolumn">
+                            <ul class="footer__service__nav__list list-unstyled footer__service-island">
+                                {%- if network_link(footer.getNetwork()) -%}
+                                    <li class="footer__service__navitem">
+                                        <a href="{{ network_link(footer.getNetwork()) }}"
+                                            title="{{ tr('programme_homepage', { '%1': footer.getNetworkName() }) }}"
+                                            data-linktrack="global_footer_servicenav">
+                                            {{ tr('home') }}
+                                        </a>
+                                    </li>
+                                {%- endif -%}
+                                {%- for links in footer.getNavigationLinks() -%}
+                                    <li class="footer__service__navitem">
+                                        <a class="br-text" href="{{ links['url'] }}" data-linktrack="global_footer_servicenav">{{ links['title'] }}</a>
+                                    </li>
+                                {%- endfor -%}
+                            </ul>
+                        </div>
                     {%- endif -%}
                 </div></div>
             {%- endif -%}

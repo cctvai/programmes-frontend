@@ -11,10 +11,10 @@ use BBC\ProgrammesPagesService\Domain\Entity\Programme;
 
 class FooterPresenter extends Presenter
 {
-    /** @var  Programme */
+    /** @var Programme */
     private $programme;
 
-    /** @var Network */
+    /** @var Network|null */
     private $network;
 
     public function __construct(Programme $programme, array $options = [])
@@ -25,9 +25,9 @@ class FooterPresenter extends Presenter
         $this->network = $programme->getNetwork();
     }
 
-    public function hasNetwork(): bool
+    public function getNetwork(): ?Network
     {
-        return (bool) $this->network;
+        return $this->network;
     }
 
     public function getNetworkUrlKey(): string

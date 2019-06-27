@@ -84,19 +84,6 @@ class BroadcastEventPresenter extends Presenter
         return $this->daysAndMonthsHelper->getFormatedDay($this->collapsedBroadcast->getStartAt());
     }
 
-    public function getNetworkUrl(?Network $network): string
-    {
-        if ($network) {
-            return $this->router->generate(
-                'network',
-                ['networkUrlKey' => $network->getUrlKey()],
-                UrlGeneratorInterface::ABSOLUTE_URL
-            );
-        }
-
-        return '';
-    }
-
     public function isOnAir(): bool
     {
         return $this->collapsedBroadcast->isOnAir();
