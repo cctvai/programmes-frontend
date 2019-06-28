@@ -32,15 +32,25 @@
                     .beginFill(0xFFFFFF)
                     .drawCircle(moonRadius, moonRadius, moonRadius)
                     .endFill()
-                    .beginFill(0xFF0000)
-                    .drawStar(moonRadius, moonRadius, 100, moonRadius)
-                    .endFill());
+                );
 
                 container.x = screenWidth / 2;
                 container.y = (app.screen.height * 0.75) + moonRadius;
 
                 container.pivot.x = moonRadius;
                 container.pivot.y = moonRadius;
+
+                // Player
+                var player = app.stage.addChild(
+                    new PIXI.Graphics()
+                    .beginFill(0xE4919E) // Clanger colour
+                    .drawRect(
+                        500,
+                        450,
+                        50,
+                        75
+                    ).endFill()
+                );
 
                 const ticker = app.ticker;
 
