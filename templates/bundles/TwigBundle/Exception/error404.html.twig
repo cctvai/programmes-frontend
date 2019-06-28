@@ -40,6 +40,8 @@
                 container.pivot.x = moonRadius;
                 container.pivot.y = moonRadius;
 
+                const ticker = app.ticker;
+
                 // Player
                 var player = app.stage.addChild(
                     new PIXI.Graphics()
@@ -52,7 +54,29 @@
                     ).endFill()
                 );
 
-                const ticker = app.ticker;
+                function jump() {
+                    // TODO: go down again
+                    player.y -= 100;
+                }
+
+                function crouch() {
+                    // TODO: go up again
+                    player.y += 100;
+                }
+
+                // Controls
+                window.addEventListener('keydown', (e) => {
+                    switch (e.key) {
+                        case 'w':
+                            jump();
+                            break;
+                        case 's':
+                            crouch();
+                            break;
+                        default:
+                            break;
+                    }
+                });
 
                 const generateObstacle = () => {
                     const min = 1000;
