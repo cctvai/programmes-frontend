@@ -40,6 +40,7 @@ class SeriesController extends BaseProgrammeContainerController
         LxPromoService $lxPromoService,
         StructuredDataHelper $structuredDataHelper
     ) {
+        $this->setAtiContentLabels('series', 'series');
         return parent::__invoke(
             $presenterFactory,
             $request,

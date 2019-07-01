@@ -55,9 +55,7 @@ abstract class BaseProgrammeContainerController extends BaseController
             // "International" services are UTC, all others are Europe/London (the default)
             ApplicationTime::setLocalTimeZone('UTC');
         }
-
         $this->setIstatsProgsPageType('programmes_container');
-        $this->setAtiContentLabels('brand', 'brand');
         $this->setContextAndPreloadBranding($programme);
         $this->setInternationalStatusAndTimezoneFromContext($programme);
         $this->setAtiContentId((string) $programme->getPid(), 'pips');

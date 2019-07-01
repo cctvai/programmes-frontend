@@ -59,7 +59,7 @@ class TlecController extends BaseProgrammeContainerController
         ) {
             $this->response()->headers->set('vary', 'X-Ip_is_uk_combined');
         }
-
+        $this->setAtiContentLabels('brand', 'brand');
         return parent::__invoke(
             $presenterFactory,
             $request,
