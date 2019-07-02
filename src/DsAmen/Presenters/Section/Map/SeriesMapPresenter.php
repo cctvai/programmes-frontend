@@ -16,6 +16,11 @@ class SeriesMapPresenter extends MapPresenter
         return null;
     }
 
+    public function showMap(): bool
+    {
+        return true;
+    }
+
     protected function constructLeftColumn(): void
     {
         $leftColumnOptions = [
