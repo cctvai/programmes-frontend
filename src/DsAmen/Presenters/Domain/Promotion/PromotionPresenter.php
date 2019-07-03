@@ -163,6 +163,28 @@ class PromotionPresenter extends Presenter
         return !!preg_match('~^(https?:)?//(?![^/]*bbc\.co(m|\.uk))~', $url);
     }
 
+    public function getType(): string
+    {
+        $promotion = $this->promotion;
+
+        if ($promotion->isSuperPromotion()) {
+            $prefix = 'super-promotion-';
+        } else {
+            $prefix = 'promotion-';
+        }
+
+        $promotedEntity = $promotion->getPromotedEntity();
+        if ($promotedEntity instanceof CoreEntity) {
+            return $prefix . $promotedEntity->getType();
+        }
+
+        if ($this->isExternalLink($this->getUrl())) {
+            return $prefix . 'external-link';
+        }
+
+        return $prefix . 'internal-link';
+    }
+
     protected function validateOptions(array $options): void
     {
         if (!is_bool($options['show_image'])) {
