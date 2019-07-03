@@ -190,6 +190,11 @@ class SmpPresenter extends Presenter
         return false;
     }
 
+    public function hasStreamableVersion(): bool
+    {
+        return !empty($this->streamableVersion);
+    }
+
     /**
      * @return string[]
      */

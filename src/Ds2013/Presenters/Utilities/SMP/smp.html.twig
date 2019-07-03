@@ -1,7 +1,7 @@
 {% import _self as self %}
 
 <div class="playout">
-    {% if smp.getProgrammeItem().hasPlayableDestination() %}
+    {% if smp.getProgrammeItem().hasPlayableDestination() and smp.hasStreamableVersion() %}
         {% if  smp.shouldStreamViaPlayspace() %}
             {{  self.renderPlayerAsLink(smp.getProgrammeItem(), smp)}}
         {% else %}

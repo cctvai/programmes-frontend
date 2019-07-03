@@ -8,6 +8,7 @@ use App\Translate\TranslateProvider;
 use BBC\ProgrammesPagesService\Domain\Entity\CollapsedBroadcast;
 use BBC\ProgrammesPagesService\Domain\Entity\Episode;
 use BBC\ProgrammesPagesService\Domain\Entity\ProgrammeContainer;
+use BBC\ProgrammesPagesService\Domain\Entity\ProgrammeItem;
 use Exception;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
@@ -79,7 +80,7 @@ class OnDemandPresenter extends RightColumnPresenter
         return $this->class;
     }
 
-    public function getPendingEpisode(): ?Episode
+    public function getPendingEpisode(): ?ProgrammeItem
     {
         if ($this->lastOn === null) {
             return null;
