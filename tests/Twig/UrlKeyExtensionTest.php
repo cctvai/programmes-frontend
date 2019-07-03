@@ -31,7 +31,7 @@ class UrlKeyExtensionTest extends TestCase
             'null_url_key' => ['bbc_arts', null, ''],
             'false' => ['parliaments_online', 'parliamentsonline', ''],
             'true' => ['bbc_one', 'bbcone', '/bbcone'],
-            'custom' => ['bbc_radio_glastonbury', 'radioglastonbury', '/sounds/play/live:bbc_radio_glastonbury'],
+            'custom' => ['cbeebies_radio', 'cbeebiesradio', '/cbeebies/radio'],
         ];
     }
 }

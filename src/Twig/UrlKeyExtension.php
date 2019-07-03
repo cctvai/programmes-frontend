@@ -119,7 +119,6 @@ class UrlKeyExtension extends Twig_Extension
         'bbc_sounds_mixes' => true,
         'bbc_brasil' => true,
         'bbc_scotland' => true,
-        'bbc_radio_glastonbury' => '/sounds/play/live:bbc_radio_glastonbury',
     ];
 
     /**
