@@ -40,6 +40,12 @@ vendor/bin/phpcs -n
 npm run lint
 vendor/bin/phpstan analyse -c phpstan.neon src tests --level=4 --memory-limit=256M
 
+# if build is trigger through a webhook we can stop here after the code analysers are run.
+if [[ ! -z "$CODEBUILD_WEBHOOK_ACTOR_ACCOUNT_ID" ]]
+then
+ exit 0
+fi
+
 # install composer for production
 export SYMFONY_ENV=prod;
 export APP_ENV=prod;
