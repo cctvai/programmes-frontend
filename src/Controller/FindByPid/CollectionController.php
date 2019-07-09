@@ -9,11 +9,9 @@ class CollectionController extends BaseController
 {
     public function __invoke(Collection $collection)
     {
-        $this->setIstatsProgsPageType('collections_show');
+        $this->setAtiContentLabels('funny', 'reference');
         $this->setContextAndPreloadBranding($collection);
 
-        return $this->renderWithChrome('find_by_pid/example_entity.html.twig', [
-            'group' => $collection,
-        ]);
+        return $this->renderWithChrome('find_by_pid/collection.html.twig');
     }
 }
