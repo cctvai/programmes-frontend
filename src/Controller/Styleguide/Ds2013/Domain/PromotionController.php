@@ -29,7 +29,7 @@ class PromotionController extends StyleGuideBaseController
             $service = $servicesService->findByPidFull(new Pid($request->query->get('service')));
             $this->setContextAndPreloadBranding($service);
         }
-        $promotion = $promotionsService->findActivePromotionsByContext($coreEntitiesService->findByPidFull(new Pid('b006q2x0')), 1)[0];
+        $promotion = $promotionsService->findAllActivePromotionsByContext($coreEntitiesService->findByPidFull(new Pid('b006q2x0')))[0];
 
 
         return $this->renderWithChrome('styleguide/ds2013/domain/promotion.html.twig', [

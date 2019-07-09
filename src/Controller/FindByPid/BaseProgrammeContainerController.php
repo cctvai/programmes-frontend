@@ -62,7 +62,7 @@ abstract class BaseProgrammeContainerController extends BaseController
 
         // TODO check $programme->getPromotionsCount() once it is populated in
         // Faucet to potentially save on a DB query
-        $promotions = $promotionsService->findActivePromotionsByContext($programme);
+        $promotions = $promotionsService->findAllActivePromotionsByContext($programme);
 
         $clips = [];
         if ($programme->getAvailableClipsCount() > 0 && $programme->getOption('show_clip_cards')) {

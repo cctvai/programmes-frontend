@@ -72,7 +72,7 @@ class PodcastController extends BaseController
             $paginator = new PaginatorPresenter($page, $limit, $downloadableEpisodesCount);
         }
 
-        $promotions = $promotionsService->findActivePromotionsByEntityGroupedByType($coreEntity);
+        $promotions = $promotionsService->findAllActivePromotionsByEntityGroupedByType($coreEntity);
         $genre = null;
         if ($programme) {
             $genres = $programme->getGenres();
