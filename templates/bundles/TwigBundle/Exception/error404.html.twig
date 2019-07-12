@@ -47,32 +47,40 @@
                 const obstacleQueue = [];
 
                 // Player
-                var player = stage.addChild(new PIXI.Graphics()
+                const playerWidth = moonRadius / 100;
+                const playerHeight = moonRadius / 50;
+
+                const player = stage.addChild(new PIXI.Graphics()
                     .beginFill(0xE4919E) // Clanger colour
-                    .drawRect(500, 450, 50, 75)
+                    .drawRect(
+                        (screenWidth / 2) - (playerWidth / 2),
+                        (screenHeight * 0.75) - playerHeight,
+                        playerWidth,
+                        playerHeight
+                    )
                     .endFill());
 
-                const jump = () => {
-                    // TODO: go down again
-                    player.y -= 100;
-                }
+                let isActionHappening = false;
 
-                const crouch = () => {
-                    // TODO: go up again
-                    player.y += 100;
-                }
+                const action = movement => {
+                    player.y += movement;
+                    isActionHappening = true;
+                    window.setTimeout(() => {
+                        player.y -= movement
+                        isActionHappening = false;
+                    }, 500);
+                };
 
                 // Controls
                 window.addEventListener('keydown', event => {
-                    switch (event.key) {
-                        case 'w':
-                            jump();
-                            break;
-                        case 's':
-                            crouch();
-                            break;
-                        default:
-                            break;
+                    if (isActionHappening === false) {
+                        switch (event.key) {
+                            case 'w':
+                                action(-playerHeight);
+                                break;
+                            case 's':
+                                action(playerHeight / 2);
+                        }
                     }
                 });
 
