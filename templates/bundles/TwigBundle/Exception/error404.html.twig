@@ -22,51 +22,49 @@
                 element.parentElement.replaceChild(view, element);
                 view.scrollIntoView(true);
 
-                const container = new PIXI.Container();
-                app.stage.addChild(container);
+                const stage = app.stage;
 
-                const screenWidth = app.screen.width;
+                const container = new PIXI.Container();
+                stage.addChild(container);
+
+                const screen = app.screen;
+                const screenWidth = screen.width;
+                const screenHeight = screen.height;
 
                 const moonRadius = screenWidth * 3;
                 container.addChild(new PIXI.Graphics()
                     .beginFill(0xFFFFFF)
                     .drawCircle(moonRadius, moonRadius, moonRadius)
-                    .endFill()
-                );
+                    .endFill());
 
                 container.x = screenWidth / 2;
-                container.y = (app.screen.height * 0.75) + moonRadius;
+                container.y = (screenHeight * 0.75) + moonRadius;
 
                 container.pivot.x = moonRadius;
                 container.pivot.y = moonRadius;
 
                 const ticker = app.ticker;
+                const obstacleQueue = [];
 
                 // Player
-                var player = app.stage.addChild(
-                    new PIXI.Graphics()
+                var player = stage.addChild(new PIXI.Graphics()
                     .beginFill(0xE4919E) // Clanger colour
-                    .drawRect(
-                        500,
-                        450,
-                        50,
-                        75
-                    ).endFill()
-                );
+                    .drawRect(500, 450, 50, 75)
+                    .endFill());
 
-                function jump() {
+                const jump = () => {
                     // TODO: go down again
                     player.y -= 100;
                 }
 
-                function crouch() {
+                const crouch = () => {
                     // TODO: go up again
                     player.y += 100;
                 }
 
                 // Controls
-                window.addEventListener('keydown', (e) => {
-                    switch (e.key) {
+                window.addEventListener('keydown', event => {
+                    switch (event.key) {
                         case 'w':
                             jump();
                             break;
@@ -78,29 +76,48 @@
                     }
                 });
 
+                const min = 1000;
+                const range = 5000 - min + 1;
+                const obstacleRadius = moonRadius / 100;
+                const obstacleDiameter = obstacleRadius * 2;
+                const offsetRadius = moonRadius + obstacleDiameter;
+                const offsetDiameter = offsetRadius * 2;
+                const visible = (offsetDiameter * Math.asin(Math.sqrt(
+                    Math.pow(offsetRadius, 2) - Math.pow(offsetRadius - ((screenHeight * 0.25) + obstacleDiameter), 2)
+                ) / offsetDiameter)) / offsetRadius;
+                const screenOffset = (Math.PI / 2) - (visible / 2);
                 const generateObstacle = () => {
-                    const min = 1000;
                     window.setTimeout(() => {
                         const rotation = container.rotation;
-                        const obstacleRadius = moonRadius / 100;
-                        const offsetRadius = moonRadius + (obstacleRadius * 2);
-                        container.addChild(new PIXI.Graphics()
-                            .beginFill(0x0000FF)
-                            .drawCircle(
-                                moonRadius + (Math.cos(-rotation) * offsetRadius),
-                                moonRadius + (Math.sin(-rotation) * offsetRadius),
-                                obstacleRadius
-                            )
-                            .endFill());
+                        const offset = (-rotation) - screenOffset;
+                        obstacleQueue.push({
+                            dieAt: rotation - visible,
+                            displayObject: container.addChild(new PIXI.Graphics()
+                                .beginFill(0x0000FF)
+                                .drawCircle(
+                                    moonRadius + (Math.cos(offset) * offsetRadius),
+                                    moonRadius + (Math.sin(offset) * offsetRadius),
+                                    obstacleRadius
+                                )
+                                .endFill())
+                        });
 
                         ticker.addOnce(generateObstacle);
-                    }, Math.floor(Math.random() * (5000 - min + 1)) + min);
+                    }, Math.floor(Math.random() * range) + min);
                 };
 
                 let speed = 0.002;
                 ticker.add(delta => {
-                    container.rotation -= speed * delta;
+                    const rotation = container.rotation - (speed * delta);
+                    container.rotation = rotation;
                     speed += 0.000001;
+                    if (obstacleQueue.length > 0) {
+                        const firstObstacle = obstacleQueue[0];
+                        if (rotation <= firstObstacle.dieAt) {
+                            firstObstacle.displayObject.destroy();
+                            obstacleQueue.shift();
+                        }
+                    }
                 });
 
                 ticker.addOnce(generateObstacle);
