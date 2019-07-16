@@ -23,6 +23,7 @@ abstract class BaseSubPresenterTest extends TestCase
         $mockClip->method('getPid')->willReturn(new Pid('p0000001'));
         $mockClip->method('getDuration')->willReturn(10);
         $mockClip->method('isAudio')->willReturn(false);
+        $mockClip->method('hasPlayableDestination')->willReturn(true);
 
         return $mockClip;
     }

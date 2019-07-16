@@ -1,0 +1,17 @@
+<div class="promotion-card box-link" style="background-image:url({{ promotion_card.getImageUrl() }})">
+    <div class="promotion-card__body">
+        <a class="link--block box-link__target cover__meta" href="{{ promotion_card.getUrl() }}">
+            <h2 class="promotion-card__meta gel-double-pica">{{ promotion_card.getTitle() }}</h2>
+            <p class="gel-pica text--orphan">{{ promotion_card.getSynopsis() }}</p>
+        </a>
+        {% if promotion_card.getRelatedLinks() is not empty %}
+            <ul class="list-standard gel-long-primer">
+                {% for relatedLink in promotion_card.getRelatedLinks() %}
+                    <li>
+                        <a href="{{ relatedLink.getUri() }}">{{ relatedLink.getTitle() }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+</div>

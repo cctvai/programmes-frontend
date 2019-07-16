@@ -13,17 +13,32 @@ class CollectionController extends BaseController
 {
     public function __invoke(
         Collection $collection,
-        CoreEntitiesService $coreEntitiesService,
         PromotionsService $promotionsService,
+        CoreEntitiesService $coreEntitiesService,
         RelatedLinksService $relatedLinksService
     ) {
         $this->setAtiContentLabels('funny', 'reference');
         $this->setContextAndPreloadBranding($collection);
 
-        $members = $coreEntitiesService->findByGroup($collection);
-        $promotions = $promotionsService->findActiveNonSuperPromotionsByContext($collection, 4, 1, CacheInterface::MEDIUM);
-        $relatedLinks = $relatedLinksService->findByRelatedToProgramme($collection, ['related_site', 'miscellaneous']);
+        $page = $this->getPage();
 
-        return $this->renderWithChrome('find_by_pid/collection.html.twig');
+        if ($page === 1) {
+            $promotions = $promotionsService->findActiveNonSuperPromotionsByContext($collection, 4, 1, CacheInterface::MEDIUM);
+        } else {
+            $promotions = [];
+        }
+
+        $coreEntities = $coreEntitiesService->findByGroup($collection, 24, $page);
+
+        if (count($coreEntities) < 1 && (count($promotions) < 1 || $page > 1)) {
+            throw $this->createNotFoundException('page number not in range');
+        }
+
+        return $this->renderWithChrome('find_by_pid/collection.html.twig', [
+            'collection' => $collection,
+            'promotions' => $promotions,
+            'coreEntities' => $coreEntities,
+            'relatedLinks' => $relatedLinksService->findByRelatedToProgramme($collection, ['related_site', 'miscellaneous']),
+        ]);
     }
 }

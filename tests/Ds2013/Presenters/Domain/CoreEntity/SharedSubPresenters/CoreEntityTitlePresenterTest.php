@@ -64,6 +64,7 @@ class CoreEntityTitlePresenterTest extends BaseTemplateTestCase
             'mediaType' => MediaTypeEnum::AUDIO,
             'masterBrand' => $masterBrand,
             'pid' => new Pid('b09z67gw'),
+            'isStreamable' => true,
         ])->build();
 
         $programmeBodyPresenter = new CoreEntityTitlePresenter(

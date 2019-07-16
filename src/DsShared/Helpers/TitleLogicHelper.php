@@ -2,7 +2,9 @@
 
 namespace App\DsShared\Helpers;
 
+use BBC\ProgrammesPagesService\Domain\Entity\Clip;
 use BBC\ProgrammesPagesService\Domain\Entity\CoreEntity;
+use BBC\ProgrammesPagesService\Domain\Enumeration\MediaTypeEnum;
 use InvalidArgumentException;
 use RuntimeException;
 
@@ -15,6 +17,7 @@ class TitleLogicHelper
     private $acceptedTitleFormats = array(
         'tleo::ancestry:item', // TLEO as title, Series => Episode => etc as subtitle. Default in programmes V2.
         'item::ancestry', // Item as title, ancestry as subtitle, TLEO => Series => Subseries. "bottom_up" in programmes V2.
+        'item::ancestry_except_audio_clips', // As item::ancestry, except subtitles are hidden on audio clips.
     );
 
     /**
@@ -57,6 +60,13 @@ class TitleLogicHelper
             $mainTitleProgramme = array_shift($ancestryArray);
             // Ancestry in TLEO => Series => Episode order is subtitle
             $subTitlesProgrammes = array_reverse($ancestryArray);
+        } elseif ($titleFormat === 'item::ancestry_except_audio_clips') {
+            $mainTitleProgramme = array_shift($ancestryArray);
+            if ($programme instanceof Clip && $programme->isAudio()) {
+                $subTitlesProgrammes = [];
+            } else {
+                $subTitlesProgrammes = array_reverse($ancestryArray);
+            }
         } else {
             // Default tleo:ancestry:item
             $mainTitleProgramme = array_pop($ancestryArray);

@@ -7,6 +7,7 @@ use App\DsAmen\Presenters\Domain\CoreEntity\CollapsedBroadcast\CollapsedBroadcas
 use App\DsAmen\Presenters\Domain\CoreEntity\Group\GroupPresenter;
 use App\DsAmen\Presenters\Domain\CoreEntity\Programme\ProgrammePresenter;
 use App\DsAmen\Presenters\Domain\Promotion\PromotionPresenter;
+use App\DsAmen\Presenters\Domain\PromotionCard\PromotionCardPresenter;
 use App\DsAmen\Presenters\Domain\Recipe\RecipePresenter;
 use App\DsAmen\Presenters\Domain\RelatedLink\RelatedLinkPresenter;
 use App\DsAmen\Presenters\Domain\SupportingContent\SupportingContentPresenter;
@@ -23,6 +24,7 @@ use App\ExternalApi\Electron\Domain\SupportingContentItem;
 use App\ExternalApi\Recipes\Domain\Recipe;
 use App\Translate\TranslateProvider;
 use BBC\ProgrammesPagesService\Domain\Entity\CollapsedBroadcast;
+use BBC\ProgrammesPagesService\Domain\Entity\CoreEntity;
 use BBC\ProgrammesPagesService\Domain\Entity\Episode;
 use BBC\ProgrammesPagesService\Domain\Entity\Group;
 use BBC\ProgrammesPagesService\Domain\Entity\Programme;
@@ -62,6 +64,15 @@ class PresenterFactory
         return new CollapsedBroadcastPresenter($collapsedBroadcast, $this->router, $this->translateProvider, $this->helperFactory, $options);
     }
 
+    public function coreEntityPresenter(CoreEntity $coreEntity, array $options = [])
+    {
+        if ($coreEntity instanceof Programme) {
+            return $this->programmePresenter($coreEntity, $options);
+        }
+
+        return $this->groupPresenter($coreEntity, $options);
+    }
+
     public function groupPresenter(Group $group, array $options = []): GroupPresenter
     {
         return new GroupPresenter($group, $this->router, $this->helperFactory, $options);
@@ -75,6 +86,11 @@ class PresenterFactory
     public function promotionPresenter(Promotion $promotion, array $options = []): PromotionPresenter
     {
         return new PromotionPresenter($this->router, $promotion, $options);
+    }
+
+    public function promotionCardPresenter(Promotion $promotion, array $options = []): PromotionCardPresenter
+    {
+        return new PromotionCardPresenter($promotion, $options);
     }
 
     public function relatedLinkPresenter(RelatedLink $supportingContent, array $options = []): RelatedLinkPresenter

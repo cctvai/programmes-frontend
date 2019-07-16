@@ -70,7 +70,7 @@ class CoreEntityTitlePresenter extends Presenter
             return $this->router->generate('programme_podcast_episodes_download', ['pid' => $this->coreEntity->getPid()], UrlGeneratorInterface::ABSOLUTE_URL);
         }
 
-        if ($this->coreEntity instanceof Clip) {
+        if ($this->coreEntity instanceof Clip && $this->coreEntity->hasPlayableDestination()) {
             $route = $this->streamUrlHelper->getRouteForProgrammeItem($this->coreEntity);
             return $this->router->generate($route, ['pid' => $this->coreEntity->getPid()], UrlGeneratorInterface::ABSOLUTE_URL);
         }

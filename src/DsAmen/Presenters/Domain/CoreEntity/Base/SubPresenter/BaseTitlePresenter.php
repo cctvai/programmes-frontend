@@ -105,7 +105,9 @@ abstract class BaseTitlePresenter extends Presenter
     public function getUrl(): string
     {
         $route = 'find_by_pid';
-        if ($this->getOption('force_playout_linking') || $this->coreEntity instanceof Clip) {
+        if ($this->getOption('force_playout_linking') || (
+            $this->coreEntity instanceof Clip && $this->coreEntity->hasPlayableDestination()
+        )) {
             $route = $this->streamUrlHelper->getRouteForProgrammeItem($this->coreEntity);
         }
 

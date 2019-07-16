@@ -1,1 +1,56 @@
 {% extends 'base_ds_amen.html.twig' %}
+
+{% block title %}{{ meta_context.titlePrefix() }}{% endblock %}
+
+{% block body %}
+    <div class="page-limit">
+        <div class="br-box-secondary island grid-unit leading-gap cf">
+            <h1>{{ collection.getTitle() }}</h1>
+            <div class="text--prose">
+                <p data-name="collection-synopsis">{{ collection.getLongestSynopsis() }}</p>
+            </div> 
+        </div>
+        <ul class="grid">
+            {% for promotion in promotions %}
+                <li class="1/3@gel3b grid__item">
+                    {{ ds_amen('promotionCard', promotion) }}
+                </li>
+            {% endfor %}
+            {% for coreEntity in coreEntities %}
+                <li class="1/2@gel2b 1/3@gel3b grid__item">
+                    {{ ds_amen('coreEntity', coreEntity, {
+                        'context_programme': collection.getParent(),
+                        'title_options': {
+                            'h_tag': 'h2',
+                            'text_colour_on_title_link': false,
+                            'title_format': 'item::ancestry_except_audio_clips'
+                        },
+                        'body_options': {
+                            'show_synopsis': true,
+                            'show_release_date': true
+                        }
+                    }) }}
+                </li>
+            {% endfor %}
+        </ul>
+        {% if relatedLinks is not empty %}
+            <div class="br-box-page island--vertical">
+                <div class="lined-above br-keyline">
+                    <h2 class="grid-unit">{{ tr('related_links') }}</h2>
+                    <ul class="grid">
+                        {% for relatedLink in relatedLinks %}
+                            <li class="grid__item 1/1 1/2@gel2b 1/3@gel3b">
+                                <a href="{{ relatedLink.getUri() }}" class="lined-below br-keyline">
+                                    {{ relatedLink.getTitle() }}
+                                    {% if relatedLink.isExternal() %}
+                                        <span class="text-subtle gel-brevier">({{ relatedLink.getHost() }})</span>
+                                    {% endif %}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}
