@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace App\Controller\Gallery;
 
 use App\Controller\BaseController;
-use App\Ds2013\Presenters\Utilities\Paginator\PaginatorPresenter;
+use App\DsShared\Utilities\Paginator\PaginatorPresenter;
 use BBC\ProgrammesPagesService\Domain\Entity\Programme;
 use BBC\ProgrammesPagesService\Service\ProgrammesAggregationService;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;

@@ -1,9 +1,9 @@
 <?php
 declare(strict_types = 1);
 
-namespace App\Ds2013\Presenters\Utilities\Paginator;
+namespace App\DsShared\Utilities\Paginator;
 
-use App\Ds2013\Presenter;
+use App\DsShared\Presenter;
 
 class PaginatorPresenter extends Presenter
 {

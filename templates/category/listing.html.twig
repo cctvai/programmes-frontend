@@ -37,7 +37,7 @@
                     {% endfor %}
                 </ol>
                 {%- if paginator is not null -%}
-                    {{ ds2013_presenter(paginator) }}
+                    {{ ds_shared_presenter(paginator) }}
                 {%- endif -%}
             {% else %}
                 <div class="grid">

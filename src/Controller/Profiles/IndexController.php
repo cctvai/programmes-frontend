@@ -4,7 +4,7 @@ declare(strict_types = 1);
 namespace App\Controller\Profiles;
 
 use App\Controller\BaseController;
-use App\Ds2013\Presenters\Utilities\Paginator\PaginatorPresenter;
+use App\DsShared\Utilities\Paginator\PaginatorPresenter;
 use App\ExternalApi\Isite\Domain\Profile;
 use App\ExternalApi\Isite\Service\ProfileService;
 use BBC\ProgrammesPagesService\Domain\Entity\CoreEntity;

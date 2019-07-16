@@ -16,7 +16,7 @@
             {%- for currentPage in 1..pageCount -%}
                 <div class="grid-wrapper">
                     <div class="grid 1/1">
-                        {{ ds2013('paginator', currentPage, 10, pageCount * 10) }}
+                        {{ ds_shared('paginator', currentPage, 10, pageCount * 10) }}
                     </div>
                 </div>
             {%- endfor -%}
@@ -27,17 +27,17 @@
         <br/>
         <div class="grid-wrapper">
             <div class="grid 1/1">
-                {{ ds2013('paginator', 1, 10, 1400) }}
+                {{ ds_shared('paginator', 1, 10, 1400) }}
             </div>
         </div>
         <div class="grid-wrapper">
             <div class="grid 1/1">
-                {{ ds2013('paginator', 50, 10, 1400) }}
+                {{ ds_shared('paginator', 50, 10, 1400) }}
             </div>
         </div>
         <div class="grid-wrapper">
             <div class="grid 1/1">
-                {{ ds2013('paginator', 140, 10, 1400) }}
+                {{ ds_shared('paginator', 140, 10, 1400) }}
             </div>
         </div>
         <br/>
@@ -46,17 +46,17 @@
     <br/>
     <div class="grid-wrapper">
         <div class="grid 1/1">
-            {{ ds2013('paginator', 1, 10, 15000) }}
+            {{ ds_shared('paginator', 1, 10, 15000) }}
         </div>
     </div>
     <div class="grid-wrapper">
         <div class="grid 1/1">
-            {{ ds2013('paginator', 150, 10, 15000) }}
+            {{ ds_shared('paginator', 150, 10, 15000) }}
         </div>
     </div>
     <div class="grid-wrapper">
         <div class="grid 1/1">
-            {{ ds2013('paginator', 1500, 10, 15000) }}
+            {{ ds_shared('paginator', 1500, 10, 15000) }}
         </div>
     </div>
     <br/>

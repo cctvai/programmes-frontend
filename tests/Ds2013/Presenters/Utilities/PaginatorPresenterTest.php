@@ -3,7 +3,7 @@ declare(strict_types = 1);
 
 namespace Tests\App\Ds2013\Presenters\Utilities;
 
-use App\Ds2013\Presenters\Utilities\Paginator\PaginatorPresenter;
+use App\DsShared\Utilities\Paginator\PaginatorPresenter;
 use PHPUnit\Framework\TestCase;
 
 class PaginatorPresenterTest extends TestCase

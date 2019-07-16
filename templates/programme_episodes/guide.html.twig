@@ -33,7 +33,7 @@
         {{- ds2013('episodeGuideList', programme, children, upcomingBroadcasts, 2) -}}
 
         {%- if paginatorPresenter -%}
-            {{ ds2013_presenter(paginatorPresenter) }}
+            {{ ds_shared_presenter(paginatorPresenter) }}
         {%- endif -%}
     {%- else -%}
         <p class="note island">{{ tr('episodes_none')}}</p>

@@ -5,7 +5,7 @@ namespace App\Controller\ProgrammeEpisodes;
 
 use App\Controller\Helpers\StructuredDataHelper;
 use App\Ds2013\Factory\PresenterFactory;
-use App\Ds2013\Presenters\Utilities\Paginator\PaginatorPresenter;
+use App\DsShared\Utilities\Paginator\PaginatorPresenter;
 use BBC\ProgrammesPagesService\Domain\Entity\Episode;
 use BBC\ProgrammesPagesService\Domain\Entity\ProgrammeContainer;
 use BBC\ProgrammesPagesService\Service\CollapsedBroadcastsService;

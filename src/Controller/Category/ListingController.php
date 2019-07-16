@@ -4,7 +4,7 @@ declare(strict_types = 1);
 namespace App\Controller\Category;
 
 use App\Controller\BaseController;
-use App\Ds2013\Presenters\Utilities\Paginator\PaginatorPresenter;
+use App\DsShared\Utilities\Paginator\PaginatorPresenter;
 use BBC\ProgrammesCachingLibrary\CacheInterface;
 use BBC\ProgrammesPagesService\Domain\Entity\Category;
 use BBC\ProgrammesPagesService\Service\CategoriesService;

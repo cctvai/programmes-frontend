@@ -6,6 +6,7 @@ namespace App\DsShared\Factory;
 use App\DsShared\Utilities\EntityContext\EntityContextPresenter;
 use App\DsShared\Utilities\Image\ImagePresenter;
 use App\DsShared\Utilities\ImageEntity\ImageEntityPresenter;
+use App\DsShared\Utilities\Paginator\PaginatorPresenter;
 use App\DsShared\Utilities\Synopsis\SynopsisPresenter;
 use BBC\ProgrammesPagesService\Domain\Entity\CoreEntity;
 use BBC\ProgrammesPagesService\Domain\Entity\Image;
@@ -49,6 +50,20 @@ class PresenterFactory
             $sizes,
             $options
         );
+    }
+
+    /**
+     * @param int $currentPage
+     * @param int $pageSize
+     * @param int $totalItems
+     * @return PaginatorPresenter
+     */
+    public function paginatorPresenter(
+        int $currentPage,
+        int $pageSize,
+        int $totalItems
+    ): PaginatorPresenter {
+        return new PaginatorPresenter($currentPage, $pageSize, $totalItems);
     }
 
     public function synopsisPresenter(Synopses $synopses, int $maxLength): SynopsisPresenter

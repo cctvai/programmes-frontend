@@ -7,8 +7,45 @@
  * more pages as the viewport size increases.
  */
 
+$paginator-basic-spacing: 8px;
+$paginator-root-font-size: 16px;
+
 .pagination {
-    margin-bottom: $basic-spacing;
+    $font-size: 15px;
+    // REMs, falling back to px
+    font-size: $font-size;
+    font-size: ($font-size / $paginator-root-font-size) * 1rem;
+    // Make line-height be a unitless measurement instead of a pixel value
+    line-height: 20px / $font-size;
+    letter-spacing: 0;
+    text-align: center;
+    zoom: 1;
+    padding-left: 0;
+    margin-bottom: $paginator-basic-spacing;
+    margin-top: 0;
+    list-style: none;
+
+    a {
+        font-weight: bold;
+    }
+
+    &::before,
+    &::after {
+        content: ' ';
+        display: table;
+    }
+
+    &::after {
+        clear: both;
+    }
+
+    > li {
+        display: inline-block;
+    }
+
+    > li > a {
+        display: block;
+    }
 
     // Nested in a .pagination class to trump the "nav > li" styles
     .pagination__page,
@@ -28,12 +65,12 @@
 
 .pagination__next {
     // -1px on the margin-left to account for the adjacent page / spacer margin
-    margin: 0 $basic-spacing 0 ($basic-spacing - 1px);
+    margin: 0 $paginator-basic-spacing 0 ($paginator-basic-spacing - 1px);
 }
 
 .pagination__previous {
     // -1px on the margin-right to account for the adjacent page / spacer margin
-    margin: 0 ($basic-spacing - 1px) 0 $basic-spacing;
+    margin: 0 ($paginator-basic-spacing - 1px) 0 $paginator-basic-spacing;
 }
 
 .pagination__page a,
@@ -60,7 +97,13 @@ svg.pagination__next-previous {
 @include mq($from: 'gel1b', $until: 'gel3b') {
     .pagination__next span,
     .pagination__previous span {
-        @include visually-hidden();
+        border: 0;
+        clip: rect(0 0 0 0);
+        height: 1px;
+        overflow: hidden;
+        padding: 0;
+        position: absolute;
+        width: 1px;
     }
 }
 
@@ -78,6 +121,13 @@ svg.pagination__next-previous {
 // displayed on all devices that are wide enough for numbered buttons.
 @include mq($from: 'gel1b') {
     .pagination {
+        $font-size: 16px;
+        // REMs, falling back to px
+        font-size: $font-size;
+        font-size: ($font-size / $paginator-root-font-size) * 1rem;
+        // Make line-height be a unitless measurement instead of a pixel value
+        line-height: 22px / $font-size;
+
         .pagination__page--nohide,
         .pagination__page--first,
         .pagination__page--last,
@@ -100,7 +150,13 @@ svg.pagination__next-previous {
         .pagination__page--offset1,
         .pagination__page--offset2,
         .pagination__page--mobile {
-            @include gel-font-size(15px, 15px);
+            $font-size: 15px;
+            // REMs, falling back to px
+            font-size: $font-size;
+            font-size: ($font-size / $paginator-root-font-size) * 1rem;
+            // Make line-height be a unitless measurement instead of a pixel value
+            line-height: 15px / $font-size;
+            letter-spacing: 0;
         }
     }
 }
@@ -125,7 +181,7 @@ svg.pagination__next-previous {
 
 @include mq($from: 'gel3') {
     .pagination {
-        margin-bottom: $wide-spacing;
+        margin-bottom: 16px;
     }
 }
 

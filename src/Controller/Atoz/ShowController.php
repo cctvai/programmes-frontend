@@ -5,7 +5,7 @@ declare(strict_types = 1);
 namespace App\Controller\Atoz;
 
 use App\Controller\BaseController;
-use App\Ds2013\Presenters\Utilities\Paginator\PaginatorPresenter;
+use App\DsShared\Utilities\Paginator\PaginatorPresenter;
 use BBC\ProgrammesPagesService\Service\AtozTitlesService;
 use BBC\ProgrammesPagesService\Service\ProgrammesService;
 use Symfony\Component\HttpFoundation\Request;

@@ -48,7 +48,6 @@ use App\Ds2013\Presenters\Utilities\Credits\CreditsPresenter;
 use App\Ds2013\Presenters\Utilities\Cta\CtaPresenter;
 use App\Ds2013\Presenters\Utilities\DateList\DateListPresenter;
 use App\Ds2013\Presenters\Utilities\Download\DownloadPresenter;
-use App\Ds2013\Presenters\Utilities\Paginator\PaginatorPresenter;
 use App\Ds2013\Presenters\Utilities\SMP\SmpPresenter;
 use App\DsShared\Factory\HelperFactory;
 use App\ExternalApi\Electron\Domain\SupportingContentItem;
@@ -168,21 +167,6 @@ class PresenterFactory
             $options
         );
     }
-
-    /**
-     * @param int $currentPage
-     * @param int $pageSize
-     * @param int $totalItems
-     * @return PaginatorPresenter
-     */
-    public function paginatorPresenter(
-        int $currentPage,
-        int $pageSize,
-        int $totalItems
-    ): PaginatorPresenter {
-        return new PaginatorPresenter($currentPage, $pageSize, $totalItems);
-    }
-
 
     /**
      * @param Contribution[] $contributions

@@ -33,6 +33,11 @@
                 </li>
             {% endfor %}
         </ul>
+        {%- if paginatorPresenter -%}
+            <div class="br-box-page island--vertical">
+                {{ ds_shared_presenter(paginatorPresenter) }}
+            </div>
+        {%- endif -%}
         {% if relatedLinks is not empty %}
             <div class="br-box-page island--vertical">
                 <div class="lined-above br-keyline">
