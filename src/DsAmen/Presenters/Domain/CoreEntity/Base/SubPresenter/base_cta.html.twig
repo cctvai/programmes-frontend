@@ -1,4 +1,4 @@
-<div class="icon-link {{ cta.getOption('cta_class') }}">
+<div class="icon-link {{ cta.getOption('cta_class') }} {% block extra_container_classes %}{% endblock %}">
     <a class="link-complex" href="{{ cta.getUrl() }}" data-linktrack="{{ cta.getLinkLocation() }}"
        {%- if cta.getLabelTranslation() -%}aria-label="{{ tr(cta.getLabelTranslation()) }}" {%- else -%} tabindex="-1" aria-hidden="true" {%- endif -%}
     >

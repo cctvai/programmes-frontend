@@ -20,7 +20,7 @@ class RecipePresenter extends Presenter
         'srcsets' => [160, 235, 280, 320, 466, 608],
         'img_is_lazy_loaded' => true,
         'media_variant' => 'media--column media--card',
-        'cta_class' => 'cta--dark',
+        'cta_class' => 'cta cta--dark',
         'media_panel_class' => '1/1',
         'branding_name' => 'subtle',
         'link_location_prefix' => 'programmes_recipe_',

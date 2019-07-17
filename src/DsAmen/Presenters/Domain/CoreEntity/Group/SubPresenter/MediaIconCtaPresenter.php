@@ -10,13 +10,8 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class MediaIconCtaPresenter extends BaseCtaPresenter
 {
-    private $additionalOptions = [
-        'cta_class' => 'cta br-box-secondary',
-    ];
-
     public function __construct(CoreEntity $coreEntity, UrlGeneratorInterface $router, array $options = [])
     {
-        $options = array_merge($this->additionalOptions, $options);
         parent::__construct($coreEntity, $router, $options);
     }
 

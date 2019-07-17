@@ -1,4 +1,7 @@
 {% extends "@DsAmen/Presenters/Domain/CoreEntity/Base/SubPresenter/base_cta.html.twig" %}
+{%- block extra_container_classes -%}
+    cta--live
+{%- endblock -%}
 {%- block message -%}
     <span class="icon-label gel-brevier link-complex__target">
         {{- tr(cta.getLabelTranslation()) | upper -}}
