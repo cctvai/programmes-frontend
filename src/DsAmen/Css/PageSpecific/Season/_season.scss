@@ -1,0 +1,17 @@
+.season-header {
+    max-width: 1008px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: $gel-unit-large * 2;
+}
+
+.season-header-synopsis,
+.season-promotion-body {
+    padding: $gel-unit-large;
+    height: 100%;
+
+    & h2 {
+        font-weight: bold;
+        padding-bottom: $gel-unit-small;
+    }
+}

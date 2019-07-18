@@ -1,0 +1,43 @@
+{% extends 'base_ds_amen.html.twig' %}
+
+{% block html_classes %}b-pw-1280{% endblock %}
+{% block title %}BBC - Programmes{% endblock %}
+
+{% block body %}
+    {% if promoPriority %}
+    {# Render the top section with the first promo in the list #}
+        <div class="season-header">
+            <div class="p-g-p">
+                <div class="grid grid--flush leading-gap box-link br-blocklink-secondary br-secondary-linkhover-onbg015--hover">
+                    <div class="grid__item 1/1 1/2@gel2b 2/3@gel3">
+                        {{ ds_shared('imageEntity', promoImage, 450, '', {'ratio': 'auto'}) }}
+                    </div>
+                    <div class="grid__item 1/1 1/2@gel2b 1/3@gel3">
+                        <div class="br-box-secondary">
+                            <div class="season-promotion-body br-secondary-linkhover-onbg015--childhover">
+                                <h2 class="season-promotion-title"><a class="br-blocklink__link box-link__target" href="{{ promoPriority.getUrl() }}">{{ promoPriority.getTitle() }}</a></h4>
+                                <p class="text--subtle">{{ promoPriority.getSynopses().getLongestSynopsis() }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% else %}
+    {# Use the synopsis and season image #}
+        <div class="season-header">
+            <div class="p-g-p">
+                <div class="grid grid--flush leading-gap">
+                    <div class="grid__item 1/1 1/2@gel2b 2/3@gel3">
+                        {{ ds_shared('imageEntity', season.getImage(), 450, '', {'ratio': 'auto'}) }}
+                    </div>
+                    <div class="grid__item 1/1 1/2@gel2b 1/3@gel3">
+                        <div class="br-box-secondary season-header-synopsis">
+                            <p>{{ season.getLongestSynopsis() }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}

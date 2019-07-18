@@ -29,7 +29,6 @@ class ImageEntityPresenter extends ImagePresenter
         array $options = []
     ) {
         $this->image = $image;
-
         parent::__construct((string) $image->getPid(), $defaultWidth, $sizes, $options);
     }
 
