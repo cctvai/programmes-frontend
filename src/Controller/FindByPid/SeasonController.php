@@ -11,7 +11,8 @@ class SeasonController extends BaseController
 {
     public function __invoke(Season $season, PromotionsService $promotionsService)
     {
-        $this->setAtiContentLabels('foo', 'bar');
+        $this->setAtiContentLabels('season', 'season');
+        $this->setAtiContentId((string) $season->getPid());
         $this->setContextAndPreloadBranding($season);
 
         $promotions = $promotionsService->findActiveNonSuperPromotionsByContext($season, 50);
