@@ -20,7 +20,8 @@ class CollectionController extends BaseController
         CoreEntitiesService $coreEntitiesService,
         RelatedLinksService $relatedLinksService
     ) {
-        $this->setAtiContentLabels('funny', 'reference');
+        $this->setAtiContentLabels('list-collection', 'collection');
+        $this->setAtiContentId((string) $collection->getPid());
         $this->setContextAndPreloadBranding($collection);
 
         $page = $this->getPage();
