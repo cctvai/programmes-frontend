@@ -32,7 +32,7 @@ class UrlKeyExtension extends Twig_Extension
         'bbc_music_jazz' => '/programmes/p033dmdy',
         'bbc_nepali_radio' => true,
         'bbc_news' => true,
-        'bbc_news24' => '/news',
+        'bbc_news24' => '/tv/bbcnews',
         'bbc_one' => true,
         'bbc_parliament' => '/tv/bbcparliament',
         'bbc_pashto_radio' => true,
