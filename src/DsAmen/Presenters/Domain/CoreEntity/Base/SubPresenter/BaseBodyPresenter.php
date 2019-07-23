@@ -5,6 +5,7 @@ namespace App\DsAmen\Presenters\Domain\CoreEntity\Base\SubPresenter;
 
 use App\DsAmen\Presenter;
 use BBC\ProgrammesPagesService\Domain\Entity\CoreEntity;
+use BBC\ProgrammesPagesService\Domain\Entity\MasterBrand;
 use BBC\ProgrammesPagesService\Domain\Entity\ProgrammeItem;
 use BBC\ProgrammesPagesService\Domain\ValueObject\PartialDate;
 
@@ -21,7 +22,8 @@ abstract class BaseBodyPresenter extends Presenter
         'show_synopsis' => false,
         'synopsis_class' => 'invisible visible@gel3',
         'show_release_date' => false,
-        'full_details_class' => 'programme__details',
+        'show_masterbrand' => false,
+        'full_details_class' => 'programme__details media__meta-group',
     ];
 
     public function __construct(CoreEntity $coreEntity, array $options = [])
@@ -52,5 +54,17 @@ abstract class BaseBodyPresenter extends Presenter
     public function hasReleaseDate(): bool
     {
         return $this->getOption('show_release_date') && !is_null($this->releaseDate);
+    }
+
+    public function getDisplayMasterbrand(): ?MasterBrand
+    {
+        if ($this->getOption('show_masterbrand')) {
+            $programmeMasterbrand = $this->coreEntity->getMasterBrand();
+            $contextMasterbrand = $this->getOption('context_programme') ? $this->getOption('context_programme')->getMasterbrand() : null;
+            if ($programmeMasterbrand != $contextMasterbrand) {
+                return $programmeMasterbrand;
+            }
+        }
+        return null;
     }
 }

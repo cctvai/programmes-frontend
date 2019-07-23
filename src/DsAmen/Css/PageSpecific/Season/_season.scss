@@ -1,17 +1,66 @@
+.season-page {
+    padding-top: $gel-unit-small;
+    padding-bottom: $gel-unit-small;
+}
+
 .season-header {
     max-width: 1008px;
     margin-left: auto;
     margin-right: auto;
-    margin-top: $gel-unit-large * 2;
+    margin-bottom: $gel-unit-small;
 }
 
 .season-header-synopsis,
 .season-promotion-body {
-    padding: $gel-unit-large;
     height: 100%;
 
-    & h2 {
+    > h2 {
         font-weight: bold;
-        padding-bottom: $gel-unit-small;
+        padding-bottom: $gel-unit-small / 2;
+    }
+}
+
+.season-list {
+    > h2 {
+        display: inline-block;
+        margin: $gel-unit-small 0;
+    }
+
+    ~ .season-list {
+        margin-top: $gel-unit-small;
+    }
+}
+
+@include mq($from: gel2) {
+    .season-page {
+        padding-top: $gel-unit-large;
+        padding-bottom: $gel-unit-large;
+    }
+
+    .season-list ~ .season-list {
+        margin-top: $gel-unit-large;
+    }
+
+    .season-header {
+        margin-bottom: $gel-unit-large;
+    }
+}
+
+@include mq($from: gel3) {
+    .season-header-synopsis,
+    .season-promotion-body {
+        > h2 {
+            padding-bottom: $gel-unit-small;
+        }
+    }
+
+    .season-list > h2 {
+        margin: $gel-unit-large 0;
+    }
+}
+
+@include mq($from: gel5) {
+    .season-header {
+        padding: $gel-unit-large 0;
     }
 }

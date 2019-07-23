@@ -1,23 +1,23 @@
 {% extends 'base_ds_amen.html.twig' %}
 
 {% block html_classes %}b-pw-1280{% endblock %}
-{% block title %}BBC - Programmes{% endblock %}
+{% block title %}{{ meta_context.titlePrefix() }}{% endblock %}
+{% block page_classes %}gel-long-primer amen p-g-p season-page{% endblock %}
 
 {% block body %}
+    <h1 class="invisible">{{ season.getTitle() }}</h1>
     {% if promoPriority %}
     {# Render the top section with the first promo in the list #}
         <div class="season-header">
-            <div class="p-g-p">
-                <div class="grid grid--flush leading-gap box-link br-blocklink-secondary br-secondary-linkhover-onbg015--hover">
-                    <div class="grid__item 1/1 1/2@gel2b 2/3@gel3">
-                        {{ ds_shared('imageEntity', promoImage, 450, '', {'ratio': 'auto'}) }}
-                    </div>
-                    <div class="grid__item 1/1 1/2@gel2b 1/3@gel3">
-                        <div class="br-box-secondary">
-                            <div class="season-promotion-body br-secondary-linkhover-onbg015--childhover">
-                                <h2 class="season-promotion-title"><a class="br-blocklink__link box-link__target" href="{{ promoPriority.getUrl() }}">{{ promoPriority.getTitle() }}</a></h4>
-                                <p class="text--subtle">{{ promoPriority.getSynopses().getLongestSynopsis() }}</p>
-                            </div>
+            <div class="grid grid--flush box-link br-blocklink-secondary br-secondary-linkhover-onbg015--hover">
+                <div class="grid__item 1/1 1/2@gel2b 2/3@gel3">
+                    {{ ds_shared('imageEntity', promoImage, 450, '', {'ratio': 'auto'}) }}
+                </div>
+                <div class="grid__item 1/1 1/2@gel2b 1/3@gel3">
+                    <div class="br-box-secondary">
+                        <div class="season-promotion-body island br-secondary-linkhover-onbg015--childhover">
+                            <h2 class="season-promotion-title"><a class="br-blocklink__link box-link__target" href="{{ promoPriority.getUrl() }}">{{ promoPriority.getTitle() }}</a></h4>
+                            <p class="text--subtle">{{ promoPriority.getSynopses().getLongestSynopsis() }}</p>
                         </div>
                     </div>
                 </div>
@@ -26,18 +26,95 @@
     {% else %}
     {# Use the synopsis and season image #}
         <div class="season-header">
-            <div class="p-g-p">
-                <div class="grid grid--flush leading-gap">
-                    <div class="grid__item 1/1 1/2@gel2b 2/3@gel3">
-                        {{ ds_shared('imageEntity', season.getImage(), 450, '', {'ratio': 'auto'}) }}
-                    </div>
-                    <div class="grid__item 1/1 1/2@gel2b 1/3@gel3">
-                        <div class="br-box-secondary season-header-synopsis">
-                            <p>{{ season.getLongestSynopsis() }}</p>
-                        </div>
+            <div class="grid grid--flush">
+                <div class="grid__item 1/1 1/2@gel2b 2/3@gel3">
+                    {{ ds_shared('imageEntity', season.getImage(), 450, '', {'ratio': 'auto'}) }}
+                </div>
+                <div class="grid__item 1/1 1/2@gel2b 1/3@gel3">
+                    <div class="br-box-secondary season-header-synopsis island">
+                        <p>{{ season.getLongestSynopsis() }}</p>
                     </div>
                 </div>
             </div>
+        </div>
+    {% endif %}
+    {% if comingSoons is not empty or availableNows is not empty or promotions is not empty %}
+        {% if comingSoons is not empty %}
+            <div class="island--horizontal br-box-page season-list">
+                <h2>{{ tr('coming_soon')|title }}</h2>
+                <ul class="grid">
+                    {% for comingSoon in comingSoons %}
+                        <li class="grid__item 1/2@gel2b 1/3@gel3b 1/4@gel5">
+                            {{ ds_amen('collapsedBroadcast', comingSoon, {
+                                'title_options': {
+                                    'h_tag': 'h3'
+                                },
+                                'body_options': {
+                                    'show_synopsis': true,
+                                },
+                                'branding_name': 'page'
+                            }) }}
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+        {% if availableNows is not empty %}
+            <div class="island--horizontal br-box-page season-list">
+                <h2>{{ tr('available_now')|title }}</h2>
+                <ul class="grid">
+                    {% for availableNow in availableNows %}
+                        <li class="grid__item 1/2@gel2b 1/3@gel3b 1/4@gel5">
+                            {{ ds_amen('programme', availableNow, {
+                                'title_options': {
+                                    'h_tag': 'h3'
+                                },
+                                'body_options': {
+                                    'show_synopsis': true,
+                                    'show_masterbrand': true,
+                                },
+                                'branding_name': 'page'
+                            }) }}
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+        {% if promotions is not empty %}
+            <div class="island--horizontal br-box-page season-list">
+                <h2>{{ tr('season_promotions_title', { '%1': season.getTitle() }) }}</h2>
+                <ul class="grid">
+                    {% for promotion in promotions %}
+                        <li class="grid__item 1/2@gel2b 1/3@gel3b 1/4@gel5">
+                            {{ ds_amen('promotion', promotion, {
+                                'h_tag': 'h3',
+                                'branding_name': 'page'
+                            }) }}
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+    {% else %}
+        <div class="island br-box-page season-list">
+            <p>{{ tr('season_no_content', { '%1': season.getTitle() }) }}</p>
+        </div>
+    {% endif %}
+    {% if relatedLinks is not empty %}
+        <div class="island--horizontal br-box-page season-list">
+            <h2>{{ tr('related_links') }}</h2>
+            <ul class="grid">
+                {% for relatedLink in relatedLinks %}
+                    <li class="grid__item 1/2@gel2b 1/3@gel3b 1/4@gel5">
+                        <a href="{{ relatedLink.getUri() }}">
+                            {{ relatedLink.getTitle() }}
+                            {% if relatedLink.isExternal() %}
+                                <span class="text-subtle gel-brevier">({{ relatedLink.getHost() }})</span>
+                            {% endif %}
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
         </div>
     {% endif %}
 {% endblock %}

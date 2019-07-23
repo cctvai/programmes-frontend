@@ -11,5 +11,8 @@
                 </div>
             </div>
         {% endif %}
+        {% if body.getDisplayMasterbrand() %}
+            <p class="programme__service media__meta-row gel-minion-bold text--subtle">{{ body.getDisplayMasterbrand().getName() }}</p>
+        {% endif %}
     </div>
 {% endif %}

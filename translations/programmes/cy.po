@@ -1941,6 +1941,14 @@ msgstr "Gwyddoniaeth a Natur"
 msgid "search_iplayer_radio"
 msgstr "Chwilio yn iPlayer Radio"
 
+#. English: "There is currently no content available in %1.".
+msgid "season_no_content"
+msgstr ""
+
+#. English: "More from %1".
+msgid "season_promotions_title"
+msgstr ""
+
 #. English: "%1s ago".
 #. %1 is a variable, which may contain the value: "1".
 #. Priority for: Rich Tracks

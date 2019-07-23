@@ -5,17 +5,28 @@ namespace App\Controller\FindByPid;
 use App\Controller\BaseController;
 use BBC\ProgrammesPagesService\Domain\Entity\CoreEntity;
 use BBC\ProgrammesPagesService\Domain\Entity\Season;
+use BBC\ProgrammesPagesService\Service\CollapsedBroadcastsService;
+use BBC\ProgrammesPagesService\Service\CoreEntitiesService;
 use BBC\ProgrammesPagesService\Service\PromotionsService;
+use BBC\ProgrammesPagesService\Service\RelatedLinksService;
 
 class SeasonController extends BaseController
 {
-    public function __invoke(Season $season, PromotionsService $promotionsService)
-    {
+    const LIST_LIMIT = 12;
+
+    public function __invoke(
+        Season $season,
+        PromotionsService $promotionsService,
+        CollapsedBroadcastsService $collapsedBroadcastsService,
+        CoreEntitiesService $coreEntitiesService,
+        RelatedLinksService $relatedLinksService
+    ) {
         $this->setAtiContentLabels('season', 'season');
         $this->setAtiContentId((string) $season->getPid());
         $this->setContextAndPreloadBranding($season);
+        $this->setInternationalStatusAndTimezoneFromContext($season);
 
-        $promotions = $promotionsService->findActiveNonSuperPromotionsByContext($season, 50);
+        $promotions = $promotionsService->findActiveNonSuperPromotionsByContext($season);
         $promoPrority = false;
         $promoImage = false;
 
@@ -29,6 +40,9 @@ class SeasonController extends BaseController
             'promoPriority' => $promoPrority,
             'promotions' => $promotions,
             'promoImage' => $promoImage,
+            'comingSoons' => $collapsedBroadcastsService->findUpcomingUnderGroup($season, self::LIST_LIMIT),
+            'availableNows' => $coreEntitiesService->findStreamableEpisodesUnderGroup($season, self::LIST_LIMIT),
+            'relatedLinks' => $relatedLinksService->findByRelatedToProgramme($season, ['related_site', 'miscellaneous']),
         ]);
     }
 }
