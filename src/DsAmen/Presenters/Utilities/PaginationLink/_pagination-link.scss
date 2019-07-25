@@ -15,3 +15,13 @@
         margin-top: $gel-unit-large;
     }
 }
+
+// There is a bug in some windows 10s PCs with NVDA where if the SVG icon is created before the <span> the link
+// when pressing enter won't work. With this trick we can put the <span> first but make it display at the right side
+.pagination-nextprev {
+    display: inline-block;
+
+    span {
+        float: right;
+    }
+}
