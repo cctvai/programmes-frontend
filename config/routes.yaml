@@ -274,3 +274,28 @@ topic_show:
     path: /programmes/topics/{topic}/{slice}
     defaults: { _controller: App\Controller\Topic\ShowController, slice: '' }
     requirements: { slice: 'video|audio', topic: '.+?' }
+
+# Season sub page redirects
+season_collection_members:
+    path: /programmes/{pid}/members
+    controller: App\Controller\RedirectAndCacheController::redirectAction
+    defaults: { route: find_by_pid, permanent: true }
+    requirements: { pid: '[0-9b-df-hj-np-tv-z]{8,15}' }
+
+season_members_all:
+    path: /programmes/{pid}/members/all
+    controller: App\Controller\RedirectAndCacheController::redirectAction
+    defaults: { route: find_by_pid, permanent: true }
+    requirements: { pid: '[0-9b-df-hj-np-tv-z]{8,15}' }
+
+season_schedules_by_date:
+    path: /programmes/{pid}/schedules/{date}
+    controller: App\Controller\RedirectAndCacheController::redirectAction
+    defaults: { route: find_by_pid, permanent: true, ignoreAttributes: [date] }
+    requirements: { pid: '[0-9b-df-hj-np-tv-z]{8,15}', date: '\d{4}/\d{2}/\d{2}' }
+
+season_schedules:
+    path: /programmes/{pid}/schedules
+    controller: App\Controller\RedirectAndCacheController::redirectAction
+    defaults: { route: find_by_pid, permanent: true }
+    requirements: { pid: '[0-9b-df-hj-np-tv-z]{8,15}' }
