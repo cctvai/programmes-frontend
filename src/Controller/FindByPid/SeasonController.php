@@ -12,8 +12,6 @@ use BBC\ProgrammesPagesService\Service\RelatedLinksService;
 
 class SeasonController extends BaseController
 {
-    const LIST_LIMIT = 12;
-
     public function __invoke(
         Season $season,
         PromotionsService $promotionsService,
@@ -40,8 +38,8 @@ class SeasonController extends BaseController
             'promoPriority' => $promoPrority,
             'promotions' => $promotions,
             'promoImage' => $promoImage,
-            'comingSoons' => $collapsedBroadcastsService->findUpcomingUnderGroup($season, self::LIST_LIMIT),
-            'availableNows' => $coreEntitiesService->findStreamableEpisodesUnderGroup($season, self::LIST_LIMIT),
+            'comingSoons' => $collapsedBroadcastsService->findUpcomingUnderGroup($season, 6),
+            'availableNows' => $coreEntitiesService->findStreamableEpisodesUnderGroup($season, 12),
             'relatedLinks' => $relatedLinksService->findByRelatedToProgramme($season, ['related_site', 'miscellaneous']),
         ]);
     }

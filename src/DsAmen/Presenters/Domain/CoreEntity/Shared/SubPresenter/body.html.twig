@@ -12,7 +12,8 @@
             </div>
         {% endif %}
         {% if body.getDisplayMasterbrand() %}
-            <p class="programme__service media__meta-row gel-minion-bold text--subtle">{{ body.getDisplayMasterbrand().getName() }}</p>
+            {% set network = body.getDisplayMasterbrand().getNetwork() %}
+            <a href="{{ network_link(network) }}" class="programme__service media__meta-row gel-minion-bold">{{ network.getName() }}</a>
         {% endif %}
     </div>
 {% endif %}

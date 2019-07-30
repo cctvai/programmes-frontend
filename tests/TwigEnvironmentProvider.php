@@ -11,7 +11,9 @@ use App\Twig\DesignSystemPresenterExtension;
 use App\Twig\AdditionalJavascriptExtension;
 use App\Twig\GelIconExtension;
 use App\Twig\HtmlUtilitiesExtension;
+use App\Twig\NetworkLogoExtension;
 use App\Twig\TranslateAndTimeExtension;
+use App\Twig\UrlKeyExtension;
 use App\ValueObject\CosmosInfo;
 use RMP\Translate\TranslateFactory;
 use Symfony\Bridge\Twig\Extension\AssetExtension;
@@ -142,6 +144,10 @@ class TwigEnvironmentProvider
         $twig->addExtension(new HtmlUtilitiesExtension($assetPackages, $twig));
 
         $twig->addExtension(new AdditionalJavascriptExtension());
+
+        $twig->addExtension(new NetworkLogoExtension($assetPackages));
+
+        $twig->addExtension(new UrlKeyExtension());
 
         // Set twig for template tests to use
         self::$twig = $twig;
