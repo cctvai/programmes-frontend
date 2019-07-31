@@ -1,0 +1,48 @@
+$faq-details-indent: 18px;
+$faq-details-inner-indent: 26px;
+
+details.faq-item {
+    summary {
+        outline: none;
+
+        cursor: pointer;
+
+        @include target-ie { // sass-lint:disable-line empty-args mixins-before-declarations
+            cursor: text;
+        }
+
+        // using an svg icon instead of the triangle
+        list-style: none;
+
+        &::-webkit-details-marker {
+            display: none;
+        }
+
+        // borrow typography from branding with some layout of ours
+        h3 {
+            display: inline-block;
+            max-width: 91%;
+            margin: 0 0 0 5px;
+        }
+
+        svg {
+            vertical-align: top;
+            margin-top: 0.67ex;
+        }
+    }
+
+    &[open] summary svg {
+        transform: rotate(90deg);
+    }
+
+    >div {
+        margin: 10px $faq-details-inner-indent 0;
+    }
+}
+
+div.component[data-content-block-type='faq']:last-of-type details:last-of-type {
+    &:not([open]) {
+        padding-bottom: $faq-details-indent;
+    }
+}
+

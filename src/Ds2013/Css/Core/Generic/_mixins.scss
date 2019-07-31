@@ -47,3 +47,9 @@
 @mixin transition-delay($transition-delay) {
     @warn 'The use of the mixin transition-delay is deprecated. Please use the transition-delay property directly';
 }
+
+@mixin target-ie() {
+    @media screen and (-ms-high-contrast: active), screen and (-ms-high-contrast: none) {
+        @content;
+    }
+}
