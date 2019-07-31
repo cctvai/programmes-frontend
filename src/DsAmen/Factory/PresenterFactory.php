@@ -85,7 +85,7 @@ class PresenterFactory
 
     public function promotionPresenter(Promotion $promotion, array $options = []): PromotionPresenter
     {
-        return new PromotionPresenter($this->router, $promotion, $options);
+        return new PromotionPresenter($this->router, $promotion, $this->helperFactory, $options);
     }
 
     public function promotionCardPresenter(Promotion $promotion, array $options = []): PromotionCardPresenter

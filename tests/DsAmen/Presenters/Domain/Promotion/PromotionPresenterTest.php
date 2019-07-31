@@ -4,6 +4,7 @@ declare(strict_types = 1);
 namespace Tests\App\DsAmen\Presenters\Domain\Promotion;
 
 use App\DsAmen\Presenters\Domain\Promotion\PromotionPresenter;
+use App\DsShared\Factory\HelperFactory;
 use App\Exception\InvalidOptionException;
 use BBC\ProgrammesPagesService\Domain\Entity\Episode;
 use BBC\ProgrammesPagesService\Domain\Entity\Image;
@@ -32,12 +33,13 @@ class PromotionPresenterTest extends TestCase
             'getRelatedLinks' => $relatedLinks,
         ]);
 
-        $presenter = new PromotionPresenter($this->mockRouter, $promotion);
+        $helperFactory = $this->createMock(HelperFactory::class);
+
+        $presenter = new PromotionPresenter($this->mockRouter, $promotion, $helperFactory);
 
         $this->assertSame('title', $presenter->getTitle());
         $this->assertSame('short synopsis', $presenter->getSynopsis());
         $this->assertSame($relatedLinks, $presenter->getRelatedLinks());
-        $this->assertSame(0, $presenter->getDuration());
         $this->assertSame('br-box-subtle', $presenter->getBrandingBoxClass());
         $this->assertSame('br-subtle-text-ontext', $presenter->getTextBrandingClass());
     }
@@ -53,7 +55,6 @@ class PromotionPresenterTest extends TestCase
         $promotedEntity = $this->createConfiguredMock(Episode::class, [
             'getPid' => new Pid('b0000001'),
             'getImage' => $image,
-            'getDuration' => 11,
             'hasPlayableDestination' => false,
             'isTv' => false,
         ]);
@@ -62,38 +63,11 @@ class PromotionPresenterTest extends TestCase
             'getPromotedEntity' => $promotedEntity,
         ]);
 
-        $presenter = new PromotionPresenter($this->mockRouter, $promotion);
+        $helperFactory = $this->createMock(HelperFactory::class);
+
+        $presenter = new PromotionPresenter($this->mockRouter, $promotion, $helperFactory);
         $this->assertSame('/programmes/b0000001', $presenter->getUrl());
         $this->assertSame($image, $presenter->getImage());
-        $this->assertSame(11, $presenter->getDuration());
-        $this->assertSame([], $presenter->getActionIcon());
-    }
-
-    public function testPromotionOfProgrammeItemWithNullDuration()
-    {
-        $this->mockRouter->method('generate')
-            ->with('find_by_pid', ['pid' => 'b0000001'])
-            ->willReturn('/programmes/b0000001');
-
-        $image = $this->createMock(Image::class);
-
-        $promotedEntity = $this->createConfiguredMock(Episode::class, [
-            'getPid' => new Pid('b0000001'),
-            'getImage' => $image,
-            'getDuration' => null,
-            'hasPlayableDestination' => false,
-            'isTv' => false,
-        ]);
-
-        $promotion = $this->createConfiguredMock(Promotion::class, [
-            'getPromotedEntity' => $promotedEntity,
-        ]);
-
-        $presenter = new PromotionPresenter($this->mockRouter, $promotion);
-        $this->assertSame('/programmes/b0000001', $presenter->getUrl());
-        $this->assertSame($image, $presenter->getImage());
-        $this->assertSame(0, $presenter->getDuration());
-        $this->assertSame([], $presenter->getActionIcon());
     }
 
     public function testPromotionOfStreamableProgrammeItem()
@@ -107,7 +81,6 @@ class PromotionPresenterTest extends TestCase
         $promotedEntity = $this->createConfiguredMock(Episode::class, [
             'getPid' => new Pid('b0000001'),
             'getImage' => $image,
-            'getDuration' => 11,
             'hasPlayableDestination' => true,
             'isTv' => true,
         ]);
@@ -116,12 +89,11 @@ class PromotionPresenterTest extends TestCase
             'getPromotedEntity' => $promotedEntity,
         ]);
 
-        $presenter = new PromotionPresenter($this->mockRouter, $promotion);
+        $helperFactory = $this->createMock(HelperFactory::class);
+
+        $presenter = new PromotionPresenter($this->mockRouter, $promotion, $helperFactory);
         $this->assertSame('/programmes/b0000001', $presenter->getUrl());
         $this->assertSame($image, $presenter->getImage());
-        // TV Episodes don't show a duration
-        $this->assertSame(0, $presenter->getDuration());
-        $this->assertSame(['set' => 'audio-visual', 'icon' => 'play'], $presenter->getActionIcon());
     }
 
     public function testPromotionOfImage()
@@ -133,22 +105,25 @@ class PromotionPresenterTest extends TestCase
             'getUrl' => 'http://example.com',
         ]);
 
-        $presenter = new PromotionPresenter($this->mockRouter, $promotion);
+        $helperFactory = $this->createMock(HelperFactory::class);
+
+        $presenter = new PromotionPresenter($this->mockRouter, $promotion, $helperFactory);
 
         $this->assertSame('http://example.com', $presenter->getUrl());
         $this->assertSame($promotedEntity, $presenter->getImage());
-        $this->assertSame(['set' => 'basics', 'icon' => 'external-link'], $presenter->getActionIcon());
+        // external link should display CTA External link icon
+        $this->assertTrue($presenter->shouldDisplayCta());
 
         // Test internal link
-
         $promotion = $this->createConfiguredMock(Promotion::class, [
             'getPromotedEntity' => $promotedEntity,
             'getUrl' => 'http://bbc.co.uk/internal',
         ]);
 
-        $presenter = new PromotionPresenter($this->mockRouter, $promotion);
+        $presenter = new PromotionPresenter($this->mockRouter, $promotion, $helperFactory);
         $this->assertSame('http://bbc.co.uk/internal', $presenter->getUrl());
-        $this->assertSame([], $presenter->getActionIcon());
+        // internal link doesn't show CTA
+        $this->assertFalse($presenter->shouldDisplayCta());
     }
 
     public function testFilteringRelatedLinks()
@@ -163,7 +138,9 @@ class PromotionPresenterTest extends TestCase
             'getRelatedLinks' => $mockRelatedLinks,
         ]);
 
-        $presenter = new PromotionPresenter($this->mockRouter, $promotion, [
+        $helperFactory = $this->createMock(HelperFactory::class);
+
+        $presenter = new PromotionPresenter($this->mockRouter, $promotion, $helperFactory, [
             'show_synopsis' => false,
             'show_image' => false,
             'related_links_count' => 1,
@@ -182,7 +159,9 @@ class PromotionPresenterTest extends TestCase
             'getRelatedLinks' => [$this->createMock(RelatedLink::class)],
         ]);
 
-        $presenter = new PromotionPresenter($this->mockRouter, $promotion, [
+        $helperFactory = $this->createMock(HelperFactory::class);
+
+        $presenter = new PromotionPresenter($this->mockRouter, $promotion, $helperFactory, [
             'show_synopsis' => false,
             'show_image' => false,
             'related_links_count' => 0,
@@ -200,7 +179,9 @@ class PromotionPresenterTest extends TestCase
         $this->expectException(InvalidOptionException::class);
         $this->expectExceptionMessage('related_links_count option must 0 or a positive integer');
 
-        new PromotionPresenter($this->mockRouter, $promotion, [
+        $helperFactory = $this->createMock(HelperFactory::class);
+
+        new PromotionPresenter($this->mockRouter, $promotion, $helperFactory, [
             'related_links_count' => -1,
         ]);
     }

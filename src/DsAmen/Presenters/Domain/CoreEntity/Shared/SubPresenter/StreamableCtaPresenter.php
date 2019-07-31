@@ -14,6 +14,7 @@ class StreamableCtaPresenter extends BaseCtaPresenter
 {
     protected $additionalOptions = [
         'show_duration' => true,
+        'force_playout_linking' => false,
     ];
     /** @var StreamableHelper */
     private $streamableHelper;

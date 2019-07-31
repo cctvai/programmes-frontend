@@ -33,22 +33,9 @@
                     promotion.getOption('img_sizes'),
                     { 'is_lazy_loaded': promotion.getOption('img_is_lazy_loaded') }
                 ) -}}
-                {%- if promotion.getActionIcon() -%}
+                {%- if promotion.shouldDisplayCta() -%}
                     <div class="media__overlay media__overlay--bottom" data-eq-pts="medium: 280, large: 400, super: 656">
-                        <div class="icon-link {{ promotion.getOption('cta_class') }}">
-                            <a tabindex="-1" aria-hidden="true" class="link-complex" href="{{ promotion.getUrl() }}" data-linktrack="{{ promotion.getOption('link_location_prefix') }}calltoaction">
-                                {%- set action_icon = promotion.getActionIcon() -%}
-                                <div class="icon icon-cta icon--{{ action_icon.icon }}">
-                                    {{- gelicon(action_icon.set, action_icon.icon, 'gelicon--programme') -}}
-
-                                    {%- if promotion.getDuration() -%}
-                                        <span class="icon-label gel-brevier">
-                                            {{ ds_amen('duration', promotion.getDuration()) }}
-                                        </span>
-                                    {%- endif -%}
-                                </div>
-                            </a>
-                        </div>
+                        {{ ds_amen_presenter(promotion.getCtaPresenter()) }}
                     </div>
                 {%- endif -%}
             </div>

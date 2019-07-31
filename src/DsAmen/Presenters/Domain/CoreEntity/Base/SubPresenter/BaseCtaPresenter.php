@@ -9,7 +9,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 abstract class BaseCtaPresenter extends Presenter
 {
-    /** @var CoreEntity */
+    /** @var CoreEntity|null  */
     protected $coreEntity;
 
     /** @var UrlGeneratorInterface */
@@ -21,7 +21,7 @@ abstract class BaseCtaPresenter extends Presenter
         'link_location_prefix' => 'programmeobject_',
     ];
 
-    public function __construct(CoreEntity $coreEntity, UrlGeneratorInterface $router, array $options = [])
+    public function __construct(?CoreEntity $coreEntity, UrlGeneratorInterface $router, array $options = [])
     {
         parent::__construct($options);
         $this->router = $router;

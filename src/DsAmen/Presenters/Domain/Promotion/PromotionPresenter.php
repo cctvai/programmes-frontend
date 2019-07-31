@@ -4,11 +4,16 @@ declare(strict_types = 1);
 namespace App\DsAmen\Presenters\Domain\Promotion;
 
 use App\DsAmen\Presenter;
+use App\DsAmen\Presenters\Domain\CoreEntity\Shared\SubPresenter\ExternalLinkCtaPresenter;
+use App\DsAmen\Presenters\Domain\CoreEntity\Shared\SubPresenter\StreamableCtaPresenter;
+use App\DsShared\Factory\HelperFactory;
+use App\DsShared\Helpers\StreamableHelper;
 use App\Exception\InvalidOptionException;
+use BBC\ProgrammesPagesService\Domain\Entity\Clip;
 use BBC\ProgrammesPagesService\Domain\Entity\CoreEntity;
-use BBC\ProgrammesPagesService\Domain\Entity\Episode;
 use BBC\ProgrammesPagesService\Domain\Entity\Image;
 use BBC\ProgrammesPagesService\Domain\Entity\ProgrammeItem;
+use BBC\ProgrammesPagesService\Domain\Entity\PromotableInterface;
 use BBC\ProgrammesPagesService\Domain\Entity\Promotion;
 use BBC\ProgrammesPagesService\Domain\Entity\RelatedLink;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -21,11 +26,11 @@ class PromotionPresenter extends Presenter
     /** @var Promotion */
     private $promotion;
 
-    /** @var string[] */
-    private $actionIcon = [];
+    /** @var PromotableInterface  */
+    private $promotedEntity;
 
-    /** @var int */
-    private $duration = 0;
+    /** @var StreamableHelper */
+    private $streamableHelper;
 
     /** @var array */
     protected $options = [
@@ -50,26 +55,45 @@ class PromotionPresenter extends Presenter
     public function __construct(
         UrlGeneratorInterface $router,
         Promotion $promotion,
+        HelperFactory $helperFactory,
         array $options = []
     ) {
         parent::__construct($options);
         $this->router = $router;
         $this->promotion = $promotion;
+        $this->promotedEntity = $this->promotion->getPromotedEntity();
+        $this->streamableHelper = $helperFactory->getStreamUrlHelper();
+    }
 
-        // Build ActionIcon
-        $promotedEntity = $this->promotion->getPromotedEntity();
-        if ($promotedEntity instanceof ProgrammeItem && $promotedEntity->hasPlayableDestination()) {
-            $this->actionIcon = ['set' => 'audio-visual', 'icon' => 'play'];
-        } elseif ($this->isExternalLink($this->getUrl())) {
-            $this->actionIcon = ['set' => 'basics', 'icon' => 'external-link'];
+    public function shouldDisplayCta(): bool
+    {
+        if ($this->promotedEntity instanceof ProgrammeItem && $this->promotedEntity->hasPlayableDestination()) {
+            return true;
         }
+        if (!empty($this->promotion->getUrl()) && $this->isExternalLink($this->promotion->getUrl())) {
+            return true;
+        }
+        return false;
+    }
 
-        // Build Duration - only set for Clips and not-TV Episodes
-        if ($promotedEntity instanceof ProgrammeItem &&
-            !($promotedEntity instanceof Episode && $promotedEntity->isTv())
-        ) {
-            $this->duration = $promotedEntity->getDuration() ?? 0;
+    public function getCtaPresenter(array $options = [])
+    {
+        if ($this->promotedEntity instanceof ProgrammeItem && $this->promotedEntity->hasPlayableDestination()) {
+            return new StreamableCtaPresenter(
+                $this->streamableHelper,
+                $this->promotedEntity,
+                $this->router,
+                $options
+            );
         }
+        if (!empty($this->promotion->getUrl()) && $this->isExternalLink($this->promotion->getUrl())) {
+            return new ExternalLinkCtaPresenter(
+                $this->promotion->getUrl(),
+                $this->router,
+                $options
+            );
+        }
+        return null;
     }
 
     public function getTitle(): string
@@ -79,14 +103,22 @@ class PromotionPresenter extends Presenter
 
     public function getUrl(): string
     {
-        $promotedEntity = $this->promotion->getPromotedEntity();
-
-        if ($promotedEntity instanceof Image) {
+        if ($this->promotedEntity instanceof Image) {
             return $this->promotion->getUrl();
         }
 
-        if ($promotedEntity instanceof CoreEntity) {
-            return $this->router->generate('find_by_pid', ['pid' => $promotedEntity->getPid()]);
+        // for Episodes only the CTA should link to Playspace but for Clips
+        // the whole promotion box should link to Playspace
+        if ($this->promotedEntity instanceof Clip && $this->promotedEntity->hasPlayableDestination()) {
+            return $this->router->generate(
+                $this->streamableHelper->getRouteForProgrammeItem($this->promotedEntity),
+                ['pid' => $this->promotedEntity->getPid()],
+                UrlGeneratorInterface::ABSOLUTE_URL
+            );
+        }
+
+        if ($this->promotedEntity instanceof CoreEntity) {
+            return $this->router->generate('find_by_pid', ['pid' => $this->promotedEntity->getPid()]);
         }
 
         return '';
@@ -127,19 +159,6 @@ class PromotionPresenter extends Presenter
         return array_slice($this->promotion->getRelatedLinks(), 0, $this->options['related_links_count']);
     }
 
-    /**
-     * @return string[]
-     */
-    public function getActionIcon(): array
-    {
-        return $this->actionIcon;
-    }
-
-    public function getDuration(): int
-    {
-        return $this->duration;
-    }
-
     public function getBrandingBoxClass(): string
     {
         if (empty($this->options['branding_name'])) {
@@ -160,7 +179,7 @@ class PromotionPresenter extends Presenter
 
     public function isExternalLink($url): bool
     {
-        return !!preg_match('~^(https?:)?//(?![^/]*bbc\.co(m|\.uk))~', $url);
+        return (bool) preg_match('~^(https?:)?//(?![^/]*bbc\.co(m|\.uk))~', $url);
     }
 
     public function getType(): string

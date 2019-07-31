@@ -1,11 +1,12 @@
 <?php
-declare (strict_types = 1);
+declare (strict_types=1);
 
 namespace App\DsShared\Helpers;
 
 use BBC\ProgrammesPagesService\Domain\Entity\Clip;
 use BBC\ProgrammesPagesService\Domain\Entity\ProgrammeItem;
 use BBC\ProgrammesPagesService\Domain\Enumeration\MediaTypeEnum;
+use BBC\ProgrammesPagesService\Domain\Exception\DataNotFetchedException;
 
 class StreamableHelper
 {
@@ -36,11 +37,24 @@ class StreamableHelper
         return false;
     }
 
+    /**
+     * Before calling this function you should to verify $programmeItem->hasPlayableDestination() is true
+     *
+     * @param ProgrammeItem $programmeItem
+     * @return bool
+     */
     public function shouldStreamViaIplayer(ProgrammeItem $programmeItem): bool
     {
         return !($programmeItem instanceof Clip || !$programmeItem->isVideo());
     }
 
+    /**
+     * Before calling this function you should to verify $programmeItem->hasPlayableDestination() is true
+     *
+     * @param ProgrammeItem $programmeItem
+     * @return bool
+     * @throws DataNotFetchedException
+     */
     public function shouldStreamViaPlayspace(ProgrammeItem $programmeItem): bool
     {
         $isPlayspaceMasterBrand = ($programmeItem->getMasterBrand() && $programmeItem->getMasterBrand()->isStreamableInPlayspace());
