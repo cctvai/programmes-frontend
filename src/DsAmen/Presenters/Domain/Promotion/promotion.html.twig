@@ -7,7 +7,7 @@
                 </a>
             </{{ promotion.getOption('h_tag') }}>
             {%- if promotion.getOption('show_synopsis') -%}
-                <p class="gel-brevier media__meta-row">{{ promotion.getSynopsis() }}</p>
+                <p class="{{ promotion.getOption('synopsis_size') }} media__meta-row">{{ promotion.getSynopsis() }}</p>
             {%- endif -%}
             {% if promotion.getRelatedLinks() %}
                 <ul class="list-standard gel-brevier box-link__elevated">

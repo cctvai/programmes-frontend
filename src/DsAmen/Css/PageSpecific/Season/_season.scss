@@ -13,11 +13,6 @@
 .season-header-synopsis,
 .season-promotion-body {
     height: 100%;
-
-    > h2 {
-        font-weight: bold;
-        padding-bottom: $gel-unit-small / 2;
-    }
 }
 
 .season-list {
@@ -47,13 +42,6 @@
 }
 
 @include mq($from: gel3) {
-    .season-header-synopsis,
-    .season-promotion-body {
-        > h2 {
-            padding-bottom: $gel-unit-small;
-        }
-    }
-
     .season-list > h2 {
         margin: $gel-unit-large 0;
     }

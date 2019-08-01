@@ -9,26 +9,23 @@
     {% if promoPriority %}
     {# Render the top section with the first promo in the list #}
         <div class="season-header">
-            <div class="grid grid--flush box-link br-blocklink-secondary br-secondary-linkhover-onbg015--hover">
-                <div class="grid__item 1/1 1/2@gel2b 2/3@gel3">
-                    {{ ds_shared('imageEntity', promoImage, 450, '', {'ratio': 'auto'}) }}
-                </div>
-                <div class="grid__item 1/1 1/2@gel2b 1/3@gel3">
-                    <div class="br-box-secondary">
-                        <div class="season-promotion-body island br-secondary-linkhover-onbg015--childhover">
-                            <h2 class="season-promotion-title"><a class="br-blocklink__link box-link__target" href="{{ promoPriority.getUrl() }}">{{ promoPriority.getTitle() }}</a></h4>
-                            <p class="text--subtle">{{ promoPriority.getSynopses().getLongestSynopsis() }}</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            {{ ds_amen('promotion', promoPriority, {
+                'media_variant': 'media--card media--column media--row@gel2b br-box-secondary',
+                'h_tag': 'h2',
+                'title_size': 'gel-double-pica-bold',
+                'synopsis_size': 'text--subtle',
+                'branding_name': 'secondary',
+                'media_panel_class': '1/1 1/2@gel2b 2/3@gel3',
+            }) }}
         </div>
     {% else %}
     {# Use the synopsis and season image #}
         <div class="season-header">
             <div class="grid grid--flush">
                 <div class="grid__item 1/1 1/2@gel2b 2/3@gel3">
-                    {{ ds_shared('imageEntity', season.getImage(), 450, '', {'ratio': 'auto'}) }}
+                    <div class="br-box-secondary">
+                        {{ ds_shared('imageEntity', season.getImage(), 450, '', {'ratio': 'auto'}) }}
+                    </div>
                 </div>
                 <div class="grid__item 1/1 1/2@gel2b 1/3@gel3">
                     <div class="br-box-secondary season-header-synopsis island">

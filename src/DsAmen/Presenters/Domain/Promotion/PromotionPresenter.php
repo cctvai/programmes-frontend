@@ -37,6 +37,7 @@ class PromotionPresenter extends Presenter
         // display options
         'show_image' => true,
         'show_synopsis' => true,
+        'synopsis_size' => 'gel-brevier',
         'related_links_count' => 999,
 
         // classes & elements
