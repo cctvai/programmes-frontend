@@ -15,6 +15,7 @@ const runSequence = require('run-sequence');
 
 const staticPathSrc = 'assets';
 const staticPathDist = 'web/assets';
+const manifestPath = ['resources', 'rev-manifest.json'];
 const sassMatch = '/sass/**/*.scss';
 const jsMatch = '/js/**/*.js';
 const imageMatch = '/images/*';
@@ -22,9 +23,7 @@ const imageMatch = '/images/*';
 var throwError = true;
 var isSandbox = false;
 
-gulp.task('js:clean', function () {
-    return del([staticPathDist + '/js']);
-});
+gulp.task('js:clean', () => del([staticPathDist + '/js']));
 
 gulp.task('js', gulp.series('js:clean', function (done) {
 
@@ -91,9 +90,7 @@ gulp.task('js', gulp.series('js:clean', function (done) {
 
 // ------
 
-gulp.task('sass:clean', function() {
-    return del([staticPathDist + '/css']);
-});
+gulp.task('sass:clean', () => del([staticPathDist + '/css']));
 
 gulp.task('sass', gulp.series('sass:clean', function() {
     return gulp.src(staticPathSrc + sassMatch)
@@ -123,47 +120,54 @@ gulp.task('images', gulp.series('images:clean', function() {
 
 // ------
 
-gulp.task('rev', gulp.series(gulp.parallel('sass', 'images', 'js'), function() {
-    return gulp.src([staticPathDist + '/**/*', '!' + staticPathDist + '/**/rev-manifest.json'])
+gulp.task('rev:clean', () => Promise.all([
+    del([manifestPath.join('/')]),
+    del([`${staticPathDist}/rev-manifest.json`])
+]));
+
+gulp.task('rev', gulp.series('rev:clean', gulp.parallel('sass', 'images', 'js'), function() {
+    return gulp.src([staticPathDist + '/**/*'])
         .pipe(rev())
         .pipe(override())
         .pipe(gulp.dest(staticPathDist))
         .pipe(revdelOriginal()) // delete no-revised file
-        .pipe(rev.manifest('rev-manifest.json'))
-        .pipe(gulp.dest(staticPathDist));
+        .pipe(rev.manifest({
+            path: manifestPath[1]
+        }))
+        .pipe(gulp.dest(manifestPath[0]))
 }));
 
 /*
  * Entry tasks
  */
-gulp.task('watch',function() {
+gulp.task('watch', function() {
     // When watching we don't want to throw an error, because then we have to
     // go and restart the watch task if we ever write invalid sass, which would
     // be really annoying.
     throwError = false;
 
-    gulp.watch(
-        [staticPathSrc + sassMatch, 'src/**/*.scss']
-    ).on('change', function() {
-        let series = gulp.series('watch');
-        series();
-    });
+    const poll = (interval = 1000) => ({ usePolling: true, interval });
 
-    gulp.watch([staticPathSrc + imageMatch]).on('change', function() {
-        let series = gulp.series('images');
-        series();
-    });
+    gulp
+        .watch([staticPathSrc + sassMatch, 'src/**/*.scss'], poll(2017))
+        .on('change', gulp.series('sass'));
 
-    gulp.watch(staticPathSrc + jsMatch).on('change', function() {
-        let series = gulp.series('js');
-        series();
-    });
+    gulp
+        .watch([staticPathSrc + imageMatch], poll(5039))
+        .on('change', gulp.series('images'));
+
+    gulp
+        .watch(staticPathSrc + jsMatch, poll(3037))
+        .on('change', gulp.series('js'));
 });
+
+gulp.task('clean-all', gulp.series('rev:clean','js:clean', 'sass:clean', 'images:clean'));
 
 gulp.task('default', function(cb){
     isSandbox = true;
     let parallel = gulp.parallel('sass', 'images', 'js');
     parallel();
-    cb(); // This tells gulp the taks is finished
+    cb(); // This tells gulp the task is finished
 });
+
 gulp.task('distribution', gulp.series('rev'));

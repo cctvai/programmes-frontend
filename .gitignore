@@ -5,6 +5,7 @@
 /assets/gelicons/
 /script/fixture.ini
 yarn-error.log
+resources/rev-manifest.json
 
 ###> symfony/framework-bundle ###
 config/parameters.yaml
