@@ -7,16 +7,21 @@ use App\DsAmen\Presenter;
 use BBC\ProgrammesPagesService\Domain\Entity\CoreEntity;
 use BBC\ProgrammesPagesService\Domain\Entity\Promotion;
 use BBC\ProgrammesPagesService\Domain\Entity\Image;
+use Symfony\Component\Routing\RouterInterface;
 
 class PromotionCardPresenter extends Presenter
 {
     /** @var Promotion */
     private $promotion;
 
-    public function __construct(Promotion $promotion, array $options = [])
+    /** @var RouterInterface */
+    private $router;
+
+    public function __construct(RouterInterface $router, Promotion $promotion, array $options = [])
     {
         parent::__construct($options);
         $this->promotion = $promotion;
+        $this->router = $router;
     }
 
     public function getTitle(): string
@@ -48,6 +53,16 @@ class PromotionCardPresenter extends Presenter
 
     public function getUrl(): string
     {
-        return $this->promotion->getUrl();
+        $promotedEntity = $this->promotion->getPromotedEntity();
+
+        if ($promotedEntity instanceof Image) {
+            return $this->promotion->getUrl();
+        }
+
+        if ($promotedEntity instanceof CoreEntity) {
+            return $this->router->generate('find_by_pid', ['pid' => $promotedEntity->getPid()]);
+        }
+
+        return '';
     }
 }
