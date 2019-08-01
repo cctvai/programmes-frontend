@@ -11,7 +11,7 @@ class Faq extends AbstractContentBlock
     /** @var string[] */
     private $questions;
 
-    public function __construct(?string $title, string $intro, array $questions)
+    public function __construct(?string $title, ?string $intro, array $questions)
     {
         parent::__construct($title);
         $this->intro = $intro;
