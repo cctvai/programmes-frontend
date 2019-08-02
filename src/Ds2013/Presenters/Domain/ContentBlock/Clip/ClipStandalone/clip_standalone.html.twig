@@ -30,11 +30,11 @@
 
     <div id="clips-p{{ id }}-detail">
         <div class="island br-box-subtle">
-            <h3 class="no-margin">
+            <{{ content_block.newHeadingLevel() }} class="no-margin gamma">
                 <a href="{{ path('find_by_pid', {'pid': content_block.getClip().getPid()}) }}">
                     {{ content_block.getClip().getTitle() }}
                 </a>
-            </h3>
+            </{{ content_block.getCurrentHeading() }}>
             <p>{{ content_block.getClip().getShortSynopsis() }}</p>
         </div>
     </div>

@@ -7,11 +7,11 @@
             </div>
             <div class="promotion__body br-box-{{ content_block.getPositionType() }}">
                 <div class="promotion__body__inner br-{{ content_block.getPositionType() }}-linkhover-onbg015--childhover">
-                    <h4 class="promotion__titles">
+                    <{{ loop.first ? content_block.newHeadingLevel() : content_block.getCurrentHeading() }} class="promotion__titles delta">
                         <span class="promotion__title">
                             <a href="{{ promotion.url }}" class="br-blocklink__link promotion__link">{{ promotion.promotionTitle }}</a>
                         </span>
-                    </h4>
+                    </{{ content_block.getCurrentHeading() }}>
                     {% if promotion.shortSynopsis is not empty %}
                         <p class="promotion__synopsis centi text--subtle"><span>{{ promotion.shortSynopsis }}</span></p>
                     {% endif %}

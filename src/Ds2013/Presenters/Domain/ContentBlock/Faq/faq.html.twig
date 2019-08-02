@@ -8,7 +8,9 @@
         <details class="component faq-item">
             <summary class="br-pseudolink">
                 {{ gelicon('core', 'next', 'gelicon--delta dropdown-icon') }}
-                <h3>{{ question['question'] }}</h3>
+                <{{ loop.first ? content_block.newHeadingLevel() : content_block.getCurrentHeading() }} class="gamma">
+                    {{ question['question'] }}
+                </{{ content_block.getCurrentHeading() }}>
             </summary>
             <div class="text--prose">
                 {{ question['answer']|raw }}

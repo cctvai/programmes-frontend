@@ -12,6 +12,10 @@
 
 {% block componentTitle %}
     {% if componentContent == '' %}
-        <div class="br-box-subtle island"><h2>This content can't be found</h2></div>
+        <div class="br-box-subtle island">
+            <{{ content_block.newHeadingLevel() }} class="beta">
+                This content can't be found
+            </{{ content_block.getCurrentHeading() }}>
+        </div>
     {% endif %}
 {% endblock %}

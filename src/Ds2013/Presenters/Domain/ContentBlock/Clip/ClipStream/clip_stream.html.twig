@@ -15,7 +15,7 @@
                         'title_options': {
                             'override_title':  carouselItem.getTitle(),
                             'show_subtitle': false,
-                            'title_tag': 'h3',
+                            'title_tag': loop.first ? content_block.newHeadingLevel() : content_block.getCurrentHeading(),
                             'title_classes': 'delta'
                         },
                         'body_options': {

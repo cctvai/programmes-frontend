@@ -9,13 +9,13 @@
     {% block componentTitle %}
         {% if content_block.getBlock().getTitle() or block('defaultTitle') is not empty %}
             <div class="component__header {{ content_block.isInPrimaryColumn() ? 'br-box-page' : 'br-box-highlight'}}">
-                <h2>
+                <{{ content_block.newHeadingLevel() }} class="beta">
                     {% if content_block.getBlock().getTitle() %}
                         {{ content_block.getBlock().getTitle() }}
                     {% else %}
                         {% block defaultTitle %}{% endblock %}
                     {% endif %}
-                </h2>
+                </{{ content_block.getCurrentHeading() }}>
             </div>
         {% endif %}
     {% endblock %}

@@ -14,6 +14,8 @@ abstract class ContentBlockPresenter extends Presenter
     protected $inPrimaryColumn;
     /** @var bool */
     protected $isPrimaryColumnFullWith;
+    /** @var int */
+    protected $currentHeading = 1;
 
     public function __construct(AbstractContentBlock $block, bool $inPrimaryColumn, bool $isPrimaryColumnFullWith, array $options = [])
     {
@@ -49,5 +51,19 @@ abstract class ContentBlockPresenter extends Presenter
             return 'page';
         }
         return 'subtle';
+    }
+
+    public function getCurrentHeading(): string
+    {
+        return 'h' . $this->currentHeading;
+    }
+
+    public function newHeadingLevel(): string
+    {
+        if ($this->currentHeading < 6) {
+            $this->currentHeading++;
+        }
+
+        return $this->getCurrentHeading();
     }
 }
