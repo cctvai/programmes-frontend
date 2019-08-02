@@ -1,4 +1,10 @@
-define(['jquery', 'lazyload', 'istats-tracking', 'lazysizes'],function($, Lazyload, IstatsTracking, lazysizes){
+define([
+    'jquery',
+    'lazyload',
+    'istats-tracking',
+    'lazysizes',
+    'details-polyfill'
+],function($, Lazyload, IstatsTracking, lazysizes, detailsPolyfill){
     var picturefill = null;
     $(function() {
         // Lazy sizes (as of v4.0.2) breaks in IE11 without this hack

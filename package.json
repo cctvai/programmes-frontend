@@ -4,6 +4,7 @@
     "version": "1.0.0",
     "devDependencies": {
         "del": "^3.0.0",
+        "details-polyfill": "^1.1.0",
         "eq.js": "^1.9.0",
         "gulp": "^4.0.2",
         "gulp-autoprefixer": "^4.0.0",
@@ -27,5 +28,6 @@
         "lint": "npm run lint:sass",
         "lint:sass": "node_modules/.bin/sass-lint --no-exit -v",
         "watch": "gulp watch"
-    }
+    },
+    "dependencies": {}
 }

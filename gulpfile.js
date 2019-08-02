@@ -50,6 +50,7 @@ gulp.task('js', gulp.series('js:clean', function (done) {
             "picturefill": "../../node_modules/picturefill/dist/picturefill",
             "lazysizes": "../../node_modules/lazysizes/lazysizes-umd",
             "eqjs": "../../node_modules/eq.js/dist/eq.polyfilled.min",
+            "details-polyfill": "../../node_modules/details-polyfill/index",
             "comscorews" : "../../vendor/bbc-rmp/comscore/js-modules/comscorews",
             "rmpcomscore/base" : "../../vendor/bbc-rmp/comscore/js-modules/base",
             "orb/cookies": "empty:",
