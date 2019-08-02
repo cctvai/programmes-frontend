@@ -30,7 +30,7 @@ class AbstractMusicSegmentItemPresenterTest extends TestCase
         $this->mockContext = $this->getMockBuilder(Episode::class)->disableOriginalConstructor()->getMock();
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         Chronos::setTestNow();
     }

@@ -5,6 +5,7 @@ use Symfony\Component\DomCrawler\Crawler;
 use Tests\App\BaseWebTestCase;
 
 /**
+ * @IgnoreAnnotation("dataProvider")
  * @covers \App\Controller\Schedules\ByNetworkUrlKeyController
  */
 class ByNetworkUrlKeyControllerTest extends BaseWebTestCase

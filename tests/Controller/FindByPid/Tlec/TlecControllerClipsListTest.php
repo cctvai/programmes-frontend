@@ -6,6 +6,9 @@ namespace Tests\App\Controller\FindByPid\Tlec;
 use Symfony\Bundle\FrameworkBundle\Client;
 use Tests\App\BaseWebTestCase;
 
+/**
+ * @IgnoreAnnotation("dataProvider")
+ */
 class TlecControllerClipsListTest extends BaseWebTestCase
 {
     /** @var Client */

@@ -4,13 +4,13 @@ declare(strict_types = 1);
 namespace App\DsAmen\Presenters\Section\Map\SubPresenter;
 
 use App\Exception\InvalidOptionException;
-use App\Translate\TranslateProvider;
 use BBC\ProgrammesPagesService\Domain\Entity\CollapsedBroadcast;
 use BBC\ProgrammesPagesService\Domain\Entity\Episode;
 use BBC\ProgrammesPagesService\Domain\Entity\ProgrammeContainer;
 use BBC\ProgrammesPagesService\Domain\Entity\ProgrammeItem;
 use Exception;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 
 class OnDemandPresenter extends RightColumnPresenter
 {
@@ -42,14 +42,13 @@ class OnDemandPresenter extends RightColumnPresenter
      */
     private $streamableEpisode;
 
-    /** @var TranslateProvider */
-    private $translateProvider;
+    private $translator;
 
     /** @var UrlGeneratorInterface */
     private $router;
 
     public function __construct(
-        TranslateProvider $translateProvider,
+        TranslatorInterface $translator,
         UrlGeneratorInterface $router,
         ProgrammeContainer $programmeContainer,
         ?Episode $streamableEpisode,
@@ -61,7 +60,7 @@ class OnDemandPresenter extends RightColumnPresenter
         $this->lastOn = $lastOn;
         $this->streamableEpisode = $streamableEpisode;
         $this->hasUpcomingEpisode = $hasUpcomingEpisode;
-        $this->translateProvider = $translateProvider;
+        $this->translator = $translator;
         $this->router = $router;
         if ($this->getOption('full_width')) {
             $this->class = '1/1';
@@ -136,8 +135,7 @@ class OnDemandPresenter extends RightColumnPresenter
 
     public function getTranslatedStringForOnDemandNotAvailable(): string
     {
-        $tr = $this->translateProvider->getTranslate();
-        return $this->programmeContainer->isRadio() ? $tr->translate('available_count', [], 0) : $tr->translate('not_available_iplayer');
+        return $this->programmeContainer->isRadio() ? $this->translator->trans('available_count %count%', ['%count%' => 0]) : $this->translator->trans('not_available_iplayer');
     }
 
     public function hasUpcomingEpisode(): bool
@@ -181,7 +179,7 @@ class OnDemandPresenter extends RightColumnPresenter
     public function getEpisodeGuideTitleTranslation(): string
     {
         $translationKey = $this->programmeContainer->isTv() ? 'all_episodes_iplayer_title' : 'all_episodes_iplayer_radio_title';
-        return $this->translateProvider->getTranslate()->translate(
+        return $this->translator->trans(
             $translationKey,
             ['%1' => $this->programmeContainer->getTitle()]
         );

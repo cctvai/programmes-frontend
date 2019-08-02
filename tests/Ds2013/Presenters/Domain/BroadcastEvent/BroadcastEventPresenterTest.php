@@ -11,7 +11,6 @@ use App\Ds2013\Presenters\Domain\BroadcastEvent\BroadcastEventPresenter;
 use App\DsShared\Helpers\BroadcastNetworksHelper;
 use App\DsShared\Helpers\LiveBroadcastHelper;
 use App\DsShared\Helpers\LocalisedDaysAndMonthsHelper;
-use App\Translate\TranslateProvider;
 use BBC\ProgrammesPagesService\Domain\Entity\CollapsedBroadcast;
 use BBC\ProgrammesPagesService\Domain\Entity\Network;
 use BBC\ProgrammesPagesService\Domain\Entity\Service;
@@ -21,6 +20,7 @@ use Symfony\Component\Routing\Generator\UrlGenerator;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\RouteCollectionBuilder;
+use Symfony\Component\Translation\TranslatorInterface;
 
 class BroadcastEventPresenterTest extends TestCase
 {
@@ -90,7 +90,7 @@ class BroadcastEventPresenterTest extends TestCase
         $dummy1 = $this->createMock(LocalisedDaysAndMonthsHelper::class);
         $dummy2 = $this->createMock(LiveBroadcastHelper::class);
         $dummy3 = $this->createMock(UrlGeneratorInterface::class);
-        $dummy4 = $this->createMock(TranslateProvider::class);
+        $dummy4 = $this->createMock(TranslatorInterface::class);
 
         list($network1, $network2, $cBroadcasts) = $this->buildCBroadcastsWithNetworksAndServices();
         $cBroadcastEventPresenter = new BroadcastEventPresenter(
@@ -116,7 +116,7 @@ class BroadcastEventPresenterTest extends TestCase
         $dummy1 = $this->createMock(LocalisedDaysAndMonthsHelper::class);
         $dummy2 = $this->createMock(LiveBroadcastHelper::class);
         $dummy3 = $this->createMock(UrlGeneratorInterface::class);
-        $dummy4 = $this->createMock(TranslateProvider::class);
+        $dummy4 = $this->createMock(TranslatorInterface::class);
 
         $cBroadcasts = CollapsedBroadcastBuilder::any()->with(['services' => [
             ServiceBuilder::any()->build(),

@@ -22,7 +22,6 @@ use App\DsShared\Factory\HelperFactory;
 use App\ExternalApi\Ada\Domain\AdaClass;
 use App\ExternalApi\Electron\Domain\SupportingContentItem;
 use App\ExternalApi\Recipes\Domain\Recipe;
-use App\Translate\TranslateProvider;
 use BBC\ProgrammesPagesService\Domain\Entity\CollapsedBroadcast;
 use BBC\ProgrammesPagesService\Domain\Entity\CoreEntity;
 use BBC\ProgrammesPagesService\Domain\Entity\Episode;
@@ -32,14 +31,14 @@ use BBC\ProgrammesPagesService\Domain\Entity\ProgrammeContainer;
 use BBC\ProgrammesPagesService\Domain\Entity\Promotion;
 use BBC\ProgrammesPagesService\Domain\Entity\RelatedLink;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * DsAmen Factory Class for creating presenters.
  */
 class PresenterFactory
 {
-    /** @var TranslateProvider */
-    private $translateProvider;
+    private $translator;
 
     /** @var UrlGeneratorInterface */
     private $router;
@@ -47,21 +46,21 @@ class PresenterFactory
     /** @var \App\DsShared\Factory\HelperFactory */
     private $helperFactory;
 
-    public function __construct(TranslateProvider $translateProvider, UrlGeneratorInterface $router, HelperFactory $helperFactory)
+    public function __construct(TranslatorInterface $translator, UrlGeneratorInterface $router, HelperFactory $helperFactory)
     {
-        $this->translateProvider = $translateProvider;
+        $this->translator = $translator;
         $this->router = $router;
         $this->helperFactory = $helperFactory;
     }
 
     public function durationPresenter(int $duration, array $options = []): DurationPresenter
     {
-        return new DurationPresenter($duration, $this->translateProvider, $options);
+        return new DurationPresenter($duration, $this->translator, $options);
     }
 
     public function collapsedBroadcastPresenter(CollapsedBroadcast $collapsedBroadcast, array $options = []): CollapsedBroadcastPresenter
     {
-        return new CollapsedBroadcastPresenter($collapsedBroadcast, $this->router, $this->translateProvider, $this->helperFactory, $options);
+        return new CollapsedBroadcastPresenter($collapsedBroadcast, $this->router, $this->translator, $this->helperFactory, $options);
     }
 
     public function coreEntityPresenter(CoreEntity $coreEntity, array $options = [])
@@ -128,7 +127,7 @@ class PresenterFactory
         if (!$programme->isTlec()) {
             return new SeriesMapPresenter(
                 $this->helperFactory,
-                $this->translateProvider,
+                $this->translator,
                 $this->router,
                 $programme,
                 $upcomingBroadcast,
@@ -143,7 +142,7 @@ class PresenterFactory
         }
         return new MapPresenter(
             $this->helperFactory,
-            $this->translateProvider,
+            $this->translator,
             $this->router,
             $programme,
             $upcomingBroadcast,

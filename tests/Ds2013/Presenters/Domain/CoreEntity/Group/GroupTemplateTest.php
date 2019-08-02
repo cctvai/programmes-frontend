@@ -4,15 +4,13 @@ namespace Tests\App\Ds2013\Presenters\Domain\CoreEntity\Group;
 
 use Tests\App\BaseTemplateTestCase;
 use Tests\App\DataFixtures\PagesService\GalleriesFixtures;
-use Tests\App\TwigEnvironmentProvider;
 
 class GroupTemplateTest extends BaseTemplateTestCase
 {
     public function testEastendersGallery()
     {
         $group = GalleriesFixtures::eastenders();
-        $presenterFactory = TwigEnvironmentProvider::ds2013PresenterFactory();
-        $presenter = $presenterFactory->groupPresenter($group, []);
+        $presenter = self::$ds2013PresenterFactory->groupPresenter($group, []);
         $crawler = $this->presenterCrawler($presenter);
 
         // Test image container and lazy loaded image

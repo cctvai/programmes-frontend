@@ -8,15 +8,10 @@ if [ -z "$MSGMERGE" ]; then
     exit 1
 fi
 
-if [ -z "$1" ]; then
-    echo "Usage: translate-updateFromTemplate.sh programmes"
-    exit
-fi
-
 SCRIPTPATH=$( cd $(dirname $0) ; pwd -P )
 
-TRPATH="${SCRIPTPATH}/../translations/${1}"
+TRPATH="${SCRIPTPATH}/../translations"
 
 for i in `ls "$TRPATH"/*.po`; do
-    msgmerge -N --backup=none -U $i "${TRPATH}/${1}.pot"
+    msgmerge -N --backup=none -U $i "${TRPATH}/programmes.pot"
 done

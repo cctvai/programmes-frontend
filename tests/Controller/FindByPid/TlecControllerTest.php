@@ -12,9 +12,12 @@ use ReflectionClass;
 use Symfony\Component\HttpFoundation\Request;
 use Tests\App\BaseWebTestCase;
 
+/**
+ * @IgnoreAnnotation("dataProvider")
+ */
 class TlecControllerTest extends BaseWebTestCase
 {
-    public function tearDown()
+    public function tearDown(): void
     {
         ApplicationTime::blank();
     }

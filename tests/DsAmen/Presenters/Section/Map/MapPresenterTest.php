@@ -13,7 +13,6 @@ use App\DsAmen\Presenters\Section\Map\SubPresenter\OnDemandPresenter;
 use App\DsAmen\Presenters\Section\Map\SubPresenter\PromoPriorityPresenter;
 use App\DsAmen\Presenters\Section\Map\SubPresenter\TxPresenter;
 use App\DsShared\Factory\HelperFactory;
-use App\Translate\TranslateProvider;
 use BBC\ProgrammesPagesService\Domain\Entity\CollapsedBroadcast;
 use BBC\ProgrammesPagesService\Domain\Entity\Network;
 use BBC\ProgrammesPagesService\Domain\Entity\ProgrammeContainer;
@@ -21,6 +20,7 @@ use BBC\ProgrammesPagesService\Domain\Entity\Promotion;
 use PHPUnit\Framework\TestCase;
 use PHPUnit_Framework_MockObject_MockObject;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 
 class MapPresenterTest extends TestCase
 {
@@ -29,7 +29,7 @@ class MapPresenterTest extends TestCase
         $programmeContainer = $this->createProgrammeWithEpisodes();
         $presenter = new MapPresenter(
             $this->createMock(HelperFactory::class),
-            $this->createMock(TranslateProvider::class),
+            $this->createMock(TranslatorInterface::class),
             $this->createMock(UrlGeneratorInterface::class),
             $programmeContainer,
             null,
@@ -152,7 +152,7 @@ class MapPresenterTest extends TestCase
     {
         return new MapPresenter(
             $this->createMock(HelperFactory::class),
-            $this->createMock(TranslateProvider::class),
+            $this->createMock(TranslatorInterface::class),
             $this->createMock(UrlGeneratorInterface::class),
             $programmeContainer,
             $upcomingBroadcasts,

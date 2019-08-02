@@ -6,6 +6,9 @@ namespace Tests\App\Controller\ProgrammeEpisodes;
 use Symfony\Bundle\FrameworkBundle\Client;
 use Tests\App\BaseWebTestCase;
 
+/**
+ * @IgnoreAnnotation("dataProvider")
+ */
 class IndexControllerTest extends BaseWebTestCase
 {
     /** @var Client */

@@ -8,6 +8,7 @@ use Cake\Chronos\Chronos;
 use Tests\App\BaseWebTestCase;
 
 /**
+ * @IgnoreAnnotation("dataProvider")
  * @covers \App\Controller\Schedules\VanityRedirectController
  */
 class VanityRedirectControllerTest extends BaseWebTestCase
@@ -32,7 +33,7 @@ class VanityRedirectControllerTest extends BaseWebTestCase
 
         $client->request('GET', $url . '?utcoffset=%2B01%3A00');
 
-        $this->assertRedirectTo($client, 302, '/schedules/p00rfdrb/' . $urlSuffix . '?utcoffset=%2B01%3A00');
+        $this->assertRedirectTo($client, 302, '/schedules/p00rfdrb/' . $urlSuffix . '?utcoffset=%2B01:00');
         $this->assertHasRequiredResponseHeaders($client);
     }
 
@@ -91,7 +92,7 @@ class VanityRedirectControllerTest extends BaseWebTestCase
         ApplicationTime::setTime($date->getTimestamp());
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         ApplicationTime::blank();
     }

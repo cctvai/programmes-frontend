@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace Tests\App\DsShared\Helpers;
 
 use App\DsShared\Helpers\BroadcastNetworksHelper;
-use App\Translate\TranslateProvider;
 use App\ValueObject\BroadcastNetworkBreakdown;
 use BBC\ProgrammesPagesService\Domain\Entity\CollapsedBroadcast;
 use BBC\ProgrammesPagesService\Domain\Entity\Network;
@@ -13,17 +12,16 @@ use BBC\ProgrammesPagesService\Domain\Entity\Service;
 use BBC\ProgrammesPagesService\Domain\ValueObject\Nid;
 use BBC\ProgrammesPagesService\Domain\ValueObject\Sid;
 use Cake\Chronos\Chronos;
-use PHPUnit\Framework\TestCase;
-use RMP\Translate\TranslateFactory;
+use Tests\App\BaseTemplateTestCase;
 
-class BroadcastNetworksHelperTest extends TestCase
+class BroadcastNetworksHelperTest extends BaseTemplateTestCase
 {
     /** @var BroadcastNetworksHelper */
     private $helper;
 
     public function setup()
     {
-        $this->helper = new BroadcastNetworksHelper(new TranslateProvider(new TranslateFactory()));
+        $this->helper = new BroadcastNetworksHelper(self::$translator);
     }
 
     public function testGetNetworksAndServicesDetailsWithServiceExceptionWithSameNameAsNetworkGetsIgnored()

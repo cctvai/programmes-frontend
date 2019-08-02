@@ -3,7 +3,6 @@ declare(strict_types = 1);
 namespace App\DsShared\Helpers;
 
 use App\Translate\TranslatableTrait;
-use App\Translate\TranslateProvider;
 use BBC\ProgrammesPagesService\Domain\ApplicationTime;
 use BBC\ProgrammesPagesService\Domain\Entity\ProgrammeItem;
 use BBC\ProgrammesPagesService\Domain\Entity\Service;
@@ -11,6 +10,7 @@ use Cake\Chronos\Chronos;
 use DateInterval;
 use DateTimeImmutable;
 use InvalidArgumentException;
+use Symfony\Component\Translation\TranslatorInterface;
 
 class PlayTranslationsHelper
 {
@@ -26,9 +26,9 @@ class PlayTranslationsHelper
         'iplayer_time',
     ];
 
-    public function __construct(TranslateProvider $translateProvider)
+    public function __construct(TranslatorInterface $translator)
     {
-        $this->translateProvider = $translateProvider;
+        $this->translator = $translator;
     }
 
     public function translateAvailableUntilToWords(ProgrammeItem $programmeItem, Service $service = null, $showAvailableUntil = true): string

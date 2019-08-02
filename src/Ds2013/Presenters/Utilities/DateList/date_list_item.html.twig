@@ -1,4 +1,4 @@
-{% filter spaceless %}
+{% apply spaceless %}
     {% set li_classes = build_css_classes({
         'date-list__page': true,
         ('date-list__page--offset' ~ date_list_item.getOffset()|abs): true,
@@ -27,4 +27,4 @@
             </span>
         {% endif %}
     </li>
-{% endfilter %}
+{% endapply %}

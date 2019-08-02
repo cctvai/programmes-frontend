@@ -6,6 +6,9 @@ use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Component\DomCrawler\Crawler;
 use Tests\App\BaseWebTestCase;
 
+/**
+ * @IgnoreAnnotation("dataProvider")
+ */
 class GuidePartialControllerTest extends BaseWebTestCase
 {
     /** @var Client */

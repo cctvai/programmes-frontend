@@ -6,7 +6,6 @@ namespace Tests\App\DsShared\Utilities\EntityContext;
 use BBC\ProgrammesPagesService\Domain\Entity\CoreEntity;
 use BBC\ProgrammesPagesService\Domain\ValueObject\Pid;
 use Tests\App\BaseTemplateTestCase;
-use Tests\App\TwigEnvironmentProvider;
 
 class EntityContextTemplateTest extends BaseTemplateTestCase
 {
@@ -15,8 +14,7 @@ class EntityContextTemplateTest extends BaseTemplateTestCase
      */
     public function testEntityContext($entity, $expectedOutput)
     {
-        $presenterFactory = TwigEnvironmentProvider::dsSharedPresenterFactory();
-        $presenter = $presenterFactory->entityContextPresenter($entity);
+        $presenter = self::$dsSharedPresenterFactory->entityContextPresenter($entity);
         $html = $this->presenterHtml($presenter);
 
         $this->assertEquals($expectedOutput, $html);

@@ -13,8 +13,12 @@ doctrine:
                 charset: UTF8
         types:
             date_partial: BBC\ProgrammesPagesService\Data\ProgrammesDb\Type\DatePartialType
-            datetime: BBC\ProgrammesPagesService\Data\ProgrammesDb\Type\UtcDateTimeType
-            datetimetz: BBC\ProgrammesPagesService\Data\ProgrammesDb\Type\UtcDateTimeType
+            datetime:
+                class: BBC\ProgrammesPagesService\Data\ProgrammesDb\Type\UtcDateTimeType
+                commented: false
+            datetimetz:
+                class: BBC\ProgrammesPagesService\Data\ProgrammesDb\Type\UtcDateTimeType
+                commented: false
     orm:
         auto_generate_proxy_classes: '%kernel.debug%'
         default_entity_manager: default

@@ -127,7 +127,7 @@ class ProgrammePresenter extends ProgrammePresenterBase
 
     protected function validateOptions(array $options): void
     {
-        if (isset($options['context_programme']) && ! $options['context_programme'] instanceof Programme) {
+        if (isset($options['context_programme']) && !$options['context_programme'] instanceof Programme) {
             throw new InvalidOptionException('context_programme option must be null or a Programme domain object');
         }
     }

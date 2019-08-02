@@ -1,2 +1,5 @@
 framework:
     default_locale: '%locale%'
+    translator:
+        enabled: true
+        fallbacks: ['%locale%']

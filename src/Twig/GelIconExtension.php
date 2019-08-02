@@ -3,10 +3,10 @@ declare(strict_types = 1);
 namespace App\Twig;
 
 use InvalidArgumentException;
-use Twig_Extension;
-use Twig_Function;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
-class GelIconExtension extends Twig_Extension
+class GelIconExtension extends AbstractExtension
 {
     private $usedIcons = [];
 
@@ -16,10 +16,10 @@ class GelIconExtension extends Twig_Extension
     public function getFunctions()
     {
         return [
-            new Twig_Function('gelicons_source', [$this, 'gelIconsSource'], [
+            new TwigFunction('gelicons_source', [$this, 'gelIconsSource'], [
                 'is_safe' => ['html'],
             ]),
-            new Twig_Function('gelicon', [$this, 'gelIcon'], [
+            new TwigFunction('gelicon', [$this, 'gelIcon'], [
                 'is_safe' => ['html'],
             ]),
         ];

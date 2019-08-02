@@ -4,7 +4,6 @@ declare(strict_types = 1);
 namespace Tests\App\Twig;
 
 use App\DsShared\Factory\HelperFactory;
-use App\Translate\TranslateProvider;
 use App\Twig\TranslateAndTimeExtension;
 use BBC\ProgrammesPagesService\Domain\ApplicationTime;
 use BBC\ProgrammesPagesService\Domain\ValueObject\PartialDate;
@@ -12,23 +11,20 @@ use DateTime;
 use DateTimeZone;
 use PHPUnit\Framework\TestCase;
 use PHPUnit_Framework_MockObject_MockObject;
-use RMP\Translate\Translate;
+use Symfony\Component\Translation\TranslatorInterface;
 
 class TranslateAndTimeExtensionTest extends TestCase
 {
-    private $mockTranslate;
+    private $translator;
 
     /** @var  TranslateAndTimeExtension */
     private $translateAndTimeExtension;
 
     public function setUp()
     {
-        $this->mockTranslate = $this->createMock(Translate::class);
-        /** @var TranslateProvider|PHPUnit_Framework_MockObject_MockObject $translateProvider */
-        $translateProvider = $this->createMock(TranslateProvider::class);
-        $translateProvider->method('getTranslate')->willReturn($this->mockTranslate);
+        $this->translator = $this->createMock(TranslatorInterface::class);
         $helperFactory = $this->createMock(HelperFactory::class);
-        $this->translateAndTimeExtension = new TranslateAndTimeExtension($translateProvider, $helperFactory);
+        $this->translateAndTimeExtension = new TranslateAndTimeExtension($this->translator, $helperFactory);
     }
 
     public function tearDown()
@@ -38,9 +34,9 @@ class TranslateAndTimeExtensionTest extends TestCase
 
     public function testTrWrapper()
     {
-        $this->mockTranslate->expects($this->once())
-            ->method('translate')
-            ->with('wibble', ['%count%' => 'eleventy'], 110)
+        $this->translator->expects($this->once())
+            ->method('trans')
+            ->with('wibble %count%', ['%count%' => 'eleventy'])
             ->willReturn('Utter Nonsense');
         $result = $this->translateAndTimeExtension->trWrapper('wibble', ['%count%' => 'eleventy'], 110);
         $this->assertEquals('Utter Nonsense', $result);
@@ -86,8 +82,8 @@ class TranslateAndTimeExtensionTest extends TestCase
         $dateTime = new DateTime('2017-06-01 13:00:00', new DateTimeZone('UTC'));
         ApplicationTime::setTime($dateTime->getTimestamp());
         ApplicationTime::setLocalTimeZone('UTC');
-        $this->mockTranslate->expects($this->once())
-            ->method('translate')
+        $this->translator->expects($this->once())
+            ->method('trans')
             ->with('gmt')
             ->willReturn('GMT');
 
@@ -102,8 +98,8 @@ class TranslateAndTimeExtensionTest extends TestCase
         $dateTime = new DateTime('2017-06-01 13:00:00', new DateTimeZone('UTC'));
         ApplicationTime::setTime($dateTime->getTimestamp());
         ApplicationTime::setLocalTimeZone('Pacific/Chatham');
-        $this->mockTranslate->expects($this->once())
-            ->method('translate')
+        $this->translator->expects($this->once())
+            ->method('trans')
             ->with('gmt')
             ->willReturn('GMT');
 
@@ -118,8 +114,8 @@ class TranslateAndTimeExtensionTest extends TestCase
         $dateTime = new DateTime('2017-06-12 12:00:00', new DateTimeZone('UTC'));
         ApplicationTime::setTime($dateTime->getTimestamp());
         ApplicationTime::setLocalTimeZone('Pacific/Marquesas');
-        $this->mockTranslate->expects($this->once())
-            ->method('translate')
+        $this->translator->expects($this->once())
+            ->method('trans')
             ->with('gmt')
             ->willReturn('GMT');
 
@@ -134,7 +130,7 @@ class TranslateAndTimeExtensionTest extends TestCase
      */
     public function testLocalPartialDate($partialDate, $formats, $expected)
     {
-        $this->mockTranslate->expects($this->atLeastOnce())
+        $this->translator->expects($this->atLeastOnce())
             ->method('getLocale')
             ->willReturn('en-GB');
 

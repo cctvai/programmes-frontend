@@ -11,6 +11,8 @@ use Tests\App\BaseWebTestCase;
 /**
  * This test asserts that Programmes with redirects configured in their options
  * trigger those redirects, and that those redirects are cached.
+ *
+ * @IgnoreAnnotation("dataProvider")
  */
 class PidOverrideHandlerTest extends BaseWebTestCase
 {

@@ -9,8 +9,7 @@ use IntlDateFormatter;
 
 trait TranslatableTrait
 {
-    /** @var TranslateProvider */
-    protected $translateProvider;
+    protected $translator;
 
     /** @var array */
     private $dateFormatterCache = [];
@@ -31,7 +30,7 @@ trait TranslatableTrait
         if (!$timeZone) {
             $timeZone = ApplicationTime::getLocalTimeZone();
         }
-        $locale = $this->translateProvider->getTranslate()->getLocale();
+        $locale = $this->translator->getLocale();
 
         // Creating new instances of IntlDateFormatter is expensive.
         // Changing the timezone of an existing instance is less expensive but
@@ -77,6 +76,10 @@ trait TranslatableTrait
             $substitutions['%count%'] = $numPlurals;
         }
 
-        return $this->translateProvider->getTranslate()->translate($key, $substitutions, $numPlurals, $domain);
+        if (isset($substitutions['%count%'])) {
+            $key .= ' %count%';
+        }
+
+        return $this->translator->trans($key, $substitutions, $domain);
     }
 }

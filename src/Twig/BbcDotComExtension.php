@@ -3,8 +3,8 @@ declare(strict_types = 1);
 namespace App\Twig;
 
 use RMP\Comscore\Comscore;
-use Twig_Extension;
-use Twig_Function;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
 /**
  * Provides tools for rendering adverts.
@@ -15,7 +15,7 @@ use Twig_Function;
  * template). Finally call `advert` to render an advert of a given type and
  * group.
  */
-class BbcDotComExtension extends Twig_Extension
+class BbcDotComExtension extends AbstractExtension
 {
      /** @var string */
     private $advertBlocks = '';
@@ -26,9 +26,9 @@ class BbcDotComExtension extends Twig_Extension
     public function getFunctions()
     {
         return [
-            new Twig_Function('advert', [$this, 'advert'], ['is_safe' => ['html']]),
-            new Twig_Function('adverts_set_blocks', [$this, 'advertsSetBlocks']),
-            new Twig_Function('bbc_dotcom_head', [$this, 'bbcDotComHead'], ['is_safe' => ['html']]),
+            new TwigFunction('advert', [$this, 'advert'], ['is_safe' => ['html']]),
+            new TwigFunction('adverts_set_blocks', [$this, 'advertsSetBlocks']),
+            new TwigFunction('bbc_dotcom_head', [$this, 'bbcDotComHead'], ['is_safe' => ['html']]),
         ];
     }
 

@@ -3,10 +3,10 @@
 namespace App\Twig;
 
 use BBC\ProgrammesPagesService\Domain\Entity\Network;
-use Twig_Extension;
-use Twig_Function;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
-class UrlKeyExtension extends Twig_Extension
+class UrlKeyExtension extends AbstractExtension
 {
     // Remember to change in branding as well!
     private const URL_KEYS = [
@@ -127,7 +127,7 @@ class UrlKeyExtension extends Twig_Extension
     public function getFunctions(): array
     {
         return [
-            new Twig_Function('network_link', [$this, 'networkLink']),
+            new TwigFunction('network_link', [$this, 'networkLink']),
         ];
     }
 

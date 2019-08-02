@@ -47,7 +47,7 @@ class BroadcastPresenterTest extends TestCase
         ];
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         ApplicationTime::blank();
     }

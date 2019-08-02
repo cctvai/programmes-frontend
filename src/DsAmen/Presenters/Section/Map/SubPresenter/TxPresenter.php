@@ -4,10 +4,10 @@ declare(strict_types = 1);
 namespace App\DsAmen\Presenters\Section\Map\SubPresenter;
 
 use App\DsShared\Helpers\LiveBroadcastHelper;
-use App\Translate\TranslateProvider;
 use BBC\ProgrammesPagesService\Domain\Entity\CollapsedBroadcast;
 use BBC\ProgrammesPagesService\Domain\Entity\ProgrammeContainer;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * Tx means Transmission
@@ -20,8 +20,7 @@ class TxPresenter extends RightColumnPresenter
     /** @var LiveBroadcastHelper */
     private $liveBroadcastHelper;
 
-    /** @var TranslateProvider */
-    private $translateProvider;
+    private $translator;
 
     /** @var CollapsedBroadcast[] */
     private $upcomingDebuts;
@@ -40,7 +39,7 @@ class TxPresenter extends RightColumnPresenter
 
     public function __construct(
         LiveBroadcastHelper $liveBroadcastHelper,
-        TranslateProvider $translateProvider,
+        TranslatorInterface $translator,
         UrlGeneratorInterface $router,
         ProgrammeContainer $programmeContainer,
         ?CollapsedBroadcast $upcomingBroadcast,
@@ -52,7 +51,7 @@ class TxPresenter extends RightColumnPresenter
         parent::__construct($programmeContainer, $options);
 
         $this->liveBroadcastHelper = $liveBroadcastHelper;
-        $this->translateProvider = $translateProvider;
+        $this->translator = $translator;
         $this->router = $router;
         $this->upcomingBroadcast = $upcomingBroadcast;
         $this->debutsCount = $debutsCount;
@@ -136,25 +135,22 @@ class TxPresenter extends RightColumnPresenter
         // Only radio pages split between repeats and debuts
         if ($this->programmeContainer->isRadio()) {
             if ($this->repeatsCount > 0) {
-                return $this->translateProvider->getTranslate()->translate(
-                    'x_new_and_repeats',
-                    ['%1' => $this->debutsCount, '%count%' => $this->repeatsCount],
-                    $this->repeatsCount
+                return $this->translator->trans(
+                    'x_new_and_repeats %count%',
+                    ['%1' => $this->debutsCount, '%count%' => $this->repeatsCount]
                 );
             }
 
-            return $this->translateProvider->getTranslate()->translate(
-                'x_new',
-                ['%count%' => $this->debutsCount],
-                $this->debutsCount
+            return $this->translator->trans(
+                'x_new %count%',
+                ['%count%' => $this->debutsCount]
             );
         }
 
         // All other pages show episodes count
-        return $this->translateProvider->getTranslate()->translate(
-            'x_total',
-            ['%1' => $this->debutsCount + $this->repeatsCount],
-            $this->debutsCount + $this->repeatsCount
+        return $this->translator->trans(
+            'x_total %count%',
+            ['%1' => $this->debutsCount + $this->repeatsCount, '%count%' => $this->debutsCount + $this->repeatsCount]
         );
     }
 

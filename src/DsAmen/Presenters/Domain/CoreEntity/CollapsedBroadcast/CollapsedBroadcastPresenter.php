@@ -16,10 +16,10 @@ use App\DsAmen\Presenters\Domain\CoreEntity\Shared\SubPresenter\StreamableCtaPre
 use App\DsAmen\Presenters\Domain\CoreEntity\Shared\SubPresenter\TitlePresenter;
 use App\DsShared\Factory\HelperFactory;
 use App\DsShared\Helpers\StreamableHelper;
-use App\Translate\TranslateProvider;
 use BBC\ProgrammesPagesService\Domain\Entity\CollapsedBroadcast;
 use BBC\ProgrammesPagesService\Domain\Entity\ProgrammeItem;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 
 class CollapsedBroadcastPresenter extends BaseCoreEntityPresenter
 {
@@ -29,8 +29,7 @@ class CollapsedBroadcastPresenter extends BaseCoreEntityPresenter
     /** @var StreamableHelper */
     private $streamUrlHelper;
 
-    /** @var TranslateProvider */
-    private $translateProvider;
+    private $translator;
 
     /** @var bool */
     protected $playableLive;
@@ -42,7 +41,7 @@ class CollapsedBroadcastPresenter extends BaseCoreEntityPresenter
     public function __construct(
         CollapsedBroadcast $collapsedBroadcast,
         UrlGeneratorInterface $router,
-        TranslateProvider $translateProvider,
+        TranslatorInterface $translator,
         HelperFactory $helperFactory,
         array $options = []
     ) {
@@ -51,7 +50,7 @@ class CollapsedBroadcastPresenter extends BaseCoreEntityPresenter
 
         $this->collapsedBroadcast = $collapsedBroadcast;
         $this->streamUrlHelper = $this->helperFactory->getStreamUrlHelper();
-        $this->translateProvider = $translateProvider;
+        $this->translator = $translator;
     }
 
     public function getBodyPresenter(array $options = []): BaseBodyPresenter
@@ -93,7 +92,7 @@ class CollapsedBroadcastPresenter extends BaseCoreEntityPresenter
     {
         return new DetailsPresenter(
             $this->collapsedBroadcast,
-            $this->translateProvider,
+            $this->translator,
             $this->helperFactory->getLocalisedDaysAndMonthsHelper(),
             $this->helperFactory->getBroadcastNetworksHelper(),
             $this->options

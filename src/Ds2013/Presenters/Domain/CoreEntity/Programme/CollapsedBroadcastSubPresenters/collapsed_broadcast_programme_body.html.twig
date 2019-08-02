@@ -33,12 +33,12 @@
 
 {%- macro render_live_link(url, link_text, icon_name, hide_below_bpw) -%}
     {% set extra_classes = hide_below_bpw ? 'hidden visible@bpw' : '' %}
-    {% filter spaceless %}
+    {% apply spaceless %}
         <p class="programme__live {{ extra_classes }}">
             <a class="link-complex--sub" href="{{ url }}">
                 {{ gelicon('audio-visual', icon_name, 'gelicon--centi gelicon--leading') }}
                 <span class="link-complex--sub__target">{{ link_text }}</span>
             </a>
         </p>
-    {% endfilter %}
+    {% endapply %}
 {%- endmacro -%}

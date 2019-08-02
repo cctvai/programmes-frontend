@@ -3,10 +3,10 @@
 namespace App\Twig;
 
 use Symfony\Component\Asset\Packages;
-use Twig_Extension;
-use Twig_Function;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
-class NetworkLogoExtension extends Twig_Extension
+class NetworkLogoExtension extends AbstractExtension
 {
     private const ALLOWED_LOGOS = [
             'bbc_1xtra', 'bbc_6music', 'bbc_7', 'bbc_alba', 'bbc_asian_network',
@@ -58,7 +58,7 @@ class NetworkLogoExtension extends Twig_Extension
     public function getFunctions(): array
     {
         return [
-            new Twig_Function('get_network_logo', [$this, 'getNetworkLogo']),
+            new TwigFunction('get_network_logo', [$this, 'getNetworkLogo']),
         ];
     }
 

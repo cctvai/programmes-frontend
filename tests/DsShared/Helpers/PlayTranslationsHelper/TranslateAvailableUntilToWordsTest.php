@@ -4,28 +4,25 @@ namespace Tests\App\DsShared\Helpers\PlayTranslationsHelper;
 
 use App\DsShared\Helpers\AvailabilityTimeToWordsHelper;
 use App\DsShared\Helpers\PlayTranslationsHelper;
-use App\Translate\TranslateProvider;
 use BBC\ProgrammesPagesService\Domain\ApplicationTime;
 use BBC\ProgrammesPagesService\Domain\Entity\Episode;
 use Cake\Chronos\Chronos;
 use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
-use RMP\Translate\Translate;
+use Symfony\Component\Translation\TranslatorInterface;
 
 class TranslateAvailableUntilToWordsTest extends TestCase
 {
-    private $mockTranslate;
+    private $translator;
 
     /** @var PlayTranslationsHelper */
     private $helper;
 
     public function setUp()
     {
-        $this->mockTranslate = $this->createMock(Translate::class);
-        $this->mockTranslate->method('getLocale')->willReturn('en_GB');
-        $mockTranslateProvider = $this->createMock(TranslateProvider::class);
-        $mockTranslateProvider->method('getTranslate')->willReturn($this->mockTranslate);
-        $this->helper = new PlayTranslationsHelper($mockTranslateProvider);
+        $this->translator = $this->createMock(TranslatorInterface::class);
+        $this->translator->method('getLocale')->willReturn('en_GB');
+        $this->helper = new PlayTranslationsHelper($this->translator);
         ApplicationTime::setTime((new Chronos('2017-06-01T12:00:00'))->timestamp);
     }
 
@@ -35,8 +32,8 @@ class TranslateAvailableUntilToWordsTest extends TestCase
     public function testTranslateIndefiniteAvailability($mediaType, $endDateTime, $expectedTranslationPlaceholder)
     {
         $programmeItem = $this->makeProgrammeItem($mediaType, $endDateTime);
-        $this->mockTranslate->expects($this->once())
-            ->method('translate')
+        $this->translator->expects($this->once())
+            ->method('trans')
             ->with($expectedTranslationPlaceholder)
             ->willReturn('An Indefinite Translation');
 
@@ -61,9 +58,9 @@ class TranslateAvailableUntilToWordsTest extends TestCase
     public function testAvailabilityToWords($mediaType, $endDateTime, $expectedTranslationPlaceholder, $expectedCount)
     {
         $programmeItem = $this->makeProgrammeItem($mediaType, $endDateTime);
-        $this->mockTranslate->expects($this->once())
-            ->method('translate')
-            ->with($expectedTranslationPlaceholder, ['%count%' => $expectedCount])
+        $this->translator->expects($this->once())
+            ->method('trans')
+            ->with($expectedTranslationPlaceholder . ' %count%', ['%count%' => $expectedCount])
             ->willReturn('The Corretc Translation');
 
         $result = $this->helper->translateAvailableUntilToWords($programmeItem);
@@ -88,8 +85,8 @@ class TranslateAvailableUntilToWordsTest extends TestCase
     public function testTranslatePlayLive($mediaType, $expectedTrPrefix)
     {
         $programmeItem = $this->makeProgrammeItem($mediaType, null);
-        $this->mockTranslate->expects($this->once())
-            ->method('translate')
+        $this->translator->expects($this->once())
+            ->method('trans')
             ->with($expectedTrPrefix)
             ->willReturn('The Corretc Translation');
 
@@ -113,8 +110,8 @@ class TranslateAvailableUntilToWordsTest extends TestCase
     public function testTranslateFromStart($mediaType, $expectedTrPrefix)
     {
         $programmeItem = $this->makeProgrammeItem($mediaType, null);
-        $this->mockTranslate->expects($this->once())
-            ->method('translate')
+        $this->translator->expects($this->once())
+            ->method('trans')
             ->with($expectedTrPrefix)
             ->willReturn('The Corretc Translation');
 
@@ -133,12 +130,11 @@ class TranslateAvailableUntilToWordsTest extends TestCase
     }
     private function setMockTranslate($translationKey, $count)
     {
-        $this->mockTranslate->expects($this->once())
-            ->method('translate')
+        $this->translator->expects($this->once())
+            ->method('trans')
             ->with(
-                $translationKey,
-                ['%count%' => $count],
-                $count
+                $translationKey . ' %count%',
+                ['%count%' => $count]
             )->willReturn('The Corretc Translation');
     }
 

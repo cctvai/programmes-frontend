@@ -27,7 +27,7 @@
                 </span>
             </div>
         </div>
-        {% filter spaceless %}
+        {% apply spaceless %}
             <div class="gallery-slideshow">
                 <div class="gallery-slideshow__window">
                     <div class="gallery-slideshow__tableau br-box-subtle">
@@ -52,7 +52,7 @@
                     </div>
                 </div>
             </div>
-        {% endfilter %}
+        {% endapply %}
         {{ self.thumbnails(gallery_display) }}
     </div>
 {% endif %}

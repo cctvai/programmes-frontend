@@ -6,19 +6,17 @@ namespace App\DsAmen\Presenters\Domain\CoreEntity\CollapsedBroadcast\SubPresente
 use App\DsAmen\Presenter;
 use App\DsShared\Helpers\BroadcastNetworksHelper;
 use App\DsShared\Helpers\LocalisedDaysAndMonthsHelper;
-use App\Translate\TranslateProvider;
 use App\ValueObject\BroadcastNetworkBreakdown;
 use BBC\ProgrammesPagesService\Domain\Entity\CollapsedBroadcast;
 use Cake\Chronos\Chronos;
-use RMP\Translate\Translate;
+use Symfony\Component\Translation\TranslatorInterface;
 
 class DetailsPresenter extends Presenter
 {
     /** @var CollapsedBroadcast */
     private $collapsedBroadcast;
 
-    /** @var Translate */
-    private $translate;
+    private $translator;
 
     /** @var LocalisedDaysAndMonthsHelper */
     public $localisedDaysAndMonthsHelper;
@@ -28,7 +26,7 @@ class DetailsPresenter extends Presenter
 
     public function __construct(
         CollapsedBroadcast $collapsedBroadcast,
-        TranslateProvider $translateProvider,
+        TranslatorInterface $translator,
         LocalisedDaysAndMonthsHelper $localisedDaysAndMonthsHelper,
         BroadcastNetworksHelper $broadcastNetworksHelper,
         array $options = []
@@ -36,7 +34,7 @@ class DetailsPresenter extends Presenter
         parent::__construct($options);
         $this->localisedDaysAndMonthsHelper = $localisedDaysAndMonthsHelper;
         $this->collapsedBroadcast = $collapsedBroadcast;
-        $this->translate = $translateProvider->getTranslate();
+        $this->translator = $translator;
         $this->networksAndServicesDetails = $broadcastNetworksHelper->getNetworksAndServicesDetails($collapsedBroadcast);
     }
 

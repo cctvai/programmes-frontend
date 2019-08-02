@@ -5,7 +5,6 @@ namespace Tests\App\DsAmen\Presenters\Section\Map\SubPresenter;
 
 use App\DsAmen\Presenters\Section\Map\SubPresenter\TxPresenter;
 use App\DsShared\Helpers\LiveBroadcastHelper;
-use App\Translate\TranslateProvider;
 use BBC\ProgrammesPagesService\Domain\Entity\Brand;
 use BBC\ProgrammesPagesService\Domain\Entity\CollapsedBroadcast;
 use BBC\ProgrammesPagesService\Domain\Entity\Image;
@@ -14,22 +13,18 @@ use BBC\ProgrammesPagesService\Domain\Entity\ProgrammeContainer;
 use BBC\ProgrammesPagesService\Domain\Entity\ProgrammeItem;
 use BBC\ProgrammesPagesService\Domain\Entity\Series;
 use BBC\ProgrammesPagesService\Domain\ValueObject\Pid;
-use PHPUnit\Framework\TestCase;
-use RMP\Translate\TranslateFactory;
 use Symfony\Component\Routing\Generator\UrlGenerator;
 use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\RouteCollectionBuilder;
+use Tests\App\BaseTemplateTestCase;
 
-class TxPresenterTest extends TestCase
+class TxPresenterTest extends BaseTemplateTestCase
 {
     /** @var LiveBroadcastHelper|\PHPUnit_Framework_MockObject_MockObject */
     private $helper;
 
     /** @var UrlGenerator */
-    private $router;
-
-    /** @var TranslateProvider */
-    private $translate;
+    private $mockRouter;
 
     public function setup()
     {
@@ -38,12 +33,10 @@ class TxPresenterTest extends TestCase
         $routeCollectionBuilder = new RouteCollectionBuilder();
         $routeCollectionBuilder->add('/programmes/{pid}', '', 'find_by_pid');
         $routeCollectionBuilder->add('/iplayer/episode/{pid}', '', 'iplayer_play');
-        $this->router = new UrlGenerator(
+        $this->mockRouter = new UrlGenerator(
             $routeCollectionBuilder->build(),
             new RequestContext()
         );
-
-        $this->translate = new TranslateProvider(new TranslateFactory());
     }
 
     /** @dataProvider getBadgeTranslationStringProvider */
@@ -66,7 +59,7 @@ class TxPresenterTest extends TestCase
 
         $context = $this->createConfiguredMock(Brand::class, ['isRadio' => $isRadio]);
 
-        $tx = new TxPresenter($this->helper, $this->translate, $this->router, $context, $cb, 0, 0);
+        $tx = new TxPresenter($this->helper, self::$translator, $this->mockRouter, $context, $cb, 0, 0);
         $this->assertSame($expected, $tx->getBadgeTranslationString());
     }
 
@@ -92,7 +85,7 @@ class TxPresenterTest extends TestCase
         string $expected
     ) {
         $this->helper->method('isWatchableLive')->willReturn($isWatchableLive);
-        $tx = new TxPresenter($this->helper, $this->translate, $this->router, $programmeContainer, $collapsedBroadcast, 0, 0);
+        $tx = new TxPresenter($this->helper, self::$translator, $this->mockRouter, $programmeContainer, $collapsedBroadcast, 0, 0);
         $this->assertEquals($expected, $tx->getTitleTranslationString());
     }
 
@@ -127,12 +120,12 @@ class TxPresenterTest extends TestCase
         $context = $this->createMock(Brand::class);
 
         // Upcoming broadcast absent
-        $tx = new TxPresenter($this->helper, $this->translate, $this->router, $context, null, 0, 0);
+        $tx = new TxPresenter($this->helper, self::$translator, $this->mockRouter, $context, null, 0, 0);
         $this->assertEquals('all_previous_episodes', $tx->getLinkTextTranslationString());
 
         // Upcoming broadcast present
         $repeat = $this->createMock(CollapsedBroadcast::class);
-        $tx = new TxPresenter($this->helper, $this->translate, $this->router, $context, $repeat, 0, 0);
+        $tx = new TxPresenter($this->helper, self::$translator, $this->mockRouter, $context, $repeat, 0, 0);
         $this->assertEquals('upcoming_episodes', $tx->getLinkTextTranslationString());
     }
 
@@ -141,12 +134,12 @@ class TxPresenterTest extends TestCase
         $context = $this->createMock(Brand::class);
 
         // Upcoming broadcast absent
-        $tx = new TxPresenter($this->helper, $this->translate, $this->router, $context, null, 0, 0);
+        $tx = new TxPresenter($this->helper, self::$translator, $this->mockRouter, $context, null, 0, 0);
         $this->assertEquals('previous', $tx->getLinkLocationSuffix());
 
         // Upcoming broadcast present
         $repeat = $this->createMock(CollapsedBroadcast::class);
-        $tx = new TxPresenter($this->helper, $this->translate, $this->router, $context, $repeat, 0, 0);
+        $tx = new TxPresenter($this->helper, self::$translator, $this->mockRouter, $context, $repeat, 0, 0);
         $this->assertEquals('upcoming', $tx->getLinkLocationSuffix());
     }
 
@@ -155,12 +148,12 @@ class TxPresenterTest extends TestCase
         $context = $this->createMock(Brand::class);
 
         // Upcoming broadcast absent
-        $tx = new TxPresenter($this->helper, $this->translate, $this->router, $context, null, 0, 0);
+        $tx = new TxPresenter($this->helper, self::$translator, $this->mockRouter, $context, null, 0, 0);
         $this->assertEquals('see_all_episodes_from', $tx->getLinkTitleTranslationString());
 
         // Upcoming broadcast present
         $repeat = $this->createMock(CollapsedBroadcast::class);
-        $tx = new TxPresenter($this->helper, $this->translate, $this->router, $context, $repeat, 0, 0);
+        $tx = new TxPresenter($this->helper, self::$translator, $this->mockRouter, $context, $repeat, 0, 0);
         $this->assertEquals('see_all_upcoming_of', $tx->getLinkTitleTranslationString());
     }
 
@@ -172,7 +165,7 @@ class TxPresenterTest extends TestCase
         string $expected
     ) {
         $upcoming = $this->createMock(CollapsedBroadcast::class);
-        $tx = new TxPresenter($this->helper, $this->translate, $this->router, $context, $upcoming, $debutsCount, $repeatsCount);
+        $tx = new TxPresenter($this->helper, self::$translator, $this->mockRouter, $context, $upcoming, $debutsCount, $repeatsCount);
         $this->assertSame($expected, $tx->getUpcomingBroadcastCount());
     }
 
@@ -197,7 +190,7 @@ class TxPresenterTest extends TestCase
 
         $context = $this->createMock(Brand::class);
 
-        $tx = new TxPresenter($this->helper, $this->translate, $this->router, $context, $cb, 0, 0, ['show_mini_map' => true]);
+        $tx = new TxPresenter($this->helper, self::$translator, $this->mockRouter, $context, $cb, 0, 0, ['show_mini_map' => true]);
         $this->assertEquals(false, $tx->showImage());
     }
 
@@ -210,7 +203,7 @@ class TxPresenterTest extends TestCase
 
         $context = $this->createConfiguredMock(Brand::class, ['getImage' => $image]);
 
-        $tx = new TxPresenter($this->helper, $this->translate, $this->router, $context, $cb, 0, 0);
+        $tx = new TxPresenter($this->helper, self::$translator, $this->mockRouter, $context, $cb, 0, 0);
         $this->assertEquals(false, $tx->showImage());
     }
 
@@ -223,7 +216,7 @@ class TxPresenterTest extends TestCase
         $image2 = $this->createConfiguredMock(Image::class, ['getPid' => new Pid('p0000000')]);
         $context = $this->createConfiguredMock(Brand::class, ['getImage' => $image2]);
 
-        $tx = new TxPresenter($this->helper, $this->translate, $this->router, $context, $cb, 0, 0);
+        $tx = new TxPresenter($this->helper, self::$translator, $this->mockRouter, $context, $cb, 0, 0);
         $this->assertEquals(true, $tx->showImage());
     }
 }

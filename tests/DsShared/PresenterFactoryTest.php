@@ -5,20 +5,19 @@ namespace Tests\App\DsShared;
 use App\DsShared\Factory\HelperFactory;
 use App\DsShared\Factory\PresenterFactory;
 use App\DsShared\Utilities\ImageEntity\ImageEntityPresenter;
-use App\Translate\TranslateProvider;
 use BBC\ProgrammesPagesService\Domain\Entity\Image;
 use PHPUnit\Framework\TestCase;
 use PHPUnit_Framework_MockObject_MockObject;
-use RMP\Translate\Translate;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * @covers \App\DsShared\Factory\PresenterFactory
  */
 class PresenterFactoryTest extends TestCase
 {
-    /** @var Translate|PHPUnit_Framework_MockObject_MockObject. */
-    private $translate;
+    /** @var TranslatorInterface|PHPUnit_Framework_MockObject_MockObject. */
+    private $translator;
 
     /** @var UrlGeneratorInterface|PHPUnit_Framework_MockObject_MockObject */
     private $router;
@@ -31,9 +30,7 @@ class PresenterFactoryTest extends TestCase
 
     public function setUp()
     {
-        $this->translate = $this->createMock(Translate::class);
-        $translateProvider = $this->createMock(TranslateProvider::class);
-        $translateProvider->method('getTranslate')->willReturn($this->translate);
+        $this->translator = $this->createMock(TranslatorInterface::class);
         $this->router = $this->createMock(UrlGeneratorInterface::class);
         $this->helperFactory = $this->createMock(HelperFactory::class);
         $this->factory = new PresenterFactory();

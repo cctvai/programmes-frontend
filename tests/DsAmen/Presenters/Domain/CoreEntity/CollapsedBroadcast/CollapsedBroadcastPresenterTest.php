@@ -16,22 +16,17 @@ use App\DsAmen\Presenters\Domain\CoreEntity\Shared\SubPresenter\TitlePresenter;
 use App\DsShared\Helpers\BroadcastNetworksHelper;
 use App\DsShared\Factory\HelperFactory;
 use App\DsShared\Helpers\LiveBroadcastHelper;
-use App\Translate\TranslateProvider;
 use BBC\ProgrammesPagesService\Domain\Entity\CollapsedBroadcast;
 use BBC\ProgrammesPagesService\Domain\Entity\ProgrammeItem;
 use BBC\ProgrammesPagesService\Domain\Enumeration\MediaTypeEnum;
-use PHPUnit\Framework\TestCase;
 use PHPUnit_Framework_MockObject_MockObject;
-use RMP\Translate\TranslateFactory;
 use Symfony\Component\Routing\Generator\UrlGenerator;
+use Tests\App\BaseTemplateTestCase;
 
-class CollapsedBroadcastPresenterTest extends TestCase
+class CollapsedBroadcastPresenterTest extends BaseTemplateTestCase
 {
     /** @var UrlGenerator|PHPUnit_Framework_MockObject_MockObject */
     private $mockRouter;
-
-    /** @var TranslateProvider */
-    private $translate;
 
     /** @var HelperFactory|PHPUnit_Framework_MockObject_MockObject */
     private $mockHelperFactory;
@@ -45,7 +40,6 @@ class CollapsedBroadcastPresenterTest extends TestCase
     public function setUp()
     {
         $this->mockRouter = $this->createMock(UrlGenerator::class);
-        $this->translate = new TranslateProvider(new TranslateFactory());
         $this->mockCollapsedBroadcast = $this->createMockCollapsedBroadcast();
 
         $this->mockHelperFactory  = $this->createMock(HelperFactory::class);
@@ -59,7 +53,7 @@ class CollapsedBroadcastPresenterTest extends TestCase
         $cbPresenter = new CollapsedBroadcastPresenter(
             $this->mockCollapsedBroadcast,
             $this->mockRouter,
-            $this->translate,
+            self::$translator,
             $this->mockHelperFactory
         );
         $this->assertInstanceOf(BodyPresenter::class, $cbPresenter->getBodyPresenter());
@@ -72,7 +66,7 @@ class CollapsedBroadcastPresenterTest extends TestCase
         $cbPresenter = new CollapsedBroadcastPresenter(
             $this->mockCollapsedBroadcast,
             $this->mockRouter,
-            $this->translate,
+            self::$translator,
             $this->mockHelperFactory
         );
         $this->assertInstanceOf(StreamableCtaPresenter::class, $cbPresenter->getCtaPresenter());
@@ -85,7 +79,7 @@ class CollapsedBroadcastPresenterTest extends TestCase
         $cbPresenter = new CollapsedBroadcastPresenter(
             $this->mockCollapsedBroadcast,
             $this->mockRouter,
-            $this->translate,
+            self::$translator,
             $this->mockHelperFactory
         );
         $this->assertInstanceOf(LiveCtaPresenter::class, $cbPresenter->getCtaPresenter());
@@ -98,7 +92,7 @@ class CollapsedBroadcastPresenterTest extends TestCase
         $cbPresenter = new CollapsedBroadcastPresenter(
             $this->mockCollapsedBroadcast,
             $this->mockRouter,
-            $this->translate,
+            self::$translator,
             $this->mockHelperFactory
         );
         $this->assertNull($cbPresenter->getCtaPresenter());
@@ -109,7 +103,7 @@ class CollapsedBroadcastPresenterTest extends TestCase
         $cbPresenter = new CollapsedBroadcastPresenter(
             $this->mockCollapsedBroadcast,
             $this->mockRouter,
-            $this->translate,
+            self::$translator,
             $this->mockHelperFactory
         );
         $this->assertInstanceOf(DetailsPresenter::class, $cbPresenter->getDetailsPresenter());
@@ -120,7 +114,7 @@ class CollapsedBroadcastPresenterTest extends TestCase
         $cbPresenter = new CollapsedBroadcastPresenter(
             $this->mockCollapsedBroadcast,
             $this->mockRouter,
-            $this->translate,
+            self::$translator,
             $this->mockHelperFactory
         );
         $this->assertInstanceOf(ImagePresenter::class, $cbPresenter->getImagePresenter());
@@ -131,7 +125,7 @@ class CollapsedBroadcastPresenterTest extends TestCase
         $cbPresenter = new CollapsedBroadcastPresenter(
             $this->mockCollapsedBroadcast,
             $this->mockRouter,
-            $this->translate,
+            self::$translator,
             $this->mockHelperFactory
         );
         $this->assertInstanceOf(TitlePresenter::class, $cbPresenter->getTitlePresenter());
@@ -145,7 +139,7 @@ class CollapsedBroadcastPresenterTest extends TestCase
         $cbPresenter = new CollapsedBroadcastPresenter(
             $this->mockCollapsedBroadcast,
             $this->mockRouter,
-            $this->translate,
+            self::$translator,
             $this->mockHelperFactory,
             $options
         );
@@ -175,7 +169,7 @@ class CollapsedBroadcastPresenterTest extends TestCase
         $cbPresenter = new CollapsedBroadcastPresenter(
             $this->mockCollapsedBroadcast,
             $this->mockRouter,
-            $this->translate,
+            self::$translator,
             $this->mockHelperFactory
         );
 
@@ -235,7 +229,7 @@ class CollapsedBroadcastPresenterTest extends TestCase
     private function buildCollapsedBroadcastPresenter(ProgrammeItem $episode, bool $givenShowImageOption) :CollapsedBroadcastPresenter
     {
         $dummy1 = $this->mockRouter;
-        $dummy2 = $this->translate;
+        $dummy2 = self::$translator;
         $dummy3 = $this->mockHelperFactory;
 
         return new CollapsedBroadcastPresenter(

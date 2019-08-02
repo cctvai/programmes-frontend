@@ -69,7 +69,6 @@ use App\ExternalApi\Isite\Domain\ContentBlock\ThirdParty;
 use App\ExternalApi\Isite\Domain\ContentBlock\Touchcast;
 use App\ExternalApi\Isite\Domain\Profile;
 use App\ExternalApi\Recipes\Domain\Recipe;
-use App\Translate\TranslateProvider;
 use App\ValueObject\AnalyticsCounterName;
 use App\ValueObject\CosmosInfo;
 use App\ValueObject\IstatsAnalyticsLabels;
@@ -94,6 +93,7 @@ use Cake\Chronos\ChronosInterface;
 use Cake\Chronos\Date;
 use InvalidArgumentException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 use BBC\ProgrammesPagesService\Domain\Entity\Image as DomainImage;
 use App\DsShared\Factory\PresenterFactory as SharedPresenterFactory;
 
@@ -118,8 +118,7 @@ use App\DsShared\Factory\PresenterFactory as SharedPresenterFactory;
  */
 class PresenterFactory
 {
-    /** @var TranslateProvider */
-    private $translateProvider;
+    private $translator;
 
     /** @var UrlGeneratorInterface */
     private $router;
@@ -141,13 +140,13 @@ class PresenterFactory
 
     public function __construct(
         SharedPresenterFactory $presenterFactory,
-        TranslateProvider $translateProvider,
+        TranslatorInterface $translator,
         UrlGeneratorInterface $router,
         HelperFactory $helperFactory,
         CosmosInfo $cosmosInfo
     ) {
         $this->presenterFactory = $presenterFactory;
-        $this->translateProvider = $translateProvider;
+        $this->translator = $translator;
         $this->router = $router;
         $this->helperFactory = $helperFactory;
         $this->cosmosInfo = $cosmosInfo;

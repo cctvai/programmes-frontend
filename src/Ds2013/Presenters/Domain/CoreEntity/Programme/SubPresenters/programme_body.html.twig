@@ -11,11 +11,11 @@
                 '%1': programme_body.getProgramme().getPosition(),
                 '%2': programme_body.getProgramme().getParent().getExpectedChildCount(),
             }) %}
-            {% filter spaceless %}
+            {% apply spaceless %}
                 <abbr title="{{ position_text }}">
                     <span datatype="xsd:int">{{ programme_body.getProgramme().getPosition() }}</span>/<span class="programme__groupsize">{{ programme_body.getProgramme().getParent().getExpectedChildCount() }}</span>
                 </abbr>
-            {% endfilter %}
+            {% endapply %}
         {% endif %}
         <span>{{ truncate(programme_body.getProgramme().getShortSynopsis(), programme_body.getSynopsisTruncationLength()) }}</span>
         {% block synopsis_extra %}{% endblock %}

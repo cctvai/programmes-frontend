@@ -11,6 +11,7 @@ use Symfony\Component\DomCrawler\Crawler;
 use Tests\App\BaseWebTestCase;
 
 /**
+ * @IgnoreAnnotation("dataProvider")
  * @group recipes
  */
 class RecipesControllerTest extends BaseWebTestCase

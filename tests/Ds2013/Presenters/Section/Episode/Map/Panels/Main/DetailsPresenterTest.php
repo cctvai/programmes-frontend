@@ -23,7 +23,7 @@ class DetailsPresenterTest extends TestCase
     {
         Chronos::setTestNow(Chronos::now());
     }
-    public function tearDown()
+    public function tearDown(): void
     {
         Chronos::setTestNow();
     }

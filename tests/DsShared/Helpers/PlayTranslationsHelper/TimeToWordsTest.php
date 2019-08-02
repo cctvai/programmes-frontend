@@ -4,23 +4,20 @@ namespace Tests\App\DsShared\Helpers\PlayTranslationsHelper;
 
 use App\DsShared\Helpers\AvailabilityTimeToWordsHelper;
 use App\DsShared\Helpers\PlayTranslationsHelper;
-use App\Translate\TranslateProvider;
 use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
-use RMP\Translate\Translate;
+use Symfony\Component\Translation\TranslatorInterface;
 
 class TimeToWordsTest extends TestCase
 {
-    private $mockTranslate;
+    private $translator;
 
     private $helper;
 
     public function setUp()
     {
-        $this->mockTranslate = $this->createMock(Translate::class);
-        $mockTranslateProvider = $this->createMock(TranslateProvider::class);
-        $mockTranslateProvider->method('getTranslate')->willReturn($this->mockTranslate);
-        $this->helper = new PlayTranslationsHelper($mockTranslateProvider);
+        $this->translator = $this->createMock(TranslatorInterface::class);
+        $this->helper = new PlayTranslationsHelper($this->translator);
     }
 
     public function testNoTimeRemainingToWords()
@@ -113,19 +110,17 @@ class TimeToWordsTest extends TestCase
         $timeRemaining = DateTimeImmutable::createFromFormat('U', '0')
             ->diff(DateTimeImmutable::createFromFormat('U', (string) (120 + $hours * 3600)));
 
-        $this->mockTranslate->expects($this->at(0))
-            ->method('translate')
+        $this->translator->expects($this->at(0))
+            ->method('trans')
             ->with(
-                $prefix . '_hours',
-                ['%count%' => $hours],
-                $hours
+                $prefix . '_hours %count%',
+                ['%count%' => $hours]
             )->willReturn('A Translation');
-        $this->mockTranslate->expects($this->at(1))
-            ->method('translate')
+        $this->translator->expects($this->at(1))
+            ->method('trans')
             ->with(
-                $prefix . '_minutes',
-                ['%count%' => 2],
-                2
+                $prefix . '_minutes %count%',
+                ['%count%' => 2]
             )->willReturn('A Translation');
         $translation = $this->helper->timeIntervalToWords($timeRemaining, true, $prefix);
         $this->assertEquals('A Translation, A Translation', $translation);
@@ -191,8 +186,8 @@ class TimeToWordsTest extends TestCase
             ->diff(DateTimeImmutable::createFromFormat('U', (string) (3600 * 24 * 366)));
 
         $translationPrefix = 'iplayer_time';
-        $this->mockTranslate->expects($this->once())
-            ->method('translate')
+        $this->translator->expects($this->once())
+            ->method('trans')
             ->with($translationPrefix . '_years')
             ->willReturn('A Translation');
         $translation = $this->helper->timeIntervalToWords($timeRemaining, false, $translationPrefix);
@@ -201,12 +196,11 @@ class TimeToWordsTest extends TestCase
 
     private function setMockTranslate($translationKey, $count)
     {
-        $this->mockTranslate->expects($this->once())
-            ->method('translate')
+        $this->translator->expects($this->once())
+            ->method('trans')
             ->with(
-                $translationKey,
-                ['%count%' => $count],
-                $count
+                $translationKey . ' %count%',
+                ['%count%' => $count]
             )->willReturn('A Translation');
     }
 }

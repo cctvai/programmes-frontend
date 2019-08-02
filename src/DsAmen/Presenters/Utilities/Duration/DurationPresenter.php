@@ -4,7 +4,7 @@ declare(strict_types = 1);
 namespace App\DsAmen\Presenters\Utilities\Duration;
 
 use App\DsAmen\Presenter;
-use App\Translate\TranslateProvider;
+use Symfony\Component\Translation\TranslatorInterface;
 
 class DurationPresenter extends Presenter
 {
@@ -17,8 +17,7 @@ class DurationPresenter extends Presenter
     /** @var int */
     private $seconds = 0;
 
-    /** @var TranslateProvider */
-    private $translateProvider;
+    private $translator;
 
     /** @var array */
     protected $options = [
@@ -26,28 +25,27 @@ class DurationPresenter extends Presenter
         'show_heading' => false,
     ];
 
-    public function __construct(int $duration, TranslateProvider $translateProvider, array $options = [])
+    public function __construct(int $duration, TranslatorInterface $translator, array $options = [])
     {
         parent::__construct($options);
         $this->makeParts($duration);
-        $this->translateProvider = $translateProvider;
+        $this->translator = $translator;
     }
 
     public function getAriaLabel(): string
     {
         $ariaLabel = '';
-        $tr = $this->translateProvider->getTranslate();
 
         if ($this->getHours()) {
-            $ariaLabel .= $tr->translate('time_hours_long', ['%1' => $this->getHours()]);
+            $ariaLabel .= $this->translator->trans('time_hours_long', ['%1' => $this->getHours()]);
         }
 
         if ($this->getMinutes()) {
-            $ariaLabel .= ' ' . $tr->translate('time_minutes_long', ['%1' => $this->getMinutes()]);
+            $ariaLabel .= ' ' . $this->translator->trans('time_minutes_long', ['%1' => $this->getMinutes()]);
         }
 
         if ($this->getSeconds()) {
-            $ariaLabel .= ' ' . $tr->translate('time_seconds_long', ['%1' => $this->getSeconds()]);
+            $ariaLabel .= ' ' . $this->translator->trans('time_seconds_long', ['%1' => $this->getSeconds()]);
         }
 
         return trim($ariaLabel);

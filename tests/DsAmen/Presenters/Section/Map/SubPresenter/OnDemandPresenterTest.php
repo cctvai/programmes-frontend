@@ -4,7 +4,6 @@ declare(strict_types = 1);
 namespace Tests\App\DsAmen\Presenters\Section\Map\SubPresenter;
 
 use App\DsAmen\Presenters\Section\Map\SubPresenter\OnDemandPresenter;
-use App\Translate\TranslateProvider;
 use BBC\ProgrammesPagesService\Domain\Entity\Brand;
 use BBC\ProgrammesPagesService\Domain\Entity\CollapsedBroadcast;
 use BBC\ProgrammesPagesService\Domain\Entity\Episode;
@@ -16,6 +15,7 @@ use Cake\Chronos\Chronos;
 use PHPUnit\Framework\TestCase;
 use PHPUnit_Framework_MockObject_MockObject;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 
 class OnDemandPresenterTest extends TestCase
 {
@@ -424,7 +424,7 @@ class OnDemandPresenterTest extends TestCase
         array $options = []
     ): OnDemandPresenter {
         return new OnDemandPresenter(
-            $this->createMock(TranslateProvider::class),
+            $this->createMock(TranslatorInterface::class),
             $this->createMock(UrlGeneratorInterface::class),
             $programme,
             $episode,

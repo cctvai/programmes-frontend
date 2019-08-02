@@ -7,33 +7,33 @@
 #    we shall move these routes into the main routes.yaml.
 #
 # All routes in this file shall be configured with
-# defaults: { _controller: FrameworkBundle:Redirect:redirect, route: '' }
+# defaults: { _controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController::redirectAction, route: '' }
 # This means that the url can be routed by this application but throws a 404.
 
 ### External Products
 
 iplayer_play:
     path: /iplayer/episode/{pid}/{version}
-    defaults: { _controller: FrameworkBundle:Redirect:redirect, route: '', version: '' }
+    defaults: { _controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController::redirectAction, route: '', version: '' }
     requirements: { pid: '[0-9b-df-hj-np-tv-z]{8,15}', version: 'hd|ad|sign' }
     schemes: [https]
 
 iplayer_episodes:
     path: /iplayer/episodes/{pid}
-    defaults: { _controller: FrameworkBundle:Redirect:redirect, route: '' }
+    defaults: { _controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController::redirectAction, route: '' }
     requirements: { pid: '[0-9b-df-hj-np-tv-z]{8,15}' }
     schemes: [https]
 
 iplayer_live:
     path: /iplayer/live/{sid}
-    defaults: { _controller: FrameworkBundle:Redirect:redirect, route: '' }
+    defaults: { _controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController::redirectAction, route: '' }
     requirements: { sid: '[0-9a-z_]{1,}' }
     schemes: [https]
 
 worldservice_liveradio:
     host: "bbc.com"
     path: /{language}/{sid}/liveradio
-    defaults: { _controller: FrameworkBundle:Redirect:redirect, route: '' }
+    defaults: { _controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController::redirectAction, route: '' }
     requirements: { language: '[a-z]{1,}', sid: '[0-9a-z_]{1,}' }
     schemes: [http]
 
@@ -42,84 +42,84 @@ worldservice_news_west_africa:
 
 network:
     path: /{networkUrlKey}
-    defaults: { _controller: FrameworkBundle:Redirect:redirect, route: '' }
+    defaults: { _controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController::redirectAction, route: '' }
     requirements: { networkUrlKey: '[a-zA-Z0-9]{2,35}' }
 
 playspace_live:
     path: /sounds/play/live:{sid}
-    defaults: { _controller: FrameworkBundle:Redirect:redirect, route: '' }
+    defaults: { _controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController::redirectAction, route: '' }
     requirements: { sid: '[0-9a-z_]{1,}' }
 
 playspace_play:
     path: /sounds/play/{pid}
-    defaults: { _controller: FrameworkBundle:Redirect:redirect, route: '' }
+    defaults: { _controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController::redirectAction, route: '' }
     requirements: { pid: '[0-9b-df-hj-np-tv-z]{8,15}' }
 
 sounds_brand:
     path: /sounds/play/brand:{brandPid}
-    defaults: { _controller: FrameworkBundle:Redirect:redirect, route: '' }
+    defaults: { _controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController::redirectAction, route: '' }
     requirements:
         brandPid: '[0-9b-df-hj-np-tv-z]{8,15}'
 
 sounds_collection:
     path: /sounds/play/collection:{collectionPid}
-    defaults: { _controller: FrameworkBundle:Redirect:redirect, route: '' }
+    defaults: { _controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController::redirectAction, route: '' }
     requirements:
         collectionPid: '[0-9b-df-hj-np-tv-z]{8,15}'
 
 my_tracks:
     path: /programmes/articles/BHmrZF1Z7JDckzFSZ9cl7l/changes-to-the-bbc-music-website
-    defaults: { _controller: FrameworkBundle:Redirect:redirect, route: '' }
+    defaults: { _controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController::redirectAction, route: '' }
 
 ### /programmes v2
 
 article_with_contact_form:
     path: /programmes/articles/{key}/{slug}/contact
-    defaults: { _controller: FrameworkBundle:Redirect:redirect, route: '' }
+    defaults: { _controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController::redirectAction, route: '' }
     requirements: { key: '[a-zA-Z0-9-]{1,40}' }
     schemes: [https]
 
 article_with_contact_form_noslug:
     path: /programmes/articles/{key}/contact
-    defaults: { _controller: FrameworkBundle:Redirect:redirect, route: '' }
+    defaults: { _controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController::redirectAction, route: '' }
     requirements: { key: '[a-zA-Z0-9-]{1,40}' }
     schemes: [https]
 
 # TODO implement slice and filter parameters properly
 programme_broadcasts:
     path: /programmes/{pid}/broadcasts
-    defaults: { _controller: FrameworkBundle:Redirect:redirect, route: '' }
+    defaults: { _controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController::redirectAction, route: '' }
     requirements: { pid: '[0-9b-df-hj-np-tv-z]{8,15}' }
     schemes: [https]
 
 podcast_download:
     path: /mediaselector/6/redir/version/2.0/mediaset/audio-nondrm-download/proto/https/vpid/{pid}.mp3
     host: 'open.live.bbc.co.uk'
-    defaults: { _controller: FrameworkBundle:Redirect:redirect, route: '' }
+    defaults: { _controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController::redirectAction, route: '' }
     schemes: [https]
 
 podcast_download_low:
     path: /mediaselector/6/redir/version/2.0/mediaset/audio-nondrm-download-low/proto/https/vpid/{pid}.mp3
     host: 'open.live.bbc.co.uk'
-    defaults: { _controller: FrameworkBundle:Redirect:redirect, route: '' }
+    defaults: { _controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController::redirectAction, route: '' }
     schemes: [https]
 
 
 podcast_other_podcasts:
     path: /radio/categories/redirect
-    defaults: { _controller: FrameworkBundle:Redirect:redirect, route: '' }
+    defaults: { _controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController::redirectAction, route: '' }
     schemes: [https]
 
 podcast_download_rss:
     path: /{pid}.rss
     host: 'podcasts.files.bbci.co.uk'
-    defaults: { _controller: FrameworkBundle:Redirect:redirect, route: '' }
+    defaults: { _controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController::redirectAction, route: '' }
     requirements: { pid: '[0-9b-df-hj-np-tv-z]{8,15}' }
 
     schemes: [https]
 
 food_recipes:
     path: /food/programmes/{pid}
-    defaults: { _controller: FrameworkBundle:Redirect:redirect, route: '' }
+    defaults: { _controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController::redirectAction, route: '' }
     requirements: { pid: '[0-9b-df-hj-np-tv-z]{8,15}' }
     schemes: [http]

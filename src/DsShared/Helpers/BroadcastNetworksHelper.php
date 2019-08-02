@@ -3,20 +3,19 @@ declare(strict_types = 1);
 
 namespace App\DsShared\Helpers;
 
-use App\Translate\TranslateProvider;
 use App\ValueObject\BroadcastNetworkBreakdown;
 use BBC\ProgrammesPagesService\Domain\Entity\CollapsedBroadcast;
 use BBC\ProgrammesPagesService\Domain\Entity\Service;
 use BBC\ProgrammesPagesService\Domain\Exception\DataNotFetchedException;
+use Symfony\Component\Translation\TranslatorInterface;
 
 class BroadcastNetworksHelper
 {
-    /** @var TranslateProvider */
-    protected $translateProvider;
+    protected $translator;
 
-    public function __construct(TranslateProvider $translateProvider)
+    public function __construct(TranslatorInterface $translator)
     {
-        $this->translateProvider = $translateProvider;
+        $this->translator = $translator;
     }
 
     /**
@@ -109,7 +108,7 @@ class BroadcastNetworksHelper
                 }
 
                 // Return all services with the relevant qualifier ('only' or 'except')
-                $serviceNames[] = $this->translateProvider->getTranslate()->translate(
+                $serviceNames[] = $this->translator->trans(
                     $translation,
                     ['%1' => implode('', $this->prefixNames($names))]
                 );
@@ -205,7 +204,7 @@ class BroadcastNetworksHelper
         // If there are more than 5 names, use only the first five names and attach an 'and X more' qualifier at the end
         if ($namesCount > 5) {
             $names = \array_slice($names, 0, 5);
-            $names[] = $this->translateProvider->getTranslate()->translate('x_more', ['%count%' => $namesCount - 5], $namesCount - 5);
+            $names[] = $this->translator->trans('x_more %count%', ['%count%' => $namesCount - 5]);
         }
 
         return $names;

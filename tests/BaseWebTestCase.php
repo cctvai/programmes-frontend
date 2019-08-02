@@ -2,6 +2,7 @@
 declare(strict_types = 1);
 namespace Tests\App;
 
+use Doctrine\Common\DataFixtures\Executor\AbstractExecutor;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 
 abstract class BaseWebTestCase extends WebTestCase
@@ -57,38 +58,13 @@ abstract class BaseWebTestCase extends WebTestCase
         return $labels;
     }
 
-    protected function loadFixtures(array $fixtureNames, $omName = null, $registryName = 'doctrine', $purgeMode = null)
+    protected function loadFixtures(array $fixtureNames = [], bool $append = false, ?string $omName = null, string $registryName = 'doctrine', ?int $purgeMode = null): ?AbstractExecutor
     {
         $classNames = array();
         foreach ($fixtureNames as $fixtureName) {
             $className = self::FIXTURES_PATH . $fixtureName;
             array_push($classNames, $className);
         }
-        parent::loadFixtures($classNames, $omName, $registryName, $purgeMode);
-    }
-
-    /**
-     * Taken from Symfony/Bundle/FrameworkBundle/Test/KernelTestCase (this
-     * class's grandparent), as the method in
-     * Liip\FunctionalTestBundle\Test\WebTestCase (this class's parent) is
-     * currently using the KERNEL_DIR param that was deprecated in Symfony 3.4.
-     *
-     * Delete me once Liip\FunctionalTestBundle has been updated to support
-     * Symfony 3.4 without any deprecation notices.
-     *
-     * @return string The Kernel class name
-     *
-     * @throws \RuntimeException
-     * @throws \LogicException
-     */
-    protected static function getKernelClass()
-    {
-        if (!isset($_SERVER['KERNEL_CLASS']) && !isset($_ENV['KERNEL_CLASS'])) {
-            throw new \LogicException(sprintf('You must set the KERNEL_CLASS environment variable to the fully-qualified class name of your Kernel in phpunit.xml / phpunit.xml.dist or override the %1$s::createKernel() or %1$s::getKernelClass() method.', static::class));
-        }
-        if (!class_exists($class = $_ENV['KERNEL_CLASS'] ?? $_SERVER['KERNEL_CLASS'])) {
-            throw new \RuntimeException(sprintf('Class "%s" doesn\'t exist or cannot be autoloaded. Check that the KERNEL_CLASS value in phpunit.xml matches the fully-qualified class name of your Kernel or override the %s::createKernel() method.', $class, static::class));
-        }
-        return $class;
+        return parent::loadFixtures($classNames, $append, $omName, $registryName, $purgeMode);
     }
 }

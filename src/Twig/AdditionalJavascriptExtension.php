@@ -3,10 +3,10 @@ declare(strict_types = 1);
 
 namespace App\Twig;
 
-use Twig_Extension;
-use Twig_Function;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
-class AdditionalJavascriptExtension extends Twig_Extension
+class AdditionalJavascriptExtension extends AbstractExtension
 {
     private $buttons = [];
     private $showPopup = false;
@@ -17,10 +17,10 @@ class AdditionalJavascriptExtension extends Twig_Extension
     public function getFunctions(): array
     {
         return [
-            new Twig_Function('add_button', [$this, 'addButton']),
-            new Twig_Function('get_buttons', [$this, 'getButtons']),
-            new Twig_Function('add_popup', [$this, 'addPopup']),
-            new Twig_Function('show_popup', [$this, 'showPopup']),
+            new TwigFunction('add_button', [$this, 'addButton']),
+            new TwigFunction('get_buttons', [$this, 'getButtons']),
+            new TwigFunction('add_popup', [$this, 'addPopup']),
+            new TwigFunction('show_popup', [$this, 'showPopup']),
         ];
     }
 

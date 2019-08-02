@@ -24,7 +24,6 @@ use App\DsShared\Factory\HelperFactory;
 use App\ExternalApi\Isite\Domain\ContentBlock\ClipBlock\ClipStandAlone;
 use App\ExternalApi\Isite\Domain\ContentBlock\ClipBlock\ClipStream;
 use App\ExternalApi\Isite\Domain\ContentBlock\ClipBlock\StreamItem;
-use App\Translate\TranslateProvider;
 use App\ValueObject\CosmosInfo;
 use BBC\ProgrammesPagesService\Domain\Entity\Broadcast;
 use BBC\ProgrammesPagesService\Domain\Entity\Clip;
@@ -40,16 +39,16 @@ use Cake\Chronos\Chronos;
 use Cake\Chronos\Date;
 use PHPUnit\Framework\TestCase;
 use PHPUnit_Framework_MockObject_MockObject;
-use RMP\Translate\Translate;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * @covers \App\Ds2013\Factory\PresenterFactory
  */
 class PresenterFactoryTest extends TestCase
 {
-    /** @var Translate|PHPUnit_Framework_MockObject_MockObject. */
-    private $translate;
+    /** @var TranslatorInterface|PHPUnit_Framework_MockObject_MockObject. */
+    private $translator;
 
     /** @var UrlGeneratorInterface|PHPUnit_Framework_MockObject_MockObject */
     private $router;
@@ -62,17 +61,15 @@ class PresenterFactoryTest extends TestCase
 
     public function setUp()
     {
-        $this->translate = $this->createMock(Translate::class);
-        $translateProvider = $this->createMock(TranslateProvider::class);
-        $translateProvider->method('getTranslate')->willReturn($this->translate);
+        $this->translator = $this->createMock(TranslatorInterface::class);
         $this->router = $this->createMock(UrlGeneratorInterface::class);
         $this->helperFactory = $this->createMock(HelperFactory::class);
         $dummyCosmosInfo = $this->createMock(CosmosInfo::class);
 
-        $this->factory = new PresenterFactory(new DsSharedPresenterFactory(), $translateProvider, $this->router, $this->helperFactory, $dummyCosmosInfo);
+        $this->factory = new PresenterFactory(new DsSharedPresenterFactory(), $this->translator, $this->router, $this->helperFactory, $dummyCosmosInfo);
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         Chronos::setTestNow();
     }

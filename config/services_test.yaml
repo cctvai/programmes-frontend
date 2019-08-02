@@ -26,6 +26,14 @@ services:
     _defaults:
         public: true
 
+    Tests\App\DataFixtures\ORM\:
+        resource: '../tests/DataFixtures/ORM'
+        exclude: '../tests/DataFixtures/ORM/EntityCreationHelper'
+        tags: ['doctrine.fixture.orm']
+
+    App\ValueObject\CosmosInfo:
+        arguments: ['unittest', 'unittest']
+
     # If you need to access services in a test, create an alias
     # and then fetch that alias from the container. As a convention,
     # aliases are prefixed with test. For example:

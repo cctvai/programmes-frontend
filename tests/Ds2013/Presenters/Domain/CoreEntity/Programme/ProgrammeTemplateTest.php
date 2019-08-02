@@ -9,7 +9,6 @@ use BBC\ProgrammesPagesService\Domain\Entity\Episode;
 use Cake\Chronos\Chronos;
 use Tests\App\BaseTemplateTestCase;
 use Tests\App\DataFixtures\PagesService\EpisodesFixtures;
-use Tests\App\TwigEnvironmentProvider;
 
 class ProgrammeTemplateTest extends BaseTemplateTestCase
 {
@@ -22,8 +21,7 @@ class ProgrammeTemplateTest extends BaseTemplateTestCase
     public function testEastendersEpisode()
     {
         $programme = EpisodesFixtures::eastendersAvailable();
-        $presenterFactory = TwigEnvironmentProvider::ds2013PresenterFactory();
-        $presenter = $presenterFactory->programmePresenter($programme, []);
+        $presenter = self::$ds2013PresenterFactory->programmePresenter($programme, []);
         $crawler = $this->presenterCrawler($presenter);
 
         $outerDiv = $crawler->filterXPath('//div');
@@ -85,8 +83,7 @@ class ProgrammeTemplateTest extends BaseTemplateTestCase
         Chronos::setTestNow(new Chronos('2017-06-01 12:00:00'));
 
         $programme = EpisodesFixtures::beyondSpaceAndTimeAvailable();
-        $presenterFactory = TwigEnvironmentProvider::ds2013PresenterFactory();
-        $presenter = $presenterFactory->programmePresenter($programme, []);
+        $presenter = self::$ds2013PresenterFactory->programmePresenter($programme, []);
 
         $crawler = $this->presenterCrawler($presenter);
 
@@ -163,7 +160,7 @@ class ProgrammeTemplateTest extends BaseTemplateTestCase
         $programme = EpisodeBuilder::anyWithPlayableDestination()->build();
 
         $crawler = $this->presenterCrawler(
-            TwigEnvironmentProvider::ds2013PresenterFactory()->programmePresenter($programme, $givenImageOptions)
+            self::$ds2013PresenterFactory->programmePresenter($programme, $givenImageOptions)
         );
 
         $this->assertEquals(
@@ -186,7 +183,7 @@ class ProgrammeTemplateTest extends BaseTemplateTestCase
         ];
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         ApplicationTime::blank();
     }

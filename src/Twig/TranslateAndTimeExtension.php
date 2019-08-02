@@ -4,45 +4,45 @@ namespace App\Twig;
 
 use App\DsShared\Factory\HelperFactory;
 use App\Translate\TranslatableTrait;
-use App\Translate\TranslateProvider;
 use BBC\ProgrammesPagesService\Domain\ApplicationTime;
 use BBC\ProgrammesPagesService\Domain\ValueObject\PartialDate;
 use DateTimeImmutable;
 use DateTimeInterface;
 use DateTimeZone;
-use Twig_Extension;
-use Twig_Function;
-use Twig_SimpleFilter;
+use Symfony\Component\Translation\TranslatorInterface;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFilter;
+use Twig\TwigFunction;
 
 /**
  * The local time functions make use of Translate fairly heavily.
  * Hence grouping local time and translation together.
  */
-class TranslateAndTimeExtension extends Twig_Extension
+class TranslateAndTimeExtension extends AbstractExtension
 {
     use TranslatableTrait;
 
     private $helperFactory;
 
-    public function __construct(TranslateProvider $translateProvider, HelperFactory $helperFactory)
+    public function __construct(TranslatorInterface $translator, HelperFactory $helperFactory)
     {
-        $this->translateProvider = $translateProvider;
         $this->helperFactory = $helperFactory;
+        $this->translator = $translator;
     }
 
     /**
-     * @return Twig_SimpleFilter[]
+     * @return TwigFilter[]
      */
     public function getFilters(): array
     {
         return [
-            new Twig_SimpleFilter('ucwords', 'ucwords'),
-            new Twig_SimpleFilter('local_date_intl', [$this, 'localDateIntlWrapper']),
-            new Twig_SimpleFilter('local_date', [$this, 'localDate']),
-            new Twig_SimpleFilter('time_zone_note', [$this, 'timeZoneNote'], [
+            new TwigFilter('ucwords', 'ucwords'),
+            new TwigFilter('local_date_intl', [$this, 'localDateIntlWrapper']),
+            new TwigFilter('local_date', [$this, 'localDate']),
+            new TwigFilter('time_zone_note', [$this, 'timeZoneNote'], [
                 'is_safe' => ['html'],
             ]),
-            new Twig_SimpleFilter('local_partial_date', [$this, 'localPartialDate']),
+            new TwigFilter('local_partial_date', [$this, 'localPartialDate']),
         ];
     }
 
@@ -52,8 +52,8 @@ class TranslateAndTimeExtension extends Twig_Extension
     public function getFunctions()
     {
         return [
-            new Twig_Function('tr', [$this, 'trWrapper']),
-            new Twig_Function('localised_days_and_months', [$this, 'localisedDaysAndMonths']),
+            new TwigFunction('tr', [$this, 'trWrapper']),
+            new TwigFunction('localised_days_and_months', [$this, 'localisedDaysAndMonths']),
         ];
     }
 

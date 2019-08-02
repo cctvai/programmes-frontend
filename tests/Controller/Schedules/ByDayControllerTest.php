@@ -7,6 +7,7 @@ use Cake\Chronos\Chronos;
 use Tests\App\BaseWebTestCase;
 
 /**
+ * @IgnoreAnnotation("dataProvider")
  * @covers \App\Controller\Schedules\ByDayController
  */
 class ByDayControllerTest extends BaseWebTestCase
@@ -316,7 +317,7 @@ class ByDayControllerTest extends BaseWebTestCase
         return ($crawler->filter('meta[name="robots"]')->count() > 0 && $crawler->filter('meta[name="robots"]')->first()->attr('content') === 'noindex');
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         ApplicationTime::blank();
     }

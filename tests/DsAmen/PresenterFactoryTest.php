@@ -5,20 +5,19 @@ namespace Tests\App\DsAmen;
 use App\DsAmen\Factory\PresenterFactory;
 use App\DsAmen\Presenters\Domain\CoreEntity\Programme\ProgrammePresenter;
 use App\DsShared\Factory\HelperFactory;
-use App\Translate\TranslateProvider;
 use BBC\ProgrammesPagesService\Domain\Entity\Programme;
 use PHPUnit\Framework\TestCase;
 use PHPUnit_Framework_MockObject_MockObject;
-use RMP\Translate\Translate;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * @covers \App\DsAmen\Factory\PresenterFactory
  */
 class PresenterFactoryTest extends TestCase
 {
-    /** @var Translate|PHPUnit_Framework_MockObject_MockObject. */
-    private $translate;
+    /** @var TranslatorInterface|PHPUnit_Framework_MockObject_MockObject. */
+    private $translator;
 
     /** @var UrlGeneratorInterface|PHPUnit_Framework_MockObject_MockObject */
     private $router;
@@ -31,12 +30,10 @@ class PresenterFactoryTest extends TestCase
 
     public function setUp()
     {
-        $this->translate = $this->createMock(Translate::class);
-        $translateProvider = $this->createMock(TranslateProvider::class);
-        $translateProvider->method('getTranslate')->willReturn($this->translate);
+        $this->translator = $this->createMock(TranslatorInterface::class);
         $this->router = $this->createMock(UrlGeneratorInterface::class);
         $this->helperFactory = $this->createMock(HelperFactory::class);
-        $this->factory = new PresenterFactory($translateProvider, $this->router, $this->helperFactory);
+        $this->factory = new PresenterFactory($this->translator, $this->router, $this->helperFactory);
     }
 
     public function testOrganismProgramme()

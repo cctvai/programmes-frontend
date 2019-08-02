@@ -18,7 +18,6 @@ use BBC\ProgrammesPagesService\Domain\ValueObject\Pid;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Tests\App\BaseTemplateTestCase;
-use Tests\App\TwigEnvironmentProvider;
 
 class CoreEntityTitlePresenterTest extends BaseTemplateTestCase
 {
@@ -55,7 +54,6 @@ class CoreEntityTitlePresenterTest extends BaseTemplateTestCase
 
     public function testGetTitleLinkUrlForClip()
     {
-        $router = TwigEnvironmentProvider::getSymfonyRouter();
         $network = NetworkBuilder::any()->with(['nid' => new Nid('bbc_radio_three')])->build();
 
         // Audio Clip whitelisted to go to playspace
@@ -68,7 +66,7 @@ class CoreEntityTitlePresenterTest extends BaseTemplateTestCase
         ])->build();
 
         $programmeBodyPresenter = new CoreEntityTitlePresenter(
-            $router,
+            self::$router,
             $this->mockTitleLogicHelper,
             $playspaceAudioClip,
             new StreamableHelper()

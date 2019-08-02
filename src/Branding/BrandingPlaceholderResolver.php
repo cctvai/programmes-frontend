@@ -2,12 +2,12 @@
 declare(strict_types = 1);
 namespace App\Branding;
 
-use App\Translate\TranslateProvider;
 use BBC\BrandingClient\Branding;
 use BBC\ProgrammesPagesService\Domain\Entity\CoreEntity;
 use BBC\ProgrammesPagesService\Domain\Entity\Episode;
 use BBC\ProgrammesPagesService\Domain\Entity\ProgrammeContainer;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * Consider "I'm Sorry I Haven't a Clue" - it is a Radio 4 programme. Radio
@@ -32,15 +32,14 @@ class BrandingPlaceholderResolver
     /** @var UrlGeneratorInterface */
     private $router;
 
-    /** @var TranslateProvider */
-    private $translateProvider;
+    private $translator;
 
     public function __construct(
         UrlGeneratorInterface $router,
-        TranslateProvider $translateProvider
+        TranslatorInterface $translator
     ) {
         $this->router = $router;
-        $this->translateProvider = $translateProvider;
+        $this->translator = $translator;
     }
 
     public function resolve(Branding $branding, $context): Branding
@@ -98,8 +97,6 @@ class BrandingPlaceholderResolver
 
     private function buildNav($context, Branding $branding): string
     {
-        $translate = $this->translateProvider->getTranslate();
-
         // We've already asserted that $context is a Programme or a Group
         $tleo = $context->getTleo();
         $navItems = [];
@@ -110,7 +107,7 @@ class BrandingPlaceholderResolver
 
         // Home link is always present
         $navItems[] = $branding->buildNavItem(
-            $translate->translate('home'),
+            $this->translator->trans('home'),
             $this->router->generate('find_by_pid', ['pid' => $tleo->getPid()]),
             'nav_home'
         );
@@ -127,7 +124,7 @@ class BrandingPlaceholderResolver
         // Episodes link
         if ($tleo && $hasEpisodes) {
             $navItems[] = $branding->buildNavItem(
-                $translate->translate('episodes'),
+                $this->translator->trans('episodes'),
                 $this->router->generate('programme_episodes', ['pid' => $tleo->getPid()]),
                 'nav_episodes'
             );
@@ -136,7 +133,7 @@ class BrandingPlaceholderResolver
         // Clips link
         if ($tleo && $hasClips) {
             $navItems[] = $branding->buildNavItem(
-                $translate->translate('clips'),
+                $this->translator->trans('clips'),
                 $this->router->generate('programme_clips', ['pid' => $tleo->getPid()]),
                 'nav_clips'
             );
@@ -145,7 +142,7 @@ class BrandingPlaceholderResolver
         // Galleries link
         if ($tleo && $hasGalleries) {
             $navItems[] = $branding->buildNavItem(
-                $translate->translate('galleries'),
+                $this->translator->trans('galleries'),
                 $this->router->generate('programme_galleries', ['pid' => $tleo->getPid()]),
                 'nav_galleries'
             );

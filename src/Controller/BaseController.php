@@ -7,7 +7,6 @@ use App\Branding\BrandingPlaceholderResolver;
 use App\Cosmos\Dials;
 use App\Ds2013\Factory\PresenterFactory;
 use App\DsShared\Factory\HelperFactory;
-use App\Translate\TranslateProvider;
 use App\ValueObject\AnalyticsCounterName;
 use App\ValueObject\AtiAnalyticsLabels;
 use App\ValueObject\CosmosInfo;
@@ -31,6 +30,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 
 abstract class BaseController extends AbstractController
 {
@@ -92,7 +92,7 @@ abstract class BaseController extends AbstractController
             BrandingClient::class,
             BrandingPlaceholderResolver::class,
             OrbitClient::class,
-            TranslateProvider::class,
+            TranslatorInterface::class,
             CosmosInfo::class,
             Dials::class,
             PresenterFactory::class,
@@ -430,9 +430,9 @@ abstract class BaseController extends AbstractController
         // We only need to change the translation language if it is different
         // to the language the translation extension was initially created with
         $locale = $branding->getLocale();
-        $translateProvider = $this->container->get(TranslateProvider::class);
+        $translator = $this->container->get(TranslatorInterface::class);
 
-        $translateProvider->setLocale($locale);
+        $translator->setLocale($locale);
 
         // Resolve branding placeholders
         if ($this->context) {

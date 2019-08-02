@@ -12,13 +12,13 @@ use App\DsAmen\Presenters\Section\Map\SubPresenter\PromoPriorityPresenter;
 use App\DsAmen\Presenters\Section\Map\SubPresenter\SocialBarPresenter;
 use App\DsAmen\Presenters\Section\Map\SubPresenter\TxPresenter;
 use App\DsShared\Factory\HelperFactory;
-use App\Translate\TranslateProvider;
 use BBC\ProgrammesPagesService\Domain\Entity\CollapsedBroadcast;
 use BBC\ProgrammesPagesService\Domain\Entity\Episode;
 use BBC\ProgrammesPagesService\Domain\Entity\Programme;
 use BBC\ProgrammesPagesService\Domain\Entity\ProgrammeContainer;
 use BBC\ProgrammesPagesService\Domain\Entity\Promotion;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * Media Availability Panel Presenter
@@ -69,15 +69,14 @@ class MapPresenter extends Presenter
     /** @var Episode|null*/
     protected $streamableEpisode;
 
-    /** @var TranslateProvider */
-    protected $translateProvider;
+    protected $translator;
 
     /** @var CollapsedBroadcast|null */
     protected $upcomingBroadcast;
 
     public function __construct(
         HelperFactory $helperFactory,
-        TranslateProvider $translateProvider,
+        TranslatorInterface $translator,
         UrlGeneratorInterface $router,
         ProgrammeContainer $programme,
         ?CollapsedBroadcast $upcomingBroadcast,
@@ -93,7 +92,7 @@ class MapPresenter extends Presenter
         // Set class properties
         parent::__construct($options);
         $this->helperFactory = $helperFactory;
-        $this->translateProvider = $translateProvider;
+        $this->translator = $translator;
         $this->router = $router;
         $this->programme = $programme;
         $this->upcomingBroadcast = $upcomingBroadcast;
@@ -207,7 +206,7 @@ class MapPresenter extends Presenter
             $hasAnUpcomingEpisode = $this->upcomingBroadcast && $this->upcomingBroadcast->getProgrammeItem()->getStreamableFrom() && !$this->upcomingBroadcast->getProgrammeItem()->hasPlayableDestination();
 
             $this->rightColumns[] = new OnDemandPresenter(
-                $this->translateProvider,
+                $this->translator,
                 $this->router,
                 $this->programme,
                 $this->streamableEpisode,
@@ -228,7 +227,7 @@ class MapPresenter extends Presenter
         } else {
             $this->rightColumns[] = new TxPresenter(
                 $this->helperFactory->getLiveBroadcastHelper(),
-                $this->translateProvider,
+                $this->translator,
                 $this->router,
                 $this->programme,
                 $this->upcomingBroadcast,
@@ -245,7 +244,7 @@ class MapPresenter extends Presenter
         $this->rightGridClasses = '1/3@gel3b';
 
         $this->rightColumns[] = new OnDemandPresenter(
-            $this->translateProvider,
+            $this->translator,
             $this->router,
             $this->programme,
             $this->streamableEpisode,

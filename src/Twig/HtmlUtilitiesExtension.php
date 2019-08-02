@@ -3,18 +3,18 @@ declare(strict_types = 1);
 namespace App\Twig;
 
 use Symfony\Component\Asset\Packages;
-use Twig_Extension;
-use Twig_Function;
-use Twig_Environment;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
+use Twig\Environment;
 
-class HtmlUtilitiesExtension extends Twig_Extension
+class HtmlUtilitiesExtension extends AbstractExtension
 {
     private $packages;
     private $twig;
 
     public function __construct(
         Packages $packages,
-        Twig_Environment $twig
+        Environment $twig
     ) {
         $this->packages = $packages;
         $this->twig = $twig;
@@ -26,11 +26,11 @@ class HtmlUtilitiesExtension extends Twig_Extension
     public function getFunctions()
     {
         return [
-            new Twig_Function('asset_js', [$this, 'assetJs']),
-            new Twig_Function('build_css_classes', [$this, 'buildCssClasses']),
-            new Twig_Function('build_html_attributes', [$this, 'buildHtmlAttributes']),
-            new Twig_Function('truncate', [$this, 'truncate']),
-            new Twig_Function('render_twig_file', [$this, 'renderTwigFile']),
+            new TwigFunction('asset_js', [$this, 'assetJs']),
+            new TwigFunction('build_css_classes', [$this, 'buildCssClasses']),
+            new TwigFunction('build_html_attributes', [$this, 'buildHtmlAttributes']),
+            new TwigFunction('truncate', [$this, 'truncate']),
+            new TwigFunction('render_twig_file', [$this, 'renderTwigFile']),
         ];
     }
 

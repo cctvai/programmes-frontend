@@ -9,7 +9,7 @@ use App\Fixture\ScenarioManagement\ScenarioManager;
 use App\Fixture\ScenarioManagement\ScenarioReader;
 use App\Fixture\ScenarioManagement\ScenarioState;
 use Psr\Container\ContainerInterface;
-use Symfony\Component\DependencyInjection\ServiceSubscriberInterface;
+use Symfony\Contracts\Service\ServiceSubscriberInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;

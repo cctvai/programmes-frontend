@@ -6,6 +6,7 @@ namespace Tests\App\Controller\Schedules;
 use Tests\App\BaseWebTestCase;
 
 /**
+ * @IgnoreAnnotation("dataProvider")
  * @covers \App\Controller\Schedules\ByMonthController
  */
 class ByMonthControllerTest extends BaseWebTestCase

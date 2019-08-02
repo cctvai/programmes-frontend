@@ -3,12 +3,12 @@
 <div class="letter-nav-clamp letter-nav-clamp--only-wide">
     <div class="grid-wrapper">
         <div class="grid 1/1@bpw">
-            {% filter spaceless %}
+            {% apply spaceless %}
                 <ul class="atoz-slice-nav grid-wrapper">
                     {{ self.item(atoz_slice_nav.getSearch(), 'player', atoz_slice_nav.getSlice(), tr('atoz_available')) }}
                     {{ self.item(atoz_slice_nav.getSearch(), 'all', atoz_slice_nav.getSlice(), tr('atoz_all')) }}
                 </ul>
-            {% endfilter %}
+            {% endapply %}
         </div>
     </div>
 </div>

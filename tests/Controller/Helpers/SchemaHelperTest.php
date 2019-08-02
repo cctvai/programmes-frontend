@@ -106,7 +106,7 @@ class SchemaHelperTest extends TestCase
                 'name' => 'BBC programmes',
                 'url' => 'this/url/was/stubbed',
             ],
-            'duration' => 'PT14M57S',
+            'duration' => 'PT897S',
             'startDate' => '4000-02-03T00:00:00+00:00',
             'endDate' => '5000-02-03T00:00:00+00:00',
         ], $schema);

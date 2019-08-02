@@ -4,13 +4,13 @@ declare(strict_types = 1);
 namespace App\DsShared\Helpers;
 
 use App\Translate\TranslatableTrait;
-use App\Translate\TranslateProvider;
 use BBC\ProgrammesPagesService\Domain\ApplicationTime;
 use BBC\ProgrammesPagesService\Domain\ValueObject\PartialDate;
 use Cake\Chronos\Chronos;
 use DateTime;
 use IntlDateFormatter;
 use RMP\Translate\DateCorrection;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * View helper - Creates complete lists of localised days of the week and months
@@ -25,12 +25,9 @@ class LocalisedDaysAndMonthsHelper
 {
     use TranslatableTrait;
 
-    /** @var TranslateProvider */
-    protected $translateProvider;
-
-    public function __construct(TranslateProvider $translateProvider)
+    public function __construct(TranslatorInterface $translator)
     {
-        $this->translateProvider = $translateProvider;
+        $this->translator = $translator;
     }
 
     public function localisedDaysAndMonths(): string
@@ -38,7 +35,7 @@ class LocalisedDaysAndMonthsHelper
         $localisedDaysAndMonths = [];
         $dateHelper = new DateCorrection();
 
-        $locale = $this->translateProvider->getLocale();
+        $locale = $this->translator->getLocale();
         $fmt = new IntlDateFormatter(
             $locale,
             IntlDateFormatter::FULL,
@@ -89,37 +86,35 @@ class LocalisedDaysAndMonthsHelper
         $now = ApplicationTime::getLocalTime();
         $date = $date->setTimezone(ApplicationTime::getLocalTimeZone());
 
-        $translate = $this->translateProvider->getTranslate();
-
         $date = $date->setTime(0, 0, 0);
         $now = $now->setTime(0, 0, 0);
 
         if ($date->isSameDay($now)) {
-            return $translate->translate('schedules_today');
+            return $this->translator->trans('schedules_today');
         }
 
         if ($date->isSameDay($now->addDay(1))) {
-            return $translate->translate('schedules_tomorrow');
+            return $this->translator->trans('schedules_tomorrow');
         }
 
         if ($date->isSameDay($now->subDay(1))) {
-            return $translate->translate('schedules_yesterday');
+            return $this->translator->trans('schedules_yesterday');
         }
 
         if ($date->format('m-d') === '12-24') {
-            return $translate->translate('schedules_christmas_eve') . ' ' . $date->format('Y');
+            return $this->translator->trans('schedules_christmas_eve') . ' ' . $date->format('Y');
         }
 
         if ($date->format('m-d') === '12-25') {
-            return $translate->translate('schedules_christmas_day') . ' ' . $date->format('Y');
+            return $this->translator->trans('schedules_christmas_day') . ' ' . $date->format('Y');
         }
 
         if ($date->format('m-d') === '12-26') {
-            return $translate->translate('schedules_boxing_day') . ' ' . $date->format('Y');
+            return $this->translator->trans('schedules_boxing_day') . ' ' . $date->format('Y');
         }
 
         if ($date->format('m-d') === '01-01') {
-            return $translate->translate('schedules_new_years_day') . ' ' . $date->format('Y');
+            return $this->translator->trans('schedules_new_years_day') . ' ' . $date->format('Y');
         }
 
         $diffInDays = $now->diffInDays($date, false);
@@ -128,11 +123,11 @@ class LocalisedDaysAndMonthsHelper
         }
 
         if (5 < $diffInDays && $diffInDays <= 8) {
-            return $translate->translate('schedules_next_weekday', ['%1' => $this->localDateIntl($date, 'EEEE')]);
+            return $this->translator->trans('schedules_next_weekday', ['%1' => $this->localDateIntl($date, 'EEEE')]);
         }
 
         if (-8 <= $diffInDays && $diffInDays < -5) {
-            return $translate->translate('schedules_last_weekday', ['%1' => $this->localDateIntl($date, 'EEEE')]);
+            return $this->translator->trans('schedules_last_weekday', ['%1' => $this->localDateIntl($date, 'EEEE')]);
         }
 
         return $this->localDateIntl($date, 'EEE d MMM yyyy'); // Tue 23 Mar 2017

@@ -3,25 +3,58 @@ declare(strict_types = 1);
 namespace Tests\App;
 
 use App\DsShared\BasePresenter;
-use PHPUnit\Framework\TestCase;
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\DomCrawler\Crawler;
-use Twig_Environment;
+use Symfony\Component\Routing\RouterInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
+use Twig\Environment;
 
-abstract class BaseTemplateTestCase extends TestCase
+abstract class BaseTemplateTestCase extends WebTestCase
 {
-    /** @var Twig_Environment */
-    private static $twig;
+    /** @var Environment */
+    protected static $twig;
+
+    /** @var \App\Ds2013\Factory\PresenterFactory */
+    protected static $ds2013PresenterFactory;
+
+    /** @var \App\DsAmen\Factory\PresenterFactory */
+    protected static $dsAmenPresenterFactory;
+
+    /** @var \App\DsShared\Factory\PresenterFactory */
+    protected static $dsSharedPresenterFactory;
+
+    /** @var RouterInterface */
+    protected static $router;
+
+    protected static $translator;
+
+    public function __construct($name = null, array $data = [], $dataName = '')
+    {
+        parent::__construct($name, $data, $dataName);
+    }
 
     public static function setUpBeforeClass()
     {
-        if (self::$twig === null) {
-            self::$twig = TwigEnvironmentProvider::twig();
+        if (self::$twig !== null) {
+            return;
         }
+        self::bootKernel();
+
+        // returns the real and unchanged service container
+        $container = self::$kernel->getContainer();
+        // gets the special container that allows fetching private services
+        $container = self::$container;
+        self::$twig = $container->get('twig');
+        self::$ds2013PresenterFactory = $container->get(\App\Ds2013\Factory\PresenterFactory::class);
+        self::$dsAmenPresenterFactory = $container->get(\App\DsAmen\Factory\PresenterFactory::class);
+        self::$dsSharedPresenterFactory = $container->get(\App\DsShared\Factory\PresenterFactory::class);
+        self::$router = $container->get(RouterInterface::class);
+        self::$translator = $container->get(TranslatorInterface::class);
     }
 
     protected function presenterHtml(BasePresenter $presenter): string
     {
-        return self::$twig->loadTemplate($presenter->getTemplatePath())->render([
+        return self::$twig->load($presenter->getTemplatePath())->render([
             $presenter->getTemplateVariableName() => $presenter,
         ]);
     }

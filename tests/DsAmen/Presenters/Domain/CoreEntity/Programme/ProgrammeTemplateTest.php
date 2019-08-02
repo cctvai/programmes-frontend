@@ -8,7 +8,6 @@ use BBC\ProgrammesPagesService\Domain\ApplicationTime;
 use Cake\Chronos\Chronos;
 use Tests\App\BaseTemplateTestCase;
 use Tests\App\DataFixtures\PagesService\ClipsFixture;
-use Tests\App\TwigEnvironmentProvider;
 
 class ProgrammeTemplateTest extends BaseTemplateTestCase
 {
@@ -21,8 +20,7 @@ class ProgrammeTemplateTest extends BaseTemplateTestCase
     public function testEpisodeWithCta()
     {
         $programme = ClipsFixture::eastendersAvailable();
-        $presenterFactory = TwigEnvironmentProvider::dsAmenPresenterFactory();
-        $presenter = $presenterFactory->programmePresenter($programme, ['image_options' => ['badge_text' => 'New!']]);
+        $presenter = self::$dsAmenPresenterFactory->programmePresenter($programme, ['image_options' => ['badge_text' => 'New!']]);
         $crawler = $this->presenterCrawler($presenter);
 
         $outerDiv = $crawler->children()->children(); // skip html and body tag
@@ -129,8 +127,7 @@ class ProgrammeTemplateTest extends BaseTemplateTestCase
     public function testEpisodeWithStandaloneCta()
     {
         $programme = ClipsFixture::eastendersAvailable();
-        $presenterFactory = TwigEnvironmentProvider::dsAmenPresenterFactory();
-        $presenter = $presenterFactory->programmePresenter($programme, ['show_image' => false]);
+        $presenter = self::$dsAmenPresenterFactory->programmePresenter($programme, ['show_image' => false]);
         $crawler = $this->presenterCrawler($presenter);
 
         $outerDiv = $crawler->children()->children();
@@ -218,8 +215,7 @@ class ProgrammeTemplateTest extends BaseTemplateTestCase
     {
         $episode = $programmeBuilder->with(['mediaType' => $mediaType])->build();
 
-        $presenterFactory = TwigEnvironmentProvider::dsAmenPresenterFactory();
-        $presenter = $presenterFactory->programmePresenter($episode, ['show_image' => false]);
+        $presenter = self::$dsAmenPresenterFactory->programmePresenter($episode, ['show_image' => false]);
 
         $crawler = $this->presenterCrawler($presenter);
 
@@ -244,7 +240,7 @@ class ProgrammeTemplateTest extends BaseTemplateTestCase
         ];
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         ApplicationTime::blank();
     }

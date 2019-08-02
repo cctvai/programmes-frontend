@@ -59,7 +59,7 @@ class ScenarioManagerTest extends TestCase
         );
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         ApplicationTime::setTime(null);
     }

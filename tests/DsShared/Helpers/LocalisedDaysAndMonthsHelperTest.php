@@ -4,23 +4,21 @@ declare(strict_types=1);
 namespace Tests\App\DsShared\Helpers;
 
 use App\DsShared\Helpers\LocalisedDaysAndMonthsHelper;
-use App\Translate\TranslateProvider;
 use BBC\ProgrammesPagesService\Domain\ApplicationTime;
 use Cake\Chronos\Chronos;
-use PHPUnit\Framework\TestCase;
-use RMP\Translate\TranslateFactory;
+use Tests\App\BaseTemplateTestCase;
 
-class LocalisedDaysAndMonthsHelperTest extends TestCase
+class LocalisedDaysAndMonthsHelperTest extends BaseTemplateTestCase
 {
     /** @var LocalisedDaysAndMonthsHelper */
     private $helper;
 
     public function setup()
     {
-        $this->helper = new LocalisedDaysAndMonthsHelper(new TranslateProvider(new TranslateFactory()));
+        $this->helper = new LocalisedDaysAndMonthsHelper(self::$translator);
     }
 
-    public function teardown()
+    public function teardown(): void
     {
         ApplicationTime::blank();
     }

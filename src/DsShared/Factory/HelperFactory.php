@@ -13,13 +13,12 @@ use App\DsShared\Helpers\StreamableHelper;
 use App\DsShared\Helpers\TitleLogicHelper;
 use App\Controller\Helpers\ProducerVariableHelper;
 use App\Controller\Helpers\DestinationVariableHelper;
-use App\Translate\TranslateProvider;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 
 class HelperFactory
 {
-    /** @var TranslateProvider */
-    private $translateProvider;
+    private $translator;
 
     /** @var UrlGeneratorInterface */
     private $router;
@@ -33,15 +32,15 @@ class HelperFactory
      * All functions in this factory should take no parameters. Think of these as a less braindead version
      * of PHP traits.
      */
-    public function __construct(TranslateProvider $translateProvider, UrlGeneratorInterface $router)
+    public function __construct(TranslatorInterface $translator, UrlGeneratorInterface $router)
     {
-        $this->translateProvider = $translateProvider;
+        $this->translator = $translator;
         $this->router = $router;
     }
 
     public function getBroadcastNetworksHelper()
     {
-        return $this->getHelper(BroadcastNetworksHelper::class, $this->translateProvider);
+        return $this->getHelper(BroadcastNetworksHelper::class, $this->translator);
     }
 
     public function getDestinationVariableHelper(): DestinationVariableHelper
@@ -66,12 +65,12 @@ class HelperFactory
 
     public function getLocalisedDaysAndMonthsHelper(): LocalisedDaysAndMonthsHelper
     {
-        return $this->getHelper(LocalisedDaysAndMonthsHelper::class, $this->translateProvider);
+        return $this->getHelper(LocalisedDaysAndMonthsHelper::class, $this->translator);
     }
 
     public function getPlayTranslationsHelper(): PlayTranslationsHelper
     {
-        return $this->getHelper(PlayTranslationsHelper::class, $this->translateProvider);
+        return $this->getHelper(PlayTranslationsHelper::class, $this->translator);
     }
 
     public function getSmpPlaylistHelper(): SmpPlaylistHelper

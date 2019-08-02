@@ -3,7 +3,6 @@ declare(strict_types = 1);
 namespace Tests\App\Branding;
 
 use App\Branding\BrandingPlaceholderResolver;
-use App\Translate\TranslateProvider;
 use BBC\BrandingClient\Branding;
 use BBC\ProgrammesPagesService\Domain\Entity\Episode;
 use BBC\ProgrammesPagesService\Domain\Entity\ProgrammeContainer;
@@ -15,6 +14,7 @@ use RMP\Translate\Translate;
 use Symfony\Component\Routing\Generator\UrlGenerator;
 use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\RouteCollectionBuilder;
+use Symfony\Component\Translation\TranslatorInterface;
 
 class BrandingPlaceholderResolverTest extends TestCase
 {
@@ -33,16 +33,12 @@ class BrandingPlaceholderResolverTest extends TestCase
             new RequestContext()
         );
 
-        $translate = $this->createMock(Translate::class);
+        $translator = $this->createMock(TranslatorInterface::class);
 
-        $translate->method('translate')
+        $translator->method('trans')
             ->will($this->returnArgument(0));
 
-        /** @var TranslateProvider|PHPUnit_Framework_MockObject_MockObject $translateProvider */
-        $translateProvider = $this->createMock(TranslateProvider::class);
-        $translateProvider->method('getTranslate')->willReturn($translate);
-
-        $this->resolver = new BrandingPlaceholderResolver($router, $translateProvider);
+        $this->resolver = new BrandingPlaceholderResolver($router, $translator);
     }
 
     public function testContextIsNull()

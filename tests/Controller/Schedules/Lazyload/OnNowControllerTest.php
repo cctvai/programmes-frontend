@@ -69,7 +69,7 @@ class OnNowControllerTest extends BaseWebTestCase
         $this->assertEquals("No network or service found from network key invalidNetworkKey", $crawler->filter('.exception-message-wrapper h1')->text());
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         ApplicationTime::blank();
     }
