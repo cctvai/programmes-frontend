@@ -13,43 +13,35 @@
         </h1>
 
         {% if series|length > 0 %}
-            <div class="component ml br-box-subtle island--squashed">
-                <input class="ml__status" type="checkbox" id="ml-1" checked="">
-                <h3 class="ml__button--dropdown-h no-margin">
-                    <label class="ml__button ml__button--dropdown br-pseudolink" for="ml-1">
-                        <span class="dropdown-symbol">
-                            {{ gelicon('basics', 'up', 'gelicon--delta dropdown-icon dropdown-symbol ml__button--dropdown') }}
-                        </span>
-                        Filter by
-                    </label>
-                </h3>
+            <details class="component clip-list island--squashed br-box-subtle">
+                <summary class="br-pseudolink">
+                    {{ gelicon('basics', 'down', 'br-pseudolink gelicon--delta dropdown-icon dropdown-symbol ml__button--dropdown') }}
+                    <h3 class="ml__button ml__button--dropdown-h gamma">Filter by</h3>
+                </summary>
+                <ul class="columns columns--2@bpb2 columns--3@bpw columns--4@bpe list-unstyled gamma clips-series">
+                    <li>
+                        {% if showAllPid is defined %}
+                            <a class="box-link" href="{{ path('programme_clips', {pid: showAllPid}) }}">
+                                {{ tr('All') }}
+                            </a>
+                        {% else %}
+                            <span class="box-link">{{ tr('All') }}</span>
+                        {% endif %}
+                    </li>
 
-                <div class="ml__hidden" id="ml-1-answer">
-                    <ul class="columns columns--2@bpb2 columns--3@bpw columns--4@bpe list-unstyled gamma clips-series">
+                    {% for seriesInstance in series %}
                         <li>
-                            {% if showAllPid is defined %}
-                                <a class="box-link" href="{{ path('programme_clips', {pid: showAllPid}) }}">
-                                    {{ tr('All') }}
+                            {% if seriesInstance.getAvailableClipsCount() > 0 %}
+                                <a class="box-link" href="{{ path('programme_clips', {pid: seriesInstance.getPid()}) }}">
+                                    {{ seriesInstance.getTitle() }}
                                 </a>
                             {% else %}
-                                <span class="box-link">{{ tr('All') }}</span>
+                                <span class="box-link">{{ seriesInstance.getTitle() }}</span>
                             {% endif %}
                         </li>
-
-                        {% for seriesInstance in series %}
-                            <li>
-                                {% if seriesInstance.getAvailableClipsCount() > 0 %}
-                                    <a class="box-link" href="{{ path('programme_clips', {pid: seriesInstance.getPid()}) }}">
-                                        {{ seriesInstance.getTitle() }}
-                                    </a>
-                                {% else %}
-                                    <span class="box-link">{{ seriesInstance.getTitle() }}</span>
-                                {% endif %}
-                            </li>
-                        {% endfor %}
-                    </ul>
-                </div>
-            </div>
+                    {% endfor %}
+                </ul>
+            </details>
         {% endif %}
 
         {% if clips|length %}

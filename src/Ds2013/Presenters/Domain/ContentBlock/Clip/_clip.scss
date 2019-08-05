@@ -1,0 +1,5 @@
+details.clip-list {
+    &[open] summary svg {
+        transform: rotate(-180deg);
+    }
+}

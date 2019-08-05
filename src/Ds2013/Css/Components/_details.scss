@@ -1,0 +1,67 @@
+details.component {
+    $inner-indent: 26px;
+
+    summary {
+        cursor: pointer;
+
+        outline: 1px solid transparent;
+
+        // using an svg icon instead of the triangle
+        list-style: none;
+
+        &::-webkit-details-marker {
+            display: none;
+        }
+
+        &:focus {
+            outline: 1px dotted currentColor;
+        }
+
+        &:hover {
+            outline: initial;
+        }
+
+        // borrow typography from branding with some layout of ours
+        > .gamma {
+            display: inline-block;
+            max-width: 91%;
+            margin: 0 0 0 5px;
+        }
+
+        svg {
+            vertical-align: top;
+            margin-top: 0.67ex;
+        }
+    }
+
+    &[open] summary svg {
+        transform: rotate(90deg);
+    }
+
+    >div {
+        margin: 10px $inner-indent 0;
+    }
+
+    // polyfill ♥︎
+    html.no-details & {
+        summary {
+            position: relative;
+            display: block;
+
+            // take out the polyfill's default triangle
+            // and link the whole heading
+            &::before {
+                content: '' !important;
+                position: absolute;
+                display: block;
+                left: 0;
+                right: 0;
+                top: 0;
+                bottom: 0;
+                width: 100%;
+                height: 100%;
+                z-index: 10;
+            }
+        }
+    }
+}
