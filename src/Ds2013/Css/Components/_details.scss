@@ -32,6 +32,12 @@ details.component {
             vertical-align: top;
             margin-top: 0.67ex;
         }
+
+        // prevent the icon trapping taps on mobile
+        svg,
+        use {
+            pointer-events: none;
+        }
     }
 
     &[open] summary svg {
