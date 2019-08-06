@@ -20,12 +20,12 @@
     <div class="grid-wrapper">
         <div class="broadcast__info grid {{ info_classes }}">
             {#start time and zone#}
-            <h3 class="broadcast__time gamma" data-timezone="true" datatype="xsd:dateTime" content="{{ broadcast.getStartAt()|date('c') }}">
+            <{{ broadcast.getOption('time_title_tag') }} class="broadcast__time gamma" data-timezone="true" datatype="xsd:dateTime" content="{{ broadcast.getStartAt()|date('c') }}">
                 <span class="timezone--time">{{ broadcast.getStartAt()|local_date('H:i') }}{{ broadcast.getStartAt()|time_zone_note() }}</span>
                 {%- if broadcast.getOption('show_date') -%}
                     <br /><span class="micro timezone--date">{{ broadcast.getStartAt()|local_date('d/m/Y') }}</span>
                 {%- endif -%}
-            </h3>
+            </{{ broadcast.getOption('time_title_tag') }}>
 
             {#end time and zone#}
 
@@ -58,6 +58,10 @@
                             800: '148px',
                         }
                     },
+                    'title_options': {
+                        'title_tag': broadcast.getOption('programme_title_tag'),
+                        'title_classes': 'delta'
+                    }
                 }) }}
             {%- elseif broadcast.getOption('show_resume_at') -%}
                 <p class="text--subtle centi" data-timezone="true" content="{{ broadcast.getEndAt()|date('c') }}">

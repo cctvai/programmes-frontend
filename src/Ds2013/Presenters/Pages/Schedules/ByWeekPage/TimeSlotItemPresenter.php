@@ -67,6 +67,8 @@ class TimeSlotItemPresenter extends Presenter
             'show_overlay' => false,
             'show_resume_at' => false,
             'is_stacked' => true,
+            'time_title_tag' => 'h2',
+            'programme_title_tag' => 'h3',
         ]);
     }
 

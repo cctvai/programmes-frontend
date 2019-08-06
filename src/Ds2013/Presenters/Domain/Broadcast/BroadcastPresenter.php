@@ -20,6 +20,8 @@ class BroadcastPresenter extends Presenter
         'show_overlay' => true,
         'show_resume_at' => true,
         'steal_blocklink' => true,
+        'time_title_tag' => 'h3',
+        'programme_title_tag' => 'h4',
     ];
 
     /** @var SingleServiceBroadcastInfoInterface */
