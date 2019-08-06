@@ -4,6 +4,7 @@ declare(strict_types = 1);
 namespace App\Controller\AncillaryPages;
 
 use App\Controller\BaseController;
+use App\Controller\Helpers\StructuredDataHelper;
 use App\DsShared\Helpers\TitleLogicHelper;
 use BBC\ProgrammesPagesService\Domain\Entity\Clip;
 use BBC\ProgrammesPagesService\Domain\Entity\Programme;
@@ -20,7 +21,8 @@ class PlayerController extends BaseController
         SegmentEventsService $segmentEventsService,
         TitleLogicHelper $titleLogicHelper,
         VersionsService $versionsService,
-        Clip $clip
+        Clip $clip,
+        StructuredDataHelper $structuredDataHelper
     ) {
         // This frame needs to display off the BBC site
         $this->response()->headers->remove('X-Frame-Options');
@@ -67,6 +69,7 @@ class PlayerController extends BaseController
                 'streamable_version' => $linkedVersions['streamableVersion'],
                 'subtitle' => $subtitle,
                 'twitter_title' => $twitterTitle,
+                'schema' => $structuredDataHelper->prepare($structuredDataHelper->getSchemaForClip($clip, true)),
             ],
             $this->response()
         );

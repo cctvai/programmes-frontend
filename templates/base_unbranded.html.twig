@@ -8,6 +8,11 @@
     </head>
     <body>
         {% block body %}{% endblock %}
+        {% if schema is defined and schema is not empty %}
+            <script type="application/ld+json">
+                {{ schema|json_encode()|raw }}
+            </script>
+        {% endif %}
         {% block javascripts %}{% endblock %}
     </body>
 </html>
