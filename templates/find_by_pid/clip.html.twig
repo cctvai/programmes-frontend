@@ -99,7 +99,12 @@
                             {% for programme in relatedProgrammes %}
                                 <li class="grid 1/3@bpw">
                                     {{ ds2013('programme', programme.getProgramme(), {
-                                        'title_options': {'title_format': 'item::ancestry', 'link_location_track': 'clip_suggested_item_' ~ loop.index },
+                                        'title_options': {
+                                            'title_format': 'item::ancestry',
+                                            'link_location_track': 'clip_suggested_item_' ~ loop.index,
+                                            'title_tag': 'h3',
+                                            'title_classes': 'delta'
+                                        },
                                         'body_options': {
                                             'body_suffix': '<p class="programme__child-availability">' ~ tr( programme.getProgramme().getType() ~ '_is_related_to', {'%1': '<a class="block-link__link" href="' ~ path('topic_show', {topic: programme.getRelatedByClasses()[0].getId()}) ~'" data-linktrack="clip_suggested_relationship">' ~ programme.getRelatedByClasses()[0].getTitle() ~ '</a></p>'}),
                                             'show_synopsis': false,
@@ -147,7 +152,9 @@
                             },
                             'title_options': {
                                 'link_location_track': 'component_clips_carousel',
-                                'title_format': 'item::ancestry'
+                                'title_format': 'item::ancestry',
+                                'title_tag': 'h3',
+                                'title_classes': 'delta'
                             },
                             'body_options': {
                                 'show_synopsis': false,
