@@ -4,6 +4,7 @@ namespace App\Builders;
 use App\ExternalApi\Isite\Domain\Article;
 use App\ExternalApi\Isite\Domain\IsiteImage;
 use BBC\ProgrammesPagesService\Domain\ValueObject\Pid;
+use DateTimeImmutable;
 use Faker\Factory;
 
 class ArticleBuilder extends AbstractBuilder
@@ -25,6 +26,8 @@ class ArticleBuilder extends AbstractBuilder
             'parents' => [],
             'rowGroups' => [],
             'bbc_site' => null,
+            'creationDateTime' => new DateTimeImmutable(),
+            'modifiedDatetime' => new DateTimeImmutable(),
         ];
     }
 }

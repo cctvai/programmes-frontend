@@ -4,6 +4,7 @@ namespace App\ExternalApi\Isite\Domain;
 
 use BBC\ProgrammesPagesService\Domain\ValueObject\Pid;
 use App\ExternalApi\Isite\DataNotFetchedException;
+use DateTimeImmutable;
 
 abstract class BaseIsiteObject
 {
@@ -43,6 +44,12 @@ abstract class BaseIsiteObject
     /** @var string|null */
     private $bbcSite;
 
+    /** @var DateTimeImmutable */
+    private $creationDateTime;
+
+    /** @var DateTimeImmutable */
+    private $modifiedDatetime;
+
     public function __construct(
         string $title,
         string $fileId,
@@ -53,7 +60,9 @@ abstract class BaseIsiteObject
         array $parents,
         string $key,
         ?string $shortSynopsis,
-        ?string $bbcSite
+        ?string $bbcSite,
+        DateTimeImmutable $creationDateTime,
+        DateTimeImmutable $modifiedDatetime
     ) {
         $this->title = $title;
         $this->fileId = $fileId;
@@ -65,6 +74,8 @@ abstract class BaseIsiteObject
         $this->key = $key;
         $this->shortSynopsis = $shortSynopsis;
         $this->bbcSite = $bbcSite;
+        $this->creationDateTime = $creationDateTime;
+        $this->modifiedDatetime = $modifiedDatetime;
     }
 
     public function getFileId(): string
@@ -177,5 +188,15 @@ abstract class BaseIsiteObject
     public function getBbcSite(): ?string
     {
         return $this->bbcSite;
+    }
+
+    public function getCreationDateTime(): DateTimeImmutable
+    {
+        return $this->creationDateTime;
+    }
+
+    public function getModifiedDateTime(): DateTimeImmutable
+    {
+        return $this->modifiedDatetime;
     }
 }

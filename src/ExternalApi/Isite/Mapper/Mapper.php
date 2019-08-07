@@ -7,6 +7,7 @@ use App\Controller\Helpers\IsiteKeyHelper;
 use App\ExternalApi\Exception\ParseException;
 use App\ExternalApi\Isite\Domain\IsiteImage;
 use BBC\ProgrammesPagesService\Domain\ValueObject\Pid;
+use DateTimeImmutable;
 use InvalidArgumentException;
 use Psr\Log\LoggerInterface;
 use SimpleXMLElement;
@@ -104,5 +105,10 @@ abstract class Mapper
             $image = null;
         }
         return $image;
+    }
+
+    protected function getDateTime(SimpleXMLElement $val): DateTimeImmutable
+    {
+        return new DateTimeImmutable($this->getString($val));
     }
 }

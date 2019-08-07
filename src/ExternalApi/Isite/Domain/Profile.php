@@ -5,6 +5,7 @@ namespace App\ExternalApi\Isite\Domain;
 
 use App\ExternalApi\Isite\DataNotFetchedException;
 use App\ExternalApi\Isite\Domain\ContentBlock\AbstractContentBlock;
+use DateTimeImmutable;
 use Psr\Log\LoggerInterface;
 
 class Profile extends BaseIsiteObject
@@ -55,9 +56,24 @@ class Profile extends BaseIsiteObject
         ?string $tagline,
         array $parents,
         ?string $bbcSite,
-        ?int $groupSize = null
+        ?int $groupSize = null,
+        DateTimeImmutable $creationDateTime,
+        DateTimeImmutable $modifiedDatetime
     ) {
-        parent::__construct($title, $fileId, $projectSpace, $parentPid, $brandingId, $image, $parents, $key, $shortSynopsis, $bbcSite);
+        parent::__construct(
+            $title,
+            $fileId,
+            $projectSpace,
+            $parentPid,
+            $brandingId,
+            $image,
+            $parents,
+            $key,
+            $shortSynopsis,
+            $bbcSite,
+            $creationDateTime,
+            $modifiedDatetime
+        );
         $this->logger = $logger;
         $this->type = $type;
         $this->longSynopsis = $longSynopsis;

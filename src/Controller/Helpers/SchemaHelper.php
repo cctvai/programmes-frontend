@@ -72,13 +72,13 @@ class SchemaHelper
     {
         if ($isArrayOfContexts) {
             $schema = [
-                '@context' => 'http://schema.org',
+                '@context' => 'https://schema.org',
                 '@graph' => $schemaToPrepare,
             ];
             return $schema;
         }
 
-        $schemaToPrepare['@context'] = 'http://schema.org';
+        $schemaToPrepare['@context'] = 'https://schema.org';
 
         return $schemaToPrepare;
     }
@@ -140,7 +140,7 @@ class SchemaHelper
         return [
             '@type' => 'Organization',
             'legalName' => 'British Broadcasting Corporation',
-            'logo' => 'http://ichef.bbci.co.uk/images/ic/1200x675/p01tqv8z.png',
+            'logo' => 'https://ichef.bbci.co.uk/images/ic/1200x675/p01tqv8z.png',
             'name' => 'BBC',
             'url' => 'https://www.bbc.co.uk/',
         ];
@@ -255,19 +255,25 @@ class SchemaHelper
         $schema['@type'] = 'Article';
 
         if ($programme) {
-            $headline = $programme->getTitle() . ' - ' . $article->getTitle();
+            $schema['headline'] = $programme->getTitle() . ' - ' . $article->getTitle();
         } else {
-            $headline = $article->getTitle();
+            $schema['headline'] = $article->getTitle();
         }
 
-        $schema['headline'] = $headline;
-        if ($article->getImage()) {
+        $image = $article->getImage();
+        if ($image) {
             $schema['image'] = [
-                $article->getImage()->getUrl(1040, 1040),
-                $article->getImage()->getUrl(1920, 1080),
+                $image->getUrl(1040, 1040),
+                $image->getUrl(1920, 1080),
             ];
         }
-        $schema['author'] = $this->getSchemaForOrganisation();
+
+        $organisation = $this->getSchemaForOrganisation();
+        $schema['author'] = $organisation;
+        $schema['publisher'] = $organisation;
+
+        $schema['datePublished'] = $article->getCreationDateTime()->format('Y-m-d');
+        $schema['dateModified'] = $article->getModifiedDateTime()->format('Y-m-d\TH:i:sP');
 
         return $schema;
     }

@@ -3,6 +3,8 @@ declare(strict_types = 1);
 
 namespace App\ExternalApi\Isite\Domain;
 
+use DateTimeImmutable;
+
 class Article extends BaseIsiteObject
 {
     /** @var RowGroup[] */
@@ -19,9 +21,24 @@ class Article extends BaseIsiteObject
         ?IsiteImage $image,
         array $parents,
         array $rowGroups,
-        ?string $bbcSite
+        ?string $bbcSite,
+        DateTimeImmutable $creationDateTime,
+        DateTimeImmutable $modifiedDatetime
     ) {
-        parent::__construct($title, $fileId, $projectSpace, $parentPid, $brandingId, $image, $parents, $key, $shortSynopsis, $bbcSite);
+        parent::__construct(
+            $title,
+            $fileId,
+            $projectSpace,
+            $parentPid,
+            $brandingId,
+            $image,
+            $parents,
+            $key,
+            $shortSynopsis,
+            $bbcSite,
+            $creationDateTime,
+            $modifiedDatetime
+        );
         $this->rowGroups = $rowGroups;
     }
 

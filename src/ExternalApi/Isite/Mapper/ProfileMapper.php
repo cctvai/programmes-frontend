@@ -101,7 +101,9 @@ class ProfileMapper extends Mapper
             $tagline,
             $parents,
             $bbcSite,
-            $groupSize
+            $groupSize,
+            $this->getDateTime($resultMetaData->creationDateTime),
+            $this->getDateTime($resultMetaData->modifiedDateTime)
         );
     }
 

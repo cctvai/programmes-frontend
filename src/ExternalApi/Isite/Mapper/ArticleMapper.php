@@ -58,7 +58,21 @@ class ArticleMapper extends Mapper
         }
         // @codingStandardsIgnoreEnd
 
-        return new Article($title, $key, $fileId, $projectSpace, $parentPid, $shortSynopsis, $brandingId, $image, $parents, $rowGroups, $bbcSite);
+        return new Article(
+            $title,
+            $key,
+            $fileId,
+            $projectSpace,
+            $parentPid,
+            $shortSynopsis,
+            $brandingId,
+            $image,
+            $parents,
+            $rowGroups,
+            $bbcSite,
+            $this->getDateTime($resultMetaData->creationDateTime),
+            $this->getDateTime($resultMetaData->modifiedDateTime)
+        );
     }
 
     private function isArticle(SimpleXMLElement $resultMetaData)

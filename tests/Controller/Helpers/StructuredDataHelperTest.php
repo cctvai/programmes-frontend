@@ -272,7 +272,7 @@ class StructuredDataHelperTest extends TestCase
         $schema = $this->helper->prepare([['foo' => 'bar'], ['baz' => 'qux']], true);
 
         $this->assertEquals([
-            '@context' => 'http://schema.org',
+            '@context' => 'https://schema.org',
             '@graph' => [
                 ['foo' => 'bar'],
                 ['baz' => 'qux'],

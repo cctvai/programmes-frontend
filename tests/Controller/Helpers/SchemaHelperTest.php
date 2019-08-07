@@ -164,7 +164,7 @@ class SchemaHelperTest extends TestCase
             'broadcaster' => [
                 '@type' => 'Organization',
                 'legalName' => 'British Broadcasting Corporation',
-                'logo' => 'http://ichef.bbci.co.uk/images/ic/1200x675/p01tqv8z.png',
+                'logo' => 'https://ichef.bbci.co.uk/images/ic/1200x675/p01tqv8z.png',
                 'name' => 'BBC',
                 'url' => 'https://www.bbc.co.uk/',
             ],
@@ -255,7 +255,7 @@ class SchemaHelperTest extends TestCase
         return [
             '@type' => 'Organization',
             'legalName' => 'British Broadcasting Corporation',
-            'logo' => 'http://ichef.bbci.co.uk/images/ic/1200x675/p01tqv8z.png',
+            'logo' => 'https://ichef.bbci.co.uk/images/ic/1200x675/p01tqv8z.png',
             'name' => 'BBC',
             'url' => 'https://www.bbc.co.uk/',
         ];
