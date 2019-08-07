@@ -116,9 +116,7 @@ class PlayoutPresenter extends Presenter
 
     public function getNotAvailableTranslation(): string
     {
-        if ($this->broadcast && $this->broadcast->getStartAt()->isFuture() &&
-            ($this->episode->hasFutureAvailability() || $this->episode->isRadio())
-        ) {
+        if ($this->broadcast && $this->broadcast->getStartAt()->isFuture() && $this->episode->hasFutureAvailability()) {
             return 'available_shortly';
         }
 
