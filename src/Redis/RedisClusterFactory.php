@@ -32,7 +32,7 @@ class RedisClusterFactory
                 RedisCluster::OPT_SLAVE_FAILOVER,
                 RedisCluster::FAILOVER_DISTRIBUTE
             );
-            $cacheAdapter = new RedisAdapter($redisClusterInstance);
+            $cacheAdapter = new RedisAdapter($redisClusterInstance, '', 0, new ProgsMarshaller());
             $cacheAdapter->setLogger($logger);
         } catch (RedisClusterException $e) {
             // if redis cluster fail, log the error and use a null adapter as a cache provider
