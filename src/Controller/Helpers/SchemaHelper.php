@@ -140,7 +140,10 @@ class SchemaHelper
         return [
             '@type' => 'Organization',
             'legalName' => 'British Broadcasting Corporation',
-            'logo' => 'https://ichef.bbci.co.uk/images/ic/1200x675/p01tqv8z.png',
+            'logo' => [
+                '@type' => 'ImageObject',
+                'url' => 'https://ichef.bbci.co.uk/images/ic/1200x675/p01tqv8z.png',
+            ],
             'name' => 'BBC',
             'url' => 'https://www.bbc.co.uk/',
         ];
@@ -196,7 +199,13 @@ class SchemaHelper
     public function buildSchemaForClip(Clip $clip) :array
     {
         $clipSchema = [];
-        $clipSchema['@type'] = $clip->isRadio() ? 'RadioClip' : 'TVClip';
+        if ($clip->isRadio()) {
+            $clipSchema['@type'] = 'RadioClip';
+        } elseif ($clip->isTv()) {
+            $clipSchema['@type'] = 'TVClip';
+        } else {
+            $clipSchema['@type'] = 'Clip';
+        }
         $clipSchema['identifier'] = (string) $clip->getPid();
         $clipSchema['name'] = $clip->getTitle();
 
