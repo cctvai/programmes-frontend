@@ -4,6 +4,15 @@
     {{ build_css_classes({'component--box-flushbody': not content_block.isInPrimaryColumn()}) }}
 {% endblock %}
 
+{% if (not content_block.isInPrimaryColumn()) and (
+        (content_block.getThirdParty() == 'instagram.com')
+        or
+        (content_block.getThirdParty() == 'instagr.am')
+    )  %}
+    {# #6925 null the default content body wrapper class for instagram side embeds #}
+    {% block contentBodyClasses %}{% endblock %}
+{% endif %}
+
 {% block blockContent %}
     {% set content_block_box_id = 'third-party-' ~ random() %}
     {% set third_party_block = content_block.getBlock() %}

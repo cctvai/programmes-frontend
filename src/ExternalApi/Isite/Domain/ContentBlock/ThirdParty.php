@@ -46,4 +46,10 @@ class ThirdParty extends AbstractContentBlock
     {
         return 'thirdParty';
     }
+
+    public function getHost() : string
+    {
+        $host = strtolower(parse_url($this->url, PHP_URL_HOST));
+        return strpos($host, 'www.') === 0 ? substr($host, 4) : $host;
+    }
 }

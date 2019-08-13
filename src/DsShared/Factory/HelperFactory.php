@@ -48,7 +48,7 @@ class HelperFactory
         return $this->getHelper(DestinationVariableHelper::class);
     }
 
-    public function getFixIsiteMarkupHelper()
+    final public function getFixIsiteMarkupHelper() // final for tests
     {
         return $this->getHelper(FixIsiteMarkupHelper::class);
     }

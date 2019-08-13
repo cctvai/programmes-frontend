@@ -50,6 +50,7 @@ use App\Ds2013\Presenters\Utilities\DateList\DateListPresenter;
 use App\Ds2013\Presenters\Utilities\Download\DownloadPresenter;
 use App\Ds2013\Presenters\Utilities\SMP\SmpPresenter;
 use App\DsShared\Factory\HelperFactory;
+use App\DsShared\FixIsiteMarkupInterface;
 use App\ExternalApi\Electron\Domain\SupportingContentItem;
 use App\ExternalApi\Isite\Domain\Article;
 use App\ExternalApi\Isite\Domain\ContentBlock\AbstractContentBlock;
@@ -268,55 +269,42 @@ class PresenterFactory
         );
     }
 
+    private const PRESENTER_MAP = [
+        Galleries::class => GalleriesPresenter::class,
+        InteractiveActivity::class => InteractiveActivityPresenter::class,
+        Image::class => ImagePresenter::class,
+        Links::class => LinksPresenter::class,
+        Promotions::class => PromotionsPresenter::class,
+        Quiz::class => QuizPresenter::class,
+        Table::class => TablePresenter::class,
+        ClipStream::class => ClipStreamPresenter::class,
+        ClipStandalone::class => ClipStandalonePresenter::class,
+        Telescope::class => TelescopePresenter::class,
+        ThirdParty::class => ThirdPartyPresenter::class,
+        Touchcast::class => TouchcastPresenter::class,
+        Faq::class => FaqPresenter::class,
+        Prose::class => ProsePresenter::class,
+    ];
+
     public function contentBlockPresenter(
         AbstractContentBlock $contentBlock,
         bool $inPrimaryColumn = true,
         bool $isPrimaryColumnFullWith = false,
         array $options = []
     ): Presenter {
-        if ($contentBlock instanceof Faq) {
-            return new FaqPresenter($contentBlock, $inPrimaryColumn, $isPrimaryColumnFullWith, $this->helperFactory->getFixIsiteMarkupHelper(), $options);
-        }
-        if ($contentBlock instanceof Galleries) {
-            return new GalleriesPresenter($contentBlock, $inPrimaryColumn, $isPrimaryColumnFullWith, $options);
-        }
-        if ($contentBlock instanceof InteractiveActivity) {
-            return new InteractiveActivityPresenter($contentBlock, $inPrimaryColumn, $isPrimaryColumnFullWith, $options);
-        }
-        if ($contentBlock instanceof Image) {
-            return new ImagePresenter($contentBlock, $inPrimaryColumn, $isPrimaryColumnFullWith, $options);
-        }
-        if ($contentBlock instanceof Links) {
-            return new LinksPresenter($contentBlock, $inPrimaryColumn, $isPrimaryColumnFullWith, $options);
-        }
-        if ($contentBlock instanceof Promotions) {
-            return new PromotionsPresenter($contentBlock, $inPrimaryColumn, $isPrimaryColumnFullWith, $options);
-        }
-        if ($contentBlock instanceof Prose) {
-            return new ProsePresenter($contentBlock, $inPrimaryColumn, $isPrimaryColumnFullWith, $this->helperFactory->getFixIsiteMarkupHelper(), $options);
-        }
-        if ($contentBlock instanceof Quiz) {
-            return new QuizPresenter($contentBlock, $inPrimaryColumn, $isPrimaryColumnFullWith, $options);
-        }
-        if ($contentBlock instanceof Table) {
-            return new TablePresenter($contentBlock, $inPrimaryColumn, $isPrimaryColumnFullWith, $options);
-        }
-        if ($contentBlock instanceof ClipStream) {
-            return new ClipStreamPresenter($contentBlock, $inPrimaryColumn, $isPrimaryColumnFullWith, $options);
-        }
-        if ($contentBlock instanceof ClipStandalone) {
-            return new ClipStandalonePresenter($contentBlock, $inPrimaryColumn, $isPrimaryColumnFullWith, $options);
-        }
-        if ($contentBlock instanceof Telescope) {
-            return new TelescopePresenter($contentBlock, $inPrimaryColumn, $isPrimaryColumnFullWith, $options);
-        }
-        if ($contentBlock instanceof ThirdParty) {
-            return new ThirdPartyPresenter($contentBlock, $inPrimaryColumn, $isPrimaryColumnFullWith, $options);
-        }
-        if ($contentBlock instanceof Touchcast) {
-            return new TouchcastPresenter($contentBlock, $inPrimaryColumn, $isPrimaryColumnFullWith, $options);
+        // iterate as to allow the content classes to be extended
+        foreach (self::PRESENTER_MAP as $contentClass => $presenterClass) {
+            if (is_a($contentBlock, $contentClass, false)) {
+                $presenter = new $presenterClass($contentBlock, $inPrimaryColumn, $isPrimaryColumnFullWith, $options);
+                if ($presenter instanceof FixIsiteMarkupInterface) {
+                    $presenter->setFixIsiteMarkupHelper($this->helperFactory->getFixIsiteMarkupHelper());
+                }
+                /** @noinspection PhpIncompatibleReturnTypeInspection idea being stupid */
+                return $presenter;
+            }
         }
 
+        // found no presenter
         throw new InvalidArgumentException(sprintf(
             '$block was not a valid type. Found instance of "%s"',
             (\is_object($contentBlock) ? \get_class($contentBlock) : gettype($contentBlock))
