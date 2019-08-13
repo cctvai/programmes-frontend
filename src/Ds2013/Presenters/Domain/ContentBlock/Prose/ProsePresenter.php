@@ -4,28 +4,22 @@ declare(strict_types = 1);
 namespace App\Ds2013\Presenters\Domain\ContentBlock\Prose;
 
 use App\Ds2013\Presenters\Domain\ContentBlock\ContentBlockPresenter;
-use App\DsShared\Helpers\FixIsiteMarkupHelper;
+use App\DsShared\FixIsiteMarkupInterface;
+use App\DsShared\Helpers\FixIsiteMarkupTrait;
 use App\ExternalApi\Isite\Domain\ContentBlock\Prose;
 
-class ProsePresenter extends ContentBlockPresenter
+class ProsePresenter extends ContentBlockPresenter implements FixIsiteMarkupInterface
 {
+    use FixIsiteMarkupTrait;
+
     /** @var Prose */
     protected $block;
-
-    /** @var FixIsiteMarkupHelper */
-    private $fixIsiteMarkupHelper;
 
     /** @var string[]|null */
     private $paragraphs;
 
-    public function __construct(
-        Prose $proseBlock,
-        bool $inPrimaryColumn,
-        bool $isPrimaryColumnFullWith,
-        FixIsiteMarkupHelper $fixMarkupHelper,
-        array $options = []
-    ) {
-        $this->fixIsiteMarkupHelper = $fixMarkupHelper;
+    public function __construct(Prose $proseBlock, bool $inPrimaryColumn, bool $isPrimaryColumnFullWith, array $options = [])
+    {
         parent::__construct($proseBlock, $inPrimaryColumn, $isPrimaryColumnFullWith, $options);
     }
 

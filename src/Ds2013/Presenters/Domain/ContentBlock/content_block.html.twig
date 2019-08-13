@@ -1,14 +1,20 @@
 {% if content_block.isInPrimaryColumn() %}
     {% set container_classes = 'component--box-flushbody-vertical component--box--primary' %}
+    {% set default_body_classes = 'br-box-page' %}
+    {% set default_header_classes = 'br-box-page' %}
 {% else %}
     {% set container_classes = 'component--box--striped component--box--secondary' %}
+    {% set default_body_classes = 'br-box-subtle' %}
+    {% set default_header_classes = 'br-box-highlight' %}
 {% endif %}
 
 <div
-    class="component component--box {{ container_classes }} {% block extraClasses %}{% endblock %}" data-content-block-type="{{ content_block.getBlock().getType() }}">
+    class="component component--box {{ container_classes }} {% block extraClasses %}{% endblock %}"
+    data-content-block-type="{{ content_block.getBlock().getType() }}"
+>
     {% block componentTitle %}
         {% if content_block.getBlock().getTitle() or block('defaultTitle') is not empty %}
-            <div class="component__header {{ content_block.isInPrimaryColumn() ? 'br-box-page' : 'br-box-highlight'}}">
+            <div class="component__header {% block contentHeaderClasses %}{{ default_header_classes }}{% endblock %}">
                 <{{ content_block.newHeadingLevel() }} class="beta">
                     {% if content_block.getBlock().getTitle() %}
                         {{ content_block.getBlock().getTitle() }}
@@ -19,7 +25,8 @@
             </div>
         {% endif %}
     {% endblock %}
-    <div class="component__body {{ content_block.isInPrimaryColumn() ? ' br-box-page' : ' br-box-subtle'}}">
+
+    <div class="component__body {% block contentBodyClasses %}{{ default_body_classes }}{% endblock %}">
         {% block blockContent %}{% endblock %}
     </div>
 </div>

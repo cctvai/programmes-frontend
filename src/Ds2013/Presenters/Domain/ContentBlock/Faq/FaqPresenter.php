@@ -4,20 +4,20 @@ declare(strict_types = 1);
 namespace App\Ds2013\Presenters\Domain\ContentBlock\Faq;
 
 use App\Ds2013\Presenters\Domain\ContentBlock\ContentBlockPresenter;
-use App\DsShared\Helpers\FixIsiteMarkupHelper;
+use App\DsShared\FixIsiteMarkupInterface;
+use App\DsShared\Helpers\FixIsiteMarkupTrait;
 use App\ExternalApi\Isite\Domain\ContentBlock\Faq;
 
-class FaqPresenter extends ContentBlockPresenter
+class FaqPresenter extends ContentBlockPresenter implements FixIsiteMarkupInterface
 {
+    use FixIsiteMarkupTrait;
+
     /** @var Faq */
     protected $block;
 
-    /** @var FixIsiteMarkupHelper */
-    private $fixIsiteMarkupHelper;
 
-    public function __construct(Faq $faqBlock, bool $inPrimaryColumn, bool $isPrimaryColumnFullWith, FixIsiteMarkupHelper $fixMarkupHelper, array $options = [])
+    public function __construct(Faq $faqBlock, bool $inPrimaryColumn, bool $isPrimaryColumnFullWith, array $options = [])
     {
-        $this->fixIsiteMarkupHelper = $fixMarkupHelper;
         parent::__construct($faqBlock, $inPrimaryColumn, $isPrimaryColumnFullWith, $options);
     }
 

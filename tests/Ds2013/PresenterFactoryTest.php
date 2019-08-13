@@ -21,6 +21,9 @@ use App\Ds2013\Presenters\Utilities\Calendar\CalendarPresenter;
 use App\Ds2013\Presenters\Utilities\DateList\DateListPresenter;
 use App\Ds2013\Presenters\Utilities\Download\DownloadPresenter;
 use App\DsShared\Factory\HelperFactory;
+use App\DsShared\FixIsiteMarkupInterface;
+use App\ExternalApi\Isite\Domain\ContentBlock\Faq;
+use App\ExternalApi\Isite\Domain\ContentBlock\Image;
 use App\ExternalApi\Isite\Domain\ContentBlock\ClipBlock\ClipStandAlone;
 use App\ExternalApi\Isite\Domain\ContentBlock\ClipBlock\ClipStream;
 use App\ExternalApi\Isite\Domain\ContentBlock\ClipBlock\StreamItem;
@@ -215,6 +218,20 @@ class PresenterFactoryTest extends TestCase
         $presenter = $this->factory->contentBlockPresenter($givenStandAloneClip);
 
         $this->assertInstanceOf(ClipStandalonePresenter::class, $presenter);
+    }
+
+    public function testItConfiguresIsiteMarkupHelper()
+    {
+        $content = $this->createMock(Image::class);
+        $presenter = $this->factory->contentBlockPresenter($content);
+        $this->assertNotInstanceOf(FixIsiteMarkupInterface::class, $presenter);
+
+        $content = $this->createMock(Faq::class);
+        $presenter = $this->factory->contentBlockPresenter($content);
+        $this->assertInstanceOf(FixIsiteMarkupInterface::class, $presenter);
+        if ($presenter instanceof FixIsiteMarkupInterface) { // phpstan
+            $this->assertEquals(true, $presenter->hasFixIsiteMarkupHelper());
+        }
     }
 
 
