@@ -4,6 +4,7 @@ declare(strict_types = 1);
 namespace App\Controller\Articles;
 
 use App\Controller\BaseIsiteController;
+use App\Controller\Helpers\Breadcrumbs;
 use App\Controller\Helpers\IsiteKeyHelper;
 use App\Controller\Helpers\StructuredDataHelper;
 use App\Exception\HasContactFormException;
@@ -23,7 +24,8 @@ class ShowController extends BaseIsiteController
         ArticleService $isiteService,
         IsiteKeyHelper $isiteKeyHelper,
         CoreEntitiesService $coreEntitiesService,
-        StructuredDataHelper $structuredDataHelper
+        StructuredDataHelper $structuredDataHelper,
+        Breadcrumbs $breadcrumbs
     ) {
         $this->setIstatsProgsPageType('article_show');
         $this->setAtiContentLabels('article-show-related', 'article');
@@ -75,6 +77,21 @@ class ShowController extends BaseIsiteController
         if ($children) {
             $paginatorPresenter = $this->getPaginator($children->getTotal());
         }
+
+        if ($programme) {
+            $this->breadcrumbs = $breadcrumbs
+                ->forNetwork($programme->getNetwork())
+                ->forEntityAncestry($programme)
+                ->forRoute('Features', 'programme_article_listings', ['pid' => $programme->getPid()])
+                ->forIsiteRoute($isiteObject, 'programme_article')
+                ->toArray();
+        } else {
+            $this->breadcrumbs = $breadcrumbs
+                ->forRoute('Programmes', 'home')
+                ->forIsiteRoute($isiteObject, 'programme_article')
+                ->toArray();
+        }
+
         return $this->renderWithChrome(
             'articles/show.html.twig',
             [

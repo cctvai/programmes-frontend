@@ -3,6 +3,7 @@ declare(strict_types = 1);
 
 namespace App\Controller\ProgrammeEpisodes;
 
+use App\Controller\Helpers\Breadcrumbs;
 use App\Controller\Helpers\StructuredDataHelper;
 use App\Ds2013\Factory\PresenterFactory;
 use App\DsShared\Utilities\Paginator\PaginatorPresenter;
@@ -18,7 +19,8 @@ class PlayerController extends BaseProgrammeEpisodesController
         PresenterFactory $presenterFactory,
         ProgrammeContainer $programme,
         ProgrammesAggregationService $programmeAggregationService,
-        StructuredDataHelper $structuredDataHelper
+        StructuredDataHelper $structuredDataHelper,
+        Breadcrumbs $breadcrumbs
     ) {
         $this->setContextAndPreloadBranding($programme);
         $this->setInternationalStatusAndTimezoneFromContext($programme);
@@ -60,6 +62,14 @@ class PlayerController extends BaseProgrammeEpisodesController
         $schema = $this->getSchema($structuredDataHelper, $programme, $availableEpisodes);
 
         $this->overridenDescription = 'Available episodes of ' . $programme->getTitle();
+
+        $opts = ['pid' => $programme->getPid()];
+        $this->breadcrumbs = $breadcrumbs
+            ->forNetwork($programme->getNetwork())
+            ->forEntityAncestry($programme)
+            ->forRoute('Episodes', 'programme_episodes', $opts)
+            ->forRoute('Available', 'programme_episodes_player', $opts)
+            ->toArray();
 
         return $this->renderWithChrome('programme_episodes/player.html.twig', [
             'programme' => $programme,

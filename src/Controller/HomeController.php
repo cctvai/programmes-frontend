@@ -2,6 +2,7 @@
 declare(strict_types = 1);
 namespace App\Controller;
 
+use App\Controller\Helpers\Breadcrumbs;
 use BBC\ProgrammesCachingLibrary\CacheInterface;
 use BBC\ProgrammesPagesService\Domain\Entity\Network;
 use BBC\ProgrammesPagesService\Service\NetworksService;
@@ -42,7 +43,8 @@ class HomeController extends BaseController
     public function __invoke(
         EntityManagerInterface $em,
         CacheInterface $cache,
-        NetworksService $networksService
+        NetworksService $networksService,
+        Breadcrumbs $breadcrumbs
     ) {
         $this->setIstatsProgsPageType('home_index');
         $this->setAtiContentLabels('index-home', 'programmes-index');
@@ -58,6 +60,10 @@ class HomeController extends BaseController
         $networks = array_filter($publishedNetworks, function (Network $n) {
             return !isset(self::BLACKLISTED_NETWORKS[(string) $n->getNid()]);
         });
+
+        $this->breadcrumbs = $breadcrumbs
+            ->forRoute('Programmes', 'home')
+            ->toArray();
 
         return $this->renderWithChrome('home/show.html.twig', [
             'programme_count' => $programmeCount,

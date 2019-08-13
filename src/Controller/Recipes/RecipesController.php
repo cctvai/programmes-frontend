@@ -17,6 +17,13 @@ class RecipesController extends AbstractRecipesController
             ],
         ];
 
+        $programme = $this->programme;
+        $this->breadcrumbs = $this->hBreadcrumbs
+            ->forNetwork($programme->getNetwork())
+            ->forEntityAncestry($programme)
+            ->forRoute('Recipes', 'programme_recipes', ['pid' => $programme->getPid()])
+            ->toArray();
+
         return $this->renderWithChrome('recipes/show.html.twig', $dataForTemplate);
     }
 

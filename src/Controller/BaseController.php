@@ -4,11 +4,13 @@ declare(strict_types = 1);
 namespace App\Controller;
 
 use App\Branding\BrandingPlaceholderResolver;
+use App\Controller\Helpers\StructuredDataHelper;
 use App\Cosmos\Dials;
 use App\Ds2013\Factory\PresenterFactory;
 use App\DsShared\Factory\HelperFactory;
 use App\ValueObject\AnalyticsCounterName;
 use App\ValueObject\AtiAnalyticsLabels;
+use App\ValueObject\Breadcrumb;
 use App\ValueObject\CosmosInfo;
 use App\ValueObject\IstatsAnalyticsLabels;
 use App\ValueObject\MetaContext;
@@ -85,6 +87,9 @@ abstract class BaseController extends AbstractController
     /** @var ?Image */
     protected $overridenImage;
 
+    /** @var Breadcrumb[] */
+    protected $breadcrumbs = [];
+
     public static function getSubscribedServices()
     {
         return array_merge(parent::getSubscribedServices(), [
@@ -97,6 +102,7 @@ abstract class BaseController extends AbstractController
             Dials::class,
             PresenterFactory::class,
             HelperFactory::class,
+            StructuredDataHelper::class,
         ]);
     }
 
@@ -264,6 +270,8 @@ abstract class BaseController extends AbstractController
             'skipLinkTarget' => 'programmes-content',
         ]);
 
+        $structuredDataHelper = $this->container->get(StructuredDataHelper::class);
+
         $parameters = array_merge([
             'appVersion' => $this->container->get(CosmosInfo::class)->getAppVersion(),
             'orb' => $orb,
@@ -272,6 +280,13 @@ abstract class BaseController extends AbstractController
             'with_chrome' => true,
             'is_international' => $this->isInternational,
         ], $parameters);
+
+        if (count($this->breadcrumbs) > 0) {
+            $parameters['breadcrumbs'] = $structuredDataHelper->prepare(
+                $structuredDataHelper->getSchemaForBreadcrumbs($this->breadcrumbs)
+            );
+        }
+
         return $this->render($view, $parameters, $this->response);
     }
 

@@ -3,6 +3,7 @@ declare(strict_types = 1);
 
 namespace App\Controller\Schedules;
 
+use App\Controller\Helpers\Breadcrumbs;
 use App\Controller\Helpers\StructuredDataHelper;
 use App\Controller\Traits\SchedulesPageResponseCodeTrait;
 use App\Controller\Traits\UtcOffsetValidatorTrait;
@@ -32,7 +33,8 @@ class ByWeekController extends SchedulesBaseController
         BroadcastsService $broadcastService,
         HelperFactory $helperFactory,
         UrlGeneratorInterface $router,
-        StructuredDataHelper $structuredDataHelper
+        StructuredDataHelper $structuredDataHelper,
+        Breadcrumbs $breadcrumbs
     ) {
         if ($this->shouldRedirectToOverriddenUrl($service)) {
             return $this->cachedRedirect(
@@ -59,6 +61,7 @@ class ByWeekController extends SchedulesBaseController
 
         try {
             $broadcastWeek = new BroadcastWeek($date);
+            $broadcastWeekStart = $broadcastWeek->start();
         } catch (InvalidArgumentException $e) {
             throw $this->createNotFoundException('Invalid date');
         }
@@ -75,7 +78,7 @@ class ByWeekController extends SchedulesBaseController
             // Get broadcasts in relevant period
             $broadcasts = $broadcastService->findByServiceAndDateRange(
                 $service->getSid(),
-                $broadcastWeek->start(),
+                $broadcastWeekStart,
                 $broadcastWeek->end(),
                 BroadcastsService::NO_LIMIT
             );
@@ -86,7 +89,7 @@ class ByWeekController extends SchedulesBaseController
 
         $pagePresenter = new SchedulesByWeekPagePresenter(
             $service,
-            $broadcastWeek->start(),
+            $broadcastWeekStart,
             $daysOfBroadcasts,
             $date,
             $servicesInNetwork
@@ -113,6 +116,23 @@ class ByWeekController extends SchedulesBaseController
         if ($this->request()->query->has('no_chrome')) {
             return $this->renderWithoutChrome('schedules/by_week.html.twig', $viewData);
         }
+
+        $opts = ['pid' => $service->getPid()];
+        $this->breadcrumbs = $breadcrumbs
+            ->forRoute('Schedules', 'schedules_home')
+            ->forRoute($service->getName(), 'schedules_by_day', $opts)
+            ->forRoute(
+                $broadcastWeekStart->format('Y'),
+                'schedules_by_year',
+                ['year' => $broadcastWeekStart->format('Y')] + $opts
+            )
+            ->forRoute(
+                'Week ' . $broadcastWeekStart->format('W'),
+                'schedules_by_week',
+                ['date' => $broadcastWeekStart->format('o/\wW')] + $opts
+            )
+            ->toArray();
+
         return $this->renderWithChrome('schedules/by_week.html.twig', $viewData);
     }
 

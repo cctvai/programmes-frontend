@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Controller\Podcast;
 
 use App\Controller\BaseController;
+use App\Controller\Helpers\Breadcrumbs;
 use App\DsShared\Utilities\Paginator\PaginatorPresenter;
 use BBC\ProgrammesPagesService\Domain\Entity\Collection;
 use BBC\ProgrammesPagesService\Domain\Entity\CoreEntity;
@@ -31,7 +32,8 @@ class PodcastController extends BaseController
         PromotionsService $promotionsService,
         VersionsService $versionsService,
         StructuredDataHelper $structuredDataHelper,
-        UrlGeneratorInterface $router
+        UrlGeneratorInterface $router,
+        Breadcrumbs $breadcrumbs
     ) {
         if ((!$coreEntity instanceof Collection) && !$coreEntity->isTleo()) {
             return $this->cachedRedirectToRoute('programme_podcast_episodes_download', ['pid' => $coreEntity->getTleo()->getPid()], 301);
@@ -95,6 +97,12 @@ class PodcastController extends BaseController
                     'brandPid' => $coreEntity->getPid(),
                 ], UrlGeneratorInterface::ABSOLUTE_URL);
         }
+
+        $this->breadcrumbs = $breadcrumbs
+            ->forNetwork($coreEntity->getNetwork())
+            ->forEntityAncestry($coreEntity)
+            ->forRoute('Downloads', 'programme_podcast_episodes_download', ['pid' => $coreEntity->getPid()])
+            ->toArray();
 
         return $this->renderWithChrome('podcast/podcast.html.twig', [
             'schema' => $schema,

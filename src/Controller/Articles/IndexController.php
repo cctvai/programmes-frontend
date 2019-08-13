@@ -4,6 +4,7 @@ declare(strict_types = 1);
 namespace App\Controller\Articles;
 
 use App\Controller\BaseController;
+use App\Controller\Helpers\Breadcrumbs;
 use App\DsShared\Utilities\Paginator\PaginatorPresenter;
 use App\ExternalApi\Isite\Service\ArticleService;
 use BBC\ProgrammesPagesService\Domain\Entity\CoreEntity;
@@ -13,8 +14,11 @@ class IndexController extends BaseController
 {
     const RESULTS_PER_PAGE = 48;
 
-    public function __invoke(CoreEntity $coreEntity, ArticleService $isiteService)
-    {
+    public function __invoke(
+        CoreEntity $coreEntity,
+        ArticleService $isiteService,
+        Breadcrumbs $breadcrumbs
+    ) {
         $this->setIstatsProgsPageType('article_listpid');
         $this->setAtiContentLabels('list-datadriven', 'list-articles');
         $this->setContextAndPreloadBranding($coreEntity);
@@ -40,6 +44,12 @@ class IndexController extends BaseController
         }
 
         $this->overridenDescription = 'Articles about ' . $coreEntity->getTitle();
+
+        $this->breadcrumbs = $breadcrumbs
+            ->forNetwork($coreEntity->getNetwork())
+            ->forEntityAncestry($coreEntity)
+            ->forRoute('Features', 'programme_article_listings', ['pid' => $coreEntity->getPid()])
+            ->toArray();
 
         return $this->renderWithChrome('articles/index.html.twig', $parameters);
     }

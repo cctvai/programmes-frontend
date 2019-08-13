@@ -3,6 +3,7 @@ declare(strict_types = 1);
 
 namespace App\Controller\ProgrammeEpisodes;
 
+use App\Controller\Helpers\Breadcrumbs;
 use App\Controller\Helpers\StructuredDataHelper;
 use App\Ds2013\Factory\PresenterFactory;
 use BBC\ProgrammesPagesService\Domain\Entity\CollapsedBroadcast;
@@ -18,7 +19,8 @@ class UpcomingController extends BaseProgrammeEpisodesController
         CollapsedBroadcastsService $collapsedBroadcastsService,
         PresenterFactory $presenterFactory,
         ProgrammesAggregationService $programmeAggregationService,
-        StructuredDataHelper $structuredDataHelper
+        StructuredDataHelper $structuredDataHelper,
+        Breadcrumbs $breadcrumbs
     ) {
         $this->setContextAndPreloadBranding($programme);
         $this->setIstatsProgsPageType('broadcast_slice');
@@ -42,6 +44,14 @@ class UpcomingController extends BaseProgrammeEpisodesController
         $schema = $this->getSchema($structuredDataHelper, $programme, $upcomingBroadcasts);
 
         $this->overridenDescription = 'Upcoming episodes of ' . $programme->getTitle();
+
+        $opts = ['pid' => $programme->getPid()];
+        $this->breadcrumbs = $breadcrumbs
+            ->forNetwork($programme->getNetwork())
+            ->forEntityAncestry($programme)
+            ->forRoute('Episodes', 'programme_episodes', $opts)
+            ->forRoute('Upcoming', 'programme_upcoming_broadcasts', $opts)
+            ->toArray();
 
         return $this->renderWithChrome('programme_episodes/upcoming.html.twig', [
             'programme' => $programme,

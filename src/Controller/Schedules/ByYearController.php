@@ -3,6 +3,7 @@ declare(strict_types = 1);
 
 namespace App\Controller\Schedules;
 
+use App\Controller\Helpers\Breadcrumbs;
 use BBC\ProgrammesPagesService\Domain\ApplicationTime;
 use BBC\ProgrammesPagesService\Domain\Entity\Service;
 use Cake\Chronos\Date;
@@ -16,7 +17,7 @@ class ByYearController extends SchedulesBaseController
      */
     const MINIMUM_VALID_YEAR = 1900;
 
-    public function __invoke(Service $service, string $year)
+    public function __invoke(Service $service, string $year, Breadcrumbs $breadcrumbs)
     {
         if ($this->shouldRedirectToOverriddenUrl($service)) {
             return $this->cachedRedirect(
@@ -44,6 +45,14 @@ class ByYearController extends SchedulesBaseController
         if (!$this->serviceIsActiveDuringYear($service, $startOfYear)) {
             $this->response()->setStatusCode(404);
         }
+
+        $opts = ['pid' => $service->getPid()];
+        $this->breadcrumbs = $breadcrumbs
+            ->forRoute('Schedules', 'schedules_home')
+            ->forRoute($service->getName(), 'schedules_by_day', $opts)
+            ->forRoute($startOfYear->format('Y'), 'schedules_by_year', ['year' => $startOfYear->format('Y')] + $opts)
+            ->toArray();
+
         return $this->renderWithChrome('schedules/by_year.html.twig', $viewData);
     }
 

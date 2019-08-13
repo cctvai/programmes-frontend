@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace App\Controller\Topic;
 
+use App\Controller\Helpers\Breadcrumbs;
 use App\ExternalApi\Ada\Domain\AdaClass;
 use App\ExternalApi\Ada\Service\AdaClassService;
 use App\ExternalApi\Ada\Service\AdaProgrammeService;
@@ -23,7 +24,8 @@ class ShowController extends BaseTopicController
         ?string $slice,
         AdaClassService $adaClassService,
         AdaProgrammeService $adaProgrammeService,
-        ?ProgrammeContainer $programmeContainer
+        ?ProgrammeContainer $programmeContainer,
+        Breadcrumbs $breadcrumbs
     ) {
         $this->adaProgrammeService = $adaProgrammeService;
         $this->slice = $slice;
@@ -58,6 +60,18 @@ class ShowController extends BaseTopicController
                 $page + 1,
                 null
             );
+
+            $opts = ['topic' => $adaClass->getId()];
+            $breadcrumbs = $breadcrumbs
+                ->forRoute('Programmes', 'home')
+                ->forRoute('Topics', 'topic_list')
+                ->forRoute($adaClass->getTitle(), 'topic_show', $opts);
+
+            if ($slice !== '') {
+                $breadcrumbs->forRoute(ucfirst($slice), 'topic_show', ['slice' => $slice] + $opts);
+            }
+
+            $this->breadcrumbs = $breadcrumbs->toArray();
         } else {
             $this->setAtiContentLabels('list-datadriven-linkeddata', 'pid-list-programmes-topic');
             $this->setAtiContentId((string) $programmeContainer->getPid());
@@ -81,6 +95,14 @@ class ShowController extends BaseTopicController
                 $page + 1,
                 $programmeContainer
             );
+
+            $opts = ['pid' => $programmeContainer->getPid()];
+            $this->breadcrumbs = $breadcrumbs
+                ->forNetwork($programmeContainer->getNetwork())
+                ->forEntityAncestry($programmeContainer)
+                ->forRoute('Topics', 'programme_topics', $opts)
+                ->forRoute($adaClass->getTitle(), 'programme_topic', ['topic' => $adaClass->getId()] + $opts)
+                ->toArray();
         }
 
         $promises = [

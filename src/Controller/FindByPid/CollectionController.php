@@ -3,6 +3,7 @@ declare(strict_types = 1);
 namespace App\Controller\FindByPid;
 
 use App\Controller\BaseController;
+use App\Controller\Helpers\Breadcrumbs;
 use App\DsShared\Utilities\Paginator\PaginatorPresenter;
 use BBC\ProgrammesCachingLibrary\CacheInterface;
 use BBC\ProgrammesPagesService\Domain\Entity\Collection;
@@ -18,7 +19,8 @@ class CollectionController extends BaseController
         Collection $collection,
         PromotionsService $promotionsService,
         CoreEntitiesService $coreEntitiesService,
-        RelatedLinksService $relatedLinksService
+        RelatedLinksService $relatedLinksService,
+        Breadcrumbs $breadcrumbs
     ) {
         $this->setAtiContentLabels('list-collection', 'collection');
         $this->setAtiContentId((string) $collection->getPid());
@@ -44,6 +46,11 @@ class CollectionController extends BaseController
         } else {
             $paginatorPresenter = null;
         }
+
+        $this->breadcrumbs = $breadcrumbs
+            ->forNetwork($collection->getNetwork())
+            ->forEntityAncestry($collection)
+            ->toArray();
 
         return $this->renderWithChrome('find_by_pid/collection.html.twig', [
             'collection' => $collection,

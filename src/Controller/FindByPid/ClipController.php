@@ -3,6 +3,7 @@ declare(strict_types = 1);
 namespace App\Controller\FindByPid;
 
 use App\Controller\BaseController;
+use App\Controller\Helpers\Breadcrumbs;
 use App\Controller\Helpers\StructuredDataHelper;
 use App\Ds2013\Factory\PresenterFactory;
 use App\DsShared\Helpers\StreamableHelper;
@@ -42,7 +43,8 @@ class ClipController extends BaseController
         SegmentEventsService $segmentEventsService,
         StreamableHelper $streamableHelper,
         StructuredDataHelper $structuredDataHelper,
-        VersionsService $versionsService
+        VersionsService $versionsService,
+        Breadcrumbs $breadcrumbs
     ) {
         $this->setIstatsProgsPageType('programmes_clip');
         $this->setAtiContentLabels('player-clip', 'clip');
@@ -120,6 +122,11 @@ class ClipController extends BaseController
             'streamableVersion' => $linkedVersions['streamableVersion'],
             'segmentEvents' => $segmentEvents,
         ];
+
+        $this->breadcrumbs = $breadcrumbs
+            ->forNetwork($clip->getNetwork())
+            ->forEntityAncestry($clip)
+            ->toArray();
 
         return $this->renderWithChrome('find_by_pid/clip.html.twig', array_merge($resolvedPromises, $parameters));
     }

@@ -3,13 +3,14 @@ declare(strict_types = 1);
 
 namespace App\Controller\Schedules;
 
+use App\Controller\Helpers\Breadcrumbs;
 use BBC\ProgrammesPagesService\Domain\ApplicationTime;
 use BBC\ProgrammesPagesService\Domain\Entity\Service;
 use Cake\Chronos\Date;
 
 class ByMonthController extends SchedulesBaseController
 {
-    public function __invoke(Service $service, string $date)
+    public function __invoke(Service $service, string $date, Breadcrumbs $breadcrumbs)
     {
         if ($this->shouldRedirectToOverriddenUrl($service)) {
             return $this->cachedRedirect(
@@ -36,6 +37,15 @@ class ByMonthController extends SchedulesBaseController
         if (!$this->serviceIsActiveDuringMonth($service, $firstOfMonth)) {
             $this->response()->setStatusCode(404);
         }
+
+        $opts = ['pid' => $service->getPid()];
+        $this->breadcrumbs = $breadcrumbs
+            ->forRoute('Schedules', 'schedules_home')
+            ->forRoute($service->getName(), 'schedules_by_day', $opts)
+            ->forRoute($firstOfMonth->format('Y'), 'schedules_by_year', ['year' => $firstOfMonth->format('Y')] + $opts)
+            ->forRoute($firstOfMonth->format('F'), 'schedules_by_month', ['date' => $firstOfMonth->format('Y/m')] + $opts)
+            ->toArray();
+
         return $this->renderWithChrome('schedules/by_month.html.twig', $viewData);
     }
 

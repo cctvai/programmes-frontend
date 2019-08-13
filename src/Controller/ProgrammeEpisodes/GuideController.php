@@ -3,6 +3,7 @@ declare(strict_types = 1);
 
 namespace App\Controller\ProgrammeEpisodes;
 
+use App\Controller\Helpers\Breadcrumbs;
 use App\Controller\Helpers\StructuredDataHelper;
 use App\Controller\Traits\IndexerTrait;
 use App\Ds2013\Factory\PresenterFactory;
@@ -27,7 +28,8 @@ class GuideController extends BaseProgrammeEpisodesController
         ProgrammesService $programmesService,
         CollapsedBroadcastsService $collapsedBroadcastService,
         Request $request,
-        StructuredDataHelper $structuredDataHelper
+        StructuredDataHelper $structuredDataHelper,
+        Breadcrumbs $breadcrumbs
     ) {
         $this->setContextAndPreloadBranding($programme);
         $this->setInternationalStatusAndTimezoneFromContext($programme);
@@ -71,6 +73,14 @@ class GuideController extends BaseProgrammeEpisodesController
         $schema = $this->getSchema($structuredDataHelper, $programme, $children, $upcomingBroadcasts);
 
         $this->overridenDescription = 'All episodes of ' . $programme->getTitle();
+
+        $opts = ['pid' => $programme->getPid()];
+        $this->breadcrumbs = $breadcrumbs
+            ->forNetwork($programme->getNetwork())
+            ->forEntityAncestry($programme)
+            ->forRoute('Episodes', 'programme_episodes', $opts)
+            ->forRoute('All', 'programme_episodes_guide', $opts)
+            ->toArray();
 
         return $this->renderWithChrome('programme_episodes/guide.html.twig', [
             'programme' => $programme,

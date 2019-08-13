@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace App\Controller\Topic;
 
+use App\Controller\Helpers\Breadcrumbs;
 use App\ExternalApi\Ada\Service\AdaClassService;
 use BBC\ProgrammesPagesService\Domain\Entity\ProgrammeContainer;
 use RuntimeException;
@@ -12,7 +13,8 @@ class ListController extends BaseTopicController
 {
     public function __invoke(
         ?ProgrammeContainer $programmeContainer,
-        AdaClassService $adaClassService
+        AdaClassService $adaClassService,
+        Breadcrumbs $breadcrumbs
     ) {
         $this->setContextAndPreloadBranding($programmeContainer);
         $page = $this->getPage();
@@ -24,6 +26,11 @@ class ListController extends BaseTopicController
             $nextPage = function () use ($adaClassService, $page) {
                 return $adaClassService->findAllClasses($page + 1, null)->wait();
             };
+
+            $this->breadcrumbs = $breadcrumbs
+                ->forRoute('Programmes', 'home')
+                ->forRoute('Topics', 'topic_list')
+                ->toArray();
         } else {
             $this->setAtiContentId((string) $programmeContainer->getPid());
             $this->setAtiContentLabels('list-datadriven-linkeddata', 'pid-list-topics');
@@ -34,6 +41,12 @@ class ListController extends BaseTopicController
             $nextPage = function () use ($adaClassService, $page, $programmeContainer) {
                 return $adaClassService->findAllClasses($page + 1, $programmeContainer)->wait();
             };
+
+            $this->breadcrumbs = $breadcrumbs
+                ->forNetwork($programmeContainer->getNetwork())
+                ->forEntityAncestry($programmeContainer)
+                ->forRoute('Topics', 'programme_topics', ['pid' => $programmeContainer->getPid()])
+                ->toArray();
         }
 
         // $nextPage is not called in parallel to allow Ada to warmup its cache.

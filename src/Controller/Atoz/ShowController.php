@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace App\Controller\Atoz;
 
 use App\Controller\BaseController;
+use App\Controller\Helpers\Breadcrumbs;
 use App\DsShared\Utilities\Paginator\PaginatorPresenter;
 use BBC\ProgrammesPagesService\Service\AtozTitlesService;
 use BBC\ProgrammesPagesService\Service\ProgrammesService;
@@ -23,7 +24,8 @@ class ShowController extends BaseController
         string $slice,
         AtozTitlesService $atozTitlesService,
         Request $request,
-        ProgrammesService $programmesService
+        ProgrammesService $programmesService,
+        Breadcrumbs $breadcrumbs
     ) {
 
         if ($slice == 'all') {
@@ -104,6 +106,14 @@ class ShowController extends BaseController
         } else {
             $paginator = null;
         }
+
+        $opts = ['search' => $search];
+        $this->breadcrumbs = $breadcrumbs
+            ->forRoute('Programmes', 'home')
+            ->forRoute('A to Z', 'atoz_index')
+            ->forRoute(strtoupper($selectedLetter), 'atoz_naked_search', $opts)
+            ->forRoute(ucfirst($descriptionSlice), 'atoz_show', ['slice' => $slice] + $opts)
+            ->toArray();
 
         return $this->renderWithChrome('atoz/show.html.twig', [
             'selectedLetter' => $selectedLetter,

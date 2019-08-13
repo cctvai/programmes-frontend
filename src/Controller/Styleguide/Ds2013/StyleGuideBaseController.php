@@ -7,6 +7,8 @@ use App\Controller\BaseController;
 
 class StyleGuideBaseController extends BaseController
 {
+    protected $breadcrumbs = [];
+
     public function __construct()
     {
         parent::__construct();

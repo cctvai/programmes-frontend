@@ -2,6 +2,7 @@
 declare(strict_types = 1);
 namespace App\Controller\FindByPid;
 
+use App\Controller\Helpers\Breadcrumbs;
 use App\Controller\Helpers\StructuredDataHelper;
 use App\DsAmen\Factory\PresenterFactory;
 use App\DsShared\Factory\HelperFactory;
@@ -38,7 +39,8 @@ class SeriesController extends BaseProgrammeContainerController
         RelatedLinksService $relatedLinksService,
         FavouritesButtonService $favouritesButtonService,
         LxPromoService $lxPromoService,
-        StructuredDataHelper $structuredDataHelper
+        StructuredDataHelper $structuredDataHelper,
+        Breadcrumbs $breadcrumbs
     ) {
         $this->setAtiContentLabels('series', 'series');
         return parent::__invoke(
@@ -57,7 +59,8 @@ class SeriesController extends BaseProgrammeContainerController
             $relatedLinksService,
             $favouritesButtonService,
             $lxPromoService,
-            $structuredDataHelper
+            $structuredDataHelper,
+            $breadcrumbs
         );
     }
 

@@ -3,6 +3,7 @@ declare(strict_types = 1);
 namespace App\Controller\Schedules;
 
 use App\Controller\BaseController;
+use App\Controller\Helpers\Breadcrumbs;
 use BBC\ProgrammesPagesService\Domain\ApplicationTime;
 use BBC\ProgrammesPagesService\Domain\Entity\Service;
 use BBC\ProgrammesPagesService\Service\ServicesService;
@@ -47,7 +48,7 @@ class HomeController extends BaseController
         'p02yvcxr' => true, // Uzbek
     ];
 
-    public function __invoke(ServicesService $servicesService)
+    public function __invoke(ServicesService $servicesService, Breadcrumbs $breadcrumbs)
     {
         $this->setBrandingId('br-08368');
         $this->setIstatsProgsPageType('programmes_schedule_index');
@@ -118,6 +119,10 @@ class HomeController extends BaseController
                 unset($groups[$key]);
             }
         }
+
+        $this->breadcrumbs = $breadcrumbs
+            ->forRoute('Schedules', 'schedules_home')
+            ->toArray();
 
         return $this->renderWithChrome('schedules/home.html.twig', [
             'groups' => $groups,

@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Controller\Recipes;
 
 use App\Controller\BaseController;
+use App\Controller\Helpers\Breadcrumbs;
 use App\ExternalApi\Recipes\Domain\RecipesApiResult;
 use App\ExternalApi\Recipes\Service\RecipesService;
 use BBC\ProgrammesPagesService\Domain\Entity\Programme;
@@ -12,8 +13,24 @@ use App\Controller\Helpers\StructuredDataHelper;
 
 abstract class AbstractRecipesController extends BaseController
 {
-    public function __invoke(Programme $programme, RecipesService $recipesService, StructuredDataHelper $structuredDataHelper)
-    {
+    /** @var Array */
+    protected $breadcrumbs;
+
+    /** @var Breadcrumbs */
+    protected $hBreadcrumbs;
+
+    /** @var Programme */
+    protected $programme;
+
+    public function __invoke(
+        Programme $programme,
+        RecipesService $recipesService,
+        StructuredDataHelper $structuredDataHelper,
+        Breadcrumbs $hBreadcrumbs
+    ) {
+        $this->hBreadcrumbs = $hBreadcrumbs;
+        $this->programme = $programme;
+
         $pid = (string) $programme->getPid();
         if (!$programme->getOption('recipes_enabled')) {
             throw new NotFoundHttpException(sprintf('Unknown Recipes with PID "%s"', $pid));

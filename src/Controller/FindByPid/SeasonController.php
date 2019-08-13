@@ -3,6 +3,7 @@ declare(strict_types = 1);
 namespace App\Controller\FindByPid;
 
 use App\Controller\BaseController;
+use App\Controller\Helpers\Breadcrumbs;
 use BBC\ProgrammesPagesService\Domain\Entity\CoreEntity;
 use BBC\ProgrammesPagesService\Domain\Entity\Season;
 use BBC\ProgrammesPagesService\Service\CollapsedBroadcastsService;
@@ -17,7 +18,8 @@ class SeasonController extends BaseController
         PromotionsService $promotionsService,
         CollapsedBroadcastsService $collapsedBroadcastsService,
         CoreEntitiesService $coreEntitiesService,
-        RelatedLinksService $relatedLinksService
+        RelatedLinksService $relatedLinksService,
+        Breadcrumbs $breadcrumbs
     ) {
         $this->setAtiContentLabels('season', 'season');
         $this->setAtiContentId((string) $season->getPid());
@@ -32,6 +34,11 @@ class SeasonController extends BaseController
             $promoPrority = array_shift($promotions);
             $promoImage = ($promoPrority->getPromotedEntity() instanceof CoreEntity) ? $promoPrority->getPromotedEntity()->getImage() : $promoPrority->getPromotedEntity();
         }
+
+        $this->breadcrumbs = $breadcrumbs
+            ->forNetwork($season->getNetwork())
+            ->forEntityAncestry($season)
+            ->toArray();
 
         return $this->renderWithChrome('find_by_pid/season.html.twig', [
             'season' => $season,

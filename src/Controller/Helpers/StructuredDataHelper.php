@@ -6,6 +6,7 @@ namespace App\Controller\Helpers;
 use App\ExternalApi\Isite\Domain\Article;
 use App\ExternalApi\Isite\Domain\Profile;
 use App\ExternalApi\Recipes\Domain\Recipe;
+use App\ValueObject\Breadcrumb;
 use BBC\ProgrammesPagesService\Domain\Entity\Broadcast;
 use BBC\ProgrammesPagesService\Domain\Entity\Clip;
 use BBC\ProgrammesPagesService\Domain\Entity\CollapsedBroadcast;
@@ -213,6 +214,11 @@ class StructuredDataHelper
     public function getSchemaForRecipe(Recipe $recipe): array
     {
         return $this->schemaHelper->getSchemaForRecipe($recipe);
+    }
+
+    public function getSchemaForBreadcrumbs(array $breadcrumbs): array
+    {
+        return $this->schemaHelper->getSchemaForBreadcrumbs($breadcrumbs);
     }
 
     private function getSchemaForService(Service $service): array

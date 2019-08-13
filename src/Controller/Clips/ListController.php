@@ -3,6 +3,7 @@
 namespace App\Controller\Clips;
 
 use App\Controller\BaseController;
+use App\Controller\Helpers\Breadcrumbs;
 use App\DsShared\Utilities\Paginator\PaginatorPresenter;
 use BBC\ProgrammesPagesService\Domain\Entity\Programme;
 use BBC\ProgrammesPagesService\Domain\Entity\ProgrammeContainer;
@@ -24,7 +25,8 @@ class ListController extends BaseController
     public function __invoke(
         Programme $programme,
         ProgrammesAggregationService $aggregationService,
-        ProgrammesService $programmesService
+        ProgrammesService $programmesService,
+        Breadcrumbs $breadcrumbs
     ) {
         $this->setIstatsProgsPageType(self::ISTATS_PAGE_ID);
         $this->setAtiContentLabels('list-clip', 'list-clip');
@@ -66,6 +68,12 @@ class ListController extends BaseController
         if (!$programme->isTleo() && $programme->getTleo() instanceof Programme) {
             $parameters[self::PARAMS_SHOW_ALL_PID_KEY] = $programme->getTleo()->getPid();
         }
+
+        $this->breadcrumbs = $breadcrumbs
+            ->forNetwork($programme->getNetwork())
+            ->forEntityAncestry($programme)
+            ->forRoute('Clips', 'programme_clips', ['pid' => $programme->getPid()])
+            ->toArray();
 
         return $this->renderWithChrome('clips/list.html.twig', $parameters);
     }

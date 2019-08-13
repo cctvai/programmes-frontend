@@ -4,6 +4,7 @@ declare(strict_types = 1);
 namespace App\Controller\Profiles;
 
 use App\Controller\BaseIsiteController;
+use App\Controller\Helpers\Breadcrumbs;
 use App\Controller\Helpers\IsiteKeyHelper;
 use App\Controller\Helpers\StructuredDataHelper;
 use App\ExternalApi\Isite\Domain\Profile;
@@ -22,7 +23,8 @@ class ShowController extends BaseIsiteController
         ProfileService $isiteService,
         IsiteKeyHelper $isiteKeyHelper,
         CoreEntitiesService $coreEntitiesService,
-        StructuredDataHelper $structuredDataHelper
+        StructuredDataHelper $structuredDataHelper,
+        Breadcrumbs $breadcrumbs
     ) {
         $this->setIstatsProgsPageType('profiles_index');
         $this->setAtiContentLabels('profile', 'profile');
@@ -60,6 +62,21 @@ class ShowController extends BaseIsiteController
                 self::MAX_LIST_DISPLAYED_ITEMS
             );
         }
+
+        if ($programme) {
+            $this->breadcrumbs = $breadcrumbs
+                ->forNetwork($programme->getNetwork())
+                ->forEntityAncestry($programme)
+                ->forRoute('Profiles', 'programme_profile_listings', ['pid' => $programme->getPid()])
+                ->forIsiteRoute($isiteObject, 'programme_profile')
+                ->toArray();
+        } else {
+            $this->breadcrumbs = $breadcrumbs
+                ->forRoute('Programmes', 'home')
+                ->forIsiteRoute($isiteObject, 'programme_profile')
+                ->toArray();
+        }
+
         if ($isiteObject->isIndividual()) {
             $this->resolvePromises(['siblings' => $siblingsPromise]);
 

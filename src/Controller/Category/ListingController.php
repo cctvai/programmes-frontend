@@ -4,6 +4,7 @@ declare(strict_types = 1);
 namespace App\Controller\Category;
 
 use App\Controller\BaseController;
+use App\Controller\Helpers\Breadcrumbs;
 use App\DsShared\Utilities\Paginator\PaginatorPresenter;
 use BBC\ProgrammesCachingLibrary\CacheInterface;
 use BBC\ProgrammesPagesService\Domain\Entity\Category;
@@ -20,7 +21,8 @@ class ListingController extends BaseController
         string $categoryType,
         Category $category,
         CategoriesService $categoriesService,
-        ProgrammesService $programmesService
+        ProgrammesService $programmesService,
+        Breadcrumbs $breadcrumbs
     ) {
         $this->setAtiContentId($category->getId());
 
@@ -29,14 +31,16 @@ class ListingController extends BaseController
                 $programmeCount = $programmesService->countAllTleosByCategory($category, CacheInterface::LONG);
                 $page = $this->getAndValidatePage($programmeCount);
                 $programmes = $programmesService->findAllTleosByCategory($category, self::RESULTS_PER_PAGE, $page);
-                $this->overridenDescription = 'List of all BBC programmes categorised as "' . $category->getHierarchicalTitle() . '".';
+                $descriptionSlice = 'all';
+                $this->overridenDescription = 'List of ' . $descriptionSlice . ' BBC programmes categorised as "' . $category->getHierarchicalTitle() . '".';
                 $this->setAtiContentLabels('index-category', 'category-all');
                 break;
             case 'player':
                 $programmeCount = $programmesService->countAvailableTleosByCategory($category, CacheInterface::LONG);
                 $page = $this->getAndValidatePage($programmeCount);
                 $programmes = $programmesService->findAvailableTleosByCategory($category, self::RESULTS_PER_PAGE, $page);
-                $this->overridenDescription = 'List of available BBC programmes categorised as "' . $category->getHierarchicalTitle() . '".';
+                $descriptionSlice = 'available';
+                $this->overridenDescription = 'List of ' . $descriptionSlice . ' BBC programmes categorised as "' . $category->getHierarchicalTitle() . '".';
                 $this->setAtiContentLabels('index-category', 'category-available');
                 break;
             default:
@@ -46,6 +50,21 @@ class ListingController extends BaseController
         if ($programmeCount > self::RESULTS_PER_PAGE) {
             $paginator = new PaginatorPresenter($page, self::RESULTS_PER_PAGE, $programmeCount);
         }
+
+        $opts = ['categoryType' => $categoryType];
+        $this->breadcrumbs = $breadcrumbs
+            ->forRoute('Programmes', 'home')
+            ->forRoute(ucfirst($categoryType), 'category_index', $opts)
+            ->forCategoryAncestry($category)
+            ->forRoute(
+                ucfirst($descriptionSlice),
+                'category_slice',
+                [
+                    'categoryHierarchy' => $category->getUrlKeyHierarchy(),
+                    'slice' => $slice,
+                ] + $opts
+            )
+            ->toArray();
 
         return $this->renderWithChrome('category/listing.html.twig', [
             'categoryType' => $categoryType,

@@ -4,6 +4,7 @@ declare(strict_types = 1);
 namespace App\Controller\FindByPid;
 
 use App\Controller\BaseController;
+use App\Controller\Helpers\Breadcrumbs;
 use App\Controller\Helpers\StructuredDataHelper;
 use App\Controller\Helpers\TelescopeHelper;
 use App\DsAmen\Factory\PresenterFactory;
@@ -49,7 +50,8 @@ abstract class BaseProgrammeContainerController extends BaseController
         RelatedLinksService $relatedLinksService,
         FavouritesButtonService $favouritesButtonService,
         LxPromoService $lxPromoService,
-        StructuredDataHelper $structuredDataHelper
+        StructuredDataHelper $structuredDataHelper,
+        Breadcrumbs $breadcrumbs
     ) {
         if ($programme->getNetwork() && $programme->getNetwork()->isInternational()) {
             // "International" services are UTC, all others are Europe/London (the default)
@@ -171,6 +173,11 @@ abstract class BaseProgrammeContainerController extends BaseController
         ];
 
         $parameters = array_merge($parameters, $resolvedPromises);
+
+        $this->breadcrumbs = $breadcrumbs
+            ->forNetwork($programme->getNetwork())
+            ->forEntityAncestry($programme)
+            ->toArray();
 
         return $this->renderWithChrome('find_by_pid/programme_container.html.twig', $parameters);
     }

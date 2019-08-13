@@ -342,4 +342,24 @@ class SchemaHelper
         }
         return $schema;
     }
+
+    public function getSchemaForBreadcrumbs(array $breadcrumbs): array
+    {
+        $schema = [
+            '@type' => 'BreadcrumbList',
+            'itemListElement' => [],
+        ];
+
+        for ($i = 0, $l = count($breadcrumbs); $i < $l; $i++) {
+            $breadcrumb = $breadcrumbs[$i];
+            $schema['itemListElement'][] = [
+                '@type' => 'ListItem',
+                'position' => $i + 1,
+                'name' => $breadcrumb->getTitle(),
+                'item' => $breadcrumb->getUrl(),
+            ];
+        }
+
+        return $schema;
+    }
 }

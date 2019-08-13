@@ -2,6 +2,7 @@
 declare(strict_types = 1);
 namespace App\Controller\Schedules;
 
+use App\Controller\Helpers\Breadcrumbs;
 use App\Controller\Helpers\StructuredDataHelper;
 use App\Controller\Traits\SchedulesPageResponseCodeTrait;
 use App\Controller\Traits\UtcOffsetValidatorTrait;
@@ -38,7 +39,8 @@ class ByDayController extends SchedulesBaseController
         CollapsedBroadcastsService $collapsedBroadcastsService,
         HelperFactory $helperFactory,
         UrlGeneratorInterface $router,
-        StructuredDataHelper $structuredDataHelper
+        StructuredDataHelper $structuredDataHelper,
+        Breadcrumbs $breadcrumbs
     ) {
         if ($this->shouldRedirectToOverriddenUrl($service)) {
             return $this->cachedRedirect(
@@ -65,11 +67,12 @@ class ByDayController extends SchedulesBaseController
         }
 
         $broadcastDay = new BroadcastDay($dateTimeToShow, $service->getNetwork()->getMedium());
+        $broadcastDayStart = $broadcastDay->start();
 
         // Get all services that belong to this network
         $servicesInNetwork = $servicesService->findAllInNetworkActiveOn(
             $service->getNetwork()->getNid(),
-            $broadcastDay->start()
+            $broadcastDayStart
         );
 
         $broadcasts = [];
@@ -80,7 +83,7 @@ class ByDayController extends SchedulesBaseController
             // Get broadcasts in relevant period
             $broadcasts = $broadcastService->findByServiceAndDateRange(
                 $service->getSid(),
-                $broadcastDay->start(),
+                $broadcastDayStart,
                 $broadcastDay->end()
             );
 
@@ -94,7 +97,7 @@ class ByDayController extends SchedulesBaseController
         }
         $pagePresenter = new SchedulesByDayPagePresenter(
             $service,
-            $broadcastDay->start(),
+            $broadcastDayStart,
             $broadcasts,
             $date,
             $servicesInNetwork,
@@ -104,7 +107,7 @@ class ByDayController extends SchedulesBaseController
 
         $viewData = $this->viewData(
             $service,
-            $broadcastDay->start(),
+            $broadcastDayStart,
             $pagePresenter,
             $service->isInternational() && !$this->request()->query->has('utcoffset'),
             !is_null($date),
@@ -115,11 +118,38 @@ class ByDayController extends SchedulesBaseController
         // as appropriate when we have no broadcasts
         $this->setResponseCodeAndNoIndexProperties($serviceIsActiveInThisPeriod, $broadcasts, $broadcastDay);
 
-        $this->setIstatsExtraLabels($this->getIstatsExtraLabels($date, $broadcastDay->start()->isYesterday()));
+        $this->setIstatsExtraLabels($this->getIstatsExtraLabels($date, $broadcastDayStart->isYesterday()));
         $this->overridenDescription = "This is the daily broadcast schedule for " . $service->getName();
         if ($this->request()->query->has('no_chrome')) {
             return $this->renderWithoutChrome('schedules/by_day.html.twig', $viewData);
         }
+
+        $opts = ['pid' => $service->getPid()];
+        $breadcrumbs = $breadcrumbs
+            ->forRoute('Schedules', 'schedules_home')
+            ->forRoute($service->getName(), 'schedules_by_day', $opts);
+
+        if ($date) {
+            $breadcrumbs
+                ->forRoute(
+                    $broadcastDayStart->format('Y'),
+                    'schedules_by_year',
+                    ['year' => $broadcastDayStart->format('Y')] + $opts
+                )
+                ->forRoute(
+                    $broadcastDayStart->format('F'),
+                    'schedules_by_month',
+                    ['date' => $broadcastDayStart->format('Y/m')] + $opts
+                )
+                ->forRoute(
+                    $broadcastDayStart->format('j'),
+                    'schedules_by_day',
+                    [ 'date' => $broadcastDayStart->format('Y/m/d') ] + $opts
+                );
+        }
+
+        $this->breadcrumbs = $breadcrumbs->toArray();
+
         return $this->renderWithChrome('schedules/by_day.html.twig', $viewData);
     }
 

@@ -3,6 +3,7 @@ declare(strict_types = 1);
 
 namespace App\Controller\FindByPid;
 
+use App\Controller\Helpers\Breadcrumbs;
 use App\Controller\Helpers\StructuredDataHelper;
 use App\Controller\Helpers\TelescopeHelper;
 use App\DsAmen\Factory\PresenterFactory;
@@ -48,7 +49,8 @@ class TlecController extends BaseProgrammeContainerController
         RelatedLinksService $relatedLinksService,
         FavouritesButtonService $favouritesButtonService,
         LxPromoService $lxPromoService,
-        StructuredDataHelper $structuredDataHelper
+        StructuredDataHelper $structuredDataHelper,
+        Breadcrumbs $breadcrumbs
     ) {
         // We need to vary on X-Ip_is_uk_combined to avoid returning same cached content to non UK users when there is
         // a vote set to UK only. There is already a vary header set on nginx, this doesn't override the existing "vary"
@@ -76,7 +78,8 @@ class TlecController extends BaseProgrammeContainerController
             $relatedLinksService,
             $favouritesButtonService,
             $lxPromoService,
-            $structuredDataHelper
+            $structuredDataHelper,
+            $breadcrumbs
         );
     }
 

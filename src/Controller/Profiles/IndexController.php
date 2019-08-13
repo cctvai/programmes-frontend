@@ -4,6 +4,7 @@ declare(strict_types = 1);
 namespace App\Controller\Profiles;
 
 use App\Controller\BaseController;
+use App\Controller\Helpers\Breadcrumbs;
 use App\DsShared\Utilities\Paginator\PaginatorPresenter;
 use App\ExternalApi\Isite\Domain\Profile;
 use App\ExternalApi\Isite\Service\ProfileService;
@@ -12,8 +13,11 @@ use BBC\ProgrammesPagesService\Domain\Entity\Programme;
 
 class IndexController extends BaseController
 {
-    public function __invoke(CoreEntity $coreEntity, ProfileService $isiteService)
-    {
+    public function __invoke(
+        CoreEntity $coreEntity,
+        ProfileService $isiteService,
+        Breadcrumbs $breadcrumbs
+    ) {
         $this->setIstatsProgsPageType('profiles_list');
         $this->setAtiContentLabels('list-profiles', 'list-profiles');
         $this->setContextAndPreloadBranding($coreEntity);
@@ -50,6 +54,12 @@ class IndexController extends BaseController
         }
 
         $this->overridenDescription = 'Profiles for ' . $coreEntity->getTitle();
+
+        $this->breadcrumbs = $breadcrumbs
+            ->forNetwork($coreEntity->getNetwork())
+            ->forEntityAncestry($coreEntity)
+            ->forRoute('Profiles', 'programme_profile_listings', ['pid' => $coreEntity->getPid()])
+            ->toArray();
 
         return $this->renderWithChrome('profiles/index.html.twig', $parameters);
     }

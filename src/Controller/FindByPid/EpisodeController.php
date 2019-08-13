@@ -3,6 +3,7 @@ declare(strict_types = 1);
 namespace App\Controller\FindByPid;
 
 use App\Controller\BaseController;
+use App\Controller\Helpers\Breadcrumbs;
 use App\Controller\Helpers\StructuredDataHelper;
 use App\Ds2013\Factory\PresenterFactory;
 use App\ExternalApi\Ada\Service\AdaClassService;
@@ -45,7 +46,8 @@ class EpisodeController extends BaseController
         GroupsService $groupsService,
         PresenterFactory $presenterFactory,
         StructuredDataHelper $structuredDataHelper,
-        PodcastsService $podcastsService
+        PodcastsService $podcastsService,
+        Breadcrumbs $breadcrumbs
     ) {
         $this->setIstatsProgsPageType('programmes_episode');
         $this->setAtiContentLabels('episode', 'episode');
@@ -180,6 +182,12 @@ class EpisodeController extends BaseController
         ];
 
         $parameters = array_merge($parameters, $resolvedPromises);
+
+        $this->breadcrumbs = $breadcrumbs
+            ->forNetwork($episode->getNetwork())
+            ->forEntityAncestry($episode)
+            ->toArray();
+
         return $this->renderWithChrome('find_by_pid/episode.html.twig', $parameters);
     }
 

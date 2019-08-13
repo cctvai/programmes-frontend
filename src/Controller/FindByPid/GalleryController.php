@@ -4,6 +4,7 @@ namespace App\Controller\FindByPid;
 
 use App\Controller\BaseController;
 use App\Controller\Gallery\GalleryView;
+use App\Controller\Helpers\Breadcrumbs;
 use App\Controller\Helpers\StructuredDataHelper;
 use BBC\ProgrammesPagesService\Domain\Entity\Gallery;
 use BBC\ProgrammesPagesService\Domain\Entity\Image;
@@ -19,7 +20,8 @@ class GalleryController extends BaseController
         ImagesService $imagesService,
         ?string $imagePid,
         ProgrammesAggregationService $programmesAggregationService,
-        StructuredDataHelper $structuredDataHelper
+        StructuredDataHelper $structuredDataHelper,
+        Breadcrumbs $breadcrumbs
     ) {
         $this->setIstatsProgsPageType('galleries_show');
         $this->setAtiContentLabels('article-photo-gallery', 'gallery');
@@ -40,6 +42,11 @@ class GalleryController extends BaseController
 
         $individualPageImage = $isIndividualImagePage ? $image : null;
         $schema = $this->getSchema($structuredDataHelper, $images, $gallery, $individualPageImage);
+
+        $this->breadcrumbs = $breadcrumbs
+            ->forNetwork($gallery->getNetwork())
+            ->forEntityAncestry($gallery)
+            ->toArray();
 
         return $this->renderWithChrome('find_by_pid/gallery.html.twig', [
             'schema' => $schema,
