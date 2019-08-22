@@ -148,12 +148,12 @@ programme_smp_playlist:
 # legacy redirects
 programme_legacy_microsite:
     path: /programmes/{pid}/microsite
-    defaults: { _controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController::redirectAction, route: find_by_pid, permanent: true }
+    defaults: { _controller: App\Controller\RedirectAndCacheController::redirectAction, route: find_by_pid, permanent: true }
     requirements: { pid: '[0-9b-df-hj-np-tv-z]{8,15}' }
 
 programme_legacy_html:
     path: /programmes/{pid}.html
-    defaults: { _controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController::redirectAction, route: find_by_pid, permanent: true }
+    defaults: { _controller: App\Controller\RedirectAndCacheController::redirectAction, route: find_by_pid, permanent: true }
     requirements: { pid: '[0-9b-df-hj-np-tv-z]{8,15}' }
 
 # Schedules
