@@ -1,9 +1,10 @@
-{% macro related_programme_link_macro(programme, aria_related_text) %}
+{% macro related_topic_macro(programme, aria_related_text, ati_attrs) %}
     <a
         aria-label="{{ aria_related_text }}"
         class="block-link__link"
         href="{{ path('topic_show', {topic: programme.getRelatedByClasses()[0].getId()}) }}"
         data-linktrack="episode_suggested_relationship"
+        {{ ati_attrs|attrs }}
     >
         {{ programme.getRelatedByClasses()[0].getTitle() }}
     </a>
@@ -20,5 +21,5 @@
     {# function. Well, we need this because in some languages subjects, verbs and complement are ordered in a #}
     {# different way #}
 
-    {{ tr(programme_type ~ '_is_related_to', {'%1': macros.related_programme_link_macro(programme, aria_label)})|raw }}
+    {{ tr(programme_type ~ '_is_related_to', {'%1': macros.related_topic_macro(programme, aria_label, ati_publisher_attrs|default([]))})|raw }}
 </p>

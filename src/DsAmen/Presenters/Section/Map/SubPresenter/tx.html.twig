@@ -26,7 +26,8 @@
                     'is_lazy_loaded': false,
                     'sizes': tx.getImageSizes(),
                     'default_width': tx.getDefaultImageSize(),
-                }
+                },
+                'ATI_prefix': 'map:tx',
             }) -}}
         {%- else -%}
             {% include '@DsAmen/Presenters/Section/Map/SubPresenter/message.html.twig' with {heading:tr(tx.getTitleTranslationString()), message:tr('broadcasts_none_upcoming_short')} only %}

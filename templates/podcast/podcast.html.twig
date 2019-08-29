@@ -46,12 +46,16 @@
                 <div class="grid 1/3@bpw2 1/4@bpe map__column map__column--2 map__column--last">
                     <div class="map__inner br-box-secondary">
                         <nav class="island">
-                            <a href="{{ soundsSubscribeUrl }}" class="popup__button popup__button--subscribe br-linkinvert podcast--subscribe-link">
+                            <a
+                                {{ get_ati_attributes('subscribe_in_sounds')|attrs }}
+                                href="{{ soundsSubscribeUrl }}" class="popup__button popup__button--subscribe br-linkinvert podcast--subscribe-link">
                                 {{ gelicon('basics', 'external-link', 'podcast--subscribe-icon') }}
                                 {{ tr('subscribe_sounds') }}
                             </a>
                             <br />
-                            <a href="{{ url('podcast_download_rss', {'pid' : entity.getPid()}) }}" class="podcast--rss-link">RSS</a>
+                            <a
+                                {{ get_ati_attributes('subscribe_rss')|attrs }}
+                                href="{{ url('podcast_download_rss', {'pid' : entity.getPid()}) }}" class="podcast--rss-link">RSS</a>
                         </nav>
                     </div>
                 </div>
@@ -94,6 +98,7 @@
                                                 'body_suffix': ds2013('download', downloadableVersion.programmeItem, downloadableVersion, podcast, false, {
                                                     'classes': 'block-link__link programme__favourites centi',
                                                     'show_uk_only': false,
+                                                    'ATI_prefix': 'episode',
                                                 }),
                                             },
                                             title_options: {

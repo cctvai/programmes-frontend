@@ -36,7 +36,8 @@
             'sizes': presenter.getImageSizes(),
             'default_width': presenter.getDefaultImageSize(),
         },
-        'force_playout_linking': true
+        'force_playout_linking': true,
+        'ATI_prefix': 'map:ondemand',
     }) }}
 
     {%- if presenter.getProgrammeContainer().getAvailableEpisodesCount() > 0 and not presenter.showMiniMap() -%}

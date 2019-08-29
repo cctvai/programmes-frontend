@@ -13,6 +13,7 @@ use App\DsShared\Helpers\TitleLogicHelper;
 use BBC\ProgrammesPagesService\Domain\Entity\Brand;
 use BBC\ProgrammesPagesService\Domain\Entity\Clip;
 use BBC\ProgrammesPagesService\Domain\Entity\Episode;
+use BBC\ProgrammesPagesService\Domain\Entity\Programme;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
@@ -268,6 +269,26 @@ class ProgrammePresenterTest extends TestCase
             $programme
         );
         $this->assertFalse($programmePresenter->isContainer());
+    }
+
+    public function testDefaultATIPrefix()
+    {
+        $doAssert = function ($type, $expectedPrefix, $atiPrefixOption = null) {
+            $entity = $this->createConfiguredMock(Programme::class, ['getType' => $type]);
+            $opts = [];
+            if (!is_null($atiPrefixOption)) {
+                $opts['ATI_prefix'] = $atiPrefixOption;
+            }
+            $pres = new ProgrammePresenter($this->mockRouter, $this->mockHelperFactory, $entity, $opts);
+            $prefix = $pres->getOption('ATI_prefix');
+            $this->assertSame($expectedPrefix, $prefix);
+        };
+        // auto from entity->getType if no option is passed
+        $doAssert('', '');
+        $doAssert('clip', 'clip');
+        $doAssert('episode', 'episode');
+        // option overrides auto
+        $doAssert('episode', '', '');
     }
 
     private function buildMockProgrammeForDiv(

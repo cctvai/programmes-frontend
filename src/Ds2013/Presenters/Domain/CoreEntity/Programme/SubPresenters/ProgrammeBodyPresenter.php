@@ -30,6 +30,7 @@ class ProgrammeBodyPresenter extends ProgrammePresenterBase
         'show_child_availability' => false,
         'show_release_date' => false,
         'show_masterbrand' => false,
+        'ATI_prefix' => '',
     ];
 
     /** @var PlayTranslationsHelper */

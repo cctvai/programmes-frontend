@@ -34,13 +34,16 @@
                         {{- tr('related_topics') -}}
                     </h2>
                     {{ ds_amen('topicList', relatedTopics, programmeContainer, {
-                        'show_count': programmeContainer is null
+                        'show_count': programmeContainer is null,
+                        'ATI_prefix': 'related',
                     }) }}
                 </div>
             {% endif %}
             {% if programmeContainer is not null %}
                 <p class="island">
-                    <a href="{{ encoded_path('topic_show', { topic: topic.getId() }) }}">
+                    <a
+                        {{ get_ati_attributes('all_bbc')|attrs }}
+                        href="{{ encoded_path('topic_show', { topic: topic.getId() }) }}">
                         {{- tr('topic_in_all_programmes', { '%1': topic.getTitle() }) -}}
                     </a>
                 </p>

@@ -1,4 +1,7 @@
 {% extends "@DsAmen/Presenters/Domain/CoreEntity/Base/SubPresenter/base_cta.html.twig" %}
+{% block ati_attributes %}
+    {{ get_ati_attributes('cta_live', cta.getOption('ATI_prefix'))|attrs }}
+{% endblock %}
 {%- block extra_container_classes -%}
     cta--live
 {%- endblock -%}

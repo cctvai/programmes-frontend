@@ -71,6 +71,10 @@ class MapPresenter extends Presenter
 
     protected $translator;
 
+    protected $options = [
+        'ATI_prefix' => 'map',
+    ];
+
     /** @var CollapsedBroadcast|null */
     protected $upcomingBroadcast;
 
@@ -160,7 +164,10 @@ class MapPresenter extends Presenter
      */
     protected function constructLeftColumn(): void
     {
-        $leftColumnOptions = ['is_three_column' => $this->countTotalColumns() === 3];
+        $leftColumnOptions = [
+            'is_three_column' => $this->countTotalColumns() === 3,
+            'ATI_prefix' => $this->options['ATI_prefix'],
+        ];
         if ($this->priorityPromotion) {
             $this->leftColumn = new PromoPriorityPresenter(
                 $this->programme,

@@ -202,7 +202,8 @@
                                         <li>
                                             {{- ds2013('group', collection, {
                                                 'highlight_box_classes': 'highlight-box--list',
-                                                'title_options': { 'title_tag': 'h3' }
+                                                'title_options': { 'title_tag': 'h3' },
+                                                'ATI_prefix': 'featured-in:group'
                                             }) -}}
                                         </li>
                                     {% endfor %}
@@ -229,13 +230,15 @@
                                             'body_options': {
                                                 'body_suffix': render_twig_file(
                                                     'find_by_pid/partial/programme_presenter_suffix_link.html.twig', {
-                                                        'programme': programme
+                                                        'programme': programme,
+                                                        'ati_publisher_attrs': get_ati_attributes('of_topic', 'related')
                                                     }
                                                 ),
                                                 'show_synopsis': false,
                                                 'show_duration': false,
                                             },
                                             'container_classes': 'highlight-box--list br-keyline br-blocklink-page br-page-linkhover-onbg015--hover',
+                                            'ATI_prefix': 'related'
                                         }) }}</li>
                                 {% endfor %}
                             </ul>
@@ -277,6 +280,7 @@
                                                 },
                                             },
                                             'container_classes': 'programme programme--radio programme--brand block-link highlight-box--list br-keyline br-blocklink-page br-page-linkhover-onbg015--hover',
+                                            'ATI_prefix': 'podcast',
                                         }) }}
                                     </li>
                                 </ul>
@@ -303,7 +307,7 @@
                                             'img_sizes': { 0: 1/2, 768: 1/4, 1008: '240px'},
                                             'show_synopsis': false,
                                             'branding_context': 'page',
-                                            'title_options': { 'title_tag': 'h3' }
+                                            'title_options': { 'title_tag': 'h3' },
                                         }) }}
                                     </li>
                                 {% endfor %}

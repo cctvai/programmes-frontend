@@ -248,6 +248,27 @@ class ProgrammePresenterTest extends TestCase
         $this->assertTrue($ctaSubPresenter->getOption('show_duration'));
     }
 
+
+    public function testDefaultATIPrefix()
+    {
+        $doAssert = function ($type, $expectedPrefix, $atiPrefixOption = null) {
+            $entity = $this->createConfiguredMock(Programme::class, ['getType' => $type]);
+            $opts = [];
+            if (!is_null($atiPrefixOption)) {
+                $opts['ATI_prefix'] = $atiPrefixOption;
+            }
+            $pres = new ProgrammePresenter($entity, $this->mockRouter, $this->mockHelperFactory, $opts);
+            $prefix = $pres->getOption('ATI_prefix');
+            $this->assertSame($expectedPrefix, $prefix);
+        };
+        // auto from entity->getType if no option is passed
+        $doAssert('', '');
+        $doAssert('clip', 'clip');
+        $doAssert('episode', 'episode');
+        // option overrides auto
+        $doAssert('episode', '', '');
+    }
+
     public function episodesShowingImageProvider()
     {
         $givenRadioEpisode = EpisodeBuilder::anyRadioEpisode()->with(['isStreamable' => true, 'mediaType' => MediaTypeEnum::AUDIO])->build();
@@ -258,7 +279,7 @@ class ProgrammePresenterTest extends TestCase
             'GIVEN RADIO EPISODE' => [$givenRadioEpisode],
         ];
     }
-    
+
     private function createMockClip(bool $hasPlayableDestination = false)
     {
         $mockClip = $this->createMock(Clip::class);

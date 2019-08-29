@@ -15,6 +15,10 @@ use App\DsAmen\Presenters\Domain\CoreEntity\Shared\SubPresenter\ImagePresenter;
 
 class GroupPresenter extends BaseCoreEntityPresenter
 {
+    public $options = [
+        'ATI_prefix' => '',
+    ] + parent::DEFAULT_OPTIONS;
+
     public function getBodyPresenter(array $options = []): BaseBodyPresenter
     {
         $options = array_merge($this->subPresenterOptions('body_options'), $options);

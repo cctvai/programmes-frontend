@@ -24,6 +24,7 @@ class TopicListPresenter extends Presenter
         'list_tag' => 'ul',
         'show_count' => true,
         'show_letter_headings' => false,
+        'ATI_prefix' => '',
     ];
 
     public function __construct(

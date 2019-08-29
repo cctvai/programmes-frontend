@@ -51,6 +51,7 @@ class PromotionPresenter extends Presenter
         'media_panel_class' => '1/1',
         'branding_name' => 'subtle',
         'link_location_prefix' => 'promotionobject_',
+        'ATI_prefix' => 'promo',
     ];
 
     public function __construct(

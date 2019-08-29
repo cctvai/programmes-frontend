@@ -40,6 +40,7 @@ class CoreEntityTitlePresenter extends Presenter
         'link_location_track' => 'programmeobjectlink=title',
         'link_to' => null,
         'override_title' => null,
+        'ATI_prefix' => '',
     ];
 
     /** @var TitleLogicHelper */

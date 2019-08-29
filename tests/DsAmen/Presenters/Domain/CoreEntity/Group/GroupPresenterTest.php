@@ -56,4 +56,24 @@ class GroupPresenterTest extends TestCase
         $groupPresenter = new GroupPresenter($this->mockGroup, $this->mockRouter, $this->mockHelperFactory);
         $this->assertInstanceOf(TitlePresenter::class, $groupPresenter->getTitlePresenter());
     }
+
+    public function testDefaultATIPrefix()
+    {
+        $group = $this->createConfiguredMock(Group::class, ['getType' => 'group']);
+
+        $doAssert = function ($expectedPrefix, $atiPrefixOption = null) use ($group) {
+            $opts = [];
+            if (!is_null($atiPrefixOption)) {
+                $opts['ATI_prefix'] = $atiPrefixOption;
+            }
+            $pres = new GroupPresenter($group, $this->mockRouter, $this->mockHelperFactory, $opts);
+            $prefix = $pres->getOption('ATI_prefix');
+            $this->assertSame($expectedPrefix, $prefix);
+        };
+
+        // auto from group if no option is passed
+        $doAssert('group');
+        // option overrides auto
+        $doAssert('', '');
+    }
 }

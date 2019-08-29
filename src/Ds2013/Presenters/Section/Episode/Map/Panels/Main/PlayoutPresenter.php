@@ -36,9 +36,10 @@ class PlayoutPresenter extends Presenter
         UrlGeneratorInterface $router,
         Episode $episode,
         ?CollapsedBroadcast $upcoming,
-        ?CollapsedBroadcast $lastOn
+        ?CollapsedBroadcast $lastOn,
+        $options = []
     ) {
-        parent::__construct();
+        parent::__construct($options);
         $this->episode = $episode;
         $this->broadcast = $upcoming ?? $lastOn;
         $this->liveBroadcastHelper = $liveBroadcastHelper;

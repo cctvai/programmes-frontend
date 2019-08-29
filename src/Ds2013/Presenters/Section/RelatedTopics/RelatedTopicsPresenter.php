@@ -17,6 +17,10 @@ class RelatedTopicsPresenter extends Presenter
     /** @var array AdaClass[] */
     private $relatedTopics;
 
+    protected $options = [
+        'ATI_prefix' => 'related',
+    ];
+
     public function __construct(array $relatedTopics, Programme $context, array $options = [])
     {
         parent::__construct($options);

@@ -8,7 +8,8 @@
                 topic_list.getOption('list_tag'),
                 topics,
                 topic_list.getProgrammeContainer(),
-                topic_list.getOption('show_count')
+                topic_list.getOption('show_count'),
+                topic_list.getOption('ATI_prefix')
             ) }}
         </div>
     {% endfor %}
@@ -17,17 +18,23 @@
         topic_list.getOption('list_tag'),
         topic_list.getTopics(),
         topic_list.getProgrammeContainer(),
-        topic_list.getOption('show_count')
+        topic_list.getOption('show_count'),
+        topic_list.getOption('ATI_prefix')
     ) }}
 {% endif %}
 
-{% macro listSection(listTag, topics, programmeContainer, showCount) %}
+{% macro listSection(listTag, topics, programmeContainer, showCount, atiPrefix) %}
     <{{ listTag }} class="list-inline list-inline--spaced">
         {% for topic in topics %}
             <li>
-                <a class="link--button br-linkinvert" href="{{ programmeContainer is null ? encoded_path('topic_show', { topic: topic.getId() }) : encoded_path('programme_topic', { pid: programmeContainer.getPid(), topic: topic.getId() }) }}">
-                    {{- topic.getTitle() }}{% if showCount %} ({{ topic.getProgrammeItemCount() }}){% endif %}
-                </a>
+                <a
+                    {{ get_ati_attributes('topic', atiPrefix)|attrs }}
+                    class="link--button br-linkinvert"
+                    href="{{ programmeContainer is null ?
+                        encoded_path('topic_show', { topic: topic.getId() })
+                        :
+                        encoded_path('programme_topic', { pid: programmeContainer.getPid(), topic: topic.getId() }) }}"
+                >{{- topic.getTitle() }}{% if showCount %} ({{ topic.getProgrammeItemCount() }}){% endif %}</a>
             </li>
         {% endfor %}
     </{{ listTag }}>

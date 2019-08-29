@@ -3,7 +3,11 @@
     <ol class="related-topics br-keyline media__meta-row--separator">
         {%- for adaClass in related_topics.getAdaClasses() -%}
             {%- set url = path(adaClass.getProgrammeItemCountContext() ? 'programme_topic' : 'topic_show', {pid: adaClass.getProgrammeItemCountContext(), topic: adaClass.getId()}) -%}
-            <li><a class="br-linkinvert" href="{{ url }}" data-linktrack="brand_topic"><span class="related-topics__title">{{ adaClass.getTitle() }}</span> ({{ adaClass.getProgrammeItemCount()}})</a></li>
+            <li><a href="{{ url }}"
+                    class="br-linkinvert"
+                    data-linktrack="brand_topic"
+                    {{ get_ati_attributes('topic', related_topics.getOption('ATI_prefix'))|attrs }}
+                ><span class="related-topics__title">{{ adaClass.getTitle() }}</span> ({{ adaClass.getProgrammeItemCount()}})</a></li>
         {%- endfor -%}
     </ol>
 </div>

@@ -47,7 +47,9 @@
 
 {%- if broadcast_event.getOption('show_watch_from_start') and broadcast_event.getRewindUrl() -%}
     <p class="programme__live hidden visible@bpw">
-        <a class="link-complex--sub" href="{{ broadcast_event.rewindUrl() }}">
+        <a
+            {{ get_ati_attributes('cta_play_from_start', broadcast_event.getOption('ATI_prefix'))|attrs }}
+            class="link-complex--sub" href="{{ broadcast_event.rewindUrl() }}">
             {{ gelicon('basics', 'live-restart', 'gelicon gelicon--centi gelicon--leading') }}
             {{ tr('iplayer_watch_from_start') }}
        </a>

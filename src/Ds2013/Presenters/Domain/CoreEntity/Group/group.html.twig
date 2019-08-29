@@ -10,7 +10,7 @@
                 {'ratio': 16/9, 'is_bounded': true, }
             ) -}}
 
-            {{ ds2013('cta', group.getGroup()) }}
+            {{ ds2013('cta', group.getGroup(), { ATI_prefix: group.getOption('ATI_prefix') }) }}
         </div>
     {% endif %}
 

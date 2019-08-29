@@ -28,6 +28,7 @@ class ProgrammePresenter extends ProgrammePresenterBase
         'image_options' => [],
         'title_options' => [],
         'body_options' => [],
+        'ATI_prefix' => '',
     ];
 
     /**
@@ -39,6 +40,7 @@ class ProgrammePresenter extends ProgrammePresenterBase
         'branding_context',
         'context_programme',
         'truncation_length',
+        'ATI_prefix',
     ];
 
     /** @var \App\DsShared\Factory\HelperFactory */
@@ -50,6 +52,9 @@ class ProgrammePresenter extends ProgrammePresenterBase
         Programme $programme,
         array $options = []
     ) {
+        if (!array_key_exists('ATI_prefix', $options)) {
+            $options['ATI_prefix'] = $programme->getType();
+        }
         parent::__construct($router, $programme, $options);
         $this->options['outer_html_attributes']['data-pid'] = (string) $programme->getPid();
         $this->helperFactory = $helperFactory;

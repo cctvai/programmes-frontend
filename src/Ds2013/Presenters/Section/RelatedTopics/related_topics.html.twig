@@ -6,7 +6,12 @@
             {% else %}
                 {% set url = path('topic_show', {topic: relatedTopic.getId()}) %}
             {% endif %}
-            <a class="br-linkinvert" href="{{ url }}" data-linktrack="{{ related_topics.getLinkTrack() }}">
+            <a
+                {{ get_ati_attributes('topic', related_topics.getOption('ATI_prefix'))|attrs }}
+                class="br-linkinvert"
+                href="{{ url }}"
+                data-linktrack="{{ related_topics.getLinkTrack() }}"
+            >
                 {{ relatedTopic.getTitle() }}
                 {% if not related_topics.hideCount() %}
                     ({{ relatedTopic.getProgrammeItemCount() }})

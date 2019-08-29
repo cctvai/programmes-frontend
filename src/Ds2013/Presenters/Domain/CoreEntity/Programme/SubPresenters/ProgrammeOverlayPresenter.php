@@ -36,6 +36,7 @@ class ProgrammeOverlayPresenter extends ProgrammePresenterBase
             1280 => '432px',
         ],
         'show_unavailable' => false,
+        'ATI_prefix' => '',
     ];
 
     public function __construct(

@@ -42,6 +42,7 @@ abstract class BaseImagePresenter extends Presenter
         'badge_text' => '',
         'badge_class' => 'br-box-highlight',
         'cta_options' => [],
+        'ATI_prefix' => '',
     ];
 
     public function __construct(

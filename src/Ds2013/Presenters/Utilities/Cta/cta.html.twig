@@ -6,6 +6,7 @@
            class=""
            title="{{ cta.getAvailabilityInWords() }}"
            data-linktrack={{ cta.getOption('data_link_track') }}
+           {{ get_ati_attributes('cta', cta.getOption('ATI_prefix'))|attrs }}
            tabindex="-1"
         >
             {% block cta_icon %}

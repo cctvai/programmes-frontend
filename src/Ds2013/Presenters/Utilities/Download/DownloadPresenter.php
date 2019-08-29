@@ -27,6 +27,7 @@ class DownloadPresenter extends Presenter
 
     protected $options = [
         'show_uk_only' => true,
+        'ATI_prefix' => '',
     ];
 
     public function __construct(

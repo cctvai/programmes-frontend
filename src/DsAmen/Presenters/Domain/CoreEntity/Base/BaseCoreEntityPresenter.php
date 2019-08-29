@@ -29,7 +29,7 @@ abstract class BaseCoreEntityPresenter extends Presenter
     /** @var BaseCtaPresenter|null */
     protected $ctaPresenter;
 
-    protected $options = [
+    const DEFAULT_OPTIONS = [
         'branding_name' => 'subtle',
         'context_programme' => null,
         'media_variant' => 'media--column media--card',
@@ -43,20 +43,26 @@ abstract class BaseCoreEntityPresenter extends Presenter
         'cta_options' => [],
         'image_options' => [],
         'title_options' => [],
+        'ATI_prefix' => '',
     ];
+
+    const SHARED_OPTIONS = [
+        'context_programme',
+        'show_image',
+        'branding_name',
+        'force_playout_linking',
+        'link_location_prefix',
+        'ATI_prefix',
+    ];
+
+    protected $options = self::DEFAULT_OPTIONS;
 
     /**
      * Define the set of options that are needed by all sub-presenters too
      *
      * @var array
      */
-    protected $sharedOptions = [
-        'context_programme',
-        'show_image',
-        'branding_name',
-        'force_playout_linking',
-        'link_location_prefix',
-    ];
+    protected $sharedOptions = self::SHARED_OPTIONS;
 
     public function __construct(
         CoreEntity $coreEntity,
@@ -65,6 +71,9 @@ abstract class BaseCoreEntityPresenter extends Presenter
         array $options = []
     ) {
 
+        if (!array_key_exists('ATI_prefix', $options)) {
+            $options['ATI_prefix'] = $coreEntity->getType();
+        }
         parent::__construct($options);
         $this->router = $router;
         $this->helperFactory = $helperFactory;

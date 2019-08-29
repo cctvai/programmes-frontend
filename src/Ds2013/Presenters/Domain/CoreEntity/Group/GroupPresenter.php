@@ -26,6 +26,7 @@ class GroupPresenter extends Presenter
             'title_tag' => 'h4',
             'title_format' => 'item::ancestry',
         ],
+        'ATI_prefix' => '', // see constructor
     ];
 
     /** @var UrlGeneratorInterface */
@@ -48,6 +49,9 @@ class GroupPresenter extends Presenter
                 $this->options['title_options'],
                 $options['title_options']
             );
+        }
+        if (!array_key_exists('ATI_prefix', $options)) {
+            $options['ATI_prefix'] = $group->getType();
         }
         parent::__construct($options);
         $this->router = $router;
@@ -72,6 +76,7 @@ class GroupPresenter extends Presenter
             array_merge($this->options['title_options'], [
                 'link_location_track' => $this->getLinkTrack(),
                 'context_programme' => $this->options['context_programme'],
+                'ATI_prefix' => $this->options['ATI_prefix'],
             ])
         );
     }

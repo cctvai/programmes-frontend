@@ -19,6 +19,7 @@ abstract class BaseCtaPresenter extends Presenter
     protected $options = [
         'cta_class' => 'cta cta--dark',
         'link_location_prefix' => 'programmeobject_',
+        'ATI_prefix' => '',
     ];
 
     public function __construct(?CoreEntity $coreEntity, UrlGeneratorInterface $router, array $options = [])

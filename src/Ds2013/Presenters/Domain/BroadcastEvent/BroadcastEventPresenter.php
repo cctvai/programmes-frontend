@@ -37,6 +37,7 @@ class BroadcastEventPresenter extends Presenter
         'show_logo' => true,
         'show_watch_from_start' => false,
         'show_on_air_message' => true,
+        'ATI_prefix' => 'broadcast',
     ];
 
     public function __construct(

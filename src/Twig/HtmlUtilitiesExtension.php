@@ -4,6 +4,8 @@ namespace App\Twig;
 
 use Symfony\Component\Asset\Packages;
 use Twig\Extension\AbstractExtension;
+use Twig\Markup;
+use Twig\TwigFilter;
 use Twig\TwigFunction;
 use Twig\Environment;
 
@@ -32,6 +34,18 @@ class HtmlUtilitiesExtension extends AbstractExtension
             new TwigFunction('truncate', [$this, 'truncate']),
             new TwigFunction('render_twig_file', [$this, 'renderTwigFile']),
         ];
+    }
+
+    public function getFilters()
+    {
+        return [
+            new TwigFilter('attrs', [$this, 'attrs']),
+        ];
+    }
+
+    public function attrs(Array $attributes)
+    {
+        return new Markup($this->buildHtmlAttributes($attributes), 'UTF-8');
     }
 
     /**
