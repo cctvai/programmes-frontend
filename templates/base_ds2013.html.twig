@@ -112,7 +112,9 @@
             <div id="programmes-content" class="skip-to-content-destination" tabindex="-1">Main content</div>
             {% block body %}{% endblock %}
         </div>
-        {% if programme is defined and programme is not null %}{{ ds2013('footer', programme) }}{% endif %}
+        {% if programme is defined and programme is not null %}{{ ds2013('footer', programme, {
+            'with_recommendations': (not disable_footer_recommendations|default),
+        }) }}{% endif %}
         <script>
             require(['rv-bootstrap']);
         </script>

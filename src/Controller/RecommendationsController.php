@@ -15,6 +15,9 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class RecommendationsController extends BaseController
 {
+    protected const ITEMS_PAGE = 10;  // items on main page
+    protected const ITEMS_BOX = 2;    // items on includes
+
     public function __invoke(
         ProgrammesService $programmesService,
         string $pid,
@@ -27,32 +30,25 @@ class RecommendationsController extends BaseController
             throw new NotFoundHttpException(sprintf('The item with PID "%s" was not found', $pid));
         }
 
-        $this->setContextAndPreloadBranding($programme);
-
-        // Show 10 items when rendering the main page, show 2 on includes
-        $limit = ($extension === '' ? 10 : 2);
-
         $episode = $this->getEpisode($programme, $programmeAggregationService);
 
-        $promises = [
-            'recommendations' => new FulfilledPromise([]),
-        ];
-        if ($episode) {
-            $promises['recommendations'] = $recEngService->getRecommendations($episode, $limit);
-        }
+        $limit = $extension ? self::ITEMS_BOX : self::ITEMS_PAGE;
+        $recPromise = $episode ? $recEngService->getRecommendations($episode, $limit) : new FulfilledPromise([]);
 
-        if ($extension === '') {
-            // We haven't got around to rendering the main route yet,
-            // replace this with a call to $this->renderWithChrome later.
-            throw $this->createNotFoundException('No such page');
-        }
+        $viewData = function () use ($programme, $recPromise): array {
+            return (['programme' => $programme] + $this->resolvePromises(['recommendations' =>  $recPromise]));
+        };
 
-        return $this->renderWithoutChrome(
-            'recommendations/show' . $extension . '.html.twig',
-            array_merge($this->resolvePromises($promises), [
-                'programme' => $programme,
-            ])
-        );
+        if (!$extension) {
+            // recommendations page
+            $this->setAtiContentId((string) $programme->getPid(), 'pips');
+            $this->setAtiContentLabels('recommendations', 'recommendations');
+            $this->setContextAndPreloadBranding($programme);
+            return $this->renderWithChrome('recommendations/list.html.twig', $viewData());
+        } else {
+            // lazy-loaded partial in the page footer
+            return $this->renderWithoutChrome('recommendations/show' . $extension . '.html.twig', $viewData());
+        }
     }
 
     /**

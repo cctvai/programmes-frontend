@@ -63,10 +63,8 @@ class RecEngService
      * @param int $limit
      * @return PromiseInterface (returns Programme[] when unwrapped)
      */
-    public function getRecommendations(
-        Episode $episode,
-        int $limit = 2
-    ): PromiseInterface {
+    public function getRecommendations(Episode $episode, int $limit = 2): PromiseInterface
+    {
         $client = $this->makeClient($episode, $limit);
         return $client->makeCachedPromise();
     }
@@ -74,7 +72,7 @@ class RecEngService
     private function makeClient(Episode $programmeEpisode, int $limit): HttpApiMultiClient
     {
         $programmePid = $programmeEpisode->getPid();
-        $cacheKey = $this->clientFactory->keyHelper(__CLASS__, __FUNCTION__, (string) $programmePid);
+        $cacheKey = $this->clientFactory->keyHelper(__CLASS__, __FUNCTION__, (string) $programmePid, $limit);
         $recEngKey = $programmeEpisode->isVideo() ? $this->videoKey : $this->audioKey;
         $requestUrl = $this->baseUrl . '?key=' . $recEngKey . '&id=' . (string) $programmePid;
 

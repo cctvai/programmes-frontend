@@ -3,8 +3,8 @@
         <h2 class="visually-hidden">{{ tr('related_content') }}</h2>
         <div class="grid-wrapper grid-wrapper--flush">
             <div class="grid grid--flush 1/2@bpw 5/12@bpw2 5/12@bpe"><div class="b-g-p">
-                <!-- (Recommendations) You may also like -->
-                {%- if not footer.isWorldNews() -%}
+                {%- if footer.getOption('with_recommendations') -%}
+                    <!-- (Recommendations) You may also like -->
                     <div class="icon-box br-box-page lazy-module"
                         data-lazyload-inc="{{ path('programme_recommendations', {pid: footer.getPid(), extension: '.2013inc'}) }}"
                         data-lazyload-threshold="320"

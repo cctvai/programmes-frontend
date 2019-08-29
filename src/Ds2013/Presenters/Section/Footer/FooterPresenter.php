@@ -94,9 +94,4 @@ class FooterPresenter extends Presenter
     {
         return (string) $this->programme->getPid();
     }
-
-    public function isWorldNews(): bool
-    {
-        return ($this->getNid() === 'bbc_world_news');
-    }
 }
