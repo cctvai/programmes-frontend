@@ -1,0 +1,4 @@
+twig:
+#   base_template_class: App\Twig\DevTemplate
+   globals:
+#       debug_print_template_labels: true
