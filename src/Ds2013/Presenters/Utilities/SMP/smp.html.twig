@@ -45,7 +45,9 @@
 </div>
 
 {% macro renderPlayerAsLink(programme, smp) %}
-    <a class="playout__blocklink" data-linktrack="sounds_clippage_playcurrent_calltoaction" href="{{ path('playspace_play', {pid: programme.getPid()}) }}">
+    <a
+        {{ get_ati_attributes('cta')|attrs }}
+        class="playout__blocklink" data-linktrack="sounds_clippage_playcurrent_calltoaction" href="{{ path('playspace_play', {pid: programme.getPid()}) }}">
         {{ ds_shared(
             'imageEntity',
             programme.getImage(),
