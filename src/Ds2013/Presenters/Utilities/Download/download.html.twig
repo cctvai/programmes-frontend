@@ -4,7 +4,7 @@
         <div class="buttons__download">
             <a class="link-complex br-linkinvert buttons__download__link"
                data-clicktrack="podcast_download"
-               {{ get_ati_attributes('cta_download', ati_prefix)|attrs }}
+{#               Comment until reverb fix their stuff {{ get_ati_attributes('cta_download', ati_prefix)|attrs }}#}
                href="{{ download.getPodcastUrls()|first }}" download="{{ download.getPodcastFileName() }}"
             >
                 {{ gelicon('basics', 'download', 'gelicon--centi gelicon--leading') }}
@@ -35,7 +35,7 @@
                         {% for translationKey,url in download.getPodcastUrls() %}
                             <li>
                                 <a
-                                    {{ get_ati_attributes('cta_download', ati_prefix)|attrs }}
+{#   Comment until reverb fix their stuff {{ get_ati_attributes('cta_download', ati_prefix)|attrs }}#}
                                     class="link-complex popup__list__item island--squashed br-{{ download.getPositionType }}-bg-ontext br-{{ download.getPositionType }}-bg-onbg--hover br-{{ download.getPositionType }}-link-ontext--hover" href="{{ url }}"
                                    download="{{ download.getPodcastFileName() }}" aria-label="{{ tr('downloads', 1) }} {{ tr(translationKey)}} ">
                                     {{ tr(translationKey) }}
