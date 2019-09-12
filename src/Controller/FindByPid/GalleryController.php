@@ -23,7 +23,6 @@ class GalleryController extends BaseController
         StructuredDataHelper $structuredDataHelper,
         Breadcrumbs $breadcrumbs
     ) {
-        $this->setIstatsProgsPageType('galleries_show');
         $this->setAtiContentLabels('article-photo-gallery', 'gallery');
         $this->overridenDescription = $gallery->getSynopses()->getLongestSynopsis();
         $this->setContextAndPreloadBranding($gallery);

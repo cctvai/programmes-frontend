@@ -7,7 +7,7 @@
                     <li class="map-social__icon br-secondary-link-onbg015--hover">
                         <a
                             {{ get_ati_attributes('social-'~details.getType()|lower)|attrs  }}
-                            href="{{ details.getValue() }}" title="{{ details.getType()|capitalize }}" data-extlinktrack="socialbar_{{ details.getType() }}">
+                            href="{{ details.getValue() }}" title="{{ details.getType()|capitalize }}">
                             {{ gelicon('social', details.getType(), 'gelicon--programme') }}
                         </a>
                     </li>

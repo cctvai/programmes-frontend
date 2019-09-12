@@ -85,15 +85,14 @@
                                 {%- if network_link(footer.getNetwork()) -%}
                                     <li class="footer__service__navitem">
                                         <a href="{{ network_link(footer.getNetwork()) }}"
-                                            title="{{ tr('programme_homepage', { '%1': footer.getNetworkName() }) }}"
-                                            data-linktrack="global_footer_servicenav">
+                                            title="{{ tr('programme_homepage', { '%1': footer.getNetworkName() }) }}">
                                             {{ tr('home') }}
                                         </a>
                                     </li>
                                 {%- endif -%}
                                 {%- for links in footer.getNavigationLinks() -%}
                                     <li class="footer__service__navitem">
-                                        <a class="br-text" href="{{ links['url'] }}" data-linktrack="global_footer_servicenav">{{ links['title'] }}</a>
+                                        <a class="br-text" href="{{ links['url'] }}">{{ links['title'] }}</a>
                                     </li>
                                 {%- endfor -%}
                             </ul>

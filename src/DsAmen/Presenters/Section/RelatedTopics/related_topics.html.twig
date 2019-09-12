@@ -5,7 +5,6 @@
             {%- set url = path(adaClass.getProgrammeItemCountContext() ? 'programme_topic' : 'topic_show', {pid: adaClass.getProgrammeItemCountContext(), topic: adaClass.getId()}) -%}
             <li><a href="{{ url }}"
                     class="br-linkinvert"
-                    data-linktrack="brand_topic"
                     {{ get_ati_attributes('topic', related_topics.getOption('ATI_prefix'))|attrs }}
                 ><span class="related-topics__title">{{ adaClass.getTitle() }}</span> ({{ adaClass.getProgrammeItemCount()}})</a></li>
         {%- endfor -%}

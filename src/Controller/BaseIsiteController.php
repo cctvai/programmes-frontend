@@ -102,7 +102,7 @@ abstract class BaseIsiteController extends BaseController
 
         return new PaginatorPresenter($this->getPage(), self::MAX_LIST_DISPLAYED_ITEMS, $totalItems);
     }
-    
+
     protected function getParentProgramme($context)
     {
         if ($context instanceof Group) {
@@ -115,7 +115,6 @@ abstract class BaseIsiteController extends BaseController
     protected function initContextAndBranding(BaseIsiteObject $isiteObject, string $guid): void
     {
         $this->initContext($isiteObject);
-        $this->initIstatsLabels($isiteObject);
         $this->setAtiContentId($guid, 'isite2');
         $this->initBranding($isiteObject);
     }
@@ -142,13 +141,6 @@ abstract class BaseIsiteController extends BaseController
         $image = $isiteObject->getImage();
         if ($image) {
             $this->overridenImage = $image;
-        }
-    }
-
-    private function initIstatsLabels(BaseIsiteObject $isiteObject): void
-    {
-        if ($isiteObject->getBbcSite()) {
-            $this->setIstatsExtraLabels(['bbc_site' => $isiteObject->getBbcSite()]);
         }
     }
 

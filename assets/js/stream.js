@@ -1,4 +1,4 @@
-define(['jquery-1.9','rv-bootstrap', 'istats-1'], function ($, bootstrap, istats) {
+define(['jquery-1.9','rv-bootstrap'], function ($, bootstrap) {
 
     var Stream = function (container, options) {
         this.calc = {
@@ -63,7 +63,6 @@ define(['jquery-1.9','rv-bootstrap', 'istats-1'], function ($, bootstrap, istats
                 { scrollLeft : left},
                 function () {
                     _this.setButtons();
-                    istats.log('click','programmes_global_carousel');
                 }
             );
         },

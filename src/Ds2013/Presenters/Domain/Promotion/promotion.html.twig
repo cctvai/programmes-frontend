@@ -14,7 +14,6 @@
                 <span class="promotion__title">
                     <a href="{{ promotion.getUrl() }}"
                        class="promotion__link block-link__target br-blocklink__link"
-                       data-linktrack="{{ promotion.getOption('promo_link_track_title') }}"
                        {{ get_ati_attributes('title', promotion.getOption('ATI_prefix'))|attrs }}
                     >{{ promotion.getTitle() }}</a>
                 </span>

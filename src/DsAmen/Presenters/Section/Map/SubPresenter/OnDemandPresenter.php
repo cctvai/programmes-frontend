@@ -69,11 +69,6 @@ class OnDemandPresenter extends RightColumnPresenter
         }
     }
 
-    public function getAllLinkLocation(): string
-    {
-        return $this->programmeContainer->isRadio() ? 'map_ondemand_all' : 'map_iplayer_all';
-    }
-
     public function getClass(): string
     {
         return $this->class;

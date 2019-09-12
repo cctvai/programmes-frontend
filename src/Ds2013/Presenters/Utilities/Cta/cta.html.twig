@@ -3,9 +3,7 @@
 <div class="cta{{ cta.getOption('is_overlay') ? ' cta__overlay' : ' cta__standalone' }}">
     {% if cta.shouldIncludeLink() %}
         <a href="{{ cta.getUrl() }}"
-           class=""
            title="{{ cta.getAvailabilityInWords() }}"
-           data-linktrack={{ cta.getOption('data_link_track') }}
            {{ get_ati_attributes('cta', cta.getOption('ATI_prefix'))|attrs }}
            tabindex="-1"
         >

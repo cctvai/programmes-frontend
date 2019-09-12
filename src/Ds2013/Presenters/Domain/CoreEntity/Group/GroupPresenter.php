@@ -74,7 +74,6 @@ class GroupPresenter extends Presenter
             $this->group,
             $this->helperFactory->getStreamUrlHelper(),
             array_merge($this->options['title_options'], [
-                'link_location_track' => $this->getLinkTrack(),
                 'context_programme' => $this->options['context_programme'],
                 'ATI_prefix' => $this->options['ATI_prefix'],
             ])
@@ -102,16 +101,5 @@ class GroupPresenter extends Presenter
         }
 
         return $this->group->getShortSynopsis();
-    }
-
-    public function getLinkTrack(): string
-    {
-        if ($this->group instanceof Gallery) {
-            return 'component_galleries_carousel';
-        }
-        if ($this->group instanceof Collection) {
-            return 'component_collections';
-        }
-        return 'programmeobjectlink=title';
     }
 }

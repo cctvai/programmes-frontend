@@ -1,10 +1,9 @@
 define([
     'jquery',
     'lazyload',
-    'istats-tracking',
     'lazysizes',
     'details-polyfill'
-],function($, Lazyload, IstatsTracking, lazysizes, detailsPolyfill){
+],function($, Lazyload, lazysizes, detailsPolyfill){
     var picturefill = null;
     $(function() {
         // Lazy sizes (as of v4.0.2) breaks in IE11 without this hack
@@ -19,14 +18,6 @@ define([
 
         var responsiveLazyload = new Lazyload();
         responsiveLazyload.init();
-
-        var tracking = new IstatsTracking();
-        tracking.init();
-        $('body').on('lazyloadComplete', function(e, context) {
-            if (context && context.content) {
-                tracking.trackLinks(context.content);
-            }
-        });
 
         var fontFamily = "font-family: Helvetica, Arial, sans-serif",
             fontStyling = fontFamily + "; font-size: 32px; line-height: 1.5; color: #fff",

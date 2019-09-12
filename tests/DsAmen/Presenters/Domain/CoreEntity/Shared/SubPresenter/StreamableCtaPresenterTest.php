@@ -42,26 +42,6 @@ class StreamableCtaPresenterTest extends BaseSubPresenterTest
         ];
     }
 
-    /** @dataProvider getLinkLocationPrefixProvider */
-    public function testGetLinkLocationPrefix(bool $forcePlayoutLinking, bool $isIplayer, string $expected): void
-    {
-        $mockClip = $this->createMockClip();
-        $mockStreamableHelper = $this->createMock(StreamableHelper::class);
-        $mockStreamableHelper->expects($this->atLeastOnce())->method('shouldStreamViaIplayer')->willReturn($isIplayer);
-
-        $ctaPresenter = new StreamableCtaPresenter(
-            $mockStreamableHelper,
-            $mockClip,
-            $this->router,
-            [
-                'force_playout_linking' => $forcePlayoutLinking,
-                'link_location_prefix' => 'programmeobject_',
-            ]
-        );
-
-        $this->assertSame($expected, $ctaPresenter->getLinkLocation());
-    }
-
     public function getLinkLocationPrefixProvider(): array
     {
         return [

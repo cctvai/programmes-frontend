@@ -45,7 +45,6 @@ class ProgrammeTemplateTest extends BaseTemplateTestCase
         $this->assertSame('a', $detailsLink->nodeName());
         $this->assertHasClasses('box-link__target link--block br-subtle-text-ontext', $detailsLink, 'Details link classes');
         $this->assertSame('http://localhost/programmes/clp00001', $detailsLink->attr('href'));
-        $this->assertSame('programmeobject_epblock', $detailsLink->attr('data-linktrack'));
 
         $titleWrapper = $detailsLink->children();
         $this->assertSame(1, $titleWrapper->count());
@@ -94,7 +93,6 @@ class ProgrammeTemplateTest extends BaseTemplateTestCase
         $this->assertSame(1, $linkComplex->count());
         $this->assertSame('a', $linkComplex->nodeName());
         $this->assertHasClasses('link-complex', $linkComplex, 'Icon Link classes');
-        $this->assertSame('programmeobject_calltoaction', $linkComplex->attr('data-linktrack'));
         $this->assertSame('http://localhost/programmes/clp00001', $linkComplex->attr('href'));
         $this->assertNull($linkComplex->attr('aria-label'));
         $this->assertEquals("-1", $linkComplex->attr('tabindex'));
@@ -152,7 +150,6 @@ class ProgrammeTemplateTest extends BaseTemplateTestCase
         $this->assertSame('a', $detailsLink->nodeName());
         $this->assertHasClasses('box-link__target link--block br-subtle-text-ontext', $detailsLink, 'Details link classes');
         $this->assertSame('http://localhost/programmes/clp00001', $detailsLink->attr('href'));
-        $this->assertSame('programmeobject_epblock', $detailsLink->attr('data-linktrack'));
 
         $titleWrapper = $detailsLink->children();
         $this->assertSame(1, $titleWrapper->count());
@@ -178,7 +175,6 @@ class ProgrammeTemplateTest extends BaseTemplateTestCase
         $this->assertSame(1, $linkComplex->count());
         $this->assertSame('a', $linkComplex->nodeName());
         $this->assertHasClasses('link-complex', $linkComplex, 'Icon Link classes');
-        $this->assertSame('programmeobject_calltoaction', $linkComplex->attr('data-linktrack'));
         $this->assertSame('http://localhost/programmes/clp00001', $linkComplex->attr('href'));
         $this->assertNull($linkComplex->attr('aria-label'));
         $this->assertEquals("-1", $linkComplex->attr('tabindex'));

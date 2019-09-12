@@ -57,7 +57,6 @@ abstract class BaseProgrammeContainerController extends BaseController
             // "International" services are UTC, all others are Europe/London (the default)
             ApplicationTime::setLocalTimeZone('UTC');
         }
-        $this->setIstatsProgsPageType('programmes_container');
         $this->setContextAndPreloadBranding($programme);
         $this->setInternationalStatusAndTimezoneFromContext($programme);
         $this->setAtiContentId((string) $programme->getPid(), 'pips');
@@ -154,7 +153,6 @@ abstract class BaseProgrammeContainerController extends BaseController
             $shouldDisplayMiniMap
         );
 
-        $this->setIstatsLabelsForTlec($onDemandEpisode, $upcomingBroadcast, $lastOn);
 
         $schema = $this->getSchema($structuredDataHelper, $programme, $onDemandEpisode, $upcomingBroadcast, $clips);
 
@@ -258,68 +256,6 @@ abstract class BaseProgrammeContainerController extends BaseController
     private function isVotePriority(ProgrammeContainer $programme): bool
     {
         return $programme->getOption('brand_layout') === 'vote' && $programme->getOption('telescope_block') !== null;
-    }
-
-    private function setIstatsAvailabilityLabel(?ProgrammeItem $onDemandEpisode): void
-    {
-        if ($onDemandEpisode) {
-            $this->setIstatsExtraLabels(['availability' => 'true']);
-        } else {
-            $this->setIstatsExtraLabels(['availability' => 'false']);
-        }
-    }
-
-    private function setIstatsUpcomingLabel(?CollapsedBroadcast $upcomingBroadcast): void
-    {
-        if (empty($upcomingBroadcast)) {
-            $this->setIstatsExtraLabels(['upcoming' => 'false']);
-        } else {
-            $this->setIstatsExtraLabels(['upcoming' => 'true']);
-        }
-    }
-
-    private function setIstatsLiveEpisode(?CollapsedBroadcast $upcomingBroadcast): void
-    {
-        if (!empty($upcomingBroadcast) && $upcomingBroadcast->isOnAir()) {
-            $this->setIstatsExtraLabels(['live_episode' => 'true']);
-        } else {
-            $this->setIstatsExtraLabels(['live_episode' => 'false']);
-        }
-    }
-
-    private function setIstatsPastBroadcastLabel(?CollapsedBroadcast $lastOn) :void
-    {
-        $hasBroadcastInLast18Months = $lastOn ? $lastOn->getStartAt()->wasWithinLast('18 months') : false;
-        if ($hasBroadcastInLast18Months) {
-            $this->setIstatsExtraLabels(['past_broadcast' => 'true']);
-        } else {
-            $this->setIstatsExtraLabels(['past_broadcast' => 'false']);
-        }
-    }
-
-    private function setIstatsJustMissedLabel(?CollapsedBroadcast $lastOn): void
-    {
-        if (empty($lastOn)
-            || $lastOn->getProgrammeItem()->getStreamableFrom() === null
-            || $lastOn->getProgrammeItem()->hasPlayableDestination()
-        ) {
-            $this->setIstatsExtraLabels(['just_missed' => 'false']);
-        } elseif ($lastOn->getStartAt()->wasWithinLast('7 days')) {
-            // If the broadcast was within the last 7 days but still isn't streamable
-            $this->setIstatsExtraLabels(['just_missed' => 'true']);
-        }
-    }
-
-    private function setIstatsLabelsForTlec(
-        ?ProgrammeItem $onDemandEpisode,
-        ?CollapsedBroadcast $upcomingBroadcast,
-        ?CollapsedBroadcast $lastOn
-    ) {
-        $this->setIstatsAvailabilityLabel($onDemandEpisode);
-        $this->setIstatsUpcomingLabel($upcomingBroadcast);
-        $this->setIstatsLiveEpisode($upcomingBroadcast);
-        $this->setIstatsPastBroadcastLabel($lastOn);
-        $this->setIstatsJustMissedLabel($lastOn);
     }
 
     /**

@@ -37,8 +37,6 @@ abstract class BaseCtaPresenter extends Presenter
 
     abstract public function getUrl(): string;
 
-    abstract public function getLinkLocation(): string;
-
     public function getTemplateVariableName(): string
     {
         return 'cta';

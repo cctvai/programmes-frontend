@@ -101,7 +101,6 @@
                                     {{ ds2013('programme', programme.getProgramme(), {
                                         'title_options': {
                                             'title_format': 'item::ancestry',
-                                            'link_location_track': 'clip_suggested_item_' ~ loop.index,
                                             'title_tag': 'h3',
                                             'title_classes': 'delta'
                                         },
@@ -109,7 +108,6 @@
                                             'body_suffix': '<p class="programme__child-availability">'
                                                 ~ tr( programme.getProgramme().getType() ~ '_is_related_to', {'%1': '<a class="block-link__link" href="'
                                                 ~ path('topic_show', {topic: programme.getRelatedByClasses()[0].getId()})
-                                                ~'" data-linktrack="clip_suggested_relationship" '
                                                 ~ get_ati_attributes('of_topic', 'related')|attrs
                                                 ~'>'
                                                 ~ programme.getRelatedByClasses()[0].getTitle()
@@ -159,7 +157,6 @@
                                 'sizes': { 0: 1/2, 768: 1/4, 1008: '240px'},
                             },
                             'title_options': {
-                                'link_location_track': 'component_clips_carousel',
                                 'title_format': 'item::ancestry',
                                 'title_tag': 'h3',
                                 'title_classes': 'delta'
@@ -178,8 +175,7 @@
         {% if clips|length > 1 %}
             <div class="component__footer br-box-subtle">
                 <a class="component__footer__link"
-                   href="{{ path('programme_clips', { pid: programme.getPid() }) }}"
-                   data-linktrack="component_clips_summary_footer">
+                   href="{{ path('programme_clips', { pid: programme.getPid() }) }}">
                     {# @TODO is this the correct link_location? #}
                     <span class="component__footer__title">{{ tr('see_all_clips_from', {'%1': programme.getTitle()}) }}</span>
                     <span class="component__footer__detail">({{ programme.getAvailableClipsCount }})</span>

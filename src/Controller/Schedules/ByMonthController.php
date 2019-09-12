@@ -24,7 +24,6 @@ class ByMonthController extends SchedulesBaseController
             throw $this->createNotFoundException('Invalid date supplied');
         }
 
-        $this->setIstatsProgsPageType('schedules_month');
         $this->setAtiContentLabels('schedule', 'schedule-month');
         $this->setContextAndPreloadBranding($service);
         $this->setAtiContentId((string) $service->getPid(), 'pips');

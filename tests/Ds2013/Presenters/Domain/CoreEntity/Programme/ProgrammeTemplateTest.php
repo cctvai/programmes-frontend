@@ -48,7 +48,7 @@ class ProgrammeTemplateTest extends BaseTemplateTestCase
         $overlayLink = $overlayDiv->filterXPath('//a')->first();
         $this->assertEquals('https://localhost/iplayer/episode/p0000001', $overlayLink->attr('href'));
         $this->assertStringStartsWith('30 days left to watch', $overlayLink->attr('title'));
-        $this->assertEquals('programmeobjectlink=cta', $overlayLink->attr('data-linktrack'));
+
         // overlay link icon
         $iconContainer = $overlayLink->filter('.cta__icon');
         $this->assertCount(1, $iconContainer);
@@ -58,7 +58,6 @@ class ProgrammeTemplateTest extends BaseTemplateTestCase
         // Test main link target
         $targetLink = $crawler->filter('.block-link__target');
         $this->assertEquals('http://localhost/programmes/p0000001', $targetLink->attr('href'), 'Main block-link target URL');
-        $this->assertEquals('programmeobjectlink=title', $targetLink->attr('data-linktrack'), 'Main block link tracking');
 
         // Test titles
         $h4 = $crawler->filter('h4.programme__titles');
@@ -111,7 +110,7 @@ class ProgrammeTemplateTest extends BaseTemplateTestCase
         $overlayLink = $overlayDiv->filterXPath('//a')->first();
         $this->assertEquals('http://localhost/sounds/play/b0849ccf', $overlayLink->attr('href'));
         $this->assertStringStartsWith('Listen now', $overlayLink->attr('title'));
-        $this->assertEquals('programmeobjectlink=cta', $overlayLink->attr('data-linktrack'));
+
         // overlay link icon
         $iconContainer = $overlayLink->filter('.cta__icon');
         $this->assertCount(1, $iconContainer);
@@ -121,7 +120,6 @@ class ProgrammeTemplateTest extends BaseTemplateTestCase
         // Test main link target
         $targetLink = $crawler->filter('.block-link__target');
         $this->assertEquals('http://localhost/programmes/b0849ccf', $targetLink->attr('href'), 'Main block-link target URL');
-        $this->assertEquals('programmeobjectlink=title', $targetLink->attr('data-linktrack'), 'Main block link tracking');
 
         // Test titles
         $h4 = $crawler->filter('h4.programme__titles');
@@ -148,24 +146,6 @@ class ProgrammeTemplateTest extends BaseTemplateTestCase
             'Carlo Rovelli\'s account of scientific discovery examines what happened before the Big Bang',
             trim($synopsisP->filter('span')->eq(2)->text()),
             'Short synopsis is correct'
-        );
-    }
-
-    /**
-     * @group cta__data_link_track
-     * @dataProvider imageOptionsProvider
-     */
-    public function testDataLinkTrack(array $givenImageOptions, $expectedValueOnLinkTrack)
-    {
-        $programme = EpisodeBuilder::anyWithPlayableDestination()->build();
-
-        $crawler = $this->presenterCrawler(
-            self::$ds2013PresenterFactory->programmePresenter($programme, $givenImageOptions)
-        );
-
-        $this->assertEquals(
-            $expectedValueOnLinkTrack,
-            $crawler->filter('.cta__standalone a')->attr('data-linktrack')
         );
     }
 

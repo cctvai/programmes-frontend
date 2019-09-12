@@ -46,7 +46,6 @@ class HomeController extends BaseController
         NetworksService $networksService,
         Breadcrumbs $breadcrumbs
     ) {
-        $this->setIstatsProgsPageType('home_index');
         $this->setAtiContentLabels('index-home', 'programmes-index');
         $programmeCount = $this->countProgrammesAndGroups($em, $cache);
         $this->setAtiContentId('', 'pips');

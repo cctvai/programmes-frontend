@@ -3,12 +3,12 @@
 {% if segments_list.getSegmentEvents() %}
     <link rel="stylesheet" href="{{ asset('css/snippet/snippets.css') }}" />
     <script>
-        require(["snippets", "bump-3", "istats-1"], function(snippets, bump, istats) {
+        require(["snippets", "bump-3"], function(snippets, bump) {
             snippets.init({
                 base_url: '/programmes/snippet',
                 context: "programmes",
                 theme: "music-track"
-            }, bump, istats);
+            }, bump);
         });
     </script>
     <div class="component component--box component--box-flushbody-vertical component--box--primary" id="segments">

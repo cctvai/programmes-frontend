@@ -26,11 +26,6 @@ class ExternalLinkCtaPresenter extends BaseCtaPresenter
         return 'external-link';
     }
 
-    public function getLinkLocation(): string
-    {
-        return '';
-    }
-
     public function getUrl(): string
     {
         return $this->url;

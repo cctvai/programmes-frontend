@@ -54,22 +54,6 @@ class OnDemandPresenterTest extends TestCase
      * @dataProvider trueFalseDataProvider
      * @param bool $isRadio
      */
-    public function testDataLinktrackString(bool $isRadio)
-    {
-        $episode = $this->createEpisode();
-        $programme = $this->createProgramme($isRadio);
-        $odPresenter = $this->createOnDemandPresenter($programme, $episode, false, null);
-        if ($isRadio) {
-            $this->assertEquals('map_ondemand_all', $odPresenter->getAllLinkLocation());
-        } else {
-            $this->assertEquals('map_iplayer_all', $odPresenter->getAllLinkLocation());
-        }
-    }
-
-    /**
-     * @dataProvider trueFalseDataProvider
-     * @param bool $isRadio
-     */
     public function testNoStreamablePendingOrUpcomingEpisodes(bool $isRadio)
     {
         $programme = $this->createProgramme($isRadio);

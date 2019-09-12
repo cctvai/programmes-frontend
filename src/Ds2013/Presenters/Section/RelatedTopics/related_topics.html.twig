@@ -7,10 +7,9 @@
                 {% set url = path('topic_show', {topic: relatedTopic.getId()}) %}
             {% endif %}
             <a
-                {{ get_ati_attributes('topic', related_topics.getOption('ATI_prefix'))|attrs }}
-                class="br-linkinvert"
                 href="{{ url }}"
-                data-linktrack="{{ related_topics.getLinkTrack() }}"
+                class="br-linkinvert"
+                {{ get_ati_attributes('topic', related_topics.getOption('ATI_prefix'))|attrs }}
             >
                 {{ relatedTopic.getTitle() }}
                 {% if not related_topics.hideCount() %}

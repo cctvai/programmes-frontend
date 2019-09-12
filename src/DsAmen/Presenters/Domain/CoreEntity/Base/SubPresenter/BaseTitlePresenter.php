@@ -72,14 +72,6 @@ abstract class BaseTitlePresenter extends Presenter
         return 'br-' . $this->getOption('branding_name') . '-text-ontext';
     }
 
-    public function getLinkLocationPrefix(): string
-    {
-        if ($this->coreEntity->isTv() && $this->getOption('force_playout_linking')) {
-            return 'map_iplayer_';
-        }
-        return $this->getOption('link_location_prefix');
-    }
-
     public function getMainTitle(): string
     {
         if (!isset($this->mainTitleProgramme)) {

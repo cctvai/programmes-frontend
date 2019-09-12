@@ -24,7 +24,6 @@ class PlayerController extends BaseProgrammeEpisodesController
     ) {
         $this->setContextAndPreloadBranding($programme);
         $this->setInternationalStatusAndTimezoneFromContext($programme);
-        $this->setIstatsProgsPageType('episodes_player');
         $this->setAtiContentLabels('list-tleo', 'guide-available');
         $this->setAtiContentId((string) $programme->getPid(), 'pips');
 
@@ -50,13 +49,6 @@ class PlayerController extends BaseProgrammeEpisodesController
         if ($availableEpisodesCount > $limit) {
             $paginator = new PaginatorPresenter($page, $limit, $availableEpisodesCount);
         }
-
-        $this->setIstatsExtraLabels(
-            [
-                'has_available_items' => $availableEpisodesCount > 0 ? 'true' : 'false',
-                'total_available_episodes' => (string) $availableEpisodesCount,
-            ]
-        );
 
         $subNavPresenter = $this->getSubNavPresenter($collapsedBroadcastService, $programme, $presenterFactory);
         $schema = $this->getSchema($structuredDataHelper, $programme, $availableEpisodes);

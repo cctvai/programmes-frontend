@@ -31,7 +31,6 @@ class ByYearController extends SchedulesBaseController
             throw $this->createNotFoundException('Invalid date supplied');
         }
 
-        $this->setIstatsProgsPageType('schedules_year');
         $this->setAtiContentLabels('schedule', 'schedule-year');
         $this->setContextAndPreloadBranding($service);
         $this->setAtiContentId((string) $service->getPid(), 'pips');

@@ -1,4 +1,4 @@
-define(['playlister/snippets/main', 'bump-3', 'istats-1'], function(main, bump, istats) {
+define(['playlister/snippets/main', 'bump-3'], function(main, bump) {
 
     return {
 
@@ -8,7 +8,9 @@ define(['playlister/snippets/main', 'bump-3', 'istats-1'], function(main, bump, 
          * @returns {snippets}
          */
         init: function(opts) {
-            main.init(opts, bump, istats);
+            opts = opts || {};
+            opts.istats_enabled = false;
+            main.init(opts, bump);
             return this;
         },
 

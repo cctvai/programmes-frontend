@@ -34,7 +34,6 @@ class SegmentController extends BaseController
 
         $segmentOwner = $this->getSegmentOwner($programmes, $coreEntitiesService);
 
-        $this->setIstatsProgsPageType('programmes_segment');
         $this->setContextAndPreloadBranding($segmentOwner);
         if ($segmentOwner) {
             $this->setInternationalStatusAndTimezoneFromContext($segmentOwner);

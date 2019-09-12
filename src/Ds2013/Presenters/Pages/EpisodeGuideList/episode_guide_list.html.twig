@@ -14,7 +14,7 @@
 
                     {#Title of this season#}
                     <a resource="{{ path('find_by_pid', {'pid': programme.getPid()}) }}"
-                       class="js-serieslink istats-seriesopen block-link__target--conditional link-complex"
+                       class="js-serieslink block-link__target--conditional link-complex"
                        href="{{ path('programme_episodes_guide', {'pid': programme.getPid()}) }}"
                        aria-expanded="false"
                        aria-controls="series-{{ programme.getPid() }}"
@@ -32,7 +32,7 @@
                             {#EPISODES/NESTED SERIES LIST (lazy content)#}
                         </div>
                         <p class="no-margin text--right delta">
-                            <a class="istats-serieshome" href="{{ path('find_by_pid', {'pid': programme.getPid()}) }}">{{ programme.getTitle() }} homepage</a>
+                            <a href="{{ path('find_by_pid', {'pid': programme.getPid()}) }}">{{ programme.getTitle() }} homepage</a>
                         </p>
                     </div>
                 </div>

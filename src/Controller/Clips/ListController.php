@@ -13,7 +13,6 @@ use BBC\ProgrammesPagesService\Service\AbstractService;
 
 class ListController extends BaseController
 {
-    private const ISTATS_PAGE_ID = 'programme_clips';
     private const DISPLAYED_ITEMS_LIMIT = 24;
     private const PARAMS_PROGRAMME_KEY = 'programme';
     private const PARAMS_SERIES_KEY = 'series';
@@ -28,7 +27,6 @@ class ListController extends BaseController
         ProgrammesService $programmesService,
         Breadcrumbs $breadcrumbs
     ) {
-        $this->setIstatsProgsPageType(self::ISTATS_PAGE_ID);
         $this->setAtiContentLabels('list-clip', 'list-clip');
         $this->overridenDescription = 'Clips from ' . $programme->getTitle();
         $this->setContextAndPreloadBranding($programme);

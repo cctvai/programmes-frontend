@@ -72,7 +72,6 @@ use App\ExternalApi\Isite\Domain\Profile;
 use App\ExternalApi\Recipes\Domain\Recipe;
 use App\ValueObject\AnalyticsCounterName;
 use App\ValueObject\CosmosInfo;
-use App\ValueObject\IstatsAnalyticsLabels;
 use BBC\ProgrammesPagesService\Domain\Entity\Broadcast;
 use BBC\ProgrammesPagesService\Domain\Entity\Category;
 use BBC\ProgrammesPagesService\Domain\Entity\Clip;
@@ -135,9 +134,6 @@ class PresenterFactory
 
     /** @var AnalyticsCounterName */
     private $analyticsCounterName;
-
-    /** @var IstatsAnalyticsLabels */
-    private $istatsAnalyticsLabels;
 
     public function __construct(
         SharedPresenterFactory $presenterFactory,
@@ -392,7 +388,6 @@ class PresenterFactory
             $streamableVersion,
             $segmentEvents,
             $this->analyticsCounterName ? (string) $this->analyticsCounterName : null,
-            $this->istatsAnalyticsLabels ? $this->istatsAnalyticsLabels->getLabels() : null,
             $this->helperFactory->getSmpPlaylistHelper(),
             $this->router,
             $this->cosmosInfo,
@@ -623,10 +618,5 @@ class PresenterFactory
     public function setAnalyticsCounterName(AnalyticsCounterName $analyticsCounterName): void
     {
         $this->analyticsCounterName = $analyticsCounterName;
-    }
-
-    public function setIstatsAnalyticsLabels(IstatsAnalyticsLabels $istatsAnalyticsLabels): void
-    {
-        $this->istatsAnalyticsLabels = $istatsAnalyticsLabels;
     }
 }

@@ -27,7 +27,6 @@ class ShowController extends BaseIsiteController
         StructuredDataHelper $structuredDataHelper,
         Breadcrumbs $breadcrumbs
     ) {
-        $this->setIstatsProgsPageType('article_show');
         $this->setAtiContentLabels('article-show-related', 'article');
 
         $this->key = $key;

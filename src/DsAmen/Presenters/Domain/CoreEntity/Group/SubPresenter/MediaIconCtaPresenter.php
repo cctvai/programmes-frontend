@@ -42,9 +42,4 @@ class MediaIconCtaPresenter extends BaseCtaPresenter
             UrlGeneratorInterface::ABSOLUTE_URL
         );
     }
-
-    public function getLinkLocation(): string
-    {
-        return $this->getOption('link_location_prefix') . 'calltoaction';
-    }
 }

@@ -19,7 +19,6 @@ class IndexController extends BaseController
         ArticleService $isiteService,
         Breadcrumbs $breadcrumbs
     ) {
-        $this->setIstatsProgsPageType('article_listpid');
         $this->setAtiContentLabels('list-datadriven', 'list-articles');
         $this->setContextAndPreloadBranding($coreEntity);
         $this->setAtiContentId((string) $coreEntity->getPid(), 'pips');

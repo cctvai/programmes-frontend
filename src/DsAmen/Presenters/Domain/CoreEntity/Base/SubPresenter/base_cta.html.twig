@@ -3,7 +3,7 @@
         {% block ati_attributes %}
         {{ get_ati_attributes('cta', cta.getOption('ATI_prefix'))|attrs }}
         {% endblock %}
-        class="link-complex" href="{{ cta.getUrl() }}" data-linktrack="{{ cta.getLinkLocation() }}"
+        class="link-complex" href="{{ cta.getUrl() }}"
        {%- if cta.getLabelTranslation() -%}aria-label="{{ tr(cta.getLabelTranslation()) }}" {%- else -%} tabindex="-1" aria-hidden="true" {%- endif -%}
     >
         <div class="icon icon-cta icon--{{ cta.getMediaIconName() }}">

@@ -18,7 +18,6 @@ class IndexController extends BaseController
         ProfileService $isiteService,
         Breadcrumbs $breadcrumbs
     ) {
-        $this->setIstatsProgsPageType('profiles_list');
         $this->setAtiContentLabels('list-profiles', 'list-profiles');
         $this->setContextAndPreloadBranding($coreEntity);
         $this->setAtiContentId((string) $coreEntity->getPid(), 'pips');

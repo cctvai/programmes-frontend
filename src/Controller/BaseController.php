@@ -12,7 +12,6 @@ use App\ValueObject\AnalyticsCounterName;
 use App\ValueObject\AtiAnalyticsLabels;
 use App\ValueObject\Breadcrumb;
 use App\ValueObject\CosmosInfo;
-use App\ValueObject\IstatsAnalyticsLabels;
 use App\ValueObject\MetaContext;
 use BBC\BrandingClient\Branding;
 use BBC\BrandingClient\BrandingClient;
@@ -54,13 +53,9 @@ abstract class BaseController extends AbstractController
 
     private $response;
 
-    private $istatsExtraLabels = [];
-
     private $atistatsExtraLabels = [];
 
     private $atiContentId = "urn:bbc:pips";
-
-    private $istatsProgsPageType;
 
     /** @var string */
     private $atiContentType;
@@ -243,9 +238,7 @@ abstract class BaseController extends AbstractController
         $this->preRender();
         $cosmosInfo = $this->container->get(CosmosInfo::class);
 
-        // Didn't iStats die? Why is this still here?
-        // Without this bit, the SMP Stats won't work, until we are happy that we should remove iStats completely
-        // then we can get rid of this.
+        // SMP still need this for monitoring and analytics
         $this->createAnalyticsCounterNameFromContext();
 
         $atiAnalyticsLabelsValues = new AtiAnalyticsLabels(
@@ -315,13 +308,6 @@ abstract class BaseController extends AbstractController
         return $analyticsCounterName;
     }
 
-    protected function createIstatsAnalyticsLabelsFromContext(): IstatsAnalyticsLabels
-    {
-        $cosmosInfo = $this->container->get(CosmosInfo::class);
-        $istatsAnalyticsLabels = new IstatsAnalyticsLabels($this->context, $this->istatsProgsPageType, $cosmosInfo->getAppVersion(), $this->istatsExtraLabels);
-        $this->container->get(PresenterFactory::class)->setIstatsAnalyticsLabels($istatsAnalyticsLabels);
-        return $istatsAnalyticsLabels;
-    }
 
     /**
      * Returns a RedirectResponse to the given URL.
@@ -360,14 +346,6 @@ abstract class BaseController extends AbstractController
         return $this->cachedRedirect($this->generateUrl($route, $parameters), $status, $lifetime);
     }
 
-    /**
-     * @param mixed[] $labels associative array. example: ['schedule_offset' => '-3', 'schedule_context' => 'past']
-     */
-    protected function setIstatsExtraLabels(array $labels): void
-    {
-        $this->istatsExtraLabels = array_replace($this->istatsExtraLabels, $labels);
-    }
-
     protected function addAtiStatsExtraLabels(array $labels): void
     {
         $this->atistatsExtraLabels = array_replace($this->atistatsExtraLabels, $labels);
@@ -379,11 +357,6 @@ abstract class BaseController extends AbstractController
             $identifier = ':' . $identifier;
         }
         $this->atiContentId = 'urn:bbc:' . $authority . $identifier;
-    }
-
-    protected function setIstatsProgsPageType(string $label): void
-    {
-        $this->istatsProgsPageType = $label;
     }
 
     protected function setAtiContentLabels(string $type, string $chapter): void
@@ -407,9 +380,6 @@ abstract class BaseController extends AbstractController
         if (!$this->branding) {
             $this->branding = $this->getBrandingPromise()->wait(true);
         }
-
-        // use controller name if this isn't set
-        $this->istatsProgsPageType =  $this->istatsProgsPageType ?? $this->request()->attributes->get('_controller');
     }
 
     private function getBrandingPromise(): PromiseInterface

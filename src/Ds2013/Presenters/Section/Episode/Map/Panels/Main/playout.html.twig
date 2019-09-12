@@ -7,8 +7,10 @@
         {% else %}
             {% if playout.isAvailableForStreaming() %}
                 <a
+                    href="{{ playout.getUrl() }}"
+                    class="playout__blocklink"
                     {{ get_ati_attributes('cta')|attrs }}
-                    class="playout__blocklink" data-linktrack="iplayer_episodepage_playcurrent_calltoaction" href="{{ playout.getUrl() }}">
+                    >
                     {{ self.image(playout) }}
                     <div class="playout__overlay">
                         <div class="{{ playout.getMessageClasses() }}">

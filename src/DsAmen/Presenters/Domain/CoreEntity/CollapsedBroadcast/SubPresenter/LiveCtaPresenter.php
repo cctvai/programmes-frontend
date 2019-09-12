@@ -48,15 +48,6 @@ class LiveCtaPresenter extends BaseCtaPresenter
         return 'iplayer_watch_live';
     }
 
-    public function getLinkLocation(): string
-    {
-        $linkLocation = $this->getOption('link_location_prefix') . 'calltoaction';
-        if ($this->getOption('link_to_start')) {
-            $linkLocation .= '_start';
-        }
-        return $linkLocation;
-    }
-
     public function getMediaIconName(): string
     {
         if ($this->getOption('link_to_start')) {

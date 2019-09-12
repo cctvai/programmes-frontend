@@ -26,7 +26,6 @@ class ShowController extends BaseIsiteController
         StructuredDataHelper $structuredDataHelper,
         Breadcrumbs $breadcrumbs
     ) {
-        $this->setIstatsProgsPageType('profiles_index');
         $this->setAtiContentLabels('profile', 'profile');
 
         $this->key = $key;

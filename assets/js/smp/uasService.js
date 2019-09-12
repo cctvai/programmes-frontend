@@ -1,4 +1,4 @@
-define(['jquery-1.9', 'istats-1', 'idcta/idcta-1', 'uasclient'],function ($, istats, idcta, UasClient) {
+define(['jquery-1.9', 'idcta/idcta-1', 'uasclient'],function ($, idcta, UasClient) {
     /**
      * Constructor the the UAS module
      * @constructor
@@ -27,11 +27,6 @@ define(['jquery-1.9', 'istats-1', 'idcta/idcta-1', 'uasclient'],function ($, ist
                 self.active = true;
                 self.client = UasClient;
                 self.client.init(self.options);
-
-                istats.isReady(function() {
-                    self.recommendationData = getRecommendationDataFromIstats();
-                    notifyLoadedPage();
-                });
             }
         };
 
@@ -92,24 +87,6 @@ define(['jquery-1.9', 'istats-1', 'idcta/idcta-1', 'uasclient'],function ($, ist
 
         var self = this;
 
-        var notifyLoadedPage = function() {
-            if (self.options.resourceDomain == 'radio' && self.recommendationData) {
-                var uasData = {
-                    activityType    : 'reads',
-                    resourceDomain  : self.options.resourceDomain,
-                    resourceType    : self.options.resourceType,
-                    resourceId      : 'urn:bbc:pips::pid:' + self.options.pid,
-                    action          : 'read'
-                };
-
-                if (self.recommendationData) {
-                    uasData.metaData = JSON.stringify(self.recommendationData);
-                }
-
-                sendToUas(formatData(uasData));
-            }
-        };
-
         var formatData = function(eventData) {
             var uasData = {
                 activityType    : 'plays',
@@ -164,30 +141,6 @@ define(['jquery-1.9', 'istats-1', 'idcta/idcta-1', 'uasclient'],function ($, ist
                 }
             }
             return false;
-        };
-
-        /**
-         * Interrogate the iStats API to determine whether the user
-         * has landed on this page via a recommendation. If so,
-         * add that data to the UAS request.
-         */
-        var getRecommendationDataFromIstats = function() {
-            var labelsSent = istats.labelsSent();
-            if (!labelsSent) {
-                return null;
-            }
-
-            for (var i = 0; i < labelsSent.length; i++) {
-                var label = labelsSent[i];
-                if (((typeof label === 'object') && label && label.prev_rec_set && label.prev_rec_source)) {
-                    return {
-                        recommendationSet: label.prev_rec_set,
-                        engineId: label.prev_rec_source
-                    };
-                }
-            }
-
-            return null;
         };
 
         /**

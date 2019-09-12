@@ -46,7 +46,6 @@
                                         <li>{{ ds2013('promotion', promo, {
                                                 'title_tag': 'h2',
                                                 'highlight_box_classes': 'promotion--inset@bpw highlight-box--list',
-                                                'promo_link_track_title' : 'promo_title_position' ~ loop.index,
                                                 'img_classes': '1/4 1/4@bpb1 1/3@bpb2 1/2@bpw',
                                                 'img_default_width': 272,
                                                 'img_sizes': {0: 0, 320: 1/4, 480: 1/3, 600: 1/3, 770: 1/4, 1008: '272px'},
@@ -103,7 +102,6 @@
                                                     'sizes': { 0: 1/2, 768: 1/4, 1008: '240px'},
                                                 },
                                                 'title_options': {
-                                                    'link_location_track': 'component_clips_carousel',
                                                     'title_tag': 'h3'
                                                 },
                                                 'body_options': {
@@ -119,8 +117,7 @@
                             {% if programme.getAvailableClipsCount() > 1 %}
                                 <div class="component__footer br-box-subtle">
                                     <a class="component__footer__link"
-                                       href="{{ path('programme_clips', { pid: programme.getPid() }) }}"
-                                       data-linktrack="component_clips_summary_footer">
+                                       href="{{ path('programme_clips', { pid: programme.getPid() }) }}">
                                         <span class="component__footer__title">{{ tr('see_all_clips_from', {'%1': programme.getTitle()}) }}</span>
                                         <span class="component__footer__detail">({{ programme.getAvailableClipsCount() }})</span>
                                     </a>
@@ -226,7 +223,10 @@
 
                                 {% for programme in relatedProgrammes %}
                                     <li>{{ ds2013('programme', programme.getProgramme(), {
-                                            'title_options': {'title_tag': 'h3', 'title_format': 'item::ancestry', 'link_location_track': 'episode_suggested_item_' ~ loop.index },
+                                            'title_options': {
+                                                'title_tag': 'h3',
+                                                'title_format': 'item::ancestry'
+                                            },
                                             'body_options': {
                                                 'body_suffix': render_twig_file(
                                                     'find_by_pid/partial/programme_presenter_suffix_link.html.twig', {

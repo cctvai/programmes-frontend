@@ -49,7 +49,6 @@ class ByWeekController extends SchedulesBaseController
             throw $this->createNotFoundException('Invalid date supplied');
         }
 
-        $this->setIstatsProgsPageType('schedules_week');
         $this->setAtiContentLabels('schedule', 'schedule-week');
         $this->setContextAndPreloadBranding($service);
         $this->setInternationalStatusAndTimezoneFromContext($service);

@@ -44,16 +44,6 @@ class StreamableCtaPresenter extends BaseCtaPresenter
         return 'audio-visual';
     }
 
-    public function getLinkLocation(): string
-    {
-        if ($this->streamableHelper->shouldStreamViaIplayer($this->coreEntity) && $this->getOption('force_playout_linking')) {
-            return 'map_iplayer_calltoaction';
-        }
-
-        return $this->getOption('link_location_prefix') . 'calltoaction';
-    }
-
-
     public function getLabelTranslation(): string
     {
         return '';

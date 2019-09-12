@@ -126,12 +126,10 @@ define(['jquery-1.9', 'smp/smpStatePersistance', 'bump-3'], function ($, SmpStat
 
         var setStatsFromRecommendations = function() {
             if (self.options.recBump) {
-                var recStats = self.options.recBump.getRecommendationStats();
                 self.options.smpSettings.statsObject.sessionLabels = $.extend(
                     true,
                     {},
-                    self.options.smpSettings.statsObject.sessionLabels,
-                    recStats
+                    self.options.smpSettings.statsObject.sessionLabels
                 );
             }
         };

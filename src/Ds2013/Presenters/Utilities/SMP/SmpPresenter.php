@@ -17,6 +17,8 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class SmpPresenter extends Presenter
 {
+    const SMP_APP_NAME = 'programmes';
+
     private static $smpInstanceCounter = 0;
 
     protected $options = [
@@ -46,9 +48,6 @@ class SmpPresenter extends Presenter
     /** @var string */
     private $analyticsCounterName;
 
-    /** @var array */
-    private $analyticsLabels;
-
     /** @var UrlGeneratorInterface */
     private $router;
 
@@ -74,7 +73,6 @@ class SmpPresenter extends Presenter
         ?Version $streamableVersion,
         array $segmentEvents,
         ?string $analyticsCounterName,
-        ?array $analyticsLabels,
         SmpPlaylistHelper $smpPlaylistHelper,
         UrlGeneratorInterface $router,
         CosmosInfo $cosmosInfo,
@@ -89,7 +87,6 @@ class SmpPresenter extends Presenter
         $this->segmentEvents = $segmentEvents;
         $this->smpPlaylistHelper = $smpPlaylistHelper;
         $this->analyticsCounterName = $analyticsCounterName;
-        $this->analyticsLabels = $analyticsLabels;
         $this->router = $router;
         $this->cosmosInfo = $cosmosInfo;
         $this->streamableHelper = $streamableHelper;
@@ -164,7 +161,7 @@ class SmpPresenter extends Presenter
                 //Vulcan stats
                 'destination' => $this->destinationVariableHelper->getDestinationFromContext($this->programmeItem, $this->appEnvironment),
                 'brandPID' => $brand ? (string) $brand->getPid() : null,
-                'appName' => $this->analyticsLabels['app_name'],
+                'appName' => self::SMP_APP_NAME,
                 'seriesPID' => $seriesPid,
                 'appType' => 'responsive',
                 'clipPID' => (string) $this->programmeItem->getPid(),

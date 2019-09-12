@@ -51,7 +51,6 @@ class HomeController extends BaseController
     public function __invoke(ServicesService $servicesService, Breadcrumbs $breadcrumbs)
     {
         $this->setBrandingId('br-08368');
-        $this->setIstatsProgsPageType('programmes_schedule_index');
         $this->setAtiContentLabels('index-home', 'schedules-index');
         $this->setAtiContentId('', 'pips');
 

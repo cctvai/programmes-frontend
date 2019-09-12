@@ -33,7 +33,6 @@ class GuideController extends BaseProgrammeEpisodesController
     ) {
         $this->setContextAndPreloadBranding($programme);
         $this->setInternationalStatusAndTimezoneFromContext($programme);
-        $this->setIstatsProgsPageType('episodes_guide');
         $this->setAtiContentLabels('list-tleo', 'guide-all');
         $this->setAtiContentId((string) $programme->getPid(), 'pips');
         $page = $this->getPage();
@@ -61,11 +60,6 @@ class GuideController extends BaseProgrammeEpisodesController
             }
         }
 
-        if ($programme->getAvailableEpisodesCount() >= 1) {
-            $this->setIstatsExtraLabels(['has_available_items' => 'true']);
-        } else {
-            $this->setIstatsExtraLabels(['has_available_items' => 'false']);
-        }
 
         $subNavPresenter = $this->getSubNavPresenter($collapsedBroadcastService, $programme, $presenterFactory);
         $upcomingBroadcasts = $this->getUpcomingBroadcastsIndexedByProgrammePid($programme, $collapsedBroadcastService);

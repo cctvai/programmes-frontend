@@ -55,7 +55,6 @@ class ByDayController extends SchedulesBaseController
         }
 
         $this->helperFactory = $helperFactory;
-        $this->setIstatsProgsPageType('schedules_day');
         $this->setAtiContentLabels('schedule', 'schedule-day');
         $this->setContextAndPreloadBranding($service);
         $this->setInternationalStatusAndTimezoneFromContext($service);
@@ -118,7 +117,6 @@ class ByDayController extends SchedulesBaseController
         // as appropriate when we have no broadcasts
         $this->setResponseCodeAndNoIndexProperties($serviceIsActiveInThisPeriod, $broadcasts, $broadcastDay);
 
-        $this->setIstatsExtraLabels($this->getIstatsExtraLabels($date, $broadcastDayStart->isYesterday()));
         $this->overridenDescription = "This is the daily broadcast schedule for " . $service->getName();
         if ($this->request()->query->has('no_chrome')) {
             return $this->renderWithoutChrome('schedules/by_day.html.twig', $viewData);
@@ -151,37 +149,6 @@ class ByDayController extends SchedulesBaseController
         $this->breadcrumbs = $breadcrumbs->toArray();
 
         return $this->renderWithChrome('schedules/by_day.html.twig', $viewData);
-    }
-
-    private function getIstatsExtraLabels(?string $date, bool $broadcastStartedYesterday): array
-    {
-        if (isset($date)) {
-            $tz = ApplicationTime::getLocalTimeZone();
-            $urlDate = Date::createFromFormat('Y/m/d', $date, $tz);
-            $diffInDays = Date::now($tz)->diffInDays($urlDate, false);
-            return [
-                'schedule_offset' => $this->getScheduleOffset($diffInDays),
-                'schedule_context' => $this->getScheduleContext($diffInDays),
-                'schedule_current_fortnight' => $this->getScheduleCurrentFortnight($diffInDays),
-            ];
-        }
-
-        // for TV if there is no date in the URL and is before 6:00 we are displaying yesterday schedule page.
-        // Send same iStats values as in v2 so it will be track as yesterday instead of today broadcast
-        // even when we know the today broadcast hasn't started yet
-        if ($broadcastStartedYesterday) {
-            return [
-                'schedule_offset' => '-1',
-                'schedule_context' => 'past',
-                'schedule_current_fortnight' => 'true',
-            ];
-        }
-
-        return [
-            'schedule_offset' => '0',
-            'schedule_context' => 'today',
-            'schedule_current_fortnight' => 'true',
-        ];
     }
 
     /**

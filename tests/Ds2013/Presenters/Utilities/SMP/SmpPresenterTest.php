@@ -73,7 +73,7 @@ class SmpPresenterTest extends TestCase
     public function testStatsObject()
     {
         $this->assertEquals([
-            'appName' => 'app____name',
+            'appName' => 'programmes',
             'appType' => 'responsive',
             'brandPID' => null,
             'seriesPID' => null,
@@ -112,12 +112,6 @@ class SmpPresenterTest extends TestCase
             VersionBuilder::any()->with(['pid' => new Pid('st000002')])->build(),
             [SegmentEventBuilder::any()->build(), SegmentEventBuilder::any()->build()],
             '',
-            [
-                'bbc_site' => 'bbc_____site',
-                'prod_name' => 'prod____name',
-                'app_name' => 'app____name',
-                'event_master_brand' => 'event___master___brand',
-            ],
             new SmpPlaylistHelper($this->createMock(GuidanceWarningHelper::class)),
             $stubRouter,
             $this->createConfiguredMock(CosmosInfo::class, ['getAppEnvironment' => 'sandbox']),

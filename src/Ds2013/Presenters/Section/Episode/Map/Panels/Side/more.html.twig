@@ -12,14 +12,12 @@
                         },
                         image_options: {
                             'show_image': false,
-                            'show_standalone_cta': true,
-                            'cta_link_location_track': 'previous_episode_map_calltoaction',
+                            'show_standalone_cta': true
                         },
                         title_options: {
                             'title_format': 'item::ancestry',
                             'title_tag': 'h4',
-                            'title_classes': 'gamma',
-                            'link_location_track': 'previous_episode_map_eptitle',
+                            'title_classes': 'gamma'
                         },
                         ATI_prefix: 'prev',
                     }) }}
@@ -44,14 +42,12 @@
                             },
                             image_options: {
                                 'show_image': false,
-                                'show_standalone_cta': true,
-                                'cta_link_location_track': 'upcoming_episode_map_calltoaction',
+                                'show_standalone_cta': true
                             },
                             title_options: {
                                 'title_format': 'item::ancestry',
                                 'title_tag': 'h4',
-                                'title_classes': 'gamma',
-                                'link_location_track': 'upcoming_episode_map_eptitle',
+                                'title_classes': 'gamma'
                             },
                             ATI_prefix: 'next',
                         }) }}
@@ -72,7 +68,7 @@
     </div>
 
     <p>
-        <a href="{{ path('programme_episodes', {pid: more.getEpisode().getTleo().getPid()}) }}" data-linktrack="episode_map_see_all">
+        <a href="{{ path('programme_episodes', {pid: more.getEpisode().getTleo().getPid()}) }}">
             {{ tr('see_all_episodes_from', {'%1': more.getEpisode().getTleo().getTitle()}) }}
         </a>
     </p>

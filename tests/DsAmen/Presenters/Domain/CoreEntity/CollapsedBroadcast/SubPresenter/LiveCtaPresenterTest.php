@@ -94,32 +94,6 @@ class LiveCtaPresenterTest extends BaseSubPresenterTest
         ];
     }
 
-    public function testGetLinkLocation(): void
-    {
-        $tvEpisode = $this->createMockTvEpisode();
-        $collapsedBroadcast = $this->createMockCollapsedBroadcast($tvEpisode);
-
-        $ctaPresenter = new LiveCtaPresenter(
-            $collapsedBroadcast,
-            $this->router,
-            $this->liveBroadcastHelper,
-            ['link_location_prefix' => 'programmes_map_tx_']
-        );
-
-        $ctaPresenterWithSuffix = new LiveCtaPresenter(
-            $collapsedBroadcast,
-            $this->router,
-            $this->liveBroadcastHelper,
-            [
-                'link_location_prefix' => 'programmes_map_tx_',
-                'link_to_start' => true,
-            ]
-        );
-
-        $this->assertSame('programmes_map_tx_calltoaction', $ctaPresenter->getLinkLocation());
-        $this->assertSame('programmes_map_tx_calltoaction_start', $ctaPresenterWithSuffix->getLinkLocation());
-    }
-
     /** @dataProvider getUrlProvider */
     public function testGetUrl(CollapsedBroadcast $cb, bool $linkToStart, string $expected)
     {

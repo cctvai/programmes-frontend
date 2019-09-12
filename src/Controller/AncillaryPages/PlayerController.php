@@ -44,12 +44,10 @@ class PlayerController extends BaseController
         }, $titleLogicHelper->getOrderedProgrammesForTitle($clip, null, 'item::ancestry')[1]));
 
         $this->setContext($clip);
-        $this->setIstatsProgsPageType('programme_player');
         $this->setAtiContentLabels('player-ondemand', 'player-ondemand');
         $context = $this->createMetaContextFromContext();
         // These two functions set the stats context in the PresenterFactory for the SMP to use later
         $this->createAnalyticsCounterNameFromContext();
-        $this->createIstatsAnalyticsLabelsFromContext();
 
         $linkedVersions = $versionsService->findLinkedVersionsForProgrammeItem($clip);
 

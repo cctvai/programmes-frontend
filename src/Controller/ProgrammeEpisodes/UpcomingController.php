@@ -23,7 +23,6 @@ class UpcomingController extends BaseProgrammeEpisodesController
         Breadcrumbs $breadcrumbs
     ) {
         $this->setContextAndPreloadBranding($programme);
-        $this->setIstatsProgsPageType('broadcast_slice');
         $this->setAtiContentLabels('list-tleo', 'guide-upcoming');
         $this->setInternationalStatusAndTimezoneFromContext($programme);
         $this->setAtiContentId((string) $programme->getPid(), 'pips');

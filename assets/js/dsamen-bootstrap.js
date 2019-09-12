@@ -1,7 +1,7 @@
 /**
  * DsAmen JS Bootstrap
  */
-define(['eqjs', 'lazyload', 'istats-tracking', 'jquery-1.9', 'lazysizes'], function(EQ, Lazyload, IstatsTracking, $, lazysizes) {
+define(['eqjs', 'lazyload', 'jquery-1.9', 'lazysizes'], function(EQ, Lazyload, $, lazysizes) {
 
         function init() {
             var selector = '[data-eq-pts]';
@@ -13,14 +13,6 @@ define(['eqjs', 'lazyload', 'istats-tracking', 'jquery-1.9', 'lazysizes'], funct
             },false);
             var lazyload = new Lazyload();
             lazyload.init();
-
-            var tracking = new IstatsTracking();
-            tracking.init();
-            $('body').on('lazyloadComplete', function(e, context) {
-                if (context && context.content) {
-                    tracking.trackLinks(context.content);
-                }
-            });
 
             var fontFamily = "font-family: Helvetica, Arial, sans-serif",
                 fontStyling = fontFamily + "; font-size: 32px; line-height: 1.5; color: #fff",

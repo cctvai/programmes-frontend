@@ -60,25 +60,6 @@ class TitlePresenterTest extends BaseSubPresenterTest
         ];
     }
 
-    /** @dataProvider getLinkLocationPrefixProvider */
-    public function testGetLinkLocationPrefix(bool $forcePlayoutLinking, bool $isTv, string $expected): void
-    {
-        $this->mockClip->method('isTv')->willReturn($isTv);
-
-        $titlePresenter = new TitlePresenter(
-            $this->createMock(StreamableHelper::class),
-            $this->mockClip,
-            $this->router,
-            $this->mockTitleLogicHelper,
-            [
-                'force_playout_linking' => $forcePlayoutLinking,
-                'link_location_prefix' => 'programmeobject_',
-            ]
-        );
-
-        $this->assertSame($expected, $titlePresenter->getLinkLocationPrefix());
-    }
-
     public function getLinkLocationPrefixProvider(): array
     {
         return [

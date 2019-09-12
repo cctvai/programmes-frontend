@@ -46,11 +46,7 @@ class ClipController extends BaseController
         VersionsService $versionsService,
         Breadcrumbs $breadcrumbs
     ) {
-        $this->setIstatsProgsPageType('programmes_clip');
         $this->setAtiContentLabels('player-clip', 'clip');
-        $this->setIstatsReleaseDate($clip);
-        $this->setIstatsReleaseYear($clip);
-        $this->setParentIstats($clip);
         $this->setContextAndPreloadBranding($clip);
         $this->setAtiContentId((string) $clip->getPid(), 'pips');
 
@@ -129,33 +125,6 @@ class ClipController extends BaseController
             ->toArray();
 
         return $this->renderWithChrome('find_by_pid/clip.html.twig', array_merge($resolvedPromises, $parameters));
-    }
-
-    private function setIstatsReleaseDate(Clip $clip): void
-    {
-        if ($clip->getReleaseDate()) {
-            $this->setIstatsExtraLabels(['clip_release_date' => $clip->getReleaseDate()->asDateTime()->format('c')]);
-        } elseif ($clip->getStreamableFrom()) {
-            $this->setIstatsExtraLabels(['clip_release_date' => $clip->getStreamableFrom()->format('c')]);
-        }
-    }
-
-    private function setIstatsReleaseYear(Clip $clip): void
-    {
-        if ($clip->getReleaseDate()) {
-            $this->setIstatsExtraLabels(['clip_release_year' => $clip->getReleaseDate()->asDateTime()->format('Y')]);
-        } elseif ($clip->getStreamableFrom()) {
-            $this->setIstatsExtraLabels(['clip_release_year' => $clip->getStreamableFrom()->format('Y')]);
-        }
-    }
-
-    private function setParentIstats(Clip $clip): void
-    {
-        $parent = $clip->getParent();
-        if ($parent instanceof ProgrammeItem) {
-            $this->setIstatsExtraLabels(['parent_available' => $parent->hasPlayableDestination() ? 'true' : 'false']);
-            $this->setIstatsExtraLabels(['parent_entity_type' => $parent->getType()]);
-        }
     }
 
     private function getSchema(
