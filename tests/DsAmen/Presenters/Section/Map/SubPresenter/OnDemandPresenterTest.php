@@ -72,7 +72,7 @@ class OnDemandPresenterTest extends TestCase
      */
     public function testOldStreamableEpisodeNoPendingEpisode(bool $isRadio)
     {
-        $episode = $this->createEpisode(2, '+1 day', '-8 days');
+        $episode = $this->createEpisode($isRadio, 2, '+1 day', '-8 days');
         $programme = $this->createProgramme($isRadio);
         $odPresenter = $this->createOnDemandPresenter($programme, $episode, false, null);
         $this->assertSame($episode, $odPresenter->getStreamableEpisode());
@@ -84,7 +84,7 @@ class OnDemandPresenterTest extends TestCase
 
     public function testStreamableEpisodeBeforeLinearBroadcastNoPendingEpisode()
     {
-        $episode = $this->createEpisode(2, '-1 day', '+1 days');
+        $episode = $this->createEpisode(false, 2, '-1 day', '+1 days');
         $programme = $this->createProgramme(false);
         $odPresenter = $this->createOnDemandPresenter($programme, $episode, false, null);
         $this->assertSame($episode, $odPresenter->getStreamableEpisode());
@@ -100,7 +100,7 @@ class OnDemandPresenterTest extends TestCase
      */
     public function testNewStreamableEpisodeNoPendingEpisode(bool $isRadio)
     {
-        $episode = $this->createEpisode(2, '+1 day', '-6 days');
+        $episode = $this->createEpisode($isRadio, 2, '+1 day', '-6 days');
         $programme = $this->createProgramme($isRadio);
         $odPresenter = $this->createOnDemandPresenter($programme, $episode, false, null);
         $this->assertSame($episode, $odPresenter->getStreamableEpisode());
@@ -120,7 +120,7 @@ class OnDemandPresenterTest extends TestCase
      */
     public function testNewStreamableSeriesEpisodeNoPendingEpisode(bool $isRadio)
     {
-        $episode = $this->createEpisode(1, '+1 day', '-6 days');
+        $episode = $this->createEpisode($isRadio, 1, '+1 day', '-6 days');
         $programme = $this->createProgramme($isRadio);
         $odPresenter = $this->createOnDemandPresenter($programme, $episode, false, null);
         $this->assertSame($episode, $odPresenter->getStreamableEpisode());
@@ -139,7 +139,7 @@ class OnDemandPresenterTest extends TestCase
      */
     public function testStreamableEpisodeAndOldPendingEpisode(bool $isRadio)
     {
-        $episode = $this->createEpisode(2, '-8 days', '-8 days', true);
+        $episode = $this->createEpisode($isRadio, 2, '-8 days', '-8 days', true);
         $programme = $this->createProgramme($isRadio);
         $collapsedBroadcast = $this->createMock(CollapsedBroadcast::class);
         $collapsedBroadcast->method('getStartAt')
@@ -160,7 +160,7 @@ class OnDemandPresenterTest extends TestCase
      */
     public function testStreamableEpisodeAndPendingEpisode(bool $isRadio)
     {
-        $episode = $this->createEpisode(2, '-6 days', '-6 days', false);
+        $episode = $this->createEpisode($isRadio, 2, '-6 days', '-6 days', false);
         $programme = $this->createProgramme($isRadio);
         $collapsedBroadcast = $this->createMock(CollapsedBroadcast::class);
         $collapsedBroadcast->method('getStartAt')
@@ -181,7 +181,7 @@ class OnDemandPresenterTest extends TestCase
      */
     public function testStreamableEpisodeAndPendingEpisodeIsTooOld(bool $isRadio)
     {
-        $episode = $this->createEpisode(2, '-8 days', '-8 days', false);
+        $episode = $this->createEpisode($isRadio, 2, '-8 days', '-8 days', false);
         $programme = $this->createProgramme($isRadio);
         $collapsedBroadcast = $this->createMock(CollapsedBroadcast::class);
         $collapsedBroadcast->method('getStartAt')
@@ -215,7 +215,7 @@ class OnDemandPresenterTest extends TestCase
      */
     public function testOldLastOn(bool $isRadio)
     {
-        $episode = $this->createEpisode(2, null, '-8 months');
+        $episode = $this->createEpisode($isRadio, 2, null, '-8 months');
         $programme = $this->createProgramme($isRadio);
         $collapsedBroadcast = $this->createMock(CollapsedBroadcast::class);
         $collapsedBroadcast->method('getStartAt')
@@ -236,7 +236,7 @@ class OnDemandPresenterTest extends TestCase
      */
     public function testComingSoonBadge(bool $isRadio)
     {
-        $episode = $this->createEpisode(1, '-1 day');
+        $episode = $this->createEpisode($isRadio, 1, '-1 day');
         $programme = $this->createProgramme($isRadio);
         $collapsedBroadcast = $this->createMock(CollapsedBroadcast::class);
         $collapsedBroadcast->method('getStartAt')
@@ -270,7 +270,7 @@ class OnDemandPresenterTest extends TestCase
 
     public function testEpisodeIsPending()
     {
-        $episode = $this->createEpisode();
+        $episode = $this->createEpisode(false);
         $programme = $this->createProgramme();
         $collapsedBroadcast = $this->createMock(CollapsedBroadcast::class);
         $collapsedBroadcast->method('getStartAt')->willReturn(new Chronos('-6 days'));
@@ -285,7 +285,7 @@ class OnDemandPresenterTest extends TestCase
      */
     public function testEpisodeIsPendingWhenNoStreamableFromDate(bool $hasPlayableDestination)
     {
-        $episode = $this->createEpisode(1, null, '-1 day', $hasPlayableDestination);
+        $episode = $this->createEpisode(false, 1, null, '-1 day', $hasPlayableDestination);
         $programme = $this->createProgramme();
         $collapsedBroadcast = $this->createMock(CollapsedBroadcast::class);
         $collapsedBroadcast->method('getProgrammeItem')->willReturn($episode);
@@ -295,7 +295,7 @@ class OnDemandPresenterTest extends TestCase
 
     public function testEpisodeIsPendingWhenStreamable()
     {
-        $episode = $this->createEpisode(1, '+1 day', '-1 day', true);
+        $episode = $this->createEpisode(false, 1, '+1 day', '-1 day', true);
         $programme = $this->createProgramme();
         $collapsedBroadcast = $this->createMock(CollapsedBroadcast::class);
         $collapsedBroadcast->method('getProgrammeItem')->willReturn($episode);
@@ -305,7 +305,7 @@ class OnDemandPresenterTest extends TestCase
 
     public function testLastOnNotAvailableYetWhenOver7DaysOld()
     {
-        $episode = $this->createEpisode();
+        $episode = $this->createEpisode(false);
         $programme = $this->createProgramme();
         $collapsedBroadcast = $this->createMock(CollapsedBroadcast::class);
         $collapsedBroadcast->method('getStartAt')->willReturn(new Chronos('-8 days'));
@@ -322,7 +322,7 @@ class OnDemandPresenterTest extends TestCase
         $programmeImage = $this->createMock(Image::class);
         $programmeImage->method('getPid')
             ->willReturn(new Pid('s0m3t1ng'));
-        $episode = $this->createEpisode(1, '-1 day');
+        $episode = $this->createEpisode(false, 1, '-1 day');
         $episode->method('getImage')
             ->willReturn($episodeImage);
         $programme = $this->createProgramme(true);
@@ -354,13 +354,13 @@ class OnDemandPresenterTest extends TestCase
         $this->assertSame([768 => 1/3, 1008 => '324px', 1280 => '414px'], $odPresenter->getImageSizes());
     }
 
-
     /**
+     * @param bool $isAudio
      * @param int $position
      * @param null|string $streamableFrom
      * @return Episode|PHPUnit_Framework_MockObject_MockObject
      */
-    private function createEpisode(int $position = 1, ?string $streamableFrom = '+1 day', string $firstBroadcast = '-1 day', bool $hasPlayableDestination = false): Episode
+    private function createEpisode(bool $isAudio, int $position = 1, ?string $streamableFrom = '+1 day', string $firstBroadcast = '-1 day', bool $hasPlayableDestination = false): Episode
     {
         $episode = $this->createMock(Episode::class);
         $episode->method('getParent')
@@ -378,6 +378,7 @@ class OnDemandPresenterTest extends TestCase
         }
         $episode->method('hasPlayableDestination')
             ->willReturn($hasPlayableDestination);
+        $episode->method('isAudio')->willReturn($isAudio);
         return $episode;
     }
 

@@ -98,7 +98,7 @@ class OnDemandPresenter extends RightColumnPresenter
         }
         // Coming soon can be displayed on Radio and TV pages.
         // New and New Series should only display on TV pages.
-        if (!$this->programmeContainer->isTv()) {
+        if ($this->treatAsRadio()) {
             return '';
         }
         // If the parent is the TLEO (e.g. Eastenders) we don't want to show a new badge for each episode
@@ -125,12 +125,12 @@ class OnDemandPresenter extends RightColumnPresenter
 
     public function getTitleTranslationString(): string
     {
-        return $this->programmeContainer->isRadio() ? 'available_now' : 'available_on_iplayer_short';
+        return $this->treatAsRadio() ? 'available_now' : 'available_on_iplayer_short';
     }
 
     public function getTranslatedStringForOnDemandNotAvailable(): string
     {
-        return $this->programmeContainer->isRadio() ? $this->translator->trans('available_count %count%', ['%count%' => 0]) : $this->translator->trans('not_available_iplayer');
+        return $this->treatAsRadio() ? $this->translator->trans('available_count %count%', ['%count%' => 0]) : $this->translator->trans('not_available_iplayer');
     }
 
     public function hasUpcomingEpisode(): bool
@@ -164,20 +164,41 @@ class OnDemandPresenter extends RightColumnPresenter
 
     public function getEpisodeGuideLink(): string
     {
-        if ($this->programmeContainer->isTv() && $this->programmeContainer->isTlec()) {
+        if ($this->treatAsRadio() || !$this->programmeContainer->isTlec()) {
             // iPlayer only have a brand, not a series episode guide
-            return $this->router->generate('iplayer_episodes', ['pid' => $this->programmeContainer->getPid()]);
+            return $this->router->generate('programme_episodes_player', ['pid' => $this->programmeContainer->getPid()]);
         }
-        return $this->router->generate('programme_episodes_player', ['pid' => $this->programmeContainer->getPid()]);
+        return $this->router->generate('iplayer_episodes', ['pid' => $this->programmeContainer->getPid()]);
     }
 
     public function getEpisodeGuideTitleTranslation(): string
     {
-        $translationKey = $this->programmeContainer->isTv() ? 'all_episodes_iplayer_title' : 'all_episodes_iplayer_radio_title';
+        $translationKey = $this->treatAsRadio() ? 'all_episodes_iplayer_radio_title' : 'all_episodes_iplayer_title';
         return $this->translator->trans(
             $translationKey,
             ['%1' => $this->programmeContainer->getTitle()]
         );
+    }
+
+    public function getOnDemandEpisode(): ?ProgrammeItem
+    {
+        if ($this->episodeIsPending()) {
+            return $this->getPendingEpisode();
+        }
+        if ($this->getStreamableEpisode()) {
+            return $this->getStreamableEpisode();
+        }
+
+        return null;
+    }
+
+    protected function treatAsRadio()
+    {
+        $onDemandEpisode = $this->getOnDemandEpisode();
+        if ($onDemandEpisode) {
+            return $onDemandEpisode->isAudio();
+        }
+        return $this->programmeContainer->isRadio();
     }
 
     protected function validateOptions(array $options): void

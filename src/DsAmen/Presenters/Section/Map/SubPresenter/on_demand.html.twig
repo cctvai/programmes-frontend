@@ -2,14 +2,13 @@
 
 <div class="grid__item map__item {{ on_demand.getClass() }}">
     <div class="map-card-wrap br-box-secondary" data-map-column="on-demand">
-        {%- if not on_demand.getStreamableEpisode() and not on_demand.getPendingEpisode() and not on_demand.hasUpcomingEpisode() -%}
-            {% include '@DsAmen/Presenters/Section/Map/SubPresenter/message.html.twig' with {heading:tr(on_demand.getTitleTranslationString()), message:on_demand.getTranslatedStringForOnDemandNotAvailable()} only %}
-        {%- elseif on_demand.episodeIsPending() -%}
-            {{ self.main_column(on_demand.getPendingEpisode(), on_demand) }}
-        {%- elseif on_demand.getStreamableEpisode() -%}
-            {{ self.main_column(on_demand.getStreamableEpisode(), on_demand) }}
-        {%- else -%}
+        {%- set on_demand_episode = on_demand.getOnDemandEpisode() -%}
+        {%- if not on_demand_episode and on_demand.hasUpcomingEpisode() -%}
             {% include '@DsAmen/Presenters/Section/Map/SubPresenter/message.html.twig' with {heading:tr(on_demand.getTitleTranslationString()), message:tr('available_shortly')} only %}
+        {%- elseif on_demand_episode -%}
+            {{ self.main_column(on_demand_episode, on_demand) }}
+        {%- else -%}
+            {% include '@DsAmen/Presenters/Section/Map/SubPresenter/message.html.twig' with {heading:tr(on_demand.getTitleTranslationString()), message:on_demand.getTranslatedStringForOnDemandNotAvailable()} only %}
         {%- endif -%}
     </div>
 </div>
