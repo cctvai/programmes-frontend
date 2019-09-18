@@ -13,7 +13,6 @@ class ApiTypeEnum
     public const API_RECIPE = 'RECIPE';
     public const API_RECOMMENDATIONS = 'RECOMMENDATIONS';
     public const API_MORPH = 'MORPH';
-    public const API_FAVOURITES = 'FAVOURITES';
     public const API_SOUNDSNAV = 'SOUNDSNAV';
     public const API_TUPAC = 'TUPAC';
 
@@ -26,7 +25,6 @@ class ApiTypeEnum
         self::API_RECIPE => true,
         self::API_RECOMMENDATIONS => true,
         self::API_MORPH => true,
-        self::API_FAVOURITES => true,
         self::API_SOUNDSNAV => true,
         self::API_TUPAC => true,
     ];

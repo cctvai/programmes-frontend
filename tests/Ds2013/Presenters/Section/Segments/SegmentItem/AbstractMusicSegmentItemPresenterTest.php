@@ -183,49 +183,6 @@ class AbstractMusicSegmentItemPresenterTest extends TestCase
         $this->assertSame('https://ichef.bbci.co.uk/images/ic/96x96/p01c9cjb.png', $stub->getImageUrl());
     }
 
-    public function testGetFavouriteButtonTitle()
-    {
-        $contributor1 = ContributorBuilder::any()->with(['musicBrainzId' => 'something', 'name' => 'ContributorName1'])->build();
-        $contribution1 = ContributionBuilder::any()->with(['contributor' => $contributor1])->build();
-
-        $contributor2 = ContributorBuilder::any()->with(['musicBrainzId' => 'something', 'name' => 'ContributorName2'])->build();
-        $contribution2 = ContributionBuilder::any()->with(['contributor' => $contributor2])->build();
-
-        $vsContributor1 = ContributorBuilder::any()->with(['musicBrainzId' => 'something', 'name' => 'VsContributorName1'])->build();
-        $vsContribution1 = ContributionBuilder::any()->with(['contributor' => $vsContributor1])->build();
-
-        $vsContributor2 = ContributorBuilder::any()->with(['musicBrainzId' => 'something', 'name' => 'VsContributorName2'])->build();
-        $vsContribution2 = ContributionBuilder::any()->with(['contributor' => $vsContributor2])->build();
-
-        $segment = SegmentBuilder::any()->with(['contributions' => [$contribution1], 'title' => 'SegmentTitle'])->build();
-        $segmentEvent = SegmentEventBuilder::any()->with(['segment' => $segment])->build();
-
-        $stub = $this->getMockForAbstractClass(
-            AbstractMusicSegmentItemPresenter::class,
-            [$this->mockContext, $segmentEvent, 'anything', null],
-            '',
-            true,
-            true,
-            true,
-            ['hasTiming', 'getPrimaryContributions', 'getVersusContributions', 'getFeaturedContributions']
-        );
-
-        $stub->expects($this->any())
-            ->method('getPrimaryContributions')
-            ->willReturn([$contribution1, $contribution2]);
-        $stub->expects($this->any())
-            ->method('getVersusContributions')
-            ->willReturn([$vsContribution1, $vsContribution2]);
-        $stub->expects($this->any())
-            ->method('getFeaturedContributions')
-            ->willReturn([$contribution1, $contribution2]);
-
-        $this->assertEquals(
-            'ContributorName1 & ContributorName2 vs VsContributorName1 & VsContributorName2 || SegmentTitle (feat. ContributorName1 & ContributorName2)',
-            $stub->getFavouriteButtonTitle()
-        );
-    }
-
     /**
      * @param ProgrammeItem $context
      * @param SegmentEvent $segmentEvent

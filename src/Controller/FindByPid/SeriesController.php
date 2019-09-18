@@ -8,7 +8,6 @@ use App\DsAmen\Factory\PresenterFactory;
 use App\DsShared\Factory\HelperFactory;
 use App\ExternalApi\Ada\Service\AdaClassService;
 use App\ExternalApi\Electron\Service\ElectronService;
-use App\ExternalApi\FavouritesButton\Service\FavouritesButtonService;
 use App\ExternalApi\Morph\Service\LxPromoService;
 use App\ExternalApi\RecEng\Service\RecEngService;
 use BBC\ProgrammesPagesService\Domain\Entity\ProgrammeContainer;
@@ -37,7 +36,6 @@ class SeriesController extends BaseProgrammeContainerController
         AdaClassService $adaClassService,
         HelperFactory $helperFactory,
         RelatedLinksService $relatedLinksService,
-        FavouritesButtonService $favouritesButtonService,
         LxPromoService $lxPromoService,
         StructuredDataHelper $structuredDataHelper,
         Breadcrumbs $breadcrumbs
@@ -57,7 +55,6 @@ class SeriesController extends BaseProgrammeContainerController
             $adaClassService,
             $helperFactory,
             $relatedLinksService,
-            $favouritesButtonService,
             $lxPromoService,
             $structuredDataHelper,
             $breadcrumbs

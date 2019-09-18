@@ -9,7 +9,6 @@ use App\Ds2013\Factory\PresenterFactory;
 use App\DsShared\Helpers\StreamableHelper;
 use App\ExternalApi\Ada\Service\AdaClassService;
 use App\ExternalApi\Ada\Service\AdaProgrammeService;
-use App\ExternalApi\FavouritesButton\Service\FavouritesButtonService;
 use BBC\ProgrammesPagesService\Domain\Entity\Clip;
 use BBC\ProgrammesPagesService\Domain\Entity\Episode;
 use BBC\ProgrammesPagesService\Domain\Entity\Programme;
@@ -34,7 +33,6 @@ class ClipController extends BaseController
         AdaProgrammeService $adaProgrammeService,
         Clip $clip,
         ContributionsService $contributionsService,
-        FavouritesButtonService $favouritesButtonService,
         GroupsService $groupsService,
         PodcastsService $podcastsService,
         PresenterFactory $presenterFactory,
@@ -98,7 +96,6 @@ class ClipController extends BaseController
         }
 
         $resolvedPromises = $this->resolvePromises([
-            'favouritesButton' => $favouritesButtonService->getContent(),
             'relatedTopics' => $relatedTopicsPromise,
             'relatedProgrammes' => $relatedProgrammesPromise,
         ]);

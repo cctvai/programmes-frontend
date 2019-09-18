@@ -1,22 +1,3 @@
-.buttons--favourites-small {
-    display: inline-block;
-    height: 35px;
-    margin-top: -1px;
-    font-size: 21px;
-}
-
-.favourites-button {
-    margin-top: 18px;
-}
-
-.favourites-button-island {
-    padding: 0 $basic-spacing $basic-spacing;
-
-    .favourites-button {
-        margin-top: 2px;
-    }
-}
-
 .buttons__icon {
     float: left;
     margin-top: 1px;
@@ -47,15 +28,8 @@
 
 // windows phone app. hide some things
 .radio-windowsphone8 {
-    .favourites-module-wrapper,
     .s-b-container,
     .map__buttons {
         display: none;
-    }
-}
-
-@include mq($from: gel3) {
-    .favourites-button-island {
-        padding: 0 $wide-spacing $wide-spacing;
     }
 }

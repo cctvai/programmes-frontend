@@ -12,10 +12,6 @@
         {% do preload(asset('js/timezone-notification.js'), { as: 'script', nopush: true }) %}
     {% endif %}
 
-    {% if favouritesButton %}
-        {{ favouritesButton.getHead()|raw }}
-    {% endif %}
-
     {%- if lxPromo -%}
         {%- for script in lxPromo.getHead() -%}
             {{ script|raw }}
@@ -267,27 +263,6 @@
             container_html_id: 'account-wrapper-vote',
             vote_id: programme.getOption('telescope_block').content.vote_id
         } %}
-    {% endif %}
-
-    {% if favouritesButton and mapPresenter.showMap() %}
-        {{ favouritesButton.getBodyLast()|raw }}
-        <script>{{ favouritesButton.getScript()|raw }}</script>
-        <script>
-            require(['plugins/musicfavourite'], function(fav) {
-                var elem = document.getElementsByClassName("favourites-button")[0]; // DOM element within which to render the button
-                fav.render(elem, {
-                    'appid': 'radio',
-                    'type': '{{ programme.getType() == 'brand' or programme.getType() == 'series' ? 'tlec' : 'programme' }}',
-                    'id': '{{ programme.getPid() }}',
-                    'title': '{{ programme.getTitle() }}',
-                    'variant': 'small',
-                    'lang': '{{ tr('language_code')|lower }}',
-                    'platform': 'responsiveweb',
-                    'context-type': 'network_pid',
-                    'context-id': '{{ programme.getPid() }}'
-                });
-            });
-        </script>
     {% endif %}
 
     {%- if lxPromo -%}

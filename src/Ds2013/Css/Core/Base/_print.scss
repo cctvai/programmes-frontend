@@ -60,7 +60,6 @@
     #branding-masthead,
     .br-masthead,
     #programmes-footer,
-    .programme__favourites,
     .programme__versions,
     .block-link__overlay-link {
         display: none !important;
@@ -93,7 +92,7 @@
     }
 
     // Segments add to favourites button
-    .segment__buttons .favourites-module-wrapper {
+    .segment__buttons {
         display: none !important;
     }
 

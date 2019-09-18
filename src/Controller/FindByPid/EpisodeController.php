@@ -9,7 +9,6 @@ use App\Ds2013\Factory\PresenterFactory;
 use App\ExternalApi\Ada\Service\AdaClassService;
 use App\ExternalApi\Ada\Service\AdaProgrammeService;
 use App\ExternalApi\Electron\Service\ElectronService;
-use App\ExternalApi\FavouritesButton\Service\FavouritesButtonService;
 use BBC\ProgrammesPagesService\Domain\Entity\CollapsedBroadcast;
 use BBC\ProgrammesPagesService\Domain\Entity\Contribution;
 use BBC\ProgrammesPagesService\Domain\Entity\Episode;
@@ -37,7 +36,6 @@ class EpisodeController extends BaseController
         PromotionsService $promotionsService,
         RelatedLinksService $relatedLinksService,
         CollapsedBroadcastsService $collapsedBroadcastsService,
-        FavouritesButtonService $favouritesButtonService,
         VersionsService $versionsService,
         SegmentEventsService $segmentEventsService,
         ElectronService $electronService,
@@ -138,7 +136,6 @@ class EpisodeController extends BaseController
         $supportingContentItemsPromise = $electronService->fetchSupportingContentItemsForProgramme($episode);
 
         $resolvedPromises = $this->resolvePromises([
-            'favouritesButton' => $favouritesButtonService->getContent(),
             'relatedTopics' => $relatedTopicsPromise,
             'relatedProgrammes' => $relatedProgrammesPromise,
             'supportingContentItems' => $supportingContentItemsPromise,

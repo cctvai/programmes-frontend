@@ -139,11 +139,6 @@ abstract class AbstractMusicSegmentItemPresenter extends AbstractSegmentItemPres
         return 'music';
     }
 
-    public function hasMusicFavouritesButton(): bool
-    {
-        return !is_null($this->segment->getMusicRecordId()) && $this->getOption('context_pid');
-    }
-
     public function hasTiming(): bool
     {
         return in_array($this->timingType, [self::TIMING_POST, self::TIMING_PRE, self::TIMING_DURING]) &&
@@ -177,18 +172,6 @@ abstract class AbstractMusicSegmentItemPresenter extends AbstractSegmentItemPres
         }
 
         return $segmentEndTime->diffForHumans();
-    }
-
-    /**
-     * This function generates a track title as in https://confluence.dev.bbc.co.uk/display/MAT/Item+Types
-     * this follows same logic we have in the twig template but without any HTML.
-     * This values is send to Favourites API and is not visible by the users
-     *
-     * @return string
-     */
-    public function getFavouriteButtonTitle(): string
-    {
-        return $this->getArtistWithContributions() . ' || ' . $this->getTrackTitleWithContributions();
     }
 
     abstract protected function setupContributions(): void;

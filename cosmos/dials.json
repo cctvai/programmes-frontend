@@ -90,21 +90,6 @@
         "description": "Control the circuit breaker for the morph API."
     },
     {
-        "name": "api-favourites",
-        "default-value": "enabled",
-        "values": [
-            {
-                "value": "enabled",
-                "description": "Allow requests to the favourites API"
-            },
-            {
-                "value": "disabled",
-                "description": "Disable requests to the favourites API"
-            }
-        ],
-        "description": "Control the circuit breaker for the favourites API."
-    },
-    {
         "name": "api-soundsnav",
         "default-value": "enabled",
         "values": [

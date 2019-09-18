@@ -4,14 +4,6 @@
 {% block title %}{{ meta_context.titlePrefix() }}{% endblock %}
 {% block adsToDisplay %}leaderboard mpu{% endblock %}
 
-{% block inline_head %}
-    {{ parent() }}
-
-    {% if favouritesButton %}
-        {{ favouritesButton.getHead()|raw }}
-    {% endif %}
-{% endblock %}
-
 {% block body %}
     {{ advert('leaderboard', [1,2,3,4], 'programme-advert--leaderboard-wrap') }}
 
@@ -342,9 +334,4 @@
             </div>
         </div>
     </div>
-{% endblock %}
-
-{% block javascripts %}
-    {{ parent() }}
-    {% include 'shared/favourites_js.html.twig' with {'favouritesButton': favouritesButton} %}
 {% endblock %}
