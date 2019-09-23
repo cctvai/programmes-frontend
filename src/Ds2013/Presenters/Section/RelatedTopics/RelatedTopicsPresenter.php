@@ -28,15 +28,6 @@ class RelatedTopicsPresenter extends Presenter
         $this->relatedTopics = $relatedTopics;
     }
 
-    public function getLinkTrack(): string
-    {
-        if ($this->context instanceof Clip) {
-            return 'clip_topic';
-        }
-
-        return 'episode_topic';
-    }
-
     /**
      * @return AdaClass[]
      */

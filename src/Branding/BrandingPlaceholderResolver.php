@@ -108,8 +108,7 @@ class BrandingPlaceholderResolver
         // Home link is always present
         $navItems[] = $branding->buildNavItem(
             $this->translator->trans('home'),
-            $this->router->generate('find_by_pid', ['pid' => $tleo->getPid()]),
-            'nav_home'
+            $this->router->generate('find_by_pid', ['pid' => $tleo->getPid()])
         );
 
         if ($tleo instanceof ProgrammeContainer) {
@@ -125,8 +124,7 @@ class BrandingPlaceholderResolver
         if ($tleo && $hasEpisodes) {
             $navItems[] = $branding->buildNavItem(
                 $this->translator->trans('episodes'),
-                $this->router->generate('programme_episodes', ['pid' => $tleo->getPid()]),
-                'nav_episodes'
+                $this->router->generate('programme_episodes', ['pid' => $tleo->getPid()])
             );
         }
 
@@ -134,8 +132,7 @@ class BrandingPlaceholderResolver
         if ($tleo && $hasClips) {
             $navItems[] = $branding->buildNavItem(
                 $this->translator->trans('clips'),
-                $this->router->generate('programme_clips', ['pid' => $tleo->getPid()]),
-                'nav_clips'
+                $this->router->generate('programme_clips', ['pid' => $tleo->getPid()])
             );
         }
 
@@ -143,8 +140,7 @@ class BrandingPlaceholderResolver
         if ($tleo && $hasGalleries) {
             $navItems[] = $branding->buildNavItem(
                 $this->translator->trans('galleries'),
-                $this->router->generate('programme_galleries', ['pid' => $tleo->getPid()]),
-                'nav_galleries'
+                $this->router->generate('programme_galleries', ['pid' => $tleo->getPid()])
             );
         }
 

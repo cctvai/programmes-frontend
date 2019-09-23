@@ -66,7 +66,7 @@ class BrandingPlaceholderResolverTest extends TestCase
 
         // Only has a Home link
         $this->assertContains(
-            '<li class="br-nav__item"><a class="br-nav__link" href="/programmes/b0000001" data-linktrack="nav_home">home</a></li>',
+            '<li class="br-nav__item"><a class="br-nav__link" href="/programmes/b0000001">home</a></li>',
             $resolvedBranding->getBodyFirst()
         );
     }
@@ -81,10 +81,10 @@ class BrandingPlaceholderResolverTest extends TestCase
         $this->assertContains('<a href="/programmes/b0000001">MyTitle</a>', $resolvedBranding->getBodyFirst());
 
         $this->assertContains(
-            '<li class="br-nav__item"><a class="br-nav__link" href="/programmes/b0000001" data-linktrack="nav_home">home</a></li>' .
-            '<li class="br-nav__item"><a class="br-nav__link" href="/programmes/b0000001/episodes" data-linktrack="nav_episodes">episodes</a></li>' .
-            '<li class="br-nav__item"><a class="br-nav__link" href="/programmes/b0000001/clips" data-linktrack="nav_clips">clips</a></li>' .
-            '<li class="br-nav__item"><a class="br-nav__link" href="/programmes/b0000001/galleries" data-linktrack="nav_galleries">galleries</a></li>',
+            '<li class="br-nav__item"><a class="br-nav__link" href="/programmes/b0000001">home</a></li>' .
+            '<li class="br-nav__item"><a class="br-nav__link" href="/programmes/b0000001/episodes">episodes</a></li>' .
+            '<li class="br-nav__item"><a class="br-nav__link" href="/programmes/b0000001/clips">clips</a></li>' .
+            '<li class="br-nav__item"><a class="br-nav__link" href="/programmes/b0000001/galleries">galleries</a></li>',
             $resolvedBranding->getBodyFirst()
         );
     }
@@ -100,8 +100,8 @@ class BrandingPlaceholderResolverTest extends TestCase
         $this->assertContains('<a href="/programmes/b0000001">MyTitle</a>', $resolvedBranding->getBodyFirst());
 
         $this->assertContains(
-            '<li class="br-nav__item"><a class="br-nav__link" href="/programmes/b0000001" data-linktrack="nav_home">home</a></li>' .
-            '<li class="br-nav__item"><a class="br-nav__link" href="/programmes/b0000001/clips" data-linktrack="nav_clips">clips</a></li>',
+            '<li class="br-nav__item"><a class="br-nav__link" href="/programmes/b0000001">home</a></li>' .
+            '<li class="br-nav__item"><a class="br-nav__link" href="/programmes/b0000001/clips">clips</a></li>',
             $resolvedBranding->getBodyFirst()
         );
     }
@@ -116,8 +116,8 @@ class BrandingPlaceholderResolverTest extends TestCase
         $this->assertContains('<a href="/programmes/b0000001">MyTitle</a>', $resolvedBranding->getBodyFirst());
 
         $this->assertContains(
-            '<li class="br-nav__item"><a class="br-nav__link" href="/programmes/b0000001" data-linktrack="nav_home">home</a></li>' .
-            '<li class="br-nav__item"><a class="br-nav__link" href="/programmes/b0000001/galleries" data-linktrack="nav_galleries">galleries</a></li>',
+            '<li class="br-nav__item"><a class="br-nav__link" href="/programmes/b0000001">home</a></li>' .
+            '<li class="br-nav__item"><a class="br-nav__link" href="/programmes/b0000001/galleries">galleries</a></li>',
             $resolvedBranding->getBodyFirst()
         );
     }

@@ -307,7 +307,7 @@
                         </div>
                         {% if programme.getAggregatedGalleriesCount() > 1 %}
                             <div class="component__footer br-box-subtle">
-                                <a class="component__footer__link" href="{{ path('programme_galleries', { pid: programme.getPid() }) }}" data-linktrack="component_galleries_summary_footer">
+                                <a class="component__footer__link" href="{{ path('programme_galleries', { pid: programme.getPid() }) }}">
                                     <span class="component__footer__title">{{ tr('see_all_galleries_from', {'%1': programme.getTitle()}) }}</span>
                                     <span class="component__footer__detail">({{ programme.getAggregatedGalleriesCount() }})</span>
                                 </a>

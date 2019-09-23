@@ -164,29 +164,9 @@ class CtaPresenterTest extends TestCase
         $presenter->getUrl();
     }
 
-    /**
-     * @group cta__data_link_track
-     * @dataProvider optionsProvider
-     */
-    public function testDataLinkIsConfigurable(array $givenOptions, string $expectedDataLinkTrack)
-    {
-        $presenter = $this->presenterWithOptions($givenOptions);
-
-        $this->assertEquals($expectedDataLinkTrack, $presenter->getOption('data_link_track'));
-    }
-
     public function optionsProvider(): array
     {
-        return [
-            'data-link-track-using-default-value' => [
-                [],
-                'programmeobjectlink=cta',
-            ],
-            'data-link-track-using-CUSTOM-value' => [
-                ['data_link_track' => 'custom-link-track'],
-                'custom-link-track',
-            ],
-        ];
+        return [];
     }
 
     private function presenterWithOptions(array $options): CtaPresenter
