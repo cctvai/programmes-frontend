@@ -88,6 +88,7 @@ class UrlKeyExtension extends AbstractExtension
         'bbc_radio_two_country' => '/programmes/p02jxzfq',
         'bbc_radio_two_eurovision' => '/programmes/p01xjf0z',
         'bbc_radio_two_fifties' => '/programmes/p03lsql7',
+        'bbc_radio_two_beatles' => '/programmes/p07ktp01',
         'bbc_radio_ulster' => true,
         'bbc_radio_wales' => true,
         'bbc_radio_wiltshire' => true,
