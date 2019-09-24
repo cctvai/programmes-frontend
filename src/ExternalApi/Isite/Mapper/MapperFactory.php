@@ -5,6 +5,7 @@ namespace App\ExternalApi\Isite\Mapper;
 
 use App\Controller\Helpers\IsiteKeyHelper;
 use App\ExternalApi\IdtQuiz\Service\IdtQuizService;
+use App\ExternalApi\Riddle\Service\RiddleService;
 use BBC\ProgrammesPagesService\Service\CoreEntitiesService;
 use BBC\ProgrammesPagesService\Service\ProgrammesService;
 use BBC\ProgrammesPagesService\Service\VersionsService;
@@ -26,6 +27,9 @@ class MapperFactory
     /** @var VersionsService */
     private $versionsService;
 
+    /** @var RiddleService */
+    private $riddleService;
+
     private $isiteKeyHelper;
 
     /** @var IdtQuizService */
@@ -37,6 +41,7 @@ class MapperFactory
         IdtQuizService $idtQuizService,
         ProgrammesService $programmesService,
         VersionsService $versionsService,
+        RiddleService $riddleService,
         LoggerInterface $logger
     ) {
         $this->isiteKeyHelper = $isiteKeyHelper;
@@ -44,6 +49,7 @@ class MapperFactory
         $this->idtQuizService = $idtQuizService;
         $this->programmesService = $programmesService;
         $this->versionsService = $versionsService;
+        $this->riddleService = $riddleService;
         $this->logger = $logger;
     }
 
@@ -62,6 +68,7 @@ class MapperFactory
                 $this->idtQuizService,
                 $this->programmesService,
                 $this->versionsService,
+                $this->riddleService,
                 $this->logger
             );
         }

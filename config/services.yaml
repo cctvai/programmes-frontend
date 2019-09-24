@@ -8,6 +8,7 @@ parameters:
     app.feed_env.orbit: 'live'
     app.feed_env.branding: 'live'
     app.feed_env.morph.lxpromo: 'live'
+    app.feed_env.morph.riddle: 'live'
     aws_s3_region: eu-west-1
 
     app.default_locale: 'en_GB'
@@ -34,7 +35,8 @@ parameters:
     app.recipes.baseurl: 'https://api.live.bbc.co.uk/food/recipes'
     app.recipes.service.class: App\ExternalApi\Recipes\Service\RecipesService
     app.morph.baseurl: 'https://morph.api.bbci.co.uk'
-    app.morph.service.lxpromo.class: App\ExternalApi\Morph\Service\LxPromoService
+    app.LxPromo.service.lxpromo.class: App\ExternalApi\LxPromo\Service\LxPromoService
+    app.riddle.service.riddle.class: App\ExternalApi\Riddle\Service\RiddleService
     app.sounds_nav.baseurl: 'https://sounds-nav.api.bbci.co.uk/json'
     app.sounds_nav.service.class: App\ExternalApi\SoundsNav\Service\SoundsNavService
     app.tupac.baseurl: 'https://music-tupac.api.bbc.co.uk'
@@ -361,10 +363,15 @@ services:
         arguments:
             $baseUrl: '%app.recipes.baseurl%'
 
-    App\ExternalApi\Morph\Service\LxPromoService:
-        class: '%app.morph.service.lxpromo.class%'
+    App\ExternalApi\LxPromo\Service\LxPromoService:
+        class: '%app.LxPromo.service.lxpromo.class%'
         arguments:
             $lxPromoEnv: '%app.feed_env.morph.lxpromo%'
+
+    App\ExternalApi\Riddle\Service\RiddleService:
+        class: '%app.riddle.service.riddle.class%'
+        arguments:
+            $riddleEnv: '%app.feed_env.morph.riddle%'
 
     App\ExternalApi\SoundsNav\Service\SoundsNavService:
         class: '%app.sounds_nav.service.class%'

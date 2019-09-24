@@ -4,6 +4,7 @@ namespace Tests\App\ExternalApi\Isite\Mapper;
 
 use App\Controller\Helpers\IsiteKeyHelper;
 use App\ExternalApi\IdtQuiz\Service\IdtQuizService;
+use App\ExternalApi\Riddle\Service\RiddleService;
 use App\ExternalApi\Isite\Mapper\ContentBlockMapper;
 use App\ExternalApi\Isite\Mapper\MapperFactory;
 use BBC\ProgrammesPagesService\Service\CoreEntitiesService;
@@ -22,6 +23,7 @@ class MapperFactoryTest extends TestCase
             $this->createMock(IdtQuizService::class),
             $this->createMock(ProgrammesService::class),
             $this->createMock(VersionsService::class),
+            $this->createMock(RiddleService::class),
             $this->createMock(LoggerInterface::class)
         );
         $mapper = $factory->createContentBlockMapper();

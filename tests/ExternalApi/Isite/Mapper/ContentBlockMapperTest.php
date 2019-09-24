@@ -6,6 +6,7 @@ namespace Tests\App\ExternalApi\Isite\Mapper;
 use App\Controller\Helpers\IsiteKeyHelper;
 use App\ExternalApi\Client\Factory\HttpApiClientFactory;
 use App\ExternalApi\IdtQuiz\Service\IdtQuizService;
+use App\ExternalApi\Riddle\Service\RiddleService;
 use App\ExternalApi\Isite\Domain\ContentBlock\Faq;
 use App\ExternalApi\Isite\Domain\ContentBlock\Promotions;
 use App\ExternalApi\Isite\Domain\ContentBlock\Prose;
@@ -42,6 +43,7 @@ class ContentBlockMapperTest extends TestCase
         $ces = $this->createMock(CoreEntitiesService::class);
         $ps = $this->createMock(ProgrammesService::class);
         $vs = $this->createMock(VersionsService::class);
+        $rs = $this->createMock(RiddleService::class);
         $logger = $this->createMock(LoggerInterface::class);
         $this->mapper = new ContentBlockMapper(
             new MapperFactory(
@@ -50,6 +52,7 @@ class ContentBlockMapperTest extends TestCase
                 $this->idtQuizService,
                 $ps,
                 $vs,
+                $rs,
                 $logger
             ),
             $keyHelper,
@@ -57,6 +60,7 @@ class ContentBlockMapperTest extends TestCase
             $this->idtQuizService,
             $ps,
             $vs,
+            $rs,
             $logger
         );
     }

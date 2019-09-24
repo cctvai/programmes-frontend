@@ -11,7 +11,7 @@ use App\DsAmen\Factory\PresenterFactory;
 use App\DsShared\Factory\HelperFactory;
 use App\ExternalApi\Ada\Service\AdaClassService;
 use App\ExternalApi\Electron\Service\ElectronService;
-use App\ExternalApi\Morph\Service\LxPromoService;
+use App\ExternalApi\LxPromo\Service\LxPromoService;
 use App\ExternalApi\RecEng\Service\RecEngService;
 use BBC\ProgrammesPagesService\Domain\ApplicationTime;
 use BBC\ProgrammesPagesService\Domain\Entity\Clip;

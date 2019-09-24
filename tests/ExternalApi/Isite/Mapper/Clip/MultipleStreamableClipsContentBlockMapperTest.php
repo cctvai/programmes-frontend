@@ -11,6 +11,7 @@ use App\ExternalApi\Isite\Domain\ContentBlock\ClipBlock\ClipStream;
 use App\ExternalApi\Isite\Domain\ContentBlock\ClipBlock\StreamItem;
 use App\ExternalApi\Isite\Mapper\ContentBlockMapper;
 use App\ExternalApi\Isite\Mapper\MapperFactory;
+use App\ExternalApi\Riddle\Service\RiddleService;
 use BBC\ProgrammesPagesService\Domain\ValueObject\Pid;
 use BBC\ProgrammesPagesService\Service\CoreEntitiesService;
 use BBC\ProgrammesPagesService\Service\ProgrammesService;
@@ -85,6 +86,7 @@ class MultipleStreamableClipsContentBlockMapperTest extends TestCase
             $this->createConfiguredMock(VersionsService::class, [
                 'findStreamableVersionForProgrammeItems' => $this->givenStreamableVersions,
             ]),
+            $this->createMock(RiddleService::class),
             $this->createMock(LoggerInterface::class)
         );
     }

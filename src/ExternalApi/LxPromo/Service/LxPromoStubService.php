@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace App\ExternalApi\Morph\Service;
+namespace App\ExternalApi\LxPromo\Service;
 
 use BBC\ProgrammesPagesService\Domain\Entity\ProgrammeContainer;
 use GuzzleHttp\Promise\FulfilledPromise;

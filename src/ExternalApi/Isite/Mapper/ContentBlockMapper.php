@@ -8,6 +8,7 @@ use App\ExternalApi\Isite\Domain\ContentBlock\ClipBlock\ClipStandAlone;
 use App\ExternalApi\Isite\Domain\ContentBlock\ClipBlock\ClipStream;
 use App\ExternalApi\Isite\Domain\ContentBlock\ClipBlock\StreamItem;
 use App\ExternalApi\IdtQuiz\Service\IdtQuizService;
+use App\ExternalApi\Riddle\Service\RiddleService;
 use App\ExternalApi\Isite\Domain\ContentBlock\AbstractContentBlock;
 use App\ExternalApi\Isite\Domain\ContentBlock\Faq;
 use App\ExternalApi\Isite\Domain\ContentBlock\Galleries;
@@ -20,6 +21,7 @@ use App\ExternalApi\Isite\Domain\ContentBlock\Prose;
 use App\ExternalApi\Isite\Domain\ContentBlock\Table;
 use App\ExternalApi\Isite\Domain\ContentBlock\Telescope;
 use App\ExternalApi\Isite\Domain\ContentBlock\ThirdParty;
+use App\ExternalApi\Isite\Domain\ContentBlock\Riddle;
 use BBC\ProgrammesPagesService\Domain\Entity\Version;
 use App\ExternalApi\Isite\Domain\ContentBlock\Touchcast;
 use BBC\ProgrammesPagesService\Domain\ValueObject\Pid;
@@ -38,6 +40,9 @@ class ContentBlockMapper extends Mapper
 
     /** @var IdtQuizService */
     private $idtQuizService;
+
+    /** @var RiddleService */
+    private $riddleService;
 
     /** @var ProgrammesService */
     private $programmesService;
@@ -69,6 +74,7 @@ class ContentBlockMapper extends Mapper
         IdtQuizService $idtQuizService,
         ProgrammesService $programmesService,
         VersionsService $versionsService,
+        RiddleService $riddleService,
         LoggerInterface $logger
     ) {
         parent::__construct($mapperFactory, $isiteKeyHelper, $logger);
@@ -76,6 +82,7 @@ class ContentBlockMapper extends Mapper
         $this->idtQuizService = $idtQuizService;
         $this->programmesService = $programmesService;
         $this->versionsService = $versionsService;
+        $this->riddleService = $riddleService;
     }
 
     /**
@@ -399,6 +406,17 @@ class ContentBlockMapper extends Mapper
                     $this->getString($form->content->height)
                 );
                 // @codingStandardsIgnoreEnd
+                break;
+            case 'riddle':
+                $riddleId = $this->getString($form->content->riddle_id);
+                $htmlContent = $this->riddleService->getRiddleContentPromise($riddleId)->wait();
+
+                $contentBlock = new Riddle(
+                    $this->getString($form->content->title),
+                    $this->getString($form->metadata->name),
+                    $riddleId,
+                    $htmlContent
+                );
                 break;
             case 'contactform':
                 throw new HasContactFormException('Contact form found');

@@ -8,6 +8,7 @@ use App\ExternalApi\IdtQuiz\Service\IdtQuizService;
 use App\ExternalApi\Isite\Domain\Profile;
 use App\ExternalApi\Isite\Mapper\MapperFactory;
 use App\ExternalApi\Isite\Mapper\ProfileMapper;
+use App\ExternalApi\Riddle\Service\RiddleService;
 use BBC\ProgrammesPagesService\Service\CoreEntitiesService;
 use BBC\ProgrammesPagesService\Service\ProgrammesService;
 use BBC\ProgrammesPagesService\Service\VersionsService;
@@ -29,6 +30,7 @@ class ProfileMapperTest extends TestCase
         $ces = $this->createMock(CoreEntitiesService::class);
         $ps = $this->createMock(ProgrammesService::class);
         $vs = $this->createMock(VersionsService::class);
+        $rs = $this->createMock(RiddleService::class);
         $logger = $this->createMock(LoggerInterface::class);
         $this->mapper = new ProfileMapper(
             new MapperFactory(
@@ -37,6 +39,7 @@ class ProfileMapperTest extends TestCase
                 $this->getMockBuilder(IdtQuizService::class)->disableOriginalConstructor()->getMock(),
                 $ps,
                 $vs,
+                $rs,
                 $logger
             ),
             $keyHelper,

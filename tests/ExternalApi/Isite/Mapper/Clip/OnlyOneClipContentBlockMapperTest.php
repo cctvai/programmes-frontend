@@ -9,6 +9,7 @@ use App\ExternalApi\IdtQuiz\Service\IdtQuizService;
 use App\ExternalApi\Isite\Domain\ContentBlock\ClipBlock\ClipStandAlone;
 use App\ExternalApi\Isite\Mapper\ContentBlockMapper;
 use App\ExternalApi\Isite\Mapper\MapperFactory;
+use App\ExternalApi\Riddle\Service\RiddleService;
 use BBC\ProgrammesPagesService\Domain\Entity\Clip;
 use BBC\ProgrammesPagesService\Domain\ValueObject\Pid;
 use BBC\ProgrammesPagesService\Service\CoreEntitiesService;
@@ -76,6 +77,7 @@ class OnlyOneClipContentBlockMapperTest extends TestCase
             $this->createConfiguredMock(VersionsService::class, [
                 'findStreamableVersionForProgrammeItems' => $this->givenStreamableVersions,
             ]),
+            $this->createMock(RiddleService::class),
             $this->createMock(LoggerInterface::class)
         );
     }

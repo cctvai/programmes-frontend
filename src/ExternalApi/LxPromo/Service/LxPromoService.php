@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace App\ExternalApi\Morph\Service;
+namespace App\ExternalApi\LxPromo\Service;
 
 use BBC\ProgrammesMorphLibrary\MorphClient;
 use BBC\ProgrammesPagesService\Domain\Entity\ProgrammeContainer;
@@ -42,6 +42,7 @@ class LxPromoService
         }
 
         return $this->client->makeCachedViewPromise(
+            'view',
             'bbc-morph-lx-promo',
             'bbc-morph-lx-promo',
             [

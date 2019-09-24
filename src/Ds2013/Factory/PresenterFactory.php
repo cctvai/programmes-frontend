@@ -16,6 +16,7 @@ use App\Ds2013\Presenters\Domain\ContentBlock\Links\LinksPresenter;
 use App\Ds2013\Presenters\Domain\ContentBlock\Promotions\PromotionsPresenter;
 use App\Ds2013\Presenters\Domain\ContentBlock\Prose\ProsePresenter;
 use App\Ds2013\Presenters\Domain\ContentBlock\Quiz\QuizPresenter;
+use App\Ds2013\Presenters\Domain\ContentBlock\Riddle\RiddlePresenter;
 use App\Ds2013\Presenters\Domain\ContentBlock\Table\TablePresenter;
 use App\Ds2013\Presenters\Domain\ContentBlock\Telescope\TelescopePresenter;
 use App\Ds2013\Presenters\Domain\ContentBlock\ThirdParty\ThirdPartyPresenter;
@@ -64,6 +65,7 @@ use App\ExternalApi\Isite\Domain\ContentBlock\Links;
 use App\ExternalApi\Isite\Domain\ContentBlock\Promotions;
 use App\ExternalApi\Isite\Domain\ContentBlock\Prose;
 use App\ExternalApi\Isite\Domain\ContentBlock\Quiz;
+use App\ExternalApi\Isite\Domain\ContentBlock\Riddle;
 use App\ExternalApi\Isite\Domain\ContentBlock\Table;
 use App\ExternalApi\Isite\Domain\ContentBlock\Telescope;
 use App\ExternalApi\Isite\Domain\ContentBlock\ThirdParty;
@@ -272,6 +274,7 @@ class PresenterFactory
         Links::class => LinksPresenter::class,
         Promotions::class => PromotionsPresenter::class,
         Quiz::class => QuizPresenter::class,
+        Riddle::class => RiddlePresenter::class,
         Table::class => TablePresenter::class,
         ClipStream::class => ClipStreamPresenter::class,
         ClipStandalone::class => ClipStandalonePresenter::class,

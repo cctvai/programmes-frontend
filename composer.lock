@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "f3011dde444bf7ca5608c4708ef8437c",
+    "content-hash": "2b365780a52594b23bee2b2caa7e30dd",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -419,16 +419,16 @@
         },
         {
             "name": "bbc/programmes-morph-library",
-            "version": "v1.0.3",
+            "version": "v2.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bbc/programmes-morph-library.git",
-                "reference": "63b3b1919f4821e9e4b9b3b97743bc454494d860"
+                "reference": "3828b15ef5b37aab20f451796c7507d64cb8a1a3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bbc/programmes-morph-library/zipball/63b3b1919f4821e9e4b9b3b97743bc454494d860",
-                "reference": "63b3b1919f4821e9e4b9b3b97743bc454494d860",
+                "url": "https://api.github.com/repos/bbc/programmes-morph-library/zipball/3828b15ef5b37aab20f451796c7507d64cb8a1a3",
+                "reference": "3828b15ef5b37aab20f451796c7507d64cb8a1a3",
                 "shasum": ""
             },
             "require": {
@@ -457,10 +457,10 @@
                 }
             },
             "support": {
-                "source": "https://github.com/bbc/programmes-morph-library/tree/v1.0.3",
+                "source": "https://github.com/bbc/programmes-morph-library/tree/v2.0.0",
                 "issues": "https://github.com/bbc/programmes-morph-library/issues"
             },
-            "time": "2018-02-21T15:17:14+00:00"
+            "time": "2019-09-10T09:42:08+00:00"
         },
         {
             "name": "bbc/programmes-pages-service",

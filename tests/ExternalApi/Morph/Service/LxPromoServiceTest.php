@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Tests\App\ExternalApi\Morph\Service;
 
-use App\ExternalApi\Morph\Service\LxPromoService;
+use App\ExternalApi\LxPromo\Service\LxPromoService;
 use BBC\ProgrammesMorphLibrary\MorphClient;
 use BBC\ProgrammesPagesService\Domain\Entity\ProgrammeContainer;
 use PHPUnit\Framework\TestCase;
