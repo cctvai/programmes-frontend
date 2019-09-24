@@ -120,6 +120,7 @@ class UrlKeyExtension extends AbstractExtension
         'bbc_sounds_mixes' => true,
         'bbc_brasil' => true,
         'bbc_scotland' => true,
+        'bradford_1xtra' => '/programmes/p07nl4my',
     ];
 
     /**
