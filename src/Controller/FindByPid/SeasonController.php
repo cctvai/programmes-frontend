@@ -30,7 +30,7 @@ class SeasonController extends BaseController
         $promoPrority = false;
         $promoImage = false;
 
-        if ($season->getOption('brand_layout') === 'promo') {
+        if ($season->getOption('brand_layout') === 'promo' && $promotions) {
             $promoPrority = array_shift($promotions);
             $promoImage = ($promoPrority->getPromotedEntity() instanceof CoreEntity) ? $promoPrority->getPromotedEntity()->getImage() : $promoPrority->getPromotedEntity();
         }
