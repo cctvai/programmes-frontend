@@ -5,7 +5,7 @@ namespace App\Controller\Recipes;
 
 use App\Controller\BaseController;
 use App\Controller\Helpers\Breadcrumbs;
-use App\ExternalApi\Recipes\Domain\RecipesApiResult;
+use App\Cosmos\Dials;
 use App\ExternalApi\Recipes\Service\RecipesService;
 use BBC\ProgrammesPagesService\Domain\Entity\Programme;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -26,7 +26,8 @@ abstract class AbstractRecipesController extends BaseController
         Programme $programme,
         RecipesService $recipesService,
         StructuredDataHelper $structuredDataHelper,
-        Breadcrumbs $hBreadcrumbs
+        Breadcrumbs $hBreadcrumbs,
+        Dials $dials
     ) {
         $this->hBreadcrumbs = $hBreadcrumbs;
         $this->programme = $programme;
@@ -34,6 +35,10 @@ abstract class AbstractRecipesController extends BaseController
         $pid = (string) $programme->getPid();
         if (!$programme->getOption('recipes_enabled')) {
             throw new NotFoundHttpException(sprintf('Unknown Recipes with PID "%s"', $pid));
+        }
+
+        if ($dials->get('api-recipe') === 'disabled') {
+            throw new \Error("fetchRecipesByPid({$pid}) but the 'api-recipe' dial is disabled");
         }
 
         $apiResponse = $recipesService->fetchRecipesByPid($pid)->wait(true);
