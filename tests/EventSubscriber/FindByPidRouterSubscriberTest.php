@@ -13,11 +13,9 @@ use BBC\ProgrammesPagesService\Domain\Entity\Franchise;
 use BBC\ProgrammesPagesService\Domain\Entity\Gallery;
 use BBC\ProgrammesPagesService\Domain\Entity\Options;
 use BBC\ProgrammesPagesService\Domain\Entity\Season;
-use BBC\ProgrammesPagesService\Domain\Entity\Segment;
 use BBC\ProgrammesPagesService\Domain\Entity\Series;
 use BBC\ProgrammesPagesService\Domain\Entity\Version;
 use BBC\ProgrammesPagesService\Service\CoreEntitiesService;
-use BBC\ProgrammesPagesService\Service\SegmentsService;
 use BBC\ProgrammesPagesService\Service\ServiceFactory;
 use BBC\ProgrammesPagesService\Service\VersionsService;
 use PHPUnit\Framework\TestCase;
@@ -31,14 +29,13 @@ class FindByPidRouterSubscriberTest extends TestCase
     /**
      * @dataProvider entityDataProvider
      */
-    public function testEntityResponse($coreEntity, $version, $segment, $expectedController, $expectedAttrName)
+    public function testEntityResponse($coreEntity, $version, $expectedController, $expectedAttrName)
     {
         $request = $this->request();
 
         $this->buildSubscriber(
             $coreEntity,
-            $version,
-            $segment
+            $version
         )->updateController($this->event($request));
 
         // Controller is resolved correctly
@@ -49,8 +46,6 @@ class FindByPidRouterSubscriberTest extends TestCase
             $this->assertEquals($coreEntity, $request->attributes->get($expectedAttrName));
         } elseif ($version) {
             $this->assertEquals($version, $request->attributes->get($expectedAttrName));
-        } elseif ($segment) {
-            $this->assertEquals($segment, $request->attributes->get($expectedAttrName));
         }
     }
 
@@ -61,15 +56,14 @@ class FindByPidRouterSubscriberTest extends TestCase
         $series->method('getParent')->willReturn($tleo);
 
         return [
-            [$tleo, null, null, 'App\Controller\FindByPid\TlecController', 'programme'],
-            [$series, null, null, 'App\Controller\FindByPid\SeriesController', 'programme'],
-            [$this->createMock(Episode::class), null, null, 'App\Controller\FindByPid\EpisodeController', 'episode'],
-            [$this->createMock(Clip::class), null, null, 'App\Controller\FindByPid\ClipController', 'clip'],
-            [$this->createMock(Collection::class), null, null, 'App\Controller\FindByPid\CollectionController', 'collection'],
-            [$this->createMock(Gallery::class), null, null, 'App\Controller\FindByPid\GalleryController', 'gallery'],
-            [$this->createMock(Season::class), null, null, 'App\Controller\FindByPid\SeasonController', 'season'],
-            [null, $this->createMock(Version::class), null, 'App\Controller\FindByPid\VersionController', 'version'],
-            [null, null, $this->createMock(Segment::class), 'App\Controller\FindByPid\SegmentController', 'segment'],
+            [$tleo, null, 'App\Controller\FindByPid\TlecController', 'programme'],
+            [$series, null, 'App\Controller\FindByPid\SeriesController', 'programme'],
+            [$this->createMock(Episode::class), null, 'App\Controller\FindByPid\EpisodeController', 'episode'],
+            [$this->createMock(Clip::class), null, 'App\Controller\FindByPid\ClipController', 'clip'],
+            [$this->createMock(Collection::class), null, 'App\Controller\FindByPid\CollectionController', 'collection'],
+            [$this->createMock(Gallery::class), null, 'App\Controller\FindByPid\GalleryController', 'gallery'],
+            [$this->createMock(Season::class), null, 'App\Controller\FindByPid\SeasonController', 'season'],
+            [null, $this->createMock(Version::class), 'App\Controller\FindByPid\VersionController', 'version'],
         ];
     }
 
@@ -131,8 +125,7 @@ class FindByPidRouterSubscriberTest extends TestCase
 
     private function buildSubscriber(
         CoreEntity $coreEntityResult = null,
-        Version $versionResult = null,
-        Segment $segmentResult = null
+        Version $versionResult = null
     ) {
         $coreEntitiesService = $this->createMock(CoreEntitiesService::class);
         $coreEntitiesService->method('findByPidFull')->willReturn($coreEntityResult);
@@ -140,13 +133,9 @@ class FindByPidRouterSubscriberTest extends TestCase
         $versionsService = $this->createMock(VersionsService::class);
         $versionsService->method('findByPidFull')->willReturn($versionResult);
 
-        $segmentsService = $this->createMock(SegmentsService::class);
-        $segmentsService->method('findByPidFull')->willReturn($segmentResult);
-
         $serviceFactory = $this->createMock(ServiceFactory::class);
         $serviceFactory->method('getCoreEntitiesService')->willReturn($coreEntitiesService);
         $serviceFactory->method('getVersionsService')->willReturn($versionsService);
-        $serviceFactory->method('getSegmentsService')->willReturn($segmentsService);
 
         return new FindByPidRouterSubscriber($serviceFactory);
     }

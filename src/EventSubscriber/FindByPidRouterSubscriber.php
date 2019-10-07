@@ -20,7 +20,7 @@ use Symfony\Component\HttpKernel\KernelEvents;
 /**
  * A single route /programmes/:pid can serve one of several page types depending
  * upon the type of entity it finds. This entity can be either a Programme,
- * Group, Version or Segment. It is possible to store all of these controller
+ * Group or Version. It is possible to store all of these controller
  * actions within a single class, but then that class becomes gargantuan and
  * thus finding things within it becomes a pain. It would be preferable to split
  * these controllers up into multiple classes - one for the brand page, one for
@@ -137,14 +137,6 @@ class FindByPidRouterSubscriber implements EventSubscriberInterface
         if ($version) {
             $request->attributes->set('version', $version);
             $request->attributes->set('_controller', \App\Controller\FindByPid\VersionController::class);
-            return;
-        }
-
-        // Attempt to find a Segment
-        $segment = $this->serviceFactory->getSegmentsService()->findByPidFull($pid);
-        if ($segment) {
-            $request->attributes->set('segment', $segment);
-            $request->attributes->set('_controller', \App\Controller\FindByPid\SegmentController::class);
             return;
         }
 
