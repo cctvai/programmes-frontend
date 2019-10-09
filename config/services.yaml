@@ -49,6 +49,10 @@ parameters:
     #Dials
     app.cosmos.dials.path: '/etc/cosmos-dials/dials.json'
 
+    # How long to cache items in a stale-while-revalidate state for things using
+    # the resilient redis cache layer
+    app.cache.resilient_cache_time: 21600
+
 services:
     # default configuration for services in *this* file
     _defaults:
@@ -243,6 +247,9 @@ services:
     BBC\ProgrammesCachingLibrary\CacheInterface:
         alias: BBC\ProgrammesCachingLibrary\Cache
 
+    BBC\ProgrammesCachingLibrary\CacheWithResilience:
+        arguments: ['@logger', '@cache.programmes', 'programmes-frontend.%cosmos_component_release%', '%app.cache.resilient_cache_time%', [], ['Doctrine\DBAL\Exception\ConnectionException', 'Doctrine\DBAL\Exception\ServerException']]
+
     BBC\ProgrammesCachingLibrary\Cache:
         arguments: ['@cache.programmes', 'programmes-frontend.%cosmos_component_release%']
 
@@ -252,6 +259,8 @@ services:
 
     BBC\ProgrammesPagesService\Service\ServiceFactory:
         public: true
+        arguments:
+            $cache: '@BBC\ProgrammesCachingLibrary\CacheWithResilience'
 
     BBC\ProgrammesPagesService\Service\SegmentEventsService:
         factory: ['@BBC\ProgrammesPagesService\Service\ServiceFactory', 'getSegmentEventsService']
