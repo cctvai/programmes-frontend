@@ -52,7 +52,7 @@ class HttpApiClientFactoryTest extends TestCase
                 },
                 ['some arguments'],
                 null,
-                CacheInterface::INDEFINITE,
+                CacheInterface::NORMAL,
                 CacheInterface::NONE,
                 ['timeout' => true]
             )
