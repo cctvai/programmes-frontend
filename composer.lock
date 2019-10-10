@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ecaa4c54b530ff666930ba968d1c9d55",
+    "content-hash": "c44f154d35fdbff2754ba27a98c32f17",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -469,17 +469,17 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/bbc/programmes-pages-service.git",
-                "reference": "c87d37f9d41c1570d91273c07d42b278d6f69eb5"
+                "reference": "5f796618d6926d9c3caa17e38d9c85e99440dd85"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bbc/programmes-pages-service/zipball/c87d37f9d41c1570d91273c07d42b278d6f69eb5",
-                "reference": "c87d37f9d41c1570d91273c07d42b278d6f69eb5",
+                "url": "https://api.github.com/repos/bbc/programmes-pages-service/zipball/5f796618d6926d9c3caa17e38d9c85e99440dd85",
+                "reference": "5f796618d6926d9c3caa17e38d9c85e99440dd85",
                 "shasum": ""
             },
             "require": {
                 "bbc/doctrine-extensions": "^2.4.137",
-                "bbc/programmes-caching-library": "^1.0",
+                "bbc/programmes-caching-library": "^1.1",
                 "doctrine/orm": "^2.5",
                 "php": ">=7.1.0",
                 "psr/cache": "^1.0",
@@ -517,7 +517,7 @@
                 "source": "https://github.com/bbc/programmes-pages-service/tree/master",
                 "issues": "https://github.com/bbc/programmes-pages-service/issues"
             },
-            "time": "2019-08-21T10:30:47+00:00"
+            "time": "2019-10-04T15:01:22+00:00"
         },
         {
             "name": "behat/transliterator",

@@ -31,6 +31,11 @@ programme_credits:
     defaults: { route: find_by_pid, _fragment: 'credits', permanent: true }
     requirements: { pid: '[0-9b-df-hj-np-tv-z]{8,15}' }
 
+programme_contact:
+    path: /programmes/{pid}/contact
+    defaults: { _controller: App\Controller\Contact\ContactController }
+    requirements: { pid: '[0-9b-df-hj-np-tv-z]{8,15}' }
+
 programme_episodes:
     path: /programmes/{pid}/episodes
     defaults: { _controller: App\Controller\ProgrammeEpisodes\IndexController }

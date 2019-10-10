@@ -6,6 +6,8 @@ use BBC\BrandingClient\Branding;
 use BBC\ProgrammesPagesService\Domain\Entity\CoreEntity;
 use BBC\ProgrammesPagesService\Domain\Entity\Episode;
 use BBC\ProgrammesPagesService\Domain\Entity\ProgrammeContainer;
+use BBC\ProgrammesPagesService\Domain\ValueObject\UGCContactDetails;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
@@ -28,18 +30,21 @@ class BrandingPlaceholderResolver
 {
     private const PLACEHOLDER_TITLE = '<!--BRANDING_PLACEHOLDER_TITLE-->';
     private const PLACEHOLDER_NAV = '<!--BRANDING_PLACEHOLDER_NAV-->';
+    private const PLACEHOLDER_NAV_END = '<!--BRANDING_PLACEHOLDER_NAV_END-->';
 
     /** @var UrlGeneratorInterface */
     private $router;
-
     private $translator;
+    private $requestStack;
 
     public function __construct(
         UrlGeneratorInterface $router,
-        TranslatorInterface $translator
+        TranslatorInterface $translator,
+        RequestStack $requestStack
     ) {
         $this->router = $router;
         $this->translator = $translator;
+        $this->requestStack = $requestStack;
     }
 
     public function resolve(Branding $branding, $context): Branding
@@ -59,31 +64,54 @@ class BrandingPlaceholderResolver
         );
     }
 
-    private function resolvePlaceholders(Branding $branding, $context, string $haystack)
+    private function resolvePlaceholders(Branding $branding, $context, string $html)
     {
         // Check if the placeholder is present in the haystack, before
         // attempting the replace to avoid doing extra work building the
         // replacement text, if there is nothing to replace.
 
         // Title
-        if (strpos($haystack, self::PLACEHOLDER_TITLE) !== 0) {
-            $haystack = str_replace(
+        if (strpos($html, self::PLACEHOLDER_TITLE) !== false) {
+            $html = str_replace(
                 self::PLACEHOLDER_TITLE,
                 $this->buildTitle($context),
-                $haystack
+                $html
             );
         }
 
         // Navigation
-        if (strpos($haystack, self::PLACEHOLDER_NAV) !== 0) {
-            $haystack = str_replace(
+        if (strpos($html, self::PLACEHOLDER_NAV) !== false) {
+            $html = str_replace(
                 self::PLACEHOLDER_NAV,
                 $this->buildNav($context, $branding),
-                $haystack
+                $html
             );
         }
 
-        return $haystack;
+        // Add UGC contact link to top nav (controlled by TLEO options)
+        $tleo = $context->getTleo();
+        $contactDetails = $tleo->getOption('contact_details');
+        if ($contactDetails && strpos($html, self::PLACEHOLDER_NAV_END) !== false) {
+            $UGCContactDetail = null;
+            foreach ($contactDetails as $contactDetail) {
+                if ($contactDetail instanceof UGCContactDetails) {
+                    $UGCContactDetail = $contactDetail;
+                }
+            }
+            if ($UGCContactDetail && $UGCContactDetail->isInTopNav()) {
+                $currentUrl = $this->requestStack->getCurrentRequest()->getUri();
+                $contactTitle = $UGCContactDetail->getTitle() ?? $this->translator->trans('contact_form');
+                $contactHref = '/send/' . $UGCContactDetail->getValue() . '?ptrt=' . urlencode($currentUrl);
+                $contactLink = "<li class=\"br-nav__item\"><a class=\"br-nav__link\" href=\"{$contactHref}\">{$contactTitle}</a></li>";
+                $html = str_replace(
+                    self::PLACEHOLDER_NAV_END,
+                    $contactLink,
+                    $html
+                );
+            }
+        }
+
+        return $html;
     }
 
     private function buildTitle($context): string

@@ -486,6 +486,10 @@ msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
 
+#. English: "Contact form".
+msgid "contact_form"
+msgstr ""
+
 #. English: "Please complete this field".
 msgid "contact_form_field"
 msgstr ""

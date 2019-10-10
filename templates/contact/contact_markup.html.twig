@@ -1,0 +1,59 @@
+{% macro renderContact(contactDetail, currentUrl) %}
+    {% set type = contactDetail.getType() %}
+    {% set value = contactDetail.getValue() %}
+    {% set freetext = contactDetail.getFreetext() %}
+    {% set isUGC = type == 'ugc' %}
+    {% set isLong = (type == 'address') or (type == 'other') %}
+    <li class="contact-item">
+        {% if isUGC %} {{ gelicon('social', 'feedback') }}
+        {% elseif type == 'address' %} {{ gelicon('core', 'home') }}
+        {% elseif type == 'email' %} {{ gelicon('core', 'email') }}
+        {% elseif type == 'facebook' %} {{ gelicon('social', type) }}
+        {% elseif type == 'twitter' %} {{ gelicon('social', type) }}
+        {% elseif type == 'google-plus' %} {{ gelicon('social', type) }}
+        {% elseif type == 'pinterest' %} {{ gelicon('social', type) }}
+        {% elseif type == 'tumblr' %} {{ gelicon('social', type) }}
+        {% elseif type == 'instagram' %} {{ gelicon('social', type) }}
+        {% elseif type == 'fax' %} {{ gelicon('core', 'print') }}
+        {% elseif type == 'phone' %} {{ gelicon('platforms', 'mobile') }}
+        {% elseif type == 'sms' %} {{ gelicon('social', 'mobile-smart') }}
+        {% else %} {{ gelicon('childrens', 'chats') }}
+        {% endif %}
+        <div>
+            <h3>
+                {% if isUGC %}
+                    <a href="{{'/send/' ~ value ~ '?ptrt=' ~ (currentUrl|url_encode)}}">
+                        {{ contactDetail.getTitle()|default(tr('contact_form')) }}
+                    </a>
+                {% else %}
+                    {{ type|capitalize }}
+                {% endif %}
+            </h3>
+            {% if type == 'email' %}
+                <a href="{{'mailto:' ~ value}}">{{ value }}</a>
+            {% elseif (type == 'fax') or (type == 'phone') or (type == 'sms') %}
+                <span>{{ value }}</span>
+            {% elseif isLong %}
+                <p>{{ value|trim|nl2br }}</p>
+            {% elseif not isUGC %}
+                <a href="{{value}}">{{ value }}</a>
+            {% endif %}
+            {# most types won't have line breaks in the freetext, but UGC potentially has #}
+            {% if (freetext) %}
+                <p>
+                    {% if isUGC %}
+                        {{ freetext|trim|nl2br }}
+                    {% else %}
+                        {{ freetext|trim }}
+                    {% endif %}
+                </p>
+            {% endif %}
+        </div>
+    </li>
+{% endmacro %}
+
+<ul class="contact-list">
+    {% for contactDetail in contactDetails %}
+        {{ _self.renderContact(contactDetail, currentUrl) }}
+    {% endfor %}
+</ul>

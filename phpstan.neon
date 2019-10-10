@@ -15,3 +15,5 @@ parameters:
         - '#Call to an undefined method Tests\\App\\Translate\\TranslatableTraitTest::localDateIntl().#'
         - '#Call to an undefined method App\\ExternalApi\\Isite\\Domain\\ContentBlock\\AbstractContentBlock::getPromotions()#'
         - '#Static property Tests\\App\\BaseTemplateTestCase::.*does not accept object#'
+    excludes_analyse:
+        - *ContactControllerTest.php

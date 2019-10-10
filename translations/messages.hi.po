@@ -485,6 +485,10 @@ msgstr[0] "संपर्क"
 msgstr[1] "संपर्क"
 msgstr[2] "संपर्क"
 
+#. English: "Contact form".
+msgid "contact_form"
+msgstr ""
+
 #. English: "Please complete this field".
 msgid "contact_form_field"
 msgstr "कृपया यहाँ विवरण लिखें"

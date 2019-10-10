@@ -484,6 +484,10 @@ msgstr[0] "راه‌های تماس"
 msgstr[1] "راه‌ تماس"
 msgstr[2] "راه‌های تماس"
 
+#. English: "Contact form".
+msgid "contact_form"
+msgstr ""
+
 #. English: "Please complete this field".
 msgid "contact_form_field"
 msgstr "لطفا این بخش را کامل کنید"

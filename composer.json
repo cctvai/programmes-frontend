@@ -13,6 +13,7 @@
         { "type": "vcs", "url": "git@github.com:bbc/branding-client.git" },
         { "type": "vcs", "url": "git@github.com:bbc/gel-iconography-assets.git" },
         { "type": "vcs", "url": "git@github.com:bbc/DoctrineExtensions.git" },
+        { "type": "vcs", "url": "git@github.com:bbc/programmes-caching-library.git" },
         { "type": "vcs", "url": "git@github.com:bbc/programmes-pages-service.git" },
         { "type": "vcs", "url": "git@github.com:bbc/programmes-morph-library.git" },
         { "type": "vcs", "url": "git@github.com:bbc/programmes-caching-library.git" },

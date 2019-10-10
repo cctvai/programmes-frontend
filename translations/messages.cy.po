@@ -489,6 +489,10 @@ msgstr[0] "Manylion cyswllt"
 msgstr[1] "Manylion cyswllt"
 msgstr[2] "Manylion cyswllt"
 
+#. English: "Contact form".
+msgid "contact_form"
+msgstr "Ffurflen gysylltu"
+
 #. English: "Please complete this field".
 msgid "contact_form_field"
 msgstr "Rhaid llenwi’r blwch yma"
@@ -517,7 +521,7 @@ msgstr "Rhaid cynnwys y manylion isod yn eich neges:"
 
 #. English: "Contact us".
 msgid "contact_us"
-msgstr "Cysylltu â ni"
+msgstr "Cysylltwch â ni"
 
 #. English: "%1 Podcasts".
 msgid "context_podcasts"

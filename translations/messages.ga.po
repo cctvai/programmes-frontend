@@ -487,6 +487,10 @@ msgstr[0] "Sonra teagmhála"
 msgstr[1] "Sonra teagmhála"
 msgstr[2] "Sonra teagmhála"
 
+#. English: "Contact form".
+msgid "contact_form"
+msgstr "Foirm theagmhála"
+
 #. English: "Please complete this field".
 msgid "contact_form_field"
 msgstr "Comhlánaigh an réimse seo le do thoil"

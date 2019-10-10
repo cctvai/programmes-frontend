@@ -487,6 +487,10 @@ msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
 
+#. English: "Contact form".
+msgid "contact_form"
+msgstr "Foirm fios"
+
 #. English: "Please complete this field".
 msgid "contact_form_field"
 msgstr ""
@@ -513,7 +517,7 @@ msgstr ""
 
 #. English: "Contact us".
 msgid "contact_us"
-msgstr ""
+msgstr "Cuir fios thugainn"
 
 #. English: "%1 Podcasts".
 msgid "context_podcasts"

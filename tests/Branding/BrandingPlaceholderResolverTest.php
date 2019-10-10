@@ -11,6 +11,7 @@ use BBC\ProgrammesPagesService\Domain\ValueObject\Pid;
 use PHPUnit\Framework\TestCase;
 use PHPUnit_Framework_MockObject_MockObject;
 use RMP\Translate\Translate;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Generator\UrlGenerator;
 use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\RouteCollectionBuilder;
@@ -33,12 +34,13 @@ class BrandingPlaceholderResolverTest extends TestCase
             new RequestContext()
         );
 
+        $requestStack = $this->createMock(RequestStack::class);
         $translator = $this->createMock(TranslatorInterface::class);
 
         $translator->method('trans')
             ->will($this->returnArgument(0));
 
-        $this->resolver = new BrandingPlaceholderResolver($router, $translator);
+        $this->resolver = new BrandingPlaceholderResolver($router, $translator, $requestStack);
     }
 
     public function testContextIsNull()
