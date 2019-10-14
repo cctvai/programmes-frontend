@@ -2,42 +2,48 @@ $vertical-padding: 1.5em;
 
 .contact-page {
     padding-bottom: 2em;
+}
 
-    li.contact-item {
-        @extend .cf;
-        list-style: none;
-        padding-bottom: $vertical-padding / 2;
+li.contact-item {
+    @extend .cf;
+    list-style: none;
+    padding-bottom: $vertical-padding / 2;
+    border-top-style: solid;
+    border-top-width: 1px;
 
-        h3 {
-            margin: 0;
-            padding: 0;
+    h2 {
+        margin: 0;
+        padding: 0;
+    }
+
+    svg {
+        float: left;
+        width: 32px;
+        height: 32px;
+        padding-top: 4px;
+    }
+
+    div {
+        margin-left: 40px;
+        @media screen and (min-width: 400px) {
+            margin-left: 48px;
         }
 
-        svg {
-            float: left;
-            width: 32px;
-            height: 32px;
-            padding-top: 4px;
-        }
-
-        div {
-            margin-left: 40px;
-            @media screen and (min-width: 400px) {
-                margin-left: 48px;
-            }
-
-            p:last-child {
-                margin-bottom: 0;
-            }
+        p:last-child {
+            margin-bottom: 0;
         }
     }
 
-    ul.contact-list {
-        margin-top: 1em;
 
-        li+li {
-            padding-top: $vertical-padding / 2;
-        }
+    &:first-child {
+        border-top-style: none;
     }
 }
 
+ul.contact-list {
+    margin-top: 1em;
+
+    li+li {
+        padding-top: $vertical-padding / 2;
+    }
+}

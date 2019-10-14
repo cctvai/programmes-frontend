@@ -4,7 +4,7 @@
     {% set freetext = contactDetail.getFreetext() %}
     {% set isUGC = type == 'ugc' %}
     {% set isLong = (type == 'address') or (type == 'other') %}
-    <li class="contact-item">
+    <li class="contact-item br-keyline">
         {% if isUGC %} {{ gelicon('social', 'feedback') }}
         {% elseif type == 'address' %} {{ gelicon('core', 'home') }}
         {% elseif type == 'email' %} {{ gelicon('core', 'email') }}
@@ -20,7 +20,7 @@
         {% else %} {{ gelicon('childrens', 'chats') }}
         {% endif %}
         <div>
-            <h3>
+            <h2 class="gamma">
                 {% if isUGC %}
                     <a href="{{'/send/' ~ value ~ '?ptrt=' ~ (currentUrl|url_encode)}}">
                         {{ contactDetail.getTitle()|default(tr('contact_form')) }}
@@ -28,7 +28,7 @@
                 {% else %}
                     {{ type|capitalize }}
                 {% endif %}
-            </h3>
+            </h2>
             {% if type == 'email' %}
                 <a href="{{'mailto:' ~ value}}">{{ value }}</a>
             {% elseif (type == 'fax') or (type == 'phone') or (type == 'sms') %}
