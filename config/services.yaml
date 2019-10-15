@@ -248,7 +248,13 @@ services:
         alias: BBC\ProgrammesCachingLibrary\Cache
 
     BBC\ProgrammesCachingLibrary\CacheWithResilience:
-        arguments: ['@logger', '@cache.programmes', 'programmes-frontend.%cosmos_component_release%', '%app.cache.resilient_cache_time%', [], ['Doctrine\DBAL\Exception\ConnectionException', 'Doctrine\DBAL\Exception\ServerException']]
+        arguments:
+            - '@logger'
+            - '@cache.programmes'
+            - 'programmes-frontend.%cosmos_component_release%'
+            - '%app.cache.resilient_cache_time%'
+            - []
+            - ['Doctrine\DBAL\Exception\DriverException']
 
     BBC\ProgrammesCachingLibrary\Cache:
         arguments: ['@cache.programmes', 'programmes-frontend.%cosmos_component_release%']

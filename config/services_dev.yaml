@@ -4,3 +4,13 @@ parameters:
     app.vote.accountwrapperurl: 'https://account-wrapper.test.files.bbci.co.uk/vote-wrapper.min.js'
 
     app.cosmos.dials.path: '../dials.json'
+
+services:
+    BBC\ProgrammesCachingLibrary\CacheWithResilience:
+        arguments:
+            - '@logger'
+            - '@cache.programmes'
+            - 'programmes-frontend.%cosmos_component_release%'
+            - '%app.cache.resilient_cache_time%'
+            - []
+            - [] # Not adding any exception here so we can see the errors in Dev
