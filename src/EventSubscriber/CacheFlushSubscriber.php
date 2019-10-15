@@ -5,7 +5,8 @@ namespace App\EventSubscriber;
 
 use BBC\BrandingClient\BrandingClient;
 use BBC\BrandingClient\OrbitClient;
-use BBC\ProgrammesCachingLibrary\CacheInterface;
+use BBC\ProgrammesCachingLibrary\Cache;
+use BBC\ProgrammesCachingLibrary\CacheWithResilience;
 use BBC\ProgrammesMorphLibrary\MorphClient;
 use Psr\Container\ContainerInterface;
 use Symfony\Contracts\Service\ServiceSubscriberInterface;
@@ -27,7 +28,7 @@ class CacheFlushSubscriber implements EventSubscriberInterface, ServiceSubscribe
 
     public static function getSubscribedServices()
     {
-        return [BrandingClient::class, OrbitClient::class, CacheInterface::class, MorphClient::class];
+        return [BrandingClient::class, OrbitClient::class, Cache::class, CacheWithResilience::class, MorphClient::class];
     }
 
     public function __construct(ContainerInterface $container)
@@ -42,8 +43,11 @@ class CacheFlushSubscriber implements EventSubscriberInterface, ServiceSubscribe
         }
 
         if ($event->getRequest()->query->has('__flush_cache')) {
-            $cache = $this->container->get(CacheInterface::class);
+            $cache = $this->container->get(Cache::class);
             $cache->setFlushCacheItems(true);
+
+            $cacheWithResilience = $this->container->get(CacheWithResilience::class);
+            $cacheWithResilience->setFlushCacheItems(true);
 
             $brandingCache = $this->container->get(BrandingClient::class);
             $brandingCache->setFlushCacheItems(true);
