@@ -99,9 +99,10 @@ class BrandingPlaceholderResolver
                 }
             }
             if ($UGCContactDetail && $UGCContactDetail->isInTopNav()) {
-                $currentUrl = $this->requestStack->getCurrentRequest()->getUri();
                 $contactTitle = $UGCContactDetail->getTitle() ?? $this->translator->trans('contact_form');
-                $contactHref = '/send/' . $UGCContactDetail->getValue() . '?ptrt=' . urlencode($currentUrl);
+                $contactHref = $this->router->generate('ugc_form', [
+                    'campaignId' => $UGCContactDetail->getValue(),
+                ]) . '?ptrt=' . urlencode($this->requestStack->getCurrentRequest()->getUri());
                 $contactLink = "<li class=\"br-nav__item\"><a class=\"br-nav__link\" href=\"{$contactHref}\">{$contactTitle}</a></li>";
                 $html = str_replace(
                     self::PLACEHOLDER_NAV_END,

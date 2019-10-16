@@ -67,6 +67,8 @@ class UpdateGelicons
         $contents = preg_replace('#^\s*(<svg[^>]*?) width="[0-9\.]+"([^>]*>)#i', '${1}${2}', $contents);
         // get rid of height
         $contents = preg_replace('#^\s*(<svg[^>]*?) height="[0-9\.]+"([^>]*>)#i', '${1}${2}', $contents);
+        // get rid of <title>
+        $contents = preg_replace('#<title>[^<]+</title>#i', '', $contents);
         // Replace <svg> with <symbol id=
         list($set, $icon) = $this->getDetailsFromPath($inputPath);
         $id = "gelicon--$set--$icon";

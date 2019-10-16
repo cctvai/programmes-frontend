@@ -30,6 +30,7 @@ use BBC\ProgrammesPagesService\Domain\Entity\Programme;
 use BBC\ProgrammesPagesService\Domain\Entity\ProgrammeContainer;
 use BBC\ProgrammesPagesService\Domain\Entity\Promotion;
 use BBC\ProgrammesPagesService\Domain\Entity\RelatedLink;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
@@ -46,11 +47,19 @@ class PresenterFactory
     /** @var \App\DsShared\Factory\HelperFactory */
     private $helperFactory;
 
-    public function __construct(TranslatorInterface $translator, UrlGeneratorInterface $router, HelperFactory $helperFactory)
-    {
+    /** @var RequestStack */
+    private $requestStack;
+
+    public function __construct(
+        TranslatorInterface $translator,
+        UrlGeneratorInterface $router,
+        HelperFactory $helperFactory,
+        RequestStack $requestStack
+    ) {
         $this->translator = $translator;
         $this->router = $router;
         $this->helperFactory = $helperFactory;
+        $this->requestStack = $requestStack;
     }
 
     public function durationPresenter(int $duration, array $options = []): DurationPresenter
@@ -129,6 +138,7 @@ class PresenterFactory
                 $this->helperFactory,
                 $this->translator,
                 $this->router,
+                $this->requestStack,
                 $programme,
                 $upcomingBroadcast,
                 $lastOn,
@@ -144,6 +154,7 @@ class PresenterFactory
             $this->helperFactory,
             $this->translator,
             $this->router,
+            $this->requestStack,
             $programme,
             $upcomingBroadcast,
             $lastOn,

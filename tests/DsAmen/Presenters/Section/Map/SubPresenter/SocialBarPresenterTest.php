@@ -8,6 +8,8 @@ use BBC\ProgrammesPagesService\Domain\Entity\Programme;
 use BBC\ProgrammesPagesService\Domain\Enumeration\ContactMediumEnum;
 use BBC\ProgrammesPagesService\Domain\ValueObject\ContactDetails;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Routing\RouterInterface;
 
 class SocialBarPresenterTest extends TestCase
 {
@@ -17,7 +19,7 @@ class SocialBarPresenterTest extends TestCase
         $programme = $this->createMock(Programme::class);
         $programme->method('getOption')->with('contact_details')->willReturn($contactDetails);
 
-        $socialBar = new SocialBarPresenter($programme);
+        $socialBar = $this->createSocialBarPresenter($programme);
         $result = $socialBar->getSocialMediaDetails();
 
         $this->assertEquals(count($expected), count($result));
@@ -81,5 +83,14 @@ class SocialBarPresenterTest extends TestCase
                 ],
             ],
         ];
+    }
+
+    private function createSocialBarPresenter(Programme $programme)
+    {
+        return new SocialBarPresenter(
+            $this->createMock(RouterInterface::class),
+            $this->createMock(RequestStack::class),
+            $programme
+        );
     }
 }

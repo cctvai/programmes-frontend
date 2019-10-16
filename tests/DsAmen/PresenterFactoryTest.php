@@ -8,6 +8,7 @@ use App\DsShared\Factory\HelperFactory;
 use BBC\ProgrammesPagesService\Domain\Entity\Programme;
 use PHPUnit\Framework\TestCase;
 use PHPUnit_Framework_MockObject_MockObject;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
@@ -25,6 +26,9 @@ class PresenterFactoryTest extends TestCase
     /** @var HelperFactory|PHPUnit_Framework_MockObject_MockObject */
     private $helperFactory;
 
+    /** @var RequestStack|PHPUnit_Framework_MockObject_MockObject */
+    private $requestStack;
+
     /** @var PresenterFactory */
     private $factory;
 
@@ -33,7 +37,8 @@ class PresenterFactoryTest extends TestCase
         $this->translator = $this->createMock(TranslatorInterface::class);
         $this->router = $this->createMock(UrlGeneratorInterface::class);
         $this->helperFactory = $this->createMock(HelperFactory::class);
-        $this->factory = new PresenterFactory($this->translator, $this->router, $this->helperFactory);
+        $this->requestStack = $this->createMock(RequestStack::class);
+        $this->factory = new PresenterFactory($this->translator, $this->router, $this->helperFactory, $this->requestStack);
     }
 
     public function testOrganismProgramme()

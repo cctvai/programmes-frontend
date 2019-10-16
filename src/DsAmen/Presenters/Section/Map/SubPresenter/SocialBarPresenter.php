@@ -7,15 +7,30 @@ use App\DsAmen\Presenter;
 use BBC\ProgrammesPagesService\Domain\Entity\Programme;
 use BBC\ProgrammesPagesService\Domain\Enumeration\ContactMediumEnum;
 use BBC\ProgrammesPagesService\Domain\ValueObject\ContactDetails;
+use BBC\ProgrammesPagesService\Domain\ValueObject\UGCContactDetails;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class SocialBarPresenter extends Presenter
 {
     /** @var ContactDetails[] */
     private $socialMediaDetails;
 
-    public function __construct(Programme $programme, array $options = [])
-    {
+    /** @var UrlGeneratorInterface */
+    private $router;
+
+    /** @var RequestStack */
+    private $requestStack;
+
+    public function __construct(
+        UrlGeneratorInterface $router,
+        RequestStack $requestStack,
+        Programme $programme,
+        array $options = []
+    ) {
         parent::__construct($options);
+        $this->router = $router;
+        $this->requestStack = $requestStack;
         $this->socialMediaDetails = $this->filterSocialMediaDetails($programme->getOption('contact_details') ?? []);
     }
 
@@ -23,6 +38,12 @@ class SocialBarPresenter extends Presenter
     public function getSocialMediaDetails(): array
     {
         return $this->socialMediaDetails;
+    }
+
+    public function getUGCHref(UGCContactDetails $UGCContactDetail)
+    {
+        return $this->router->generate('ugc_form', ['campaignId' => $UGCContactDetail->getValue()])
+            . '?ptrt=' . urlencode($this->requestStack->getCurrentRequest()->getUri());
     }
 
     /**

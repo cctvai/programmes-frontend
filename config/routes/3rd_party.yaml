@@ -123,3 +123,9 @@ food_recipes:
     defaults: { _controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController::redirectAction, route: '' }
     requirements: { pid: '[0-9b-df-hj-np-tv-z]{8,15}' }
     schemes: [http]
+
+ugc_form:
+    path: /send/{campaignId}
+    defaults: { _controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController::redirectAction, route: '' }
+    requirements: { campaignid: '[a-zA-Z0-9]+' }
+    schemes: [https]

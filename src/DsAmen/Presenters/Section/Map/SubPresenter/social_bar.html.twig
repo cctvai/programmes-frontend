@@ -5,11 +5,20 @@
             <ul class="list-inline list-inline--social-bar">
                 {%- for details in social_bar.getSocialMediaDetails() -%}
                     <li class="map-social__icon br-secondary-link-onbg015--hover">
-                        <a
-                            {{ get_ati_attributes('social-'~details.getType()|lower)|attrs  }}
-                            href="{{ details.getValue() }}" title="{{ details.getType()|capitalize }}">
-                            {{ gelicon('social', details.getType(), 'gelicon--programme') }}
-                        </a>
+                        {% if details.getType() == 'ugc' %}
+                            <a
+                                {{ get_ati_attributes('social-'~details.getType()|lower)|attrs  }}
+                                href="{{ social_bar.getUGCHref(details) }}"
+                                title="{{ details.getTitle()|default(tr('contact_form')) }}">
+                                {{ gelicon('social', 'feedback', 'gelicon--programme') }}
+                            </a>
+                        {% else %}
+                            <a
+                                {{ get_ati_attributes('social-'~details.getType()|lower)|attrs  }}
+                                href="{{ details.getValue() }}" title="{{ details.getType()|capitalize }}">
+                                {{ gelicon('social', details.getType(), 'gelicon--programme') }}
+                            </a>
+                        {% endif %}
                     </li>
                 {%- endfor -%}
             </ul>

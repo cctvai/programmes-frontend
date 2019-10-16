@@ -11,6 +11,7 @@ use BBC\ProgrammesPagesService\Domain\ValueObject\UGCContactDetails;
 use App\Controller\Contact\ContactController;
 use App\Controller\Helpers\Breadcrumbs;
 use Tests\App\BaseWebTestCase;
+use function GuzzleHttp\Psr7\parse_query;
 
 function ptrt($qs) // helper to check the ?ptrt part of UGC form link
 {
@@ -101,13 +102,14 @@ class ContactControllerTest extends BaseWebTestCase
             ->first()
             ->attr('href');
 
-        [$nil, $send, $dest] = explode('/', $firstHref);
+        $parts = parse_url($firstHref);
+
+        [$nil, $send, $dest] = explode('/', $parts['path']);
 
         $this->assertEquals('send', $send);
 
-        $dest = explode('?', $dest);
-        $this->assertEquals(self::UGC_CAMPAIGN_ID, $dest[0]);
-        $this->assertEquals(ptrt(ContactControllerWithoutBase::QS), $dest[1]);
+        $this->assertEquals(self::UGC_CAMPAIGN_ID, $dest);
+        $this->assertEquals(ptrt(ContactControllerWithoutBase::QS), $parts['query']);
 
         $brCount = $crawler->filter('br')->count();
         $this->assertEquals(3, $brCount);   // 0 other (whitespace), 0 twitter + 1 address + 2 UGC

@@ -17,6 +17,7 @@ use BBC\ProgrammesPagesService\Domain\Entity\Episode;
 use BBC\ProgrammesPagesService\Domain\Entity\Programme;
 use BBC\ProgrammesPagesService\Domain\Entity\ProgrammeContainer;
 use BBC\ProgrammesPagesService\Domain\Entity\Promotion;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
@@ -63,6 +64,9 @@ class MapPresenter extends Presenter
     /** @var UrlGeneratorInterface */
     protected $router;
 
+    /** @var RequestStack */
+    private $requestStack;
+
     /** @var bool */
     protected $showMiniMap;
 
@@ -82,6 +86,7 @@ class MapPresenter extends Presenter
         HelperFactory $helperFactory,
         TranslatorInterface $translator,
         UrlGeneratorInterface $router,
+        RequestStack $requestStack,
         ProgrammeContainer $programme,
         ?CollapsedBroadcast $upcomingBroadcast,
         ?CollapsedBroadcast $lastOn,
@@ -98,6 +103,7 @@ class MapPresenter extends Presenter
         $this->helperFactory = $helperFactory;
         $this->translator = $translator;
         $this->router = $router;
+        $this->requestStack = $requestStack;
         $this->programme = $programme;
         $this->upcomingBroadcast = $upcomingBroadcast;
         $this->lastOn = $lastOn;
@@ -151,7 +157,11 @@ class MapPresenter extends Presenter
 
     public function getSocialBarPresenter(): ?SocialBarPresenter
     {
-        return new SocialBarPresenter($this->programme);
+        return new SocialBarPresenter(
+            $this->router,
+            $this->requestStack,
+            $this->programme
+        );
     }
 
     public function showMap(): bool

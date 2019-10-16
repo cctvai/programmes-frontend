@@ -16,13 +16,13 @@
         {% elseif type == 'instagram' %} {{ gelicon('social', type) }}
         {% elseif type == 'fax' %} {{ gelicon('core', 'print') }}
         {% elseif type == 'phone' %} {{ gelicon('platforms', 'mobile') }}
-        {% elseif type == 'sms' %} {{ gelicon('social', 'mobile-smart') }}
+        {% elseif type == 'sms' %} {{ gelicon('platforms', 'mobile-smart') }}
         {% else %} {{ gelicon('childrens', 'chats') }}
         {% endif %}
         <div>
             <h2 class="gamma">
                 {% if isUGC %}
-                    <a href="{{'/send/' ~ value ~ '?ptrt=' ~ (currentUrl|url_encode)}}">
+                    <a href="{{ path('ugc_form', {'campaignId': value}) ~ '?ptrt=' ~ currentUrl|url_encode }}">
                         {{ contactDetail.getTitle()|default(tr('contact_form')) }}
                     </a>
                 {% else %}

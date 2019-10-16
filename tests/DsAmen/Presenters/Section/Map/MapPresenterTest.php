@@ -19,6 +19,7 @@ use BBC\ProgrammesPagesService\Domain\Entity\ProgrammeContainer;
 use BBC\ProgrammesPagesService\Domain\Entity\Promotion;
 use PHPUnit\Framework\TestCase;
 use PHPUnit_Framework_MockObject_MockObject;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
@@ -31,6 +32,7 @@ class MapPresenterTest extends TestCase
             $this->createMock(HelperFactory::class),
             $this->createMock(TranslatorInterface::class),
             $this->createMock(UrlGeneratorInterface::class),
+            $this->createMock(RequestStack::class),
             $programmeContainer,
             null,
             null,
@@ -154,6 +156,7 @@ class MapPresenterTest extends TestCase
             $this->createMock(HelperFactory::class),
             $this->createMock(TranslatorInterface::class),
             $this->createMock(UrlGeneratorInterface::class),
+            $this->createMock(RequestStack::class),
             $programmeContainer,
             $upcomingBroadcasts,
             null,
