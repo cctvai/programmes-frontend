@@ -99,7 +99,7 @@ class BrandingPlaceholderResolver
                 }
             }
             if ($UGCContactDetail && $UGCContactDetail->isInTopNav()) {
-                $contactTitle = $UGCContactDetail->getTitle() ?? $this->translator->trans('contact_form');
+                $contactTitle = $UGCContactDetail->getTitle() ?: $this->translator->trans('contact_form');
                 $contactHref = $this->router->generate('ugc_form', [
                     'campaignId' => $UGCContactDetail->getValue(),
                 ]) . '?ptrt=' . urlencode($this->requestStack->getCurrentRequest()->getUri());

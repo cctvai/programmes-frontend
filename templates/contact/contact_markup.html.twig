@@ -34,13 +34,13 @@
             {% elseif (type == 'fax') or (type == 'phone') or (type == 'sms') %}
                 <span>{{ value }}</span>
             {% elseif isLong %}
-                <p>{{ value|trim|nl2br }}</p>
+                <p class="text-break">{{ value|trim|nl2br }}</p>
             {% elseif not isUGC %}
                 <a href="{{value}}">{{ value }}</a>
             {% endif %}
             {# most types won't have line breaks in the freetext, but UGC potentially has #}
             {% if (freetext) %}
-                <p>
+                <p class="text-break">
                     {% if isUGC %}
                         {{ freetext|trim|nl2br }}
                     {% else %}
