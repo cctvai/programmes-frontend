@@ -41,6 +41,7 @@ class ContactController extends BaseController
 
         $parameters = [
             'contactDetails' => $contactDetails,
+            'coreEntity' => $coreEntity,
             'currentUrl' => $this->request()->getUri(),
         ];
 

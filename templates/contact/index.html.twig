@@ -2,7 +2,10 @@
 
 {% block title %}{{ meta_context.titlePrefix() }} - {{ tr('contact_us') }}{% endblock %}
 {% block page_classes %}text-base programmes-page--smallpush prog-layout{% endblock %}
-
+{% block meta_description %}
+    <meta name="description" content="{{ coreEntity.getTitle() }}: {{ tr('contact_details')}}">
+    <meta property="og:description" content="{{ coreEntity.getTitle() }}: {{ tr('contact_details')}}">
+{% endblock %}
 {% block body %}
     <div class="programmes-page prog-layout__primary br-box-page contact-page">
         <h1 class="beta">{{ tr('contact_us') }}</h1>
