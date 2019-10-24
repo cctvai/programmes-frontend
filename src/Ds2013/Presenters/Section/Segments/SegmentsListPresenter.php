@@ -85,6 +85,11 @@ class SegmentsListPresenter extends Presenter
         $this->segmentItemsPresenters = $this->getSegmentItemsPresenters();
     }
 
+    public function getContext(): ProgrammeItem
+    {
+        return $this->context;
+    }
+
     public function getTitle(): string
     {
         // hasMusicSegmentItems and hasChapterSegments

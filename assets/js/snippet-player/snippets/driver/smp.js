@@ -1,5 +1,28 @@
 define(['../playables'], function(playables) {
 
+    function normalizeOpts(opts) {
+        var nopts = Object.assign( {
+            statsObject: {},
+        }, opts);
+
+        nopts.statsObject = Object.assign({
+            producer: '',
+            destination: '',
+            playlistName: '',
+            sessionLabels: {}
+        }, nopts.statsObject);
+
+        nopts.statsObject.sessionLabels = Object.assign({
+            // list of managed labels
+            // https://github.com/bbc/echo-client-js/blob/master/src/echo/enumerations.js#L248
+            app_version: 'SLappVersion',
+            bbc_site: 'SLbbcSite',
+            playlist_type: 'SLplaylistType'
+        }, nopts.statsObject.sessionLabels);
+
+        return nopts;
+    }
+
     var container,
         audio,
         current,
@@ -9,6 +32,7 @@ define(['../playables'], function(playables) {
     var mappings = {
         'ended': 'playlistEnded'
     };
+
     var mapEventName = function(eventName) {
         if (mappings[eventName])
             return mappings[eventName];
@@ -30,125 +54,98 @@ define(['../playables'], function(playables) {
 
     var driver = {
 
-        init: function(bump, additionalOptions) {
-            var counterName = null,
-                appName = null,
-                bbcSite = null,
-                appVersion = null,
-                playlistType = null;
-            if (typeof additionalOptions !== 'undefined') {
-                if (typeof additionalOptions.counterName !== 'undefined') {
-                    counterName = additionalOptions.counterName;
-                }
-                if (typeof additionalOptions.appVersion !== 'undefined') {
-                    appVersion = additionalOptions.appVersion;
-                }
-                if (typeof additionalOptions.appName !== 'undefined') {
-                    appName = additionalOptions.appName;
-                }
-                if (typeof additionalOptions.bbcSite !== 'undefined') {
-                    bbcSite = additionalOptions.bbcSite;
-                }
-                if (typeof additionalOptions.playlistType !== 'undefined') {
-                    playlistType = additionalOptions.playlistType;
-                }
-            }
+        init: function(bump, opts) {
+            if (inited)
+                return console.warn('driver/smp.js already inited');
 
-            if (!inited) {
-                container = document.createElement('div');
-                container.setAttribute('class', 'spt-smp');
-                document.body.appendChild(container);
-                audio = bump(container).player({
+            container = document.createElement('div');
+            container.setAttribute('class', 'spt-smp');
+            document.body.appendChild(container);
 
-                    ui: {
+            var normalOpts = normalizeOpts(opts);
+            var playerOpts = Object.assign({
 
-                        // Do not show UI elements
-                        enabled: false,
+                ui: {
+                    enabled: false, // hide
+                    hideDefaultErrors: true, // Prevents IE install Flash prompt
+                },
 
-                        // Prevents the display of the install flash message
-                        // on IE
-                        hideDefaultErrors: true
-                    },
+                // The SMP player will fill the container rather than
+                // requiring width and height to be set
+                responsive: true,
 
-                    // The SMP player will fill the container rather than
-                    // requiring width and height to be set
-                    responsive: true,
+                // Tell the SMP that it should attempt playback in page
+                // rather than through a separate player application
+                preferInlineAudioPlayback: true,
 
-                    // Tell the SMP that it should attempt playback in page
-                    // rather than through a separate player application
-                    preferInlineAudioPlayback: true,
+                // Workaround to prevent loading the BBC media player
+                // on Android prior to Kitkat
+                preferHtmlOnMobile: true,
 
-                    // Workaround to prevent loading the BBC media player
-                    // on Android prior to Kitkat
-                    preferHtmlOnMobile: true,
+                playlistObject: {
+                    items: [{
+                        kind: 'radioProgramme',
+                        href: 'http://emp.bbci.co.uk/emp/media/blank.mp3'
+                    }]
+                },
 
-                    playlistObject: {
-                        items: [{
-                            kind: 'radioProgramme',
-                            href: 'http://emp.bbci.co.uk/emp/media/blank.mp3'
-                        }]
-                    },
+                autoplay: false,
 
-                    autoplay: false,
-                    // Additional data for DAx reporting
-                    appName: appName,
-                    appType: "responsive",
-                    counterName: counterName,
-                    statsObject: {
-                        sessionLabels: {
-                            app_version: appVersion,
-                            bbc_site: bbcSite,
-                            playlist_type: playlistType
-                        }
-                    }
-                });
+                // Additional data for DAx reporting
+                appName: 'snippets-smp-driver',
+                appType: 'responsive',
+                counterName: '?',
+                statsObject: {} // normalOpts overwrites this
 
-                audio.bind('error', function(err) {
-                    var kpis = {
-                        'critical': 'SMP_Critical',
-                        'error': 'SMP_Error',
-                        'warning': 'SMP_Warning'
-                    };
+            }, normalOpts);
 
-                });
+            audio = bump(container).player(playerOpts);
 
-                audio.load();
-            }
+            audio.bind('error', function(err) {
+                var kpis = {
+                    'critical': 'SMP_Critical',
+                    'error': 'SMP_Error',
+                    'warning': 'SMP_Warning'
+                };
+            });
 
-            // Indicate that the driver is initialised and should not be
-            // reinitialised until the driver is destroyed
+            audio.load();
             inited = true;
         },
 
         destroy: function() {
+            if (!inited)
+                return console.error('driver/smp destroy() but not inited');
 
-            if (inited) {
-                document.body.removeChild(container);
-                container = null;
-
-                audio.unbind('error');
-                audio = null;
-                current = null;
-            }
+            document.body.removeChild(container);
+            container = null;
+            audio.unbind('error');
+            audio = null;
+            current = null;
 
             // Indicate that the driver has been destroyed and will need to
             // be reinitialised before use
             inited = false;
         },
 
-        play: function(playable, startTime) {
-
+        play: function(playable, startTime, playlistOpts, opts) {
+            playlistOpts = playlistOpts || {};
+            opts = opts || {};
             // Store a reference to the playable item currently being played,
             // this is used to indicate that the driver is in the correct state
             // to apply playback functions
             current = playable;
 
-            audio.loadPlaylist({
-                items: [transformPlayable(playable)]
-            }, {
+            var playlist = Object.assign({
+                items: [transformPlayable(playable)],
+            }, playlistOpts);
+
+            var smpOpts = Object.assign({
                 autoplay: true,
-                startTime: startTime || 0
-            });
+                startTime: startTime || 0,
+            }, opts);
+
+            audio.loadPlaylist(playlist, smpOpts);
             paused = false;
 
             return this;

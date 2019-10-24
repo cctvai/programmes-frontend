@@ -2,12 +2,29 @@
 
 {% if segments_list.getSegmentEvents() %}
     <link rel="stylesheet" href="{{ asset('css/snippet/snippets.css') }}" />
+    {% set ctx = segments_list.getContext() %}
+    {% set destination = get_ati_destination(ctx) %}
+    {% set producer = get_ati_producer(ctx) %}
+    {% set pid = ctx.getPid() %}
     <script>
         require(["snippets", "bump-3"], function(snippets, bump) {
             snippets.init({
+                theme: "music-track",
                 base_url: '/programmes/snippet',
-                context: "programmes",
-                theme: "music-track"
+                istats_enabled: false,
+                counterName: '{{ pid ~ '-segments' }}',
+                appName: 'programmes-snippets',
+                appVersion: 1,
+                statsObject: {
+                    producer: '{{ producer }}',
+                    destination: '{{ destination }}',
+                    playlistName: '{{ pid ~ '-segments' }}',
+                    episodePID: '?',
+                    sessionLabels: {
+                        bbc_site: '{{ destination }}',
+                        playlist_type: 'segments',
+                    }
+                }
             }, bump);
         });
     </script>

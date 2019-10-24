@@ -4,64 +4,78 @@ define([
     'jquery-1.9'
 ], function(dom, obj, $) {
 
-    var getRecordIdFromSnippetWebComponent = function(elem) {
-        var recordId = dom.getData(elem, 'record-id');
-        if (!recordId) {
-            var recordIdElement = elem.querySelector('record-id');
-            recordId = recordIdElement && recordIdElement.innerHTML;
-        }
-        return recordId;
-    };
+    /**
+     * NB! legacy-breaking change:
+     * the following code works with <bbc-snippet data-record-id="123" />
+     * no longer supported: <bbc-snippet><record-id>123</record-id></bbc-snippet>
+     */
+
+
+    /**
+     * get the snippet ID from e.g. a <bbc-snippet> element
+     * @param {HTMLElement} el
+     * @returns {?string}
+     */
+    function getRecordIdFromSnippet(el) {
+        return ('recordId' in el.dataset)
+            ? el.dataset['recordId']
+            : console.error('bbc-snippet but no data-record-id.');
+    }
+
+    /**
+     * find the snippet element corresponding to this ID
+     * @param {string} id
+     * @returns {?HTMLElement}
+     */
+    function getSnippetFromRecordId(id) {
+        return document.querySelector('bbc-snippet[data-record-id="'+id+'"]');
+    }
 
     return {
 
-        process: function(callback) {
-            var elems = document.querySelectorAll('bbc-snippet');
-            var recordIds = [];
-            for (var i = 0; i < elems.length; ++i) {
-                recordIds.push(getRecordIdFromSnippetWebComponent(elems[i]));
-            }
-            var self = this;
-
-            if (recordIds.length > 0) {
-                this.request(recordIds, function(snippetsItems) {
-                    self.replace(snippetsItems);
-                    callback();
-                });
-            }
+        /**
+         * get an array of IDs of <bbc-snippet> elements found on page and process them
+         */
+        process: function() {
+            var recordIds = Array.prototype.slice.call(document.querySelectorAll('bbc-snippet'))
+                .map(getRecordIdFromSnippet)
+                .filter(Boolean);
+            if (!recordIds.length) return;
+            this.request(recordIds, this.replace);
         },
 
-        request: function(ids, callback) {
-            var url = '/programmes/snippet/' + encodeURIComponent(ids) + '.json';
+        /**
+         * fetch the HTML for these snippets from server
+         * @param {string[]} ids
+         * @param {function} onSuccess callback
+         * @param {function?} onError callback
+         */
+        request: function(ids, onSuccess, onError) {
+            var url = '/programmes/snippet/' + encodeURIComponent(ids.join(',')) + '.json';
             $.ajax({
                 url: url,
                 dataType: 'json',
-                success: function (response) {
-                    if (response) {
-                        callback(response);
-                    }
+                success: onSuccess,
+                error: onError || function(request, status, error) {
+                    console.error('Error when calling snippet URL: ' + url, request, status, error);
                 },
-                error: function (request, status, error) {
-                    // console.log('Error when calling snippet URL: ' + url);
-                }
             });
         },
 
+        /**
+         * replace <bbc-snippet> placeholders with rendered HTML
+         * @param {array} snippets
+         */
         replace: function(snippets) {
-            var index = {};
-            for (var i = 0; i < snippets.length; ++i) {
-                var container = document.createElement('div');
-                container.innerHTML = snippets[i].html;
-                var elem = container.children[0];
-                index[snippets[i].id] = elem;
-            }
-            var elems = document.querySelectorAll('bbc-snippet');
-            for (var i = 0; i < elems.length; ++i) {
-                var recordId = getRecordIdFromSnippetWebComponent(elems[i]);
-                if (recordId && index[recordId]) {
-                    elems[i].parentElement.replaceChild(index[recordId].cloneNode(true), elems[i]);
-                }
-            }
+            if (!snippets) return;
+            snippets.forEach(function (snippet) {
+                var snip = getSnippetFromRecordId(snippet.id);
+                if (!snip) return console.error('id ' + id + ', but snippet not found?');
+
+                var el = document.createElement('div');
+                el.innerHTML = snippet.html;
+                snip.parentElement.replaceChild(el, snip);
+            });
         }
     };
 

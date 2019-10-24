@@ -436,7 +436,9 @@ define([
         previousPlaybackState: null,
         playedSnippets: [],
 
-        init: function(opts, bump, istats) {
+        statsObject: null,
+
+        init: function(opts, bump) {
             this.config = new Configuration(opts);
             var playCounter = new stats.StatsPlayCounter();
             var continuousPlayCounter = new stats.StatsPlayCounter();
@@ -450,28 +452,21 @@ define([
             this.geo = new context.UserGeo(this.config.isUk());
             this.context = new context.PlaybackContext(this.config.getContext());
 
-
             this.audioEnabled = this.isNativePlaybackSupported();
             this.playbackAnimation.enabled = this.isCanvasSupported();
             if (this.config.isContinuousPlayEnabled()) {
                 this.skipUnplayable = true;
             }
 
-            priv.logger = priv.reporting ? new logging.Logger() : new logging.NoOpLogger();
+            if (!opts.statsObject)
+                console.warn('snippets/main but no statsObject');
 
-            // Prevent require module undefined errors using dependency
-            // injection instead
-            if (istats) {
-                priv.logger.info('Statistics being logged with iStats');
-                priv.istats = istats;
-            } else {
-                priv.logger.warn('No statistics are being logged');
-            }
+            this.statsObject = opts.statsObject;
+            priv.logger = priv.reporting ? new logging.Logger() : new logging.NoOpLogger();
 
             if (this.audioEnabled) {
                 if (!inited) {
                     this.bindApi();
-
                     // If BUMP has been passed in then we can use the SMP
                     // player. Using dependency injection to resolve issues
                     // with missing page dependencies
@@ -480,20 +475,17 @@ define([
                     // switch to HTML5 ourselves if needed
                     if (bump) {
                         priv.driver = smpDriver;
-                        var additionalOptions = {
-                            counterName: this.config.getCounterName(),
-                            appVersion: this.config.getAppVersion(),
-                            appName: this.config.getAppName(),
-                            bbcSite: this.config.getBBCSite(),
+                        var additionalOptions = Object.assign({
                             theme: this.config.getTheme(),
-                            playlistType: this.config.getPlaylistType()
-                        }
+                        }, opts);
+                        window.smpc = this.config;
                         priv.driver.init(bump, additionalOptions);
                         priv.driver.on('initialised', function(e) {
                             priv.bindUIEvents();
                             priv.setAllSnippetsStateEnabled();
                         });
                     } else {
+                        console.warn('no bump. using native html player');
                         // Without BUMP we can only use the native HTML5 player
                         // to provide audio playback functionaliy
                         priv.driver = htmlDriver;
@@ -506,9 +498,7 @@ define([
                 inited = true;
             }
 
-            transform.process(function() {
-                // Do nothing
-            });
+            transform.process();
 
             if (this.config.getFullPlayback()) {
                 priv.fullPlayback = true;
@@ -1197,14 +1187,14 @@ define([
         /**
          * Starts Snippet playback.
          */
-        playSnippet: function(userPlayed, snippet) {
+        playSnippet: function(userPlayed, playSnippet) {
             var self = this;
 
             priv.userPlayed = userPlayed;
 
             // Load a specific snippet and play it.
-            if (snippet !== undefined) {
-                self.setActiveSnippet(snippet.element);
+            if (playSnippet !== undefined) {
+                self.setActiveSnippet(playSnippet.element);
             }
 
             // Do not try and play the same snippet again if already playing.
@@ -1212,39 +1202,57 @@ define([
                 return false;
             }
 
+            var snippet = this.snippet;
+
             // Native browser playback.
-            if (this.audioEnabled && !obj.isEmpty(this.snippet) && this.snippet.playable && !this.snippet.playing) {
-                this.snippet.loading = true;
+            if (this.audioEnabled && !obj.isEmpty(snippet) && snippet.playable && !snippet.playing) {
+                snippet.loading = true;
                 this.setSnippetVisualState('loading');
                 this.apiEvent('playbackLoading');
 
                 // Check for clip protocol in resource
                 var playable = '';
-                if (this.snippet.format == 'clip') {
-                    playable = new playables.ClipAudioSource(this.snippet.resource);
+                if (snippet.format === 'clip') {
+                    playable = new playables.ClipAudioSource(snippet.resource);
                 } else {
-                    playable = new playables.UrlAudioSource(this.snippet.resource);
+                    playable = new playables.UrlAudioSource(snippet.resource);
                 }
 
                 var startTime = undefined;
                 // If playback is being restarted after a network error, start from the previous point.
-                if (priv.previousPlaybackState && priv.previousPlaybackState.snippetId == this.snippet.id) {
+                if (priv.previousPlaybackState && priv.previousPlaybackState.snippetId === snippet.id) {
                     startTime = priv.previousPlaybackState.currentTime;
                 }
 
-                priv.driver.play(playable, startTime);
+                var playlistOpts = {
+                    title: [
+                        snippet.artist,
+                        snippet.title
+                    ]
+                        .filter(Boolean)
+                        .join('-')
+                        .replace(/[^A-Z0-9_\-]/gi, '_')
+                        .substr(0, 60)
+                };
+
+                priv.driver.play(playable, startTime, playlistOpts, {
+                    // the statsObject needs passing again with every new playlist
+                    // undocumented in Echo - attaches to end of query becoming "media name"
+                    statsObject: Object.assign({}, self.statsObject, {
+                        episodePID: snippet.id,
+                    })
+                });
 
                 if (this.config.getFullPlayback()) {
-                    this.updateImage(this.snippet.imageSrc);
-                    priv.playedSnippets.push(this.snippet);
+                    this.updateImage(snippet.imageSrc);
+                    priv.playedSnippets.push(snippet);
 
                     document.getElementsByClassName("playbackhistory-wrapper")[0].className = "playbackhistory-wrapper";
 
-                    var snippetToMove = document.querySelector('li[data-record-id="'+ this.snippet.id + '"]');
+                    var snippetToMove = document.querySelector('li[data-record-id="'+ snippet.id + '"]');
 
                     window.addtoPlaybackHistory(snippetToMove);
-
-                    document.title = this.snippet.artist + ' - ' + this.snippet.title + ' - BBC Music';
+                    document.title = snippet.artist + ' - ' + snippet.title + ' - BBC Music';
                 }
 
                 // Add player event handlers.
@@ -1471,7 +1479,7 @@ define([
                     tooltip = button.title;
                 }
 
-                return new Snippet(snippet, {
+                var data = {
                     duration: dom.getData(snippet, 'duration', 30),
                     resource: this.decode(dom.getData(snippet, 'resource', '')),
                     format: dom.getData(snippet, 'format'),
@@ -1483,7 +1491,8 @@ define([
                     index: dom.indexOf(snippets, snippet),
                     tooltip: tooltip,
                     count: snippets.length
-                });
+                };
+                return new Snippet(snippet, data);
 
             }
             return new EmptySnippet();
