@@ -10,9 +10,11 @@ set -e
 # INSTALL #
 ###########
 
-# Fail if we're not using php71+
+php --version
+
+# Fail if we're not using php73+
 if ! (php --version | grep -q "PHP 7.") ; then
-    echo "You're not using PHP 7.1+, please install it."
+    echo "You're not using PHP 7.3+, please install it."
     php --version
     exit 1
 fi

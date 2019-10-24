@@ -1,6 +1,6 @@
 {
     "name": "programmes-frontend",
-    "php_version": "7.1",
+    "php_version": "7.3",
     "packaging": {
         "type": "pac_nginx",
         "composer": {
@@ -8,13 +8,13 @@
         },
         "requires": [
             "programmes-rds-loadbalancer",
-            "php71u-intl",
-            "php71u-mbstring",
-            "php71u-mysqlnd",
-            "php71u-pecl-apcu",
-            "php71u-pecl-redis",
-            "php71u-pecl-lzf",
-            "php71u-pdo",
+            "php73-intl",
+            "php73-mbstring",
+            "php73-mysqlnd",
+            "php73-pecl-apcu",
+            "php73-pecl-redis",
+            "php73-pecl-lzf",
+            "php73-pdo",
             "awslogs",
             "dial-agent"
         ],
