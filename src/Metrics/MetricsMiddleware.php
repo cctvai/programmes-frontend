@@ -34,16 +34,17 @@ class MetricsMiddleware
                 $uri = $stats->getEffectiveUri();
                 $apiName = $this->uriToApiTypeMapper->getApiNameFromUriInterface($uri);
                 $responseTime = (int) round($stats->getTransferTime() * 1000);
-                // No response/timeout is logged as a 504 (gateway timeout). Which isn't correct. But whatever.
-                $responseCode = 504;
+
                 if ($stats->hasResponse()) {
                     $responseCode = $stats->getResponse()->getStatusCode();
                 }
-
+                else {
+                    // if there's no response object, get CURL error code (0-94)
+                    $responseCode = $stats->getHandlerErrorData();
+                }
                 if ($responseCode >= 400 && $responseCode <= 599 && $responseCode !== 404) {
                     $this->logger->error('HTTP request failed: ' . $uri . ' - got status code ' . $responseCode);
                 }
-
                 if (!$apiName) {
                     return;
                 }

@@ -71,7 +71,13 @@ class MetricsManager
         $this->metrics[] = new ApiTimeMetric($apiName, $responseTimeMs);
         $responseType = $this->normaliseHttpResponseCode($responseCode);
         if ($responseType === 'ERROR') {
-            $this->metrics[] = new ApiResponseMetric($apiName, $responseType);
+            if($responseCode >= 500 && $responseCode <= 599 ){
+                $this->metrics[] = new ApiResponseMetric($apiName, $responseType);
+            }
+            else {
+                $responseType === 'CURL_ERROR';
+                $this->metrics[] = new ApiResponseMetric($apiName, $responseType);
+            }
         }
     }
 
