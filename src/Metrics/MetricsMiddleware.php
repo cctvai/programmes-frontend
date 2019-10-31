@@ -44,7 +44,9 @@ class MetricsMiddleware
                 else {
                     // if there's no response object, get CURL error code (0-94)
                     $responseCode = $stats->getHandlerErrorData();
-                    $this->logger->error('HTTP request failed: ' . $uri . ' - got CURL error code ' . $responseCode);
+                    if(is_int($responseCode)){
+                        $this->logger->error('HTTP request failed: ' . $uri . ' - got CURL error code ' . $responseCode);
+                    }
                 }
 
                 if (!$apiName) {
