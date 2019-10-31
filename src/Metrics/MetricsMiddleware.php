@@ -37,14 +37,16 @@ class MetricsMiddleware
 
                 if ($stats->hasResponse()) {
                     $responseCode = $stats->getResponse()->getStatusCode();
+                    if ($responseCode >= 400 && $responseCode <= 599 && $responseCode !== 404) {
+                        $this->logger->error('HTTP request failed: ' . $uri . ' - got status code ' . $responseCode);
+                    }
                 }
                 else {
                     // if there's no response object, get CURL error code (0-94)
                     $responseCode = $stats->getHandlerErrorData();
+                    $this->logger->error('HTTP request failed: ' . $uri . ' - got CURL error code ' . $responseCode);
                 }
-                if ($responseCode >= 400 && $responseCode <= 599 && $responseCode !== 404) {
-                    $this->logger->error('HTTP request failed: ' . $uri . ' - got status code ' . $responseCode);
-                }
+
                 if (!$apiName) {
                     return;
                 }
