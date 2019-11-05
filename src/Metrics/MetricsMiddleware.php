@@ -41,10 +41,14 @@ class MetricsMiddleware
                         $this->logger->error('HTTP request failed: ' . $uri . ' - got status code ' . $responseCode);
                     }
                 } else {
-                    // if there's no response object, get CURL error code (0-94)
-                    $responseCode = $stats->getHandlerErrorData();
-                    if (is_int($responseCode)) {
-                        $this->logger->error('HTTP request failed: ' . $uri . ' - got CURL error code ' . $responseCode);
+                    // if there's no response object, log CURL error code (0-94) and use 504 HTTP error code for MetricsManager
+                    $responseCode = 504;
+                    $curlErrorCode = $stats->getHandlerErrorData();
+                    if (is_int($curlErrorCode)) {
+                        $this->logger->error('HTTP request failed: ' . $uri . ' - request timeout: got CURL error code ' . $curlErrorCode);
+                    }
+                    else {
+                        $this->logger->error('HTTP request failed: ' . $uri . ' - request timeout: unknown CURL error code');
                     }
                 }
 
