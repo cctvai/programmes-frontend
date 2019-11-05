@@ -45,10 +45,13 @@ class MetricsMiddleware
                     $responseCode = 504;
                     $curlErrorCode = $stats->getHandlerErrorData();
                     if (is_int($curlErrorCode)) {
-                        $this->logger->error('HTTP request failed: ' . $uri . ' - request timeout: got CURL error code ' . $curlErrorCode);
+                        $reason = "CURL error code {$curlErrorCode}";
+                    } elseif ($curlErrorCode instanceof \Exception) {
+                        $reason = $curlErrorCode->getMessage();
                     } else {
-                        $this->logger->error('HTTP request failed: ' . $uri . ' - request timeout: unknown CURL error code');
+                        $reason = 'unknown error code';
                     }
+                    $this->logger->error('HTTP request failed: ' . $uri . ' - request timeout: ' . $reason);
                 }
 
                 if (!$apiName) {
