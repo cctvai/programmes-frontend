@@ -46,8 +46,7 @@ class MetricsMiddleware
                     $curlErrorCode = $stats->getHandlerErrorData();
                     if (is_int($curlErrorCode)) {
                         $this->logger->error('HTTP request failed: ' . $uri . ' - request timeout: got CURL error code ' . $curlErrorCode);
-                    }
-                    else {
+                    } else {
                         $this->logger->error('HTTP request failed: ' . $uri . ' - request timeout: unknown CURL error code');
                     }
                 }
