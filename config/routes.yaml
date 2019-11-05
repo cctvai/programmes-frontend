@@ -41,6 +41,12 @@ programme_episodes:
     defaults: { _controller: App\Controller\ProgrammeEpisodes\IndexController }
     requirements: { pid: '[0-9b-df-hj-np-tv-z]{8,15}' }
 
+programme_episodes_az:
+    path: /programmes/{pid}/episodes/a-z/{az}
+    controller: App\Controller\RedirectAndCacheController::redirectAction
+    requirements: { pid: '[0-9b-df-hj-np-tv-z]{8,15}' }
+    defaults: { route: find_by_pid, permanent: true, az: '_', ignoreAttributes: ['az'] }
+
 programme_episodes_guide:
     path: /programmes/{pid}/episodes/guide
     defaults: { _controller: App\Controller\ProgrammeEpisodes\GuideController }

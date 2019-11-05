@@ -49,4 +49,10 @@ class IndexControllerTest extends BaseWebTestCase
         $this->client->request('GET', '/programmes/b006q2x0/episodes');
         $this->assertHasRequiredResponseHeaders($this->client, 'max-age=600, public');
     }
+
+    public function testEpisodesAZredirect()
+    {
+        $this->client->request('GET', '/programmes/b006q2x0/episodes/a-z');
+        $this->assertRedirectTo($this->client, 301, 'http://localhost/programmes/b006q2x0');
+    }
 }

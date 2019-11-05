@@ -5,6 +5,7 @@ namespace App\Controller\ProgrammeEpisodes;
 
 use App\Controller\BaseController;
 use BBC\ProgrammesPagesService\Domain\Entity\ProgrammeContainer;
+use BBC\ProgrammesPagesService\Domain\ValueObject\Pid;
 
 class IndexController extends BaseController
 {
