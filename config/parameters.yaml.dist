@@ -22,5 +22,3 @@ parameters:
     fixture_database_user: developer
     fixture_database_password: developer
     fixture_secure_key: developer
-    receng_video_key: 'videokey'
-    receng_audio_key: 'audiokey'

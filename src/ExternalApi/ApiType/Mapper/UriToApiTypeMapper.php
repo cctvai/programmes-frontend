@@ -17,7 +17,6 @@ class UriToApiTypeMapper
         ApiTypeEnum::API_ISITE => '%^api\.(int\.|test\.|stage\.|live\.)bbc\.co\.uk/isite2-content-reader%i',
         ApiTypeEnum::API_ORBIT => '%^navigation\.(int\.|test\.|stage\.)?api\.bbci\.co\.uk%i',
         ApiTypeEnum::API_RECIPE => '%^api\.(int\.|test\.|stage\.|live\.)bbc\.co\.uk/food/recipes%i',
-        ApiTypeEnum::API_RECOMMENDATIONS => '%^open\.live\.bbc\.co\.uk/recommend/items%i',
         ApiTypeEnum::API_MORPH => '%^morph\.(int\.|test\.|stage\.)?api\.bbci\.co\.uk%i',
         ApiTypeEnum::API_SOUNDSNAV => '%^sounds-nav\.(int\.|test\.|stage\.)?api\.bbci\.co\.uk\/json%i',
         ApiTypeEnum::API_TUPAC => '%^music-tupac\.(int\.|test\.|stage\.)?api\.bbc\.co\.uk/music/v2%i',

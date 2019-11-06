@@ -82,11 +82,6 @@ programme_profile_listings:
     defaults: { _controller: App\Controller\Profiles\IndexController }
     requirements: { pid: '[0-9b-df-hj-np-tv-z]{8,15}'}
 
-programme_recommendations:
-    path: /programmes/{pid}/recommendations{extension}
-    defaults: { _controller: App\Controller\RecommendationsController, extension: '' }
-    requirements: { pid: '[0-9b-df-hj-np-tv-z]{8,15}', extension: '$|\.2013inc' }
-
 programme_recipes:
     path: /programmes/{pid}/recipes
     defaults: { _controller: App\Controller\Recipes\RecipesController }

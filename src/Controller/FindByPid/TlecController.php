@@ -5,15 +5,12 @@ namespace App\Controller\FindByPid;
 
 use App\Controller\Helpers\Breadcrumbs;
 use App\Controller\Helpers\StructuredDataHelper;
-use App\Controller\Helpers\TelescopeHelper;
 use App\DsAmen\Factory\PresenterFactory;
 use App\DsShared\Factory\HelperFactory;
 use App\ExternalApi\Ada\Service\AdaClassService;
 use App\ExternalApi\Electron\Service\ElectronService;
 use App\ExternalApi\LxPromo\Service\LxPromoService;
-use App\ExternalApi\RecEng\Service\RecEngService;
 use BBC\ProgrammesPagesService\Domain\Entity\ProgrammeContainer;
-use BBC\ProgrammesPagesService\Domain\Entity\Promotion;
 use BBC\ProgrammesPagesService\Service\CollapsedBroadcastsService;
 use BBC\ProgrammesPagesService\Service\ImagesService;
 use BBC\ProgrammesPagesService\Service\ProgrammesAggregationService;
@@ -41,7 +38,6 @@ class TlecController extends BaseProgrammeContainerController
         CollapsedBroadcastsService $collapsedBroadcastsService,
         ProgrammesAggregationService $aggregationService,
         ImagesService $imagesService,
-        RecEngService $recEngService,
         ElectronService $electronService,
         AdaClassService $adaClassService,
         HelperFactory $helperFactory,
@@ -69,7 +65,6 @@ class TlecController extends BaseProgrammeContainerController
             $collapsedBroadcastsService,
             $aggregationService,
             $imagesService,
-            $recEngService,
             $electronService,
             $adaClassService,
             $helperFactory,

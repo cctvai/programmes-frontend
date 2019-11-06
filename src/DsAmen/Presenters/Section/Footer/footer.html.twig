@@ -2,16 +2,8 @@
     <div class="p-g-p footer">
         <h2 class="invisible">{{ tr('related_content') }}</h2>
         <div class="grid grid--flush">
-            <!-- (Recommendations) You may also like -->
             <div class="grid__item 5/12@gel3b 1/2@gel3">
-                <div class="footer__recommendations br-keyline islet--horizontal">
-                    <div class="gel-brevier-bold">
-                        {% include 'recommendations/dsamen_recommends_footer.html.twig' %}
-                    </div>
-                </div>
-            </div>
-            <!-- Similar programmes -->
-            <div class="grid__item 1/3@gel4 1/4@gel3b 1/2@gel3">
+                <!-- Similar programmes -->
                 {%- if footer.getGenres() or footer.getFormats() -%}
                     <div class="islet--horizontal footer__programmes footer__service-island">
                         <h3 class="gel-double-pica-bold">{{ tr('similar_programmes') }}</h3>
@@ -50,6 +42,9 @@
                         {%- endif -%}
                     </div>
                 {%- endif -%}
+            </div>
+            <div class="grid__item 1/3@gel4 1/4@gel3b 1/2@gel3">
+                {# 7194 #}
             </div>
             <!-- Watch live -->
             {%- if footer.getNetwork() -%}

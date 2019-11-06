@@ -60,21 +60,6 @@
         "description": "Control the circuit breaker for the recipe API."
     },
     {
-        "name": "api-recommendations",
-        "default-value": "enabled",
-        "values": [
-            {
-                "value": "enabled",
-                "description": "Allow requests to the recommendations API"
-            },
-            {
-                "value": "disabled",
-                "description": "Disable requests to the recommendations API"
-            }
-        ],
-        "description": "Control the circuit breaker for the recommendations API."
-    },
-    {
         "name": "api-morph",
         "default-value": "enabled",
         "values": [

@@ -37,7 +37,6 @@ class CircuitBreakerFactory
         ApiTypeEnum::API_ISITE              => ['maxFailsPerMinute' => 40, 'secondsToOpenWhenFailed' => 20],
         ApiTypeEnum::API_ORBIT              => ['maxFailsPerMinute' => 40, 'secondsToOpenWhenFailed' => 20],
         ApiTypeEnum::API_RECIPE             => ['maxFailsPerMinute' => 12, 'secondsToOpenWhenFailed' => 60],
-        ApiTypeEnum::API_RECOMMENDATIONS    => ['maxFailsPerMinute' => 12, 'secondsToOpenWhenFailed' => 60],
         ApiTypeEnum::API_MORPH              => ['maxFailsPerMinute' => 12, 'secondsToOpenWhenFailed' => 60],
         ApiTypeEnum::API_SOUNDSNAV          => ['maxFailsPerMinute' => 12, 'secondsToOpenWhenFailed' => 60],
         ApiTypeEnum::API_TUPAC              => ['maxFailsPerMinute' => 24, 'secondsToOpenWhenFailed' => 60],

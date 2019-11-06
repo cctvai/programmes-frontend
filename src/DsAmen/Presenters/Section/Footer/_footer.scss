@@ -23,7 +23,6 @@
     padding-bottom: $gel-unit-small;
 }
 
-.footer__recommendations,
 .footer__programmes {
     padding-top: 0;
     padding-right: $gel-unit-small;
@@ -31,19 +30,8 @@
     padding-left: $gel-unit-small;
 }
 
-.footer__recommendations {
-    position: relative;
-
-    a.view-all {
-        display: inline-block;
-        position: absolute;
-        top: 0.65em;
-        right: 0;
-    }
-}
 
 @include mq($from: gel2) {
-    .footer__recommendations,
     .footer__programmes {
         padding-right: $gel-unit-large;
         padding-left: $gel-unit-large;
@@ -58,7 +46,6 @@
         padding-right: $gel-unit-large;
     }
 
-    .footer__recommendations,
     .footer__programmes {
         padding-bottom: $gel-unit-large;
     }
@@ -69,20 +56,9 @@
         padding: $gel-unit-small $gel-unit-large;
     }
 
-    .footer__recommendations {
-        border-right: solid 1px #000000;
-    }
-
-    .footer__recommendations,
     .footer__programmes {
         padding-top: 0;
         padding-bottom: 0;
     }
 
-    .footer__recommendations {
-        padding-right: $gel-unit-large;
-        padding-left: 0;
-
-        a.view-all { right: $gel-unit-large; }
-    }
 }

@@ -47,27 +47,9 @@
     }
 }
 
-.footer__recommendations {
-    position: relative;
-
-    a.view-all {
-        display: inline-block;
-        position: absolute;
-        top: 0.65em;
-        right: 0;
-    }
-}
-
 @mixin widestyles() {
     .footer-wrapper {
         padding-bottom: $wide-half-spacing;
-    }
-
-    .footer__recommendations {
-        padding-right: 15px;
-        border-right: solid 1px;
-
-        a.view-all { right: 15px; }
     }
 
     .footer__similar {

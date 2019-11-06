@@ -6,19 +6,16 @@ namespace App\Controller\FindByPid;
 use App\Controller\BaseController;
 use App\Controller\Helpers\Breadcrumbs;
 use App\Controller\Helpers\StructuredDataHelper;
-use App\Controller\Helpers\TelescopeHelper;
 use App\DsAmen\Factory\PresenterFactory;
 use App\DsShared\Factory\HelperFactory;
 use App\ExternalApi\Ada\Service\AdaClassService;
 use App\ExternalApi\Electron\Service\ElectronService;
 use App\ExternalApi\LxPromo\Service\LxPromoService;
-use App\ExternalApi\RecEng\Service\RecEngService;
 use BBC\ProgrammesPagesService\Domain\ApplicationTime;
 use BBC\ProgrammesPagesService\Domain\Entity\Clip;
 use BBC\ProgrammesPagesService\Domain\Entity\CollapsedBroadcast;
 use BBC\ProgrammesPagesService\Domain\Entity\Episode;
 use BBC\ProgrammesPagesService\Domain\Entity\ProgrammeContainer;
-use BBC\ProgrammesPagesService\Domain\Entity\ProgrammeItem;
 use BBC\ProgrammesPagesService\Domain\Entity\Promotion;
 use BBC\ProgrammesPagesService\Domain\ValueObject\Pid;
 use BBC\ProgrammesPagesService\Domain\ValueObject\Synopses;
@@ -42,7 +39,6 @@ abstract class BaseProgrammeContainerController extends BaseController
         CollapsedBroadcastsService $collapsedBroadcastsService,
         ProgrammesAggregationService $aggregationService,
         ImagesService $imagesService,
-        RecEngService $recEngService,
         ElectronService $electronService,
         AdaClassService $adaClassService,
         HelperFactory $helperFactory,
@@ -105,16 +101,7 @@ abstract class BaseProgrammeContainerController extends BaseController
             $relatedTopicsPromise = $adaClassService->findRelatedClassesByContainer($programme, $usePerContainerValues, 5);
         }
 
-        $recommendationsPromise = new FulfilledPromise([]);
-        if ($onDemandEpisode) {
-            $recommendationsPromise = $recEngService->getRecommendations(
-                $onDemandEpisode,
-                2
-            );
-        }
-
         $promises = [
-            'recommendations' => $recommendationsPromise,
             'relatedTopics' => $relatedTopicsPromise,
             'supportingContentItems' => $electronService->fetchSupportingContentItemsForProgramme($programme),
             'lxPromo' => $lxPromoPromise,

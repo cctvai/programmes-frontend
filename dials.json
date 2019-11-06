@@ -4,7 +4,6 @@
     "api-electron": "enabled",
     "api-isite": "enabled",
     "api-recipe": "enabled",
-    "api-recommendations": "enabled",
     "api-morph": "enabled",
     "api-soundsnav": "enabled",
     "api-tupac": "enabled"

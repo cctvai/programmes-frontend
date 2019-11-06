@@ -8,7 +8,6 @@ parameters:
     app.electron.service.class: App\ExternalApi\Electron\Service\ElectronStubService
     app.idtquiz.service.class: App\ExternalApi\IdtQuiz\Service\IdtQuizStubService
     app.morph.service.lxpromo.class: App\ExternalApi\LxPromo\Service\LxPromoStubService
-    app.receng.service.class: App\ExternalApi\RecEng\Service\RecEngStubService
     app.recipe.service.class: App\ExternalApi\Recipes\Service\RecipesStubService
     app.riddle.service.riddle.class: App\ExternalApi\Riddle\Service\RiddleStubService
     app.tupac.service.class: App\ExternalApi\Tupac\Service\TupacStubService

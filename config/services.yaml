@@ -30,8 +30,6 @@ parameters:
     app.isite.baseurl: 'https://api.live.bbc.co.uk/isite2-content-reader'
     app.isite.article_service.class: App\ExternalApi\Isite\Service\ArticleService
     app.isite.profile_service.class: App\ExternalApi\Isite\Service\ProfileService
-    app.receng.baseurl: 'https://open.live.bbc.co.uk/recommend/items'
-    app.receng.service.class: App\ExternalApi\RecEng\Service\RecEngService
     app.recipes.baseurl: 'https://api.live.bbc.co.uk/food/recipes'
     app.recipes.service.class: App\ExternalApi\Recipes\Service\RecipesService
     app.morph.baseurl: 'https://morph.api.bbci.co.uk'
@@ -365,13 +363,6 @@ services:
         arguments:
             $baseUrl: '%app.isite.baseurl%'
             $responseHandler: '@isite.feed_response_handler.profile'
-
-    App\ExternalApi\RecEng\Service\RecEngService:
-        class: '%app.receng.service.class%'
-        arguments:
-            $baseUrl: '%app.receng.baseurl%'
-            $audioKey: '%receng_audio_key%'
-            $videoKey: '%receng_video_key%'
 
     App\ExternalApi\Recipes\Service\RecipesService:
         class: '%app.recipes.service.class%'
