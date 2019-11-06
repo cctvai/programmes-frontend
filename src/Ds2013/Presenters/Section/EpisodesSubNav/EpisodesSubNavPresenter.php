@@ -5,7 +5,6 @@ namespace App\Ds2013\Presenters\Section\EpisodesSubNav;
 use App\Ds2013\Presenter;
 use App\Ds2013\Presenters\Section\EpisodesSubNav\NavigationItems\All;
 use App\Ds2013\Presenters\Section\EpisodesSubNav\NavigationItems\AvailableNow;
-use App\Ds2013\Presenters\Section\EpisodesSubNav\NavigationItems\ByDate;
 use App\Ds2013\Presenters\Section\EpisodesSubNav\NavigationItems\NavigationItem;
 use App\Ds2013\Presenters\Section\EpisodesSubNav\NavigationItems\NextOn;
 use BBC\ProgrammesPagesService\Domain\ValueObject\Pid;

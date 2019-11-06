@@ -6,7 +6,6 @@ namespace Tests\App\Ds2013\Presenters\Section\EpisodeSubNav;
 use App\Ds2013\Presenters\Section\EpisodesSubNav\EpisodesSubNavPresenter;
 use App\Ds2013\Presenters\Section\EpisodesSubNav\NavigationItems\All;
 use App\Ds2013\Presenters\Section\EpisodesSubNav\NavigationItems\AvailableNow;
-use App\Ds2013\Presenters\Section\EpisodesSubNav\NavigationItems\ByDate;
 use App\Ds2013\Presenters\Section\EpisodesSubNav\NavigationItems\NextOn;
 use BBC\ProgrammesPagesService\Domain\ValueObject\Pid;
 use PHPUnit\Framework\TestCase;
