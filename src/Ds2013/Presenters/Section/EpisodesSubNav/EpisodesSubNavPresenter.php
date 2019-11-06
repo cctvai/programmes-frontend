@@ -49,9 +49,6 @@ class EpisodesSubNavPresenter extends Presenter
     {
         $items = [];
         $items[] = new All($this->pid, 'programme_episodes_guide' === $this->currentRoute);
-        if ($this->hasBroadcasts) {
-            $items[] = new ByDate($this->pid, 'programme_broadcasts' === $this->currentRoute);
-        }
         if ($this->isDomestic || $this->availableEpisodeCount > 0) {
             $items[] = new AvailableNow($this->pid, 'programme_episodes_player' === $this->currentRoute, $this->availableEpisodeCount);
         }
