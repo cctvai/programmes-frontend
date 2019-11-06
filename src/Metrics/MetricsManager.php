@@ -63,7 +63,7 @@ class MetricsManager
         }
     }
 
-    public function addApiMetric(string $apiName, int $responseTimeMs, int $responseCode) : void
+    public function addApiMetric(string $apiName, int $responseTimeMs, ?int $responseCode) : void
     {
         if (!ApiTypeEnum::isValid($apiName)) {
             throw new InvalidArgumentException("$apiName is not a valid API type");
@@ -143,7 +143,7 @@ class MetricsManager
      * @param int $responseCode
      * @return string
      */
-    private function normaliseHttpResponseCode(int $responseCode): string
+    private function normaliseHttpResponseCode(?int $responseCode): string
     {
         if ($responseCode == 404 || ($responseCode >= 200 && $responseCode <= 299)) {
             // 404s and 200s are OK
