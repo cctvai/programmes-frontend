@@ -51,10 +51,9 @@ class EpisodeSubNavPresenterTest extends TestCase
         $presenter = new EpisodesSubNavPresenter('a_route', false, true, 0, $pid, 0);
 
         $items = $presenter->getItems();
-        $this->assertCount(3, $items);
+        $this->assertCount(2, $items);
         $this->assertInstanceOf(All::class, $items[0]);
-        $this->assertInstanceOf(ByDate::class, $items[1]);
-        $this->assertInstanceOf(NextOn::class, $items[2]);
+        $this->assertInstanceOf(NextOn::class, $items[1]);
     }
 
     /**
@@ -66,10 +65,9 @@ class EpisodeSubNavPresenterTest extends TestCase
         $presenter = new EpisodesSubNavPresenter('a_route', $isDomestic, true, $episodeCount, $pid, 1);
 
         $items = $presenter->getItems();
-        $this->assertCount(4, $items);
+        $this->assertCount(3, $items);
         $this->assertInstanceOf(All::class, $items[0]);
-        $this->assertInstanceOf(ByDate::class, $items[1]);
-        $this->assertInstanceOf(AvailableNow::class, $items[2]);
-        $this->assertInstanceOf(NextOn::class, $items[3]);
+        $this->assertInstanceOf(AvailableNow::class, $items[1]);
+        $this->assertInstanceOf(NextOn::class, $items[2]);
     }
 }
