@@ -310,3 +310,89 @@ season_schedules:
     controller: App\Controller\RedirectAndCacheController::redirectAction
     defaults: { route: find_by_pid, permanent: true }
     requirements: { pid: '[0-9b-df-hj-np-tv-z]{8,15}' }
+
+
+
+
+# The following routes are from Clifton, in order of most specific to least specific
+# For example, it's possible that /.../programmes/{categoryType}/{urlKeyHierarchy}.json, where urlKeyHierarchy is .*
+# could match /aps/programmes/{categoryType}/{urlKeyHierarchy}/player.json when it shouldn't
+
+aps.broadcasts_for_month:
+    path: /programmes/{pid}/episodes/{year}/{month}.json
+    methods:  [GET]
+    controller: App\Controller\JSON\CollapsedBroadcastsForMonthController
+    requirements:
+        pid: '[0-9b-df-hj-np-tv-z]{8,15}'
+        year: '[1-2][0-9]{3}'
+        month: '0?[1-9]|1[0-2]'
+
+aps.latest_broadcast_for_programme:
+    path: /programmes/{pid}/episodes/last.json
+    methods:  [GET]
+    controller: App\Controller\JSON\CollapsedBroadcastLatestForProgrammeController
+    requirements: { pid: '[0-9b-df-hj-np-tv-z]{8,15}' }
+
+aps.upcoming_broadcast_for_programme:
+    path: /programmes/{pid}/episodes/upcoming.json
+    methods:  [GET]
+    controller: App\Controller\JSON\CollapsedBroadcastUpcomingForProgrammeController
+    requirements: { pid: '[0-9b-df-hj-np-tv-z]{8,15}' }
+
+aps.episodes:
+    path: /programmes/{pid}/episodes.json
+    methods:  [GET]
+    controller: App\Controller\JSON\BroadcastYearsAndMonthsController
+    requirements: { pid: '[0-9b-df-hj-np-tv-z]{8,15}' }
+
+aps.programme_children:
+    path: /programmes/{pid}/children.json
+    methods:  [GET]
+    controller: App\Controller\JSON\ProgrammeChildrenController
+    requirements: { pid: '[0-9b-df-hj-np-tv-z]{8,15}' }
+
+aps.version_segment_events:
+    path: /programmes/{pid}/segments.json
+    methods:  [GET]
+    controller: App\Controller\JSON\VersionSegmentEventsController
+    requirements: { pid: '[0-9b-df-hj-np-tv-z]{8,15}' }
+
+aps.children_series_of_container:
+    path: /programmes/{pid}/series.json
+    methods: [GET]
+    controller: App\Controller\JSON\ChildrenSeriesOfContainerController
+    requirements: { pid: '[0-9b-df-hj-np-tv-z]{8,15}' }
+
+aps.find_by_pid:
+    path: /programmes/{pid}.json
+    methods:  [GET]
+    controller: App\Controller\JSON\FindByPidController
+    requirements: { pid: '[0-9b-df-hj-np-tv-z]{8,15}' }
+
+aps.atoz_list_default:
+    path: /programmes/a-z.json
+    methods: [GET]
+    defaults: { slice: 'player' }
+    controller: App\Controller\JSON\AtozController::lettersListAction
+
+aps.atoz_list:
+    path: /programmes/a-z/{slice}.json
+    methods: [GET]
+    defaults: { slice: 'player' }
+    requirements: { slice: 'player|all' }
+    controller: App\Controller\JSON\AtozController::lettersListAction
+
+aps.atoz_by_default:
+    path: /programmes/a-z/by/{search}.json
+    methods: [GET]
+    controller: App\Controller\JSON\AtozController::byAction
+    defaults: { slice: 'player' }
+    requirements: { search: '^[a-z\@]$' }
+
+aps.atoz_by:
+    path: /programmes/a-z/by/{search}/{slice}.json
+    methods: [GET]
+    controller: App\Controller\JSON\AtozController::byAction
+    defaults: { slice: 'player' }
+    requirements: { search: '^[a-z\@]$', slice: 'player|all' }
+

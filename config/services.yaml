@@ -266,6 +266,9 @@ services:
         arguments:
             $cache: '@BBC\ProgrammesCachingLibrary\CacheWithResilience'
 
+    BBC\ProgrammesPagesService\Service\SegmentsService:
+        factory: ['@BBC\ProgrammesPagesService\Service\ServiceFactory', 'getSegmentsService']
+
     BBC\ProgrammesPagesService\Service\SegmentEventsService:
         factory: ['@BBC\ProgrammesPagesService\Service\ServiceFactory', 'getSegmentEventsService']
 
@@ -276,10 +279,15 @@ services:
         factory: ['@BBC\ProgrammesPagesService\Service\ServiceFactory', 'getCategoriesService']
 
     BBC\ProgrammesPagesService\Service\BroadcastsService:
+        public: true
         factory: ['@BBC\ProgrammesPagesService\Service\ServiceFactory', 'getBroadcastsService']
 
     BBC\ProgrammesPagesService\Service\CollapsedBroadcastsService:
+        public: true
         factory: ['@BBC\ProgrammesPagesService\Service\ServiceFactory', 'getCollapsedBroadcastsService']
+
+    BBC\ProgrammesPagesService\Service\ContributorsService:
+        factory: ['@BBC\ProgrammesPagesService\Service\ServiceFactory', 'getContributorsService']
 
     BBC\ProgrammesPagesService\Service\ContributionsService:
         factory: ['@BBC\ProgrammesPagesService\Service\ServiceFactory', 'getContributionsService']

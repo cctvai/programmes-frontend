@@ -1,0 +1,86 @@
+<?php
+
+namespace Tests\App\DataFixtures\Clifton;
+
+use BBC\ProgrammesPagesService\Data\ProgrammesDb\Entity\Brand;
+use BBC\ProgrammesPagesService\Data\ProgrammesDb\Entity\Episode;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
+use BBC\ProgrammesPagesService\Data\ProgrammesDb\Entity\Genre;
+use BBC\ProgrammesPagesService\Data\ProgrammesDb\Entity\MasterBrand;
+use BBC\ProgrammesPagesService\Data\ProgrammesDb\Entity\Format;
+
+class MongrelsWithCategoriesFixture extends AbstractFixture implements DependentFixtureInterface
+{
+    private $manager;
+
+    public function getDependencies()
+    {
+        return [
+            MongrelsFixture::class,
+            NetworksFixture::class,
+        ];
+    }
+
+    public function load(ObjectManager $manager)
+    {
+        $this->manager = $manager;
+
+        $category1 = $this->buildGenre('C00193', 'Comedy', 'comedy');
+        $category2 = $this->buildGenre('C00196', 'Sitcoms', 'sitcoms', $category1);
+        $category3 = $this->buildGenre('C00999', 'Puppety Sitcoms', 'puppetysitcoms', $category2);
+        $format1 = $this->buildFormat('PT001', 'Animation', 'animation');
+
+        /** @var Brand $brand */
+        $brand = $this->getReference('b010t19z');
+        $brand->setCategories(new ArrayCollection([$category2, $category3]));
+        $manager->persist($brand);
+
+        // Set medium to TV
+
+        /** @var Episode $s2e1 */
+        $s2e1 = $this->getReference('b0175lqm');
+
+        $network = $this->getReference('network_bbc_one');
+        /** @var MasterBrand $masterBrand */
+        $masterBrand = $this->buildMasterBrand('bbc_one_london', 'p01y7bvv', 'BBC One London');
+        $masterBrand->setNetwork($network);
+
+        $s2e1->setMasterBrand($masterBrand);
+        $s2e1->setStreamable(true);
+        $s2e1->setCategories(new ArrayCollection([$category3, $format1]));
+        $manager->persist($s2e1);
+
+        /** @var Brand $brand */
+        $brand = $this->getReference('b00swgkn');
+        $brand->setCategories(new ArrayCollection([$category1, $category2]));
+        $manager->persist($brand);
+
+        $manager->flush();
+    }
+
+    private function buildGenre($pidId, $title, $urlKey, $parent = null)
+    {
+        $entity = new Genre($pidId, $title, $urlKey);
+        $entity->setParent($parent);
+        $this->manager->persist($entity);
+        return $entity;
+    }
+
+    private function buildFormat($pidId, $title, $urlKey)
+    {
+        $entity = new Format($pidId, $title, $urlKey);
+        $this->manager->persist($entity);
+        return $entity;
+    }
+
+    private function buildMasterBrand($mid, $pid, $name)
+    {
+        $entity = new MasterBrand($mid, $pid, $name);
+        $this->manager->persist($entity);
+        $this->addReference($mid, $entity);
+        return $entity;
+    }
+}

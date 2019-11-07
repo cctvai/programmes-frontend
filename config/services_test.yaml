@@ -30,6 +30,10 @@ services:
         exclude: '../tests/DataFixtures/ORM/EntityCreationHelper'
         tags: ['doctrine.fixture.orm']
 
+    Tests\App\DataFixtures\Clifton\:
+        resource: '../tests/DataFixtures/Clifton'
+        tags: ['doctrine.fixture.orm']
+
     App\ValueObject\CosmosInfo:
         arguments: ['unittest', 'unittest']
 
