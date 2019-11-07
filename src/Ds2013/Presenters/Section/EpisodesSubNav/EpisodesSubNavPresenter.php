@@ -5,7 +5,6 @@ namespace App\Ds2013\Presenters\Section\EpisodesSubNav;
 use App\Ds2013\Presenter;
 use App\Ds2013\Presenters\Section\EpisodesSubNav\NavigationItems\All;
 use App\Ds2013\Presenters\Section\EpisodesSubNav\NavigationItems\AvailableNow;
-use App\Ds2013\Presenters\Section\EpisodesSubNav\NavigationItems\ByDate;
 use App\Ds2013\Presenters\Section\EpisodesSubNav\NavigationItems\NavigationItem;
 use App\Ds2013\Presenters\Section\EpisodesSubNav\NavigationItems\NextOn;
 use BBC\ProgrammesPagesService\Domain\ValueObject\Pid;
@@ -49,9 +48,6 @@ class EpisodesSubNavPresenter extends Presenter
     {
         $items = [];
         $items[] = new All($this->pid, 'programme_episodes_guide' === $this->currentRoute);
-        if ($this->hasBroadcasts) {
-            $items[] = new ByDate($this->pid, 'programme_broadcasts' === $this->currentRoute);
-        }
         if ($this->isDomestic || $this->availableEpisodeCount > 0) {
             $items[] = new AvailableNow($this->pid, 'programme_episodes_player' === $this->currentRoute, $this->availableEpisodeCount);
         }
