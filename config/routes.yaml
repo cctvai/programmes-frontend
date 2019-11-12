@@ -69,7 +69,7 @@ programme_upcoming_broadcasts:
 
 programme_broadcasts:
     path: /programmes/{pid}/broadcasts/{yy}/{mm}
-    controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController::redirectAction
+    controller: App\Controller\RedirectAndCacheController::redirectAction
     defaults: { route: 'programme_episodes', yy: '', mm: '', ignoreAttributes: ['yy', 'mm'] }
     requirements: { pid: '[0-9b-df-hj-np-tv-z]{8,15}' }
 
