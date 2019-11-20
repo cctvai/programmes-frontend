@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2216ad01a6d7313dad433f2b5513ad28",
+    "content-hash": "7d57ba3555d40d0df6a111524962905c",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -224,19 +224,20 @@
         },
         {
             "name": "bbc/branding-client",
-            "version": "3.0.0",
+            "version": "4.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bbc/branding-client.git",
-                "reference": "c9fcb0ac0dae869580a67513ac8c2ff80db7e57f"
+                "reference": "4c25f0030b4f42df94e69e6bf5c46a325d32b71f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bbc/branding-client/zipball/c9fcb0ac0dae869580a67513ac8c2ff80db7e57f",
-                "reference": "c9fcb0ac0dae869580a67513ac8c2ff80db7e57f",
+                "url": "https://api.github.com/repos/bbc/branding-client/zipball/4c25f0030b4f42df94e69e6bf5c46a325d32b71f",
+                "reference": "4c25f0030b4f42df94e69e6bf5c46a325d32b71f",
                 "shasum": ""
             },
             "require": {
+                "bbc/programmes-caching-library": "^1.1.5",
                 "guzzlehttp/guzzle": "^6.0",
                 "mustache/mustache": "~2.5",
                 "php": ">=7.1.0",
@@ -244,8 +245,8 @@
             },
             "require-dev": {
                 "phpstan/phpstan": "^0.8.0",
-                "phpunit/phpunit": "^6.1",
-                "squizlabs/php_codesniffer": "^2.9",
+                "phpunit/phpunit": "^8.4.3",
+                "squizlabs/php_codesniffer": "^3.5.2",
                 "symfony/cache": "^3.2"
             },
             "type": "library",
@@ -264,10 +265,10 @@
             ],
             "description": "PHP Branding client",
             "support": {
-                "source": "https://github.com/bbc/branding-client/tree/3.0.0",
+                "source": "https://github.com/bbc/branding-client/tree/4.0.0",
                 "issues": "https://github.com/bbc/branding-client/issues"
             },
-            "time": "2019-09-23T08:51:37+00:00"
+            "time": "2019-11-20T14:04:51+00:00"
         },
         {
             "name": "bbc/doctrine-extensions",
@@ -383,16 +384,16 @@
         },
         {
             "name": "bbc/programmes-caching-library",
-            "version": "v1.1.4",
+            "version": "v1.1.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bbc/programmes-caching-library.git",
-                "reference": "11afad274a85a25dd21d73bdf8371ce1c4f8f5c4"
+                "reference": "ff1497cbc5e0edf9eb5ab443138fbeae67bc02af"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bbc/programmes-caching-library/zipball/11afad274a85a25dd21d73bdf8371ce1c4f8f5c4",
-                "reference": "11afad274a85a25dd21d73bdf8371ce1c4f8f5c4",
+                "url": "https://api.github.com/repos/bbc/programmes-caching-library/zipball/ff1497cbc5e0edf9eb5ab443138fbeae67bc02af",
+                "reference": "ff1497cbc5e0edf9eb5ab443138fbeae67bc02af",
                 "shasum": ""
             },
             "require": {
@@ -413,10 +414,10 @@
             },
             "description": "Caching for /programmes projects",
             "support": {
-                "source": "https://github.com/bbc/programmes-caching-library/tree/v1.1.4",
+                "source": "https://github.com/bbc/programmes-caching-library/tree/v1.1.5",
                 "issues": "https://github.com/bbc/programmes-caching-library/issues"
             },
-            "time": "2019-10-10T10:52:36+00:00"
+            "time": "2019-11-05T11:33:33+00:00"
         },
         {
             "name": "bbc/programmes-morph-library",

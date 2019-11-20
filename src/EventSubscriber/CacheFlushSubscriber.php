@@ -49,12 +49,6 @@ class CacheFlushSubscriber implements EventSubscriberInterface, ServiceSubscribe
             $cacheWithResilience = $this->container->get(CacheWithResilience::class);
             $cacheWithResilience->setFlushCacheItems(true);
 
-            $brandingCache = $this->container->get(BrandingClient::class);
-            $brandingCache->setFlushCacheItems(true);
-
-            $orbitCache = $this->container->get(OrbitClient::class);
-            $orbitCache->setFlushCacheItems(true);
-
             $morphCache = $this->container->get(MorphClient::class);
             $morphCache->setFlushCacheItems(true);
         }

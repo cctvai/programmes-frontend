@@ -3,8 +3,6 @@ declare(strict_types = 1);
 namespace Tests\App\EventSubscriber;
 
 use App\EventSubscriber\CacheFlushSubscriber;
-use BBC\BrandingClient\BrandingClient;
-use BBC\BrandingClient\OrbitClient;
 use BBC\ProgrammesCachingLibrary\Cache;
 use BBC\ProgrammesCachingLibrary\CacheWithResilience;
 use BBC\ProgrammesMorphLibrary\MorphClient;
@@ -24,12 +22,6 @@ class CacheFlushSubscriberTest extends TestCase
         $cacheWithResilience = $this->createMock(CacheWithResilience::class);
         $cacheWithResilience->expects($this->once())->method('setFlushCacheItems')->with(true);
 
-        $branding = $this->createMock(BrandingClient::class);
-        $branding->expects($this->once())->method('setFlushCacheItems')->with(true);
-
-        $orbit = $this->createMock(OrbitClient::class);
-        $orbit->expects($this->once())->method('setFlushCacheItems')->with(true);
-
         $morph = $this->createMock(MorphClient::class);
         $morph->expects($this->once())->method('setFlushCacheItems')->with(true);
 
@@ -37,8 +29,6 @@ class CacheFlushSubscriberTest extends TestCase
         $container->method('get')->will($this->returnValueMap([
             [Cache::class, $cache],
             [CacheWithResilience::class, $cacheWithResilience],
-            [BrandingClient::class, $branding],
-            [OrbitClient::class, $orbit],
             [MorphClient::class, $morph],
         ]));
 

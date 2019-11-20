@@ -175,8 +175,9 @@ services:
     BBC\BrandingClient\OrbitClient:
         class: '%app.orbit_client.class%'
         arguments:
+            - '@logger'
             - '@csa_guzzle.client.default'
-            - '@cache.programmes'
+            - '@BBC\ProgrammesCachingLibrary\CacheWithResilience'
             - env: '%app.feed_env.orbit%'
               cacheKeyPrefix: 'programmes-frontend.%cosmos_component_release%.orbit'
               mustache: { cache: '%kernel.cache_dir%/mustache' }
@@ -184,8 +185,9 @@ services:
     BBC\BrandingClient\BrandingClient:
         class: '%app.branding_client.class%'
         arguments:
+            - '@logger'
             - '@csa_guzzle.client.default'
-            - '@cache.programmes'
+            - '@BBC\ProgrammesCachingLibrary\CacheWithResilience'
             - env: '%app.feed_env.branding%'
               cacheKeyPrefix: 'programmes-frontend.%cosmos_component_release%.branding'
 
