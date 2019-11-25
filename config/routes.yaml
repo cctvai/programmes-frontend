@@ -73,6 +73,13 @@ programme_broadcasts:
     defaults: { route: 'programme_episodes', yy: '', mm: '', ignoreAttributes: ['yy', 'mm'] }
     requirements: { pid: '[0-9b-df-hj-np-tv-z]{8,15}' }
 
+# this route previously existed in v2 but is not available in v3, redirect to the episodes list
+programme_series:
+    path: /programmes/{pid}/series
+    controller: App\Controller\RedirectAndCacheController::redirectAction
+    defaults: { route: 'programme_episodes' }
+    requirements: { pid: '[0-9b-df-hj-np-tv-z]{8,15}' }
+
 programme_player:
     path: /programmes/{pid}/player
     defaults: { _controller: App\Controller\AncillaryPages\PlayerController }
