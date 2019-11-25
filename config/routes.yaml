@@ -77,7 +77,7 @@ programme_broadcasts:
 programme_series:
     path: /programmes/{pid}/series
     controller: App\Controller\RedirectAndCacheController::redirectAction
-    defaults: { route: 'programme_episodes' }
+    defaults: { route: 'programme_episodes_guide' }
     requirements: { pid: '[0-9b-df-hj-np-tv-z]{8,15}' }
 
 programme_player:
