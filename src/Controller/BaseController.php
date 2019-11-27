@@ -21,6 +21,7 @@ use BBC\ProgrammesPagesService\Domain\ApplicationTime;
 use BBC\ProgrammesPagesService\Domain\Entity\CoreEntity;
 use BBC\ProgrammesPagesService\Domain\Entity\Image;
 use BBC\ProgrammesPagesService\Domain\Entity\Network;
+use BBC\ProgrammesPagesService\Domain\Entity\Programme;
 use BBC\ProgrammesPagesService\Domain\Entity\Service;
 use Exception;
 use GuzzleHttp\Promise\PromiseInterface;
@@ -235,16 +236,16 @@ abstract class BaseController extends AbstractController
 
     protected function renderWithChrome(string $view, array $parameters = [])
     {
+        $context = $this->context;
         $this->preRender();
         $cosmosInfo = $this->container->get(CosmosInfo::class);
 
         // SMP still need this for monitoring and analytics
         $this->createAnalyticsCounterNameFromContext();
-
         $atiAnalyticsLabelsValues = new AtiAnalyticsLabels(
             $this->container->get(HelperFactory::class)->getProducerVariableHelper(),
             $this->container->get(HelperFactory::class)->getDestinationVariableHelper(),
-            $this->context,
+            $context,
             $cosmosInfo,
             $this->atistatsExtraLabels,
             $this->atiContentType,
@@ -252,13 +253,19 @@ abstract class BaseController extends AbstractController
             $this->atiContentId,
             $this->atiOverriddenEntityTitle
         );
-        $atiAnalyticsLabelsValues = $atiAnalyticsLabelsValues->orbLabels();
+
+        if ($context instanceof CoreEntity) {
+            $tleo = $context->getTleo();
+            $atiAnalyticsLabelsValues->setStreamingAvailability(
+                ($tleo instanceof Programme) && $tleo->isStreamable()
+            );
+        }
 
         $orb = $this->container->get(OrbitClient::class)->getContent([
             'variant' => $this->branding->getOrbitVariant(),
             'language' => $this->branding->getLanguage(),
         ], [
-            'page' => $atiAnalyticsLabelsValues,
+            'page' => $atiAnalyticsLabelsValues->orbLabels(),
             'searchScope' => $this->orbitSearchScope,
             'skipLinkTarget' => 'programmes-content',
         ]);

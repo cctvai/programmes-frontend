@@ -37,6 +37,8 @@ class AtiAnalyticsLabels
     /** @var string|null */
     private $overriddenEntityTitle;
 
+    private $streamingAvailability = false;
+
     public function __construct(ProducerVariableHelper $producerVariableHelper, DestinationVariableHelper $destinationVariableHelper, $context, CosmosInfo $cosmosInfo, array $extraLabels, string $contentType, string $chapterOne, string $contentId = null, string $overriddenEntityTitle = null)
     {
         $this->context = $context;
@@ -48,6 +50,11 @@ class AtiAnalyticsLabels
         $this->producerVariableHelper = $producerVariableHelper;
         $this->destinationVariableHelper = $destinationVariableHelper;
         $this->overriddenEntityTitle = $overriddenEntityTitle;
+    }
+
+    public function setStreamingAvailability(bool $available)
+    {
+        $this->streamingAvailability = $available;
     }
 
     public function orbLabels()
@@ -86,6 +93,7 @@ class AtiAnalyticsLabels
                 ['name' => 'custom_var_1', 'value' => $entityTitle],
                 ['name' => 'custom_var_2', 'value' => $brandCustomVar],
                 ['name' => 'custom_var_4', 'value' => $masterbrandCustomVar],
+                ['name' => 'custom_var_6', 'value' => $this->streamingAvailability ? 'true' : 'false'],
             ],
         ];
 

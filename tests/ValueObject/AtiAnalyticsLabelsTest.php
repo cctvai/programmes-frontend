@@ -26,7 +26,7 @@ class AtiAnalyticsLabelsTest extends TestCase
     public function testService()
     {
         $context = $this->serviceFactory('bbc_one', 'tv', 'BBC One');
-        $labels = $this->getAnalyticsLabels(
+        $labels = $this->getOrbLabels(
             $this->getProducerVariableHelperMock('BBC'),
             $context, // Context
             'schedule', // contentType
@@ -58,6 +58,10 @@ class AtiAnalyticsLabelsTest extends TestCase
                     'name' => 'custom_var_4',
                     'value' => 'bbc_one',
                 ],
+                [
+                    'name' => 'custom_var_6',
+                    'value' => 'false',
+                ],
             ],
         ];
         $this->assertEquals($expectedLabels, $labels);
@@ -66,7 +70,7 @@ class AtiAnalyticsLabelsTest extends TestCase
     public function testBrand()
     {
         $context = BrandsFixtures::eastEnders();
-        $labels = $this->getAnalyticsLabels(
+        $labels = $this->getOrbLabels(
             $this->getProducerVariableHelperMock('IPLAYER'),
             $context,
             'brand',
@@ -98,6 +102,10 @@ class AtiAnalyticsLabelsTest extends TestCase
                     'name' => 'custom_var_4',
                     'value' => 'bbc_one',
                 ],
+                [
+                    'name' => 'custom_var_6',
+                    'value' => 'false',
+                ],
             ],
         ];
         $this->assertEquals($expectedLabels, $labels);
@@ -107,7 +115,7 @@ class AtiAnalyticsLabelsTest extends TestCase
     {
         $brand = $this->brandFactory('b006q2x0', 'Doctor Who', 'bbc_one', 'bbc_one', 'tv');
         $context = $this->galleryFactory('b0000001', 'Some Gallery', 'bbc_one', 'bbc_one', NetworkMediumEnum::TV, $brand);
-        $labels = $this->getAnalyticsLabels(
+        $labels = $this->getOrbLabels(
             $this->getProducerVariableHelperMock('BBC'),
             $context,
             'article-photo-gallery',
@@ -139,9 +147,45 @@ class AtiAnalyticsLabelsTest extends TestCase
                     'name' => 'custom_var_4',
                     'value' => 'bbc_one',
                 ],
+                [
+                    'name' => 'custom_var_6',
+                    'value' => 'false',
+                ],
             ],
         ];
         $this->assertEquals($expectedLabels, $labels);
+    }
+
+    public function testIsStreamable()
+    {
+        $brand = $this->brandFactory('b006q2x0', 'Doctor Who', 'bbc_one', 'bbc_one', 'tv');
+        $context = $this->galleryFactory('b0000001', 'Some Gallery', 'bbc_one', 'bbc_one', NetworkMediumEnum::TV, $brand);
+        $labels = $this->getAnalyticsLabels(
+            $this->getProducerVariableHelperMock('BBC'),
+            $context,
+            'article-photo-gallery',
+            'gallery',
+            'urn:bbc:pips:' . $context->getPid(),
+            ['foo' => 'bar']
+        );
+
+        $labels->setStreamingAvailability(true);
+        $orbLabels = $labels->orbLabels();
+        $expected = [
+            'name' => 'custom_var_6',
+            'value' => 'true',
+        ];
+        $x16 = array_pop($orbLabels['additionalProperties']);
+        $this->assertEquals($expected, $x16);
+
+        $labels->setStreamingAvailability(false);
+        $orbLabels = $labels->orbLabels();
+        $expected = [
+            'name' => 'custom_var_6',
+            'value' => 'false',
+        ];
+        $x16 = array_pop($orbLabels['additionalProperties']);
+        $this->assertEquals($expected, $x16);
     }
 
     private function serviceFactory(string $networkId, string $networkMedium, string $serviceName)
@@ -238,7 +282,7 @@ class AtiAnalyticsLabelsTest extends TestCase
 
     private function getAnalyticsLabels($producerHelperMock, $context, string $contentType, string $chapterOne, string $contentId, array $extraLabels = [])
     {
-        $analyticsLabels = new AtiAnalyticsLabels(
+        return new AtiAnalyticsLabels(
             $producerHelperMock,
             $this->getDestinationVariableHelperMock(),
             $context,
@@ -248,6 +292,10 @@ class AtiAnalyticsLabelsTest extends TestCase
             $chapterOne,
             $contentId
         );
-        return $analyticsLabels->orbLabels();
+    }
+
+    private function getOrbLabels(...$args)
+    {
+        return $this->getAnalyticsLabels(...$args)->orbLabels();
     }
 }
