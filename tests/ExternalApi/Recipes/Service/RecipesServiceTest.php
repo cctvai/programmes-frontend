@@ -64,7 +64,7 @@ class RecipesServiceTest extends BaseServiceTestCase
     private function service($client): RecipesService
     {
         return new RecipesService(
-            new HttpApiClientFactory($client, $this->cache, $this->logger),
+            new HttpApiClientFactory($client, $this->cache, $this->cacheWithResilience, $this->logger),
             new RecipeMapper(),
             'https://api.example.com'
         );

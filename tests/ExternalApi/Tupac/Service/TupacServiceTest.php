@@ -129,6 +129,7 @@ class TupacServiceTest extends BaseServiceTestCase
             new HttpApiClientFactory(
                 $this->client,
                 $this->cache,
+                $this->cacheWithResilience,
                 $this->logger
             ),
             'https://music-tupac.api.bbc.co.uk'

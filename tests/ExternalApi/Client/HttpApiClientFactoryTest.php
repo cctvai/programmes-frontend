@@ -6,7 +6,9 @@ namespace Tests\App\ExternalApi\Client;
 use App\ExternalApi\Client\HttpApiClient;
 use App\ExternalApi\Client\Factory\HttpApiClientFactory;
 use App\ExternalApi\Client\HttpApiMultiClient;
+use BBC\ProgrammesCachingLibrary\Cache;
 use BBC\ProgrammesCachingLibrary\CacheInterface;
+use BBC\ProgrammesCachingLibrary\CacheWithResilience;
 use GuzzleHttp\ClientInterface;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
@@ -15,6 +17,8 @@ class HttpApiClientFactoryTest extends TestCase
 {
     private $mockCache;
 
+    private $mockCacheWithResilience;
+
     /** @var HttpApiClientFactory */
     private $clientFactory;
 
@@ -22,8 +26,9 @@ class HttpApiClientFactoryTest extends TestCase
     {
         $mockClient = $this->createMock(ClientInterface::class);
         $mockLogger = $this->createMock(LoggerInterface::class);
-        $this->mockCache = $this->createMock(CacheInterface::class);
-        $this->clientFactory = new HttpApiClientFactory($mockClient, $this->mockCache, $mockLogger);
+        $this->mockCache = $this->createMock(Cache::class);
+        $this->mockCacheWithResilience = $this->createMock(CacheWithResilience::class);
+        $this->clientFactory = new HttpApiClientFactory($mockClient, $this->mockCache, $this->mockCacheWithResilience, $mockLogger);
     }
 
     public function testGetHttpApiMultiClient()

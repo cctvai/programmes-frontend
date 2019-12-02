@@ -110,7 +110,7 @@ class SoundsNavServiceTest extends BaseServiceTestCase
     private function service($client)
     {
         return new SoundsNavService(
-            new HttpApiClientFactory($client, $this->cache, $this->logger),
+            new HttpApiClientFactory($client, $this->cache, $this->cacheWithResilience, $this->logger),
             new SoundsNavMapper(),
             'https://api.example.com/test'
         );

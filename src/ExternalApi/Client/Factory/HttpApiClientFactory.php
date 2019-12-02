@@ -4,7 +4,9 @@ declare(strict_types = 1);
 namespace App\ExternalApi\Client\Factory;
 
 use App\ExternalApi\Client\HttpApiMultiClient;
+use BBC\ProgrammesCachingLibrary\Cache;
 use BBC\ProgrammesCachingLibrary\CacheInterface;
+use BBC\ProgrammesCachingLibrary\CacheWithResilience;
 use GuzzleHttp\ClientInterface;
 use Psr\Log\LoggerInterface;
 
@@ -14,19 +16,24 @@ class HttpApiClientFactory
     /** @var ClientInterface */
     private $client;
 
-    /** @var CacheInterface */
+    /** @var Cache */
     private $cache;
+
+    /** @var CacheWithResilience */
+    private $cacheWithResilience;
 
     /** @var LoggerInterface */
     private $logger;
 
     public function __construct(
         ClientInterface $client,
-        CacheInterface $cache,
+        Cache $cache,
+        CacheWithResilience $cacheWithResilience,
         LoggerInterface $logger
     ) {
         $this->client = $client;
         $this->cache = $cache;
+        $this->cacheWithResilience = $cacheWithResilience;
         $this->logger = $logger;
     }
 
@@ -44,7 +51,7 @@ class HttpApiClientFactory
         $guzzleOptions = array_merge(self::DEFAULT_GUZZLE_OPTIONS, $guzzleOptions);
         return new HttpApiMultiClient(
             $this->client,
-            $this->cache,
+            $bubbleFailure ? $this->cacheWithResilience : $this->cache,
             $this->logger,
             $cacheKey,
             $requestUrls,

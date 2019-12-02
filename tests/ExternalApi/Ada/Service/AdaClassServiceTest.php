@@ -116,7 +116,7 @@ class AdaClassServiceTest extends BaseServiceTestCase
     private function service($client)
     {
         return new AdaClassService(
-            new HttpApiClientFactory($client, $this->cache, $this->logger),
+            new HttpApiClientFactory($client, $this->cache, $this->cacheWithResilience, $this->logger),
             'https://api.example.com/test',
             new AdaClassMapper()
         );

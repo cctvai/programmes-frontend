@@ -288,7 +288,7 @@ class AdaProgrammeServiceTest extends BaseServiceTestCase
     private function service(ClientInterface $client, ProgrammesService $programmesService, AdaProgrammeMapper $mapper): AdaProgrammeService
     {
         return new AdaProgrammeService(
-            new HttpApiClientFactory($client, $this->cache, $this->logger),
+            new HttpApiClientFactory($client, $this->cache, $this->cacheWithResilience, $this->logger),
             'https://api.example.com/test',
             $mapper,
             $programmesService

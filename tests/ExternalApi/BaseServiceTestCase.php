@@ -4,6 +4,7 @@ declare(strict_types = 1);
 namespace Tests\App\ExternalApi;
 
 use BBC\ProgrammesCachingLibrary\Cache;
+use BBC\ProgrammesCachingLibrary\CacheWithResilience;
 use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\Middleware;
@@ -11,6 +12,7 @@ use Monolog\Handler\TestHandler;
 use Monolog\Logger;
 use Monolog\Processor\PsrLogMessageProcessor;
 use PHPUnit\Framework\TestCase;
+use Psr\Log\NullLogger;
 use Symfony\Component\Cache\Adapter\ArrayAdapter;
 
 abstract class BaseServiceTestCase extends TestCase
@@ -18,6 +20,8 @@ abstract class BaseServiceTestCase extends TestCase
     protected $cache;
 
     private $cacheAdapter;
+
+    protected $cacheWithResilience;
 
     protected $logger;
 
@@ -27,6 +31,7 @@ abstract class BaseServiceTestCase extends TestCase
     {
         $this->cacheAdapter = new ArrayAdapter(0, false);
         $this->cache = new Cache($this->cacheAdapter, 'test');
+        $this->cacheWithResilience = new CacheWithResilience(new NullLogger(), $this->cacheAdapter, 'test', 300);
     }
 
     protected function setUpLogger()

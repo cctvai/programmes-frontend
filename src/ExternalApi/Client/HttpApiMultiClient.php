@@ -78,7 +78,8 @@ class HttpApiMultiClient
      * @param array $guzzleOptions
      *   Extra options for guzzle client
      * @param bool $bubbleFailure
-     *   Set to true if you want iSite failures to bubble up
+     *  Set to true if you want to return stale content on failure when stale content is available
+     *  or bubble up failures when stale content is not available.
      */
     public function __construct(
         ClientInterface $client,
@@ -176,6 +177,11 @@ class HttpApiMultiClient
             }
             $this->logger->error("HTTP Error status $responseCode for one of this URLs $urls : " . $e->getMessage());
             if ($this->bubbleFailure) {
+                // For content that is required instead of throwing an error we can return stale content if available
+                $cacheItem = $this->cache->getItem($this->cacheKey, true);
+                if ($cacheItem->isHit()) {
+                    return $cacheItem->get();
+                }
                 throw $e;
             }
         } elseif ($this->notFoundTTL !== CacheInterface::NONE) {

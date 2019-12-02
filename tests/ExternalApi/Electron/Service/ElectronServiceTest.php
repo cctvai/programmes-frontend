@@ -101,7 +101,7 @@ class ElectronServiceTest extends BaseServiceTestCase
         // Okay. So this is more of an integration test than a unit test at this point.
         // We're testing both ElectronService and HttpApiClient. This does not seem unreasonable to me however.
         return new ElectronService(
-            new HttpApiClientFactory($client, $this->cache, $this->logger),
+            new HttpApiClientFactory($client, $this->cache, $this->cacheWithResilience, $this->logger),
             new XmlParser(),
             new SupportingContentMapper(),
             'https://api.example.com'

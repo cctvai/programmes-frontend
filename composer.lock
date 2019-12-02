@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7d57ba3555d40d0df6a111524962905c",
+    "content-hash": "35af5178582eeeea8da549b3ec9ac9ad",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -384,16 +384,16 @@
         },
         {
             "name": "bbc/programmes-caching-library",
-            "version": "v1.1.5",
+            "version": "v1.1.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bbc/programmes-caching-library.git",
-                "reference": "ff1497cbc5e0edf9eb5ab443138fbeae67bc02af"
+                "reference": "5a43dfbe733c34853f01ee443c0f4b89ccdb713d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bbc/programmes-caching-library/zipball/ff1497cbc5e0edf9eb5ab443138fbeae67bc02af",
-                "reference": "ff1497cbc5e0edf9eb5ab443138fbeae67bc02af",
+                "url": "https://api.github.com/repos/bbc/programmes-caching-library/zipball/5a43dfbe733c34853f01ee443c0f4b89ccdb713d",
+                "reference": "5a43dfbe733c34853f01ee443c0f4b89ccdb713d",
                 "shasum": ""
             },
             "require": {
@@ -414,10 +414,10 @@
             },
             "description": "Caching for /programmes projects",
             "support": {
-                "source": "https://github.com/bbc/programmes-caching-library/tree/v1.1.5",
+                "source": "https://github.com/bbc/programmes-caching-library/tree/v1.1.6",
                 "issues": "https://github.com/bbc/programmes-caching-library/issues"
             },
-            "time": "2019-11-05T11:33:33+00:00"
+            "time": "2019-11-27T12:28:59+00:00"
         },
         {
             "name": "bbc/programmes-morph-library",
