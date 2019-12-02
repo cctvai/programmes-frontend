@@ -144,7 +144,38 @@ class ClipController extends BaseController
             }, $genres);
         }
 
-        return $structuredDataHelper->prepare($clipSchema);
+        $videoObject = $this->getVideoObjectSchemaForClip($clip, $clipSchema);
+
+        return $structuredDataHelper->prepare([$clipSchema, $videoObject], true);
+    }
+
+    /**
+     * VideoObject is supported by google search engine
+     * https://developers.google.com/search/docs/data-types/video
+     *
+     * @param Clip $clip
+     * @param array $clipSchema
+     * @return array|null
+     */
+    private function getVideoObjectSchemaForClip(Clip $clip, array $clipSchema): ?array
+    {
+        if (!$clip->getStreamableFrom()) {
+            return null;
+        }
+        $videoObject["uploadDate"] = (string) $clip->getStreamableFrom()->format('Y-m-d');
+        $videoObject["@type"] = $clip->isVideo() ? "VideoObject" : "AudioObject";
+        $videoObject["name"] = $clipSchema["name"];
+        $videoObject["thumbnailUrl"] = $clipSchema["image"];
+        $videoObject["description"] = $clipSchema["description"];
+        $videoObject["duration"] = $clipSchema["timeRequired"];
+        if (isset($clipSchema['expires'])) {
+            $videoObject["expires"] = $clipSchema['expires'];
+        }
+        if ($clip->isExternallyEmbeddable() && $clip->isVideo()) {
+            $videoObject["embedUrl"] = $clipSchema["url"] . '/player';
+        }
+
+        return $videoObject;
     }
 
     /**
