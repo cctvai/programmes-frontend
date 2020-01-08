@@ -132,15 +132,15 @@ services:
     ### Argument Value Resolvers
 
     App\ArgumentResolver\ContextEntityByPidValueResolver:
-        tags: [{name: 'controller.argument_value_resolver', priority: 0 }]
+        tags: [{ name: 'controller.argument_value_resolver', priority: 0 }]
 
     # This needs to be triggered before the RequestAttributeValueResolver,
     # which has a priority of 100
     App\ArgumentResolver\IdentifierValueResolver:
-        tags: [{name: 'controller.argument_value_resolver', priority: 125 }]
+        tags: [{ name: 'controller.argument_value_resolver', priority: 125 }]
 
     App\ArgumentResolver\CategoryByUrlKeyValueResolver:
-        tags: [{name: 'controller.argument_value_resolver', priority: 0 }]
+        tags: [{ name: 'controller.argument_value_resolver', priority: 0 }]
 
     ### Caches
 
@@ -323,6 +323,9 @@ services:
 
     BBC\ProgrammesPagesService\Service\ServicesService:
         factory: ['@BBC\ProgrammesPagesService\Service\ServiceFactory', 'getServicesService']
+
+    BBC\ProgrammesPagesService\Service\ThingsService:
+        factory: ['@BBC\ProgrammesPagesService\Service\ServiceFactory', 'getThingsService']
 
     BBC\ProgrammesPagesService\Service\VersionsService:
         factory: ['@BBC\ProgrammesPagesService\Service\ServiceFactory', 'getVersionsService']

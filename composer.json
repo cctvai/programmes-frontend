@@ -35,7 +35,7 @@
         "bbc/gel-iconography-assets": "^2.0",
         "bbc/programmes-caching-library": "^1.1.6",
         "bbc/programmes-morph-library": "^2.0",
-        "bbc/programmes-pages-service": "dev-master@dev",
+        "bbc/programmes-pages-service": "dev-PROGRAMMES-7180@dev",
         "cakephp/chronos": "~1.1.0",
         "csa/guzzle-bundle": "^3.0.1",
         "doctrine/doctrine-bundle": "^1.8",

@@ -299,6 +299,12 @@ topic_show:
     defaults: { _controller: App\Controller\Topic\ShowController, slice: '' }
     requirements: { slice: 'video|audio', topic: '.+?' }
 
+# Contributor pages
+contributor:
+    path: /programmes/contributors/{id}
+    defaults: { _controller: App\Controller\Contributor\ShowController }
+    requirements: { id: '^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$' }
+
 # Season sub page redirects
 season_collection_members:
     path: /programmes/{pid}/members
@@ -323,9 +329,6 @@ season_schedules:
     controller: App\Controller\RedirectAndCacheController::redirectAction
     defaults: { route: find_by_pid, permanent: true }
     requirements: { pid: '[0-9b-df-hj-np-tv-z]{8,15}' }
-
-
-
 
 # The following routes are from Clifton, in order of most specific to least specific
 # For example, it's possible that /.../programmes/{categoryType}/{urlKeyHierarchy}.json, where urlKeyHierarchy is .*
@@ -408,4 +411,3 @@ aps.atoz_by:
     controller: App\Controller\JSON\AtozController::byAction
     defaults: { slice: 'player' }
     requirements: { search: '^[a-z\@]$', slice: 'player|all' }
-

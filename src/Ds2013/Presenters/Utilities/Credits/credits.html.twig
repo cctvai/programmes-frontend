@@ -23,7 +23,17 @@
             {% endif %}
 
             <td class="br-subtle-bg-onborder">
-                <span>{{ contribution.getContributor().getName() }}</span>
+                {% if contribution.getContributor().getThing() %}
+                    <a href="{{ path('contributor', { id: contribution.getContributor().getThing().getId() }) }}">
+                        {{ contribution.getContributor().getThing().getPreferredLabel() }}
+                    </a>
+                    {% if contribution.getContributor().getThing().getDisambiguationHint() %}
+                        <br>
+                        <small>{{ contribution.getContributor().getThing().getDisambiguationHint() }}</small>
+                    {% endif %}
+                {% else %}
+                    <span>{{ contribution.getContributor().getName() }}</span>
+                {% endif %}
             </td>
         </tr>
     {% endfor %}
