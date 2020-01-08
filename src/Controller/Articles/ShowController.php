@@ -7,7 +7,6 @@ use App\Controller\BaseIsiteController;
 use App\Controller\Helpers\Breadcrumbs;
 use App\Controller\Helpers\IsiteKeyHelper;
 use App\Controller\Helpers\StructuredDataHelper;
-use App\Exception\HasContactFormException;
 use App\ExternalApi\Isite\Domain\Article;
 use App\ExternalApi\Isite\Domain\ContentBlock\Telescope;
 use App\ExternalApi\Isite\Service\ArticleService;
@@ -41,20 +40,9 @@ class ShowController extends BaseIsiteController
         }
 
         $guid = $this->isiteKeyHelper->convertKeyToGuid($this->key);
-        try {
-            /**  @var Article $isiteObject  */
-            $isiteObject = $this->getBaseIsiteObject($guid, $preview);
-        } catch (HasContactFormException $e) {
-            if (!$this->slug) {
-                $route = 'article_with_contact_form_noslug';
-                $params = ['key' => $this->key];
-            } else {
-                $route = 'article_with_contact_form';
-                $params = ['key' => $this->key, 'slug' => $this->slug];
-            }
 
-            return $this->cachedRedirectToRoute($route, $params, 302, 300);
-        }
+        /**  @var Article $isiteObject  */
+        $isiteObject = $this->getBaseIsiteObject($guid, $preview);
 
         if ($redirect = $this->getRedirectToSlugIfNeeded($isiteObject, $preview)) {
             return $redirect;

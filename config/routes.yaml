@@ -409,3 +409,8 @@ aps.atoz_by:
     defaults: { slice: 'player' }
     requirements: { search: '^[a-z\@]$', slice: 'player|all' }
 
+old_article_with_contact_form:
+    path: /programmes/articles/{key}/{slug}/contact
+    controller: App\Controller\RedirectAndCacheController::redirectAction
+    defaults: { route: 'programme_article', permanent: true }
+    requirements: { key: '[a-zA-Z0-9-]{1,40}' }
