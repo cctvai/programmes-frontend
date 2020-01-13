@@ -52,6 +52,12 @@
         </div>
     {% endif %}
 
+    {% if isFollowing is defined %}
+        <form method="POST" action="{{ path('programme_action', { pid: programme.getTleo().getPid(), action: isFollowing ? 'unfollow' : 'follow' }) }}">
+            <input type="submit" value="{{ isFollowing ? (programme.getTleo().isRadio() ? 'Unsubscribe' : 'Remove') : (programme.getTleo().isRadio() ? 'Subscribe' : 'Add') }}">
+        </from>
+    {% endif %}
+
     {% if mapPresenter.showMap() %}
         {{ ds_amen_presenter(mapPresenter) }}
     {% else %}

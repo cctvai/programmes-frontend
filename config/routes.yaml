@@ -152,6 +152,13 @@ programme_clips:
     defaults: { _controller: App\Controller\Clips\ListController }
     requirements: { pid: '[0-9b-df-hj-np-tv-z]{8,15}' }
 
+# Action
+programme_action:
+    path: /programmes/{pid}/{action}
+    defaults: { _controller: App\Controller\ActionController }
+    requirements: { action: 'follow|unfollow' }
+    methods: POST
+
 # SMP Playlist page
 programme_smp_playlist:
     path: /programmes/{pid}/playlist.json

@@ -11,6 +11,7 @@ use App\DsShared\Factory\HelperFactory;
 use App\ExternalApi\Ada\Service\AdaClassService;
 use App\ExternalApi\Electron\Service\ElectronService;
 use App\ExternalApi\LxPromo\Service\LxPromoService;
+use App\ExternalApi\Uas\Service\UasService;
 use BBC\ProgrammesPagesService\Domain\ApplicationTime;
 use BBC\ProgrammesPagesService\Domain\Entity\Clip;
 use BBC\ProgrammesPagesService\Domain\Entity\CollapsedBroadcast;
@@ -45,7 +46,8 @@ abstract class BaseProgrammeContainerController extends BaseController
         RelatedLinksService $relatedLinksService,
         LxPromoService $lxPromoService,
         StructuredDataHelper $structuredDataHelper,
-        Breadcrumbs $breadcrumbs
+        Breadcrumbs $breadcrumbs,
+        UasService $uasService
     ) {
         if ($programme->getNetwork() && $programme->getNetwork()->isInternational()) {
             // "International" services are UTC, all others are Europe/London (the default)
@@ -106,6 +108,25 @@ abstract class BaseProgrammeContainerController extends BaseController
             'supportingContentItems' => $electronService->fetchSupportingContentItemsForProgramme($programme),
             'lxPromo' => $lxPromoPromise,
         ];
+
+        $tleo = $programme->getTleo();
+        if ($tleo->isRadio()) {
+            $promises['isFollowing'] = $uasService->getActivity(
+                $request->cookies->get('ckns_atkn'),
+                'follows',
+                'radio',
+                $tleo->getType(),
+                (string) $tleo->getPid()
+            );
+        } else if ($tleo->isTv()) {
+            $promises['isFollowing'] = $uasService->getActivity(
+                $request->cookies->get('ckns_atkn'),
+                'follows',
+                'tv',
+                $tleo->getType(),
+                (string) $tleo->getPid()
+            );
+        }
 
         $resolvedPromises = $this->resolvePromises($promises);
         /* End promises */

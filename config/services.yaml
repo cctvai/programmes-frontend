@@ -39,6 +39,8 @@ parameters:
     app.sounds_nav.service.class: App\ExternalApi\SoundsNav\Service\SoundsNavService
     app.tupac.baseurl: 'https://music-tupac.api.bbc.co.uk'
     app.tupac.service.class: App\ExternalApi\Tupac\Service\TupacService
+    app.uas.baseurl: 'https://activity.api.bbc.co.uk/my'
+    app.uas.class: App\ExternalApi\Uas\Service\UasService
     app.services.smallprox.endpoint: 'https://smallprox.vj.tools.bbc.co.uk'
 
     # External JS
@@ -398,6 +400,11 @@ services:
         class: '%app.tupac.service.class%'
         arguments:
             $baseUrl: '%app.tupac.baseurl%'
+
+    App\ExternalApi\Uas\Service\UasService:
+        class: '%app.uas.class%'
+        arguments:
+            $baseUrl: '%app.uas.baseurl%'
 
     App\ExternalApi\IdtQuiz\Service\IdtQuizService:
         class: '%app.idtquiz.service.class%'

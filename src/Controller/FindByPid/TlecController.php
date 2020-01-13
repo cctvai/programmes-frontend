@@ -10,6 +10,7 @@ use App\DsShared\Factory\HelperFactory;
 use App\ExternalApi\Ada\Service\AdaClassService;
 use App\ExternalApi\Electron\Service\ElectronService;
 use App\ExternalApi\LxPromo\Service\LxPromoService;
+use App\ExternalApi\Uas\Service\UasService;
 use BBC\ProgrammesPagesService\Domain\Entity\ProgrammeContainer;
 use BBC\ProgrammesPagesService\Service\CollapsedBroadcastsService;
 use BBC\ProgrammesPagesService\Service\ImagesService;
@@ -44,7 +45,8 @@ class TlecController extends BaseProgrammeContainerController
         RelatedLinksService $relatedLinksService,
         LxPromoService $lxPromoService,
         StructuredDataHelper $structuredDataHelper,
-        Breadcrumbs $breadcrumbs
+        Breadcrumbs $breadcrumbs,
+        UasService $uasService
     ) {
         // We need to vary on X-Ip_is_uk_combined to avoid returning same cached content to non UK users when there is
         // a vote set to UK only. There is already a vary header set on nginx, this doesn't override the existing "vary"
@@ -71,7 +73,8 @@ class TlecController extends BaseProgrammeContainerController
             $relatedLinksService,
             $lxPromoService,
             $structuredDataHelper,
-            $breadcrumbs
+            $breadcrumbs,
+            $uasService
         );
     }
 

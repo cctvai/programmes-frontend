@@ -9,6 +9,7 @@ use App\DsShared\Factory\HelperFactory;
 use App\ExternalApi\Ada\Service\AdaClassService;
 use App\ExternalApi\Electron\Service\ElectronService;
 use App\ExternalApi\LxPromo\Service\LxPromoService;
+use App\ExternalApi\Uas\Service\UasService;
 use BBC\ProgrammesPagesService\Domain\Entity\ProgrammeContainer;
 use BBC\ProgrammesPagesService\Service\CollapsedBroadcastsService;
 use BBC\ProgrammesPagesService\Service\ImagesService;
@@ -35,7 +36,8 @@ class SeriesController extends BaseProgrammeContainerController
         RelatedLinksService $relatedLinksService,
         LxPromoService $lxPromoService,
         StructuredDataHelper $structuredDataHelper,
-        Breadcrumbs $breadcrumbs
+        Breadcrumbs $breadcrumbs,
+        UasService $uasService
     ) {
         $this->setAtiContentLabels('series', 'series');
         return parent::__invoke(
@@ -53,7 +55,8 @@ class SeriesController extends BaseProgrammeContainerController
             $relatedLinksService,
             $lxPromoService,
             $structuredDataHelper,
-            $breadcrumbs
+            $breadcrumbs,
+            $uasService
         );
     }
 
