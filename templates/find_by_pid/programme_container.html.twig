@@ -54,6 +54,7 @@
 
     {% if isFollowing is defined %}
         <form method="POST" action="{{ path('programme_action', { pid: programme.getTleo().getPid(), action: isFollowing ? 'unfollow' : 'follow' }) }}">
+            <input type="hidden" name="redirect" value="{{ path('find_by_pid', { pid: programme.getPid() }) }}">
             <input type="submit" value="{{ isFollowing ? (programme.getTleo().isRadio() ? 'Unsubscribe' : 'Remove') : (programme.getTleo().isRadio() ? 'Subscribe' : 'Add') }}">
         </from>
     {% endif %}

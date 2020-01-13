@@ -26,6 +26,15 @@ class ActionController extends BaseController
             // Unauthorised
         }
 
+        $pid = (string) $programme->getPid();
+
+        $redirect = $request->request->get(
+            'redirect',
+            $this->generateUrl('find_by_pid', [
+                'pid' => $pid,
+            ])
+        );
+
         if ($programme->isRadio()) {
             // Sounds calls follows to containers subscriptions and follows to items bookmarks
             if ($programme instanceof ProgrammeContainer && !$programme->isTleo()) {
@@ -47,8 +56,6 @@ class ActionController extends BaseController
             // Think what to do when not TV or radio
         }
 
-        $pid = (string) $programme->getPid();
-
         switch ($action) {
             case 'follow':
                 if ($uasService->createActivity(
@@ -58,9 +65,7 @@ class ActionController extends BaseController
                     $programme->getType(),
                     $pid
                 )->wait()) {
-                    return $this->redirect($this->generateUrl('find_by_pid', [
-                        'pid' => $pid,
-                    ]), 302);
+                    return $this->redirect($redirect, 302);
                 }
                 break;
             case 'unfollow':
@@ -71,9 +76,7 @@ class ActionController extends BaseController
                     $programme->getType(),
                     $pid
                 )->wait()) {
-                    return $this->redirect($this->generateUrl('find_by_pid', [
-                        'pid' => $pid,
-                    ]), 302);
+                    return $this->redirect($redirect, 302);
                 };
                 break;
             default:
