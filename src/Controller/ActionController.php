@@ -10,6 +10,7 @@ use BBC\ProgrammesPagesService\Domain\Entity\Clip;
 use BBC\ProgrammesPagesService\Domain\Entity\Programme;
 use BBC\ProgrammesPagesService\Domain\Entity\ProgrammeContainer;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class ActionController extends BaseController
 {
@@ -23,7 +24,7 @@ class ActionController extends BaseController
 
         $idv5AccessToken = $request->cookies->get('ckns_atkn');
         if (!$idv5AccessToken) {
-            // Unauthorised
+            throw new HttpException(401, 'IDv5 access token cookie missing.');
         }
 
         $pid = (string) $programme->getPid();
@@ -36,24 +37,23 @@ class ActionController extends BaseController
         );
 
         if ($programme->isRadio()) {
-            // Sounds calls follows to containers subscriptions and follows to items bookmarks
             if ($programme instanceof ProgrammeContainer && !$programme->isTleo()) {
-                // Sounds discourages subscribing to non-TLEOs
+                throw $this->createNotFoundException('Sounds subscriptions must only be to TLECs.');
             }
 
             $resourceDomain = 'radio';
         } else if ($programme->isTv()) {
             if ($programme instanceof Clip) {
-                // iPlayer doesn't have clips, so adding them is pointless
+                throw $this->createNotFoundException('iPlayer doesn\'t support clips.');
             }
 
             if (!$programme->isTleo()) {
-                // iPlayer doesn't support non-TLEOs being added
+                throw $this->createNotFoundException('Only TLEOs can be added to iPlayer.');
             }
 
             $resourceDomain = 'tv';
         } else {
-            // Think what to do when not TV or radio
+            throw $this->createNotFoundException('Only TV and Radio programmes can be followed.');
         }
 
         switch ($action) {
@@ -80,7 +80,7 @@ class ActionController extends BaseController
                 };
                 break;
             default:
-                // not possible lol
+                throw $this->createNotFoundException('Action "' . $action . '" is not supported.');
         }
     }
 }

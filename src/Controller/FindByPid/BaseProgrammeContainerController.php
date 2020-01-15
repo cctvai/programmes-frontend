@@ -109,23 +109,26 @@ abstract class BaseProgrammeContainerController extends BaseController
             'lxPromo' => $lxPromoPromise,
         ];
 
-        $tleo = $programme->getTleo();
-        if ($tleo->isRadio()) {
-            $promises['isFollowing'] = $uasService->getActivity(
-                $request->cookies->get('ckns_atkn'),
-                'follows',
-                'radio',
-                $tleo->getType(),
-                (string) $tleo->getPid()
-            );
-        } else if ($tleo->isTv()) {
-            $promises['isFollowing'] = $uasService->getActivity(
-                $request->cookies->get('ckns_atkn'),
-                'follows',
-                'tv',
-                $tleo->getType(),
-                (string) $tleo->getPid()
-            );
+        $idv5AccessToken = $request->cookies->get('ckns_atkn');
+        if ($idv5AccessToken) {
+            $tleo = $programme->getTleo();
+            if ($tleo->isRadio()) {
+                $promises['isFollowing'] = $uasService->getActivity(
+                    $idv5AccessToken,
+                    'follows',
+                    'radio',
+                    $tleo->getType(),
+                    (string) $tleo->getPid()
+                );
+            } else if ($tleo->isTv()) {
+                $promises['isFollowing'] = $uasService->getActivity(
+                    $idv5AccessToken,
+                    'follows',
+                    'tv',
+                    $tleo->getType(),
+                    (string) $tleo->getPid()
+                );
+            }
         }
 
         $resolvedPromises = $this->resolvePromises($promises);
