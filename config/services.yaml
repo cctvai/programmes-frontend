@@ -35,7 +35,7 @@ parameters:
     app.morph.baseurl: 'https://morph.api.bbci.co.uk'
     app.LxPromo.service.lxpromo.class: App\ExternalApi\LxPromo\Service\LxPromoService
     app.riddle.service.riddle.class: App\ExternalApi\Riddle\Service\RiddleService
-    app.sounds_nav.baseurl: 'https://sounds-nav.api.bbci.co.uk/json'
+    app.sounds_nav.baseurl: 'https://sounds-nav.api.bbci.co.uk/json?contentTypeLabel=schedule'
     app.sounds_nav.service.class: App\ExternalApi\SoundsNav\Service\SoundsNavService
     app.tupac.baseurl: 'https://music-tupac.api.bbc.co.uk'
     app.tupac.service.class: App\ExternalApi\Tupac\Service\TupacService
